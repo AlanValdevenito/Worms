@@ -1,6 +1,7 @@
 # Worms 
 
 Taller de Programación I (75.42) - [2C 2023] - FIUBA 
+
 Trabajo final que consiste en la remake del icónico Worms
 
 ## Grupo 2
@@ -9,7 +10,7 @@ Trabajo final que consiste en la remake del icónico Worms
 * **Integrante 2** - [Mateo Julián Rico](https://github.com/ricomateo)
 * **Integrante 3** - [Federico Solari Vazquez](https://github.com/FedericoSolari)
 
-Corrector: **Martin Di Paola**
+**Corrector:** [Martin Di Paola](https://github.com/eldipa)
 
 ## Licencia
 
