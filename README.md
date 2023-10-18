@@ -7,7 +7,7 @@ Trabajo final que consiste en la remake del icónico Worms
 
 * **Integrante 1** - [Alan Valdevenito](https://github.com/AlanValdevenito)
 * **Integrante 2** - [Mateo Julián Rico](https://github.com/ricomateo)
-* **Integrante 3** - [Federico Solari Vazquez](...)
+* **Integrante 3** - [Federico Solari Vazquez](https://github.com/FedericoSolari)
 
 Corrector: **Martin Di Paola**
 
