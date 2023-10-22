@@ -1,4 +1,4 @@
-#include "common_resolver.h"
+#include "resolver.h"
 
 #include <stdexcept>
 
@@ -11,10 +11,11 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "common_liberror.h"
-#include "common_resolvererror.h"
+#include "liberror.h"
+#include "resolvererror.h"
 
-Resolver::Resolver(const char* hostname, const char* servname, bool is_passive) {
+Resolver::Resolver(const char *hostname, const char *servname, bool is_passive)
+{
     struct addrinfo hints;
     this->result = this->_next = nullptr;
 
@@ -60,8 +61,10 @@ Resolver::Resolver(const char* hostname, const char* servname, bool is_passive) 
      * Si `s != EAI_SYSTEM`, entonces el valor de retorno debe ser
      * inspeccionado con `gai_strerror`.
      * */
-    if (s != 0) {
-        if (s == EAI_SYSTEM) {
+    if (s != 0)
+    {
+        if (s == EAI_SYSTEM)
+        {
             /*
              * Como `errno` es global y puede ser modificada por *cualquier* otra
              * función, es *importantísimo* copiarla apenas detectemos el error.
@@ -70,8 +73,9 @@ Resolver::Resolver(const char* hostname, const char* servname, bool is_passive) 
              */
             throw LibError(errno, "Name resolution failed for hostname '%s' y servname '%s'",
                            (hostname ? hostname : ""), (servname ? servname : ""));
-
-        } else {
+        }
+        else
+        {
             /*
              * La documentación de `getaddrinfo` dice que en este caso
              * debemos usar `gai_strerror` para obtener el mensaje de error.
@@ -83,7 +87,8 @@ Resolver::Resolver(const char* hostname, const char* servname, bool is_passive) 
     this->_next = this->result;
 }
 
-Resolver::Resolver(Resolver&& other) {
+Resolver::Resolver(Resolver &&other)
+{
     /* Nos copiamos del otro resolver... */
     this->result = other.result;
     this->_next = other._next;
@@ -102,7 +107,8 @@ Resolver::Resolver(Resolver&& other) {
     other._next = nullptr;
 }
 
-Resolver& Resolver::operator=(Resolver&& other) {
+Resolver &Resolver::operator=(Resolver &&other)
+{
     /* Si el usuario hace algo como tratar de moverse
      * a si mismo (`resolver = resolver;`) simplemente no hacemos
      * nada.
@@ -127,19 +133,22 @@ Resolver& Resolver::operator=(Resolver&& other) {
     return *this;
 }
 
-bool Resolver::has_next() {
+bool Resolver::has_next()
+{
     chk_addr_or_fail();
     return this->_next != NULL;
 }
 
-struct addrinfo* Resolver::next() {
+struct addrinfo *Resolver::next()
+{
     chk_addr_or_fail();
-    struct addrinfo* ret = this->_next;
+    struct addrinfo *ret = this->_next;
     this->_next = ret->ai_next;
     return ret;
 }
 
-Resolver::~Resolver() {
+Resolver::~Resolver()
+{
     /*
      * `getaddrinfo` reservó recursos en algún lado (posiblemente el heap).
      * Es nuestra obligación liberar dichos recursos cuando no los necesitamos
@@ -152,9 +161,10 @@ Resolver::~Resolver() {
         freeaddrinfo(this->result);
 }
 
-
-void Resolver::chk_addr_or_fail() const {
-    if (result == nullptr) {
+void Resolver::chk_addr_or_fail() const
+{
+    if (result == nullptr)
+    {
         throw std::runtime_error("addresses list is invalid (null), "
                                  "perhaps you are using a *previously moved* "
                                  "resolver (and therefore invalid).");

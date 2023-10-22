@@ -22,7 +22,6 @@ static size_t _random(size_t max) {
     return 1 + (rand() % max);
 }
 
-// cppcheck-suppress unusedFunction
 ssize_t __wrap_send(int sockfd, const void* buf, size_t len, int flags) {
     size_t modified_len = len;
     if (len != 0) {
@@ -31,7 +30,6 @@ ssize_t __wrap_send(int sockfd, const void* buf, size_t len, int flags) {
     return __real_send(sockfd, buf, modified_len, flags);
 }
 
-// cppcheck-suppress unusedFunction
 ssize_t __wrap_recv(int sockfd, void* buf, size_t len, int flags) {
     size_t modified_len = len;
     if (len != 0) {

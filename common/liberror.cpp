@@ -17,7 +17,7 @@
 #undef _GNU_SOURCE
 #undef GNU_SOURCE
 
-#include "common_liberror.h"
+#include "liberror.h"
 
 #include <cstdarg>
 #include <cstdio>
@@ -25,7 +25,8 @@
 
 #include <errno.h>
 
-LibError::LibError(int error_code, const char* fmt, ...) noexcept {
+LibError::LibError(int error_code, const char *fmt, ...) noexcept
+{
     /* Aquí empieza la magia arcana proveniente de C.
      *
      * En C (y en C++) las funciones y métodos pueden recibir un número
@@ -60,7 +61,8 @@ LibError::LibError(int error_code, const char* fmt, ...) noexcept {
      * */
     va_end(args);
 
-    if (s < 0) {
+    if (s < 0)
+    {
         /* Algo falló al llamar a `vsnprintf` pero no podemos hacer nada.
          *
          * Lanzar una excepción no es una opción: `LibError` es una excepción
@@ -85,7 +87,9 @@ LibError::LibError(int error_code, const char* fmt, ...) noexcept {
          * debemos indicar 4 bytes y no 5 ya que no debemos contar el `\0`
          * */
         s = 4;
-    } else if (s == sizeof(msg_error)) {
+    }
+    else if (s == sizeof(msg_error))
+    {
         /* Esto también técnicamente es un error ya que el mensaje formateado
          * fue más grande que el buffer `msg_error`.
          * No hubo un overflow pero el mensaje en `msg_error` esta truncado.
@@ -115,6 +119,6 @@ LibError::LibError(int error_code, const char* fmt, ...) noexcept {
     msg_error[sizeof(msg_error) - 1] = 0;
 }
 
-const char* LibError::what() const noexcept { return msg_error; }
+const char *LibError::what() const noexcept { return msg_error; }
 
 LibError::~LibError() {}

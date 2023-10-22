@@ -6,7 +6,8 @@
  * Por simplificación este TDA se enfocará solamente
  * en sockets IPv4 para TCP.
  * */
-class Socket {
+class Socket
+{
 private:
     int skt;
     bool closed;
@@ -64,9 +65,9 @@ public:
      *
      * En caso de error los constructores lanzaran una excepción.
      * */
-    Socket(const char* hostname, const char* servname);
+    Socket(const char *hostname, const char *servname);
 
-    explicit Socket(const char* servname);
+    explicit Socket(const char *servname);
 
     /*
      * Deshabilitamos el constructor por copia y operador asignación por copia
@@ -89,14 +90,14 @@ public:
      *
      * Por eso deshabilitamos la copia. No tiene sentido.
      * */
-    Socket(const Socket&) = delete;
-    Socket& operator=(const Socket&) = delete;
+    Socket(const Socket &) = delete;
+    Socket &operator=(const Socket &) = delete;
 
     /*
      * Hacemos que el `Socket` sea movible.
      * */
-    Socket(Socket&&);
-    Socket& operator=(Socket&&);
+    Socket(Socket &&);
+    Socket &operator=(Socket &&);
 
     /* `Socket::sendsome` lee hasta `sz` bytes del buffer y los envía. La función
      * puede enviar menos bytes sin embargo.
@@ -115,8 +116,8 @@ public:
      *
      * Lease manpage de `send` y `recv`
      * */
-    int sendsome(const void* data, unsigned int sz, bool* was_closed);
-    int recvsome(void* data, unsigned int sz, bool* was_closed);
+    int sendsome(const void *data, unsigned int sz, bool *was_closed);
+    int recvsome(void *data, unsigned int sz, bool *was_closed);
 
     /*
      * `Socket::sendall` envía exactamente `sz` bytes leídos del buffer, ni más,
@@ -136,8 +137,8 @@ public:
      * para envio/recibo, lease `sz`.
      *
      * */
-    int sendall(const void* data, unsigned int sz, bool* was_closed);
-    int recvall(void* data, unsigned int sz, bool* was_closed);
+    int sendall(const void *data, unsigned int sz, bool *was_closed);
+    int recvall(void *data, unsigned int sz, bool *was_closed);
 
     /*
      * Acepta una conexión entrante y retorna un nuevo socket

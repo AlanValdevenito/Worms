@@ -1,6 +1,5 @@
-#include "common_socket.h"
+#include "socket.h"
 
-#include <iostream>
 #include <stdexcept>
 
 #include <arpa/inet.h>
@@ -13,10 +12,11 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "common_liberror.h"
-#include "common_resolver.h"
+#include "liberror.h"
+#include "resolver.h"
 
-Socket::Socket(const char* hostname, const char* servname) {
+Socket::Socket(const char *hostname, const char *servname)
+{
     Resolver resolver(hostname, servname, false);
 
     int s = -1;
@@ -32,8 +32,9 @@ Socket::Socket(const char* hostname, const char* servname) {
      * Es responsabilidad nuestra probar cada una de ellas hasta encontrar
      * una que funcione.
      * */
-    while (resolver.has_next()) {
-        struct addrinfo* addr = resolver.next();
+    while (resolver.has_next())
+    {
+        struct addrinfo *addr = resolver.next();
 
         /* Cerramos el socket si nos quedo abierto de la iteración
          * anterior
@@ -45,7 +46,8 @@ Socket::Socket(const char* hostname, const char* servname) {
          * Con esta llamada creamos/obtenemos un socket.
          * */
         skt = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
-        if (skt == -1) {
+        if (skt == -1)
+        {
             continue;
         }
 
@@ -57,7 +59,8 @@ Socket::Socket(const char* hostname, const char* servname) {
          * o detectar y notificar de un error.
          * */
         s = connect(skt, addr->ai_addr, addr->ai_addrlen);
-        if (s == -1) {
+        if (s == -1)
+        {
             continue;
         }
 
@@ -90,20 +93,23 @@ Socket::Socket(const char* hostname, const char* servname) {
                    (hostname ? hostname : ""), (servname ? servname : ""));
 }
 
-Socket::Socket(const char* servname) {
+Socket::Socket(const char *servname)
+{
     Resolver resolver(nullptr, servname, true);
 
     int s = -1;
     int skt = -1;
     this->closed = true;
-    while (resolver.has_next()) {
-        struct addrinfo* addr = resolver.next();
+    while (resolver.has_next())
+    {
+        struct addrinfo *addr = resolver.next();
 
         if (skt != -1)
             ::close(skt);
 
         skt = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
-        if (skt == -1) {
+        if (skt == -1)
+        {
             continue;
         }
 
@@ -140,7 +146,8 @@ Socket::Socket(const char* servname) {
          **/
         int optval = 1;
         s = setsockopt(skt, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
-        if (s == -1) {
+        if (s == -1)
+        {
             continue;
         }
 
@@ -155,7 +162,8 @@ Socket::Socket(const char* servname) {
          * y con `listen` pondremos el socket a escuchar conexiones entrantes.
          * */
         s = bind(skt, addr->ai_addr, addr->ai_addrlen);
-        if (s == -1) {
+        if (s == -1)
+        {
             continue;
         }
 
@@ -166,7 +174,8 @@ Socket::Socket(const char* servname) {
          * No tiene nada q ver con cuantas conexiones totales el server tendrá.
          * */
         s = listen(skt, 20);
-        if (s == -1) {
+        if (s == -1)
+        {
             continue;
         }
 
@@ -187,7 +196,8 @@ Socket::Socket(const char* servname) {
                    (servname ? servname : ""));
 }
 
-Socket::Socket(Socket&& other) {
+Socket::Socket(Socket &&other)
+{
     /* Nos copiamos del otro socket... */
     this->skt = other.skt;
     this->closed = other.closed;
@@ -207,7 +217,8 @@ Socket::Socket(Socket&& other) {
     other.closed = true;
 }
 
-Socket& Socket::operator=(Socket&& other) {
+Socket &Socket::operator=(Socket &&other)
+{
     /* Si el usuario hace algo como tratar de moverse
      * a si mismo (`skt = skt;`) simplemente no hacemos
      * nada.
@@ -220,7 +231,8 @@ Socket& Socket::operator=(Socket&& other) {
      * y debemos desinicializarlo primero antes de pisarle
      * el recurso con el que le robaremos al otro socket (`other`)
      * */
-    if (not this->closed) {
+    if (not this->closed)
+    {
         ::shutdown(this->skt, 2);
         ::close(this->skt);
     }
@@ -234,12 +246,13 @@ Socket& Socket::operator=(Socket&& other) {
     return *this;
 }
 
-int Socket::recvsome(void* data, unsigned int sz, bool* was_closed) {
+int Socket::recvsome(void *data, unsigned int sz, bool *was_closed)
+{
     chk_skt_or_fail();
     *was_closed = false;
-
-    int s = recv(this->skt, (char*)data, sz, 0);
-    if (s == 0) {
+    int s = recv(this->skt, (char *)data, sz, 0);
+    if (s == 0)
+    {
         /*
          * Puede ser o no un error, dependerá del protocolo.
          * Alguno protocolo podría decir "se reciben datos hasta
@@ -248,20 +261,24 @@ int Socket::recvsome(void* data, unsigned int sz, bool* was_closed) {
          * */
         *was_closed = true;
         return 0;
-    } else if (s == -1) {
+    }
+    else if (s == -1)
+    {
         /*
          * 99% casi seguro que es un error real
          * */
         throw LibError(errno, "socket recv failed");
-    } else {
+    }
+    else
+    {
         return s;
     }
 }
 
-int Socket::sendsome(const void* data, unsigned int sz, bool* was_closed) {
+int Socket::sendsome(const void *data, unsigned int sz, bool *was_closed)
+{
     chk_skt_or_fail();
     *was_closed = false;
-
     /*
      * Cuando se hace un send, el sistema operativo puede aceptar
      * la data pero descubrir luego que el socket fue cerrado
@@ -279,9 +296,9 @@ int Socket::sendsome(const void* data, unsigned int sz, bool* was_closed) {
      * Esta en nosotros luego hace el chequeo correspondiente
      * (ver más abajo).
      * */
-    int s = send(this->skt, (char*)data, sz, MSG_NOSIGNAL);
-
-    if (s == -1) {
+    int s = send(this->skt, (char *)data, sz, MSG_NOSIGNAL);
+    if (s == -1)
+    {
         /*
          * Este es un caso especial: cuando enviamos algo pero en el medio
          * se detecta un cierre del socket no se sabe bien cuanto se logro
@@ -289,7 +306,8 @@ int Socket::sendsome(const void* data, unsigned int sz, bool* was_closed) {
          *
          * Este es el famoso broken pipe.
          * */
-        if (errno == EPIPE) {
+        if (errno == EPIPE)
+        {
             /*
              * Puede o no ser un error (véase el comentario en `Socket::recvsome`)
              * */
@@ -302,24 +320,31 @@ int Socket::sendsome(const void* data, unsigned int sz, bool* was_closed) {
          * */
         *was_closed = true;
         throw LibError(errno, "socket send failed");
-    } else if (s == 0) {
+    }
+    else if (s == 0)
+    {
         /*
          * Jamas debería pasar.
          * */
         assert(false);
-    } else {
+    }
+    else
+    {
         return s;
     }
 }
 
-int Socket::recvall(void* data, unsigned int sz, bool* was_closed) {
+int Socket::recvall(void *data, unsigned int sz, bool *was_closed)
+{
     unsigned int received = 0;
     *was_closed = false;
 
-    while (received < sz) {
-        int s = recvsome((char*)data + received, sz - received, was_closed);
+    while (received < sz)
+    {
+        int s = recvsome((char *)data + received, sz - received, was_closed);
 
-        if (s <= 0) {
+        if (s <= 0)
+        {
             /*
              * Si el socket fue cerrado (`s == 0`) o hubo un error
              * `Socket::recvsome` ya debería haber seteado `was_closed`
@@ -335,7 +360,9 @@ int Socket::recvall(void* data, unsigned int sz, bool* was_closed) {
                 throw LibError(EPIPE, "socket received only %d of %d bytes", received, sz);
             else
                 return 0;
-        } else {
+        }
+        else
+        {
             /*
              * OK, recibimos algo pero no necesariamente todo lo que
              * esperamos. La condición del `while` checkea eso justamente.
@@ -347,22 +374,26 @@ int Socket::recvall(void* data, unsigned int sz, bool* was_closed) {
     return sz;
 }
 
-
-int Socket::sendall(const void* data, unsigned int sz, bool* was_closed) {
+int Socket::sendall(const void *data, unsigned int sz, bool *was_closed)
+{
     unsigned int sent = 0;
     *was_closed = false;
 
-    while (sent < sz) {
-        int s = sendsome((char*)data + sent, sz - sent, was_closed);
+    while (sent < sz)
+    {
+        int s = sendsome((char *)data + sent, sz - sent, was_closed);
 
         /* Véase los comentarios de `Socket::recvall` */
-        if (s <= 0) {
+        if (s <= 0)
+        {
             assert(s == 0);
             if (sent)
                 throw LibError(EPIPE, "socket sent only %d of %d bytes", sent, sz);
             else
                 return 0;
-        } else {
+        }
+        else
+        {
             sent += s;
         }
     }
@@ -370,12 +401,14 @@ int Socket::sendall(const void* data, unsigned int sz, bool* was_closed) {
     return sz;
 }
 
-Socket::Socket(int skt) {
+Socket::Socket(int skt)
+{
     this->skt = skt;
     this->closed = false;
 }
 
-Socket Socket::accept() {
+Socket Socket::accept()
+{
     chk_skt_or_fail();
     /*
      * `accept` nos bloqueara hasta que algún cliente se conecte a nosotros
@@ -400,32 +433,38 @@ Socket Socket::accept() {
      *
      * Por eso creamos un `Socket` y lo pasamos por movimiento
      * */
-
     return Socket(peer_skt);
 }
 
-void Socket::shutdown(int how) {
+void Socket::shutdown(int how)
+{
     chk_skt_or_fail();
-    if (::shutdown(this->skt, how) == -1) {
+    if (::shutdown(this->skt, how) == -1)
+    {
         throw LibError(errno, "socket shutdown failed");
     }
 }
 
-int Socket::close() {
+int Socket::close()
+{
     chk_skt_or_fail();
     this->closed = true;
     return ::close(this->skt);
 }
 
-Socket::~Socket() {
-    if (not this->closed) {
+Socket::~Socket()
+{
+    if (not this->closed)
+    {
         ::shutdown(this->skt, 2);
         ::close(this->skt);
     }
 }
 
-void Socket::chk_skt_or_fail() const {
-    if (skt == -1) {
+void Socket::chk_skt_or_fail() const
+{
+    if (skt == -1)
+    {
         throw std::runtime_error("socket with invalid file descriptor (-1), "
                                  "perhaps you are using a *previously moved* "
                                  "socket (and therefore invalid).");
