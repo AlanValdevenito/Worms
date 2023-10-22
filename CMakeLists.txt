@@ -46,13 +46,13 @@ include_directories(server)
 
 # Se utilizan para buscar archivos y almacenarlos en variables. 
 # Se buscan archivos con extensiones .cpp y .h en los directorios common, client y server, y se almacenan en las variables correspondientes.
-file(GLOB COMMON_SOURCES common/*.cpp common_*.$(extension))
+file(GLOB COMMON_SOURCES common/*.cpp *.$(extension))
 file(GLOB COMMON_HEADERS common/*.h)
 
-file(GLOB CLIENT_SOURCES client/*.cpp client_*.$(extension))
+file(GLOB CLIENT_SOURCES client/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS client/*.h)
 
-file(GLOB SERVER_SOURCES server/*.cpp server_*.$(extension))
+file(GLOB SERVER_SOURCES server/*.cpp *.$(extension))
 file(GLOB SERVER_HEADERS server/*.h)
 
 #  Define los ejecutables que se compilarán. 

@@ -11,10 +11,11 @@
  * Por simplificación este TDA se enfocara solamente
  * en direcciones IPv4 para TCP.
  * */
-class Resolver {
+class Resolver
+{
 private:
-    struct addrinfo* result;
-    struct addrinfo* _next;
+    struct addrinfo *result;
+    struct addrinfo *_next;
 
     /*
      * Checkea que la lista de direcciones (result) sea "valida".
@@ -40,7 +41,7 @@ public:
      *
      * En caso de error se lanza una excepción.
      * */
-    Resolver(const char* hostname, const char* servname, bool is_passive);
+    Resolver(const char *hostname, const char *servname, bool is_passive);
 
     /*
      * Deshabilitamos el constructor por copia y operador asignación por copia
@@ -49,14 +50,14 @@ public:
      * Se podrían copiar?, sí, pero no le veo mucha utilidad y prefiero
      * evitarlo.
      * */
-    Resolver(const Resolver&) = delete;
-    Resolver& operator=(const Resolver&) = delete;
+    Resolver(const Resolver &) = delete;
+    Resolver &operator=(const Resolver &) = delete;
 
     /*
      * Hacemos que el `Resolver` sea movible.
      * */
-    Resolver(Resolver&&);
-    Resolver& operator=(Resolver&&);
+    Resolver(Resolver &&);
+    Resolver &operator=(Resolver &&);
 
     /* Retorna si hay o no una dirección siguiente para testear.
      * Si la hay, se deberá llamar a `Resolver::next()` para obtenerla.
@@ -70,7 +71,7 @@ public:
      *
      * Si no existe una siguiente dirección el resultado es indefinido.
      * */
-    struct addrinfo* next();
+    struct addrinfo *next();
 
     /*
      * Libera los recursos.
