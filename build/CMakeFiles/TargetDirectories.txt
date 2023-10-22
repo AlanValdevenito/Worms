@@ -1,0 +1,4 @@
+/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles/client.dir
+/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles/server.dir
+/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles/edit_cache.dir
+/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles/rebuild_cache.dir
