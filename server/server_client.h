@@ -14,8 +14,8 @@
 
 #include "blockingqueue.h"
 #include "broadcaster.h"
-#include "receiver_thread.cpp"
-#include "sender_thread.cpp"
+#include "receiver_thread.h"
+#include "sender_thread.h"
 #include "socket.h"
 #include "thread.h"
 #include "server_protocol.h"

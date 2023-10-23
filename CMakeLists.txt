@@ -59,6 +59,7 @@ file(GLOB SERVER_HEADERS server/*.h)
 # Se utilizan las variables que contienen las listas de archivos .cpp y .h en los directorios common, client y server para definir los objetivos.
 add_executable(client  ${COMMON_HEADERS} ${CLIENT_HEADERS} ${COMMON_SOURCES} ${CLIENT_SOURCES})
 add_executable(server ${COMMON_HEADERS} ${SERVER_HEADERS} ${COMMON_SOURCES} ${SERVER_SOURCES})
+# add_executable(server ${COMMON_HEADERS} ${SERVER_HEADERS} ${COMMON_SOURCES} ${SERVER_SOURCES})
 
 # Enlaza las bibliotecas a los ejecutables. En este caso, se enlazan las bibliotecas definidas en LINK_LIBS.
 target_link_libraries(client ${LINK_LIBS})
