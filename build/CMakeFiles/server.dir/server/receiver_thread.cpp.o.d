@@ -1,6 +1,8 @@
-CMakeFiles/server.dir/common/receiver_thread.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/common/receiver_thread.cpp \
- /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
+CMakeFiles/server.dir/server/receiver_thread.cpp.o: \
+ /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.cpp \
+ /usr/include/stdc-predef.h \
+ /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.h \
+ /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -191,6 +193,7 @@ CMakeFiles/server.dir/common/receiver_thread.cpp.o: \
  /usr/include/c++/11/bits/stl_heap.h /usr/include/c++/11/bits/stl_queue.h \
  /home/fede/Documentos/Taller/tp-worms/common/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
+ /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
@@ -203,10 +206,9 @@ CMakeFiles/server.dir/common/receiver_thread.cpp.o: \
  /usr/include/c++/11/bits/algorithmfwd.h \
  /usr/include/c++/11/bits/stl_tempbuf.h \
  /usr/include/c++/11/bits/uniform_int_dist.h \
- /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
  /home/fede/Documentos/Taller/tp-worms/common/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /home/fede/Documentos/Taller/tp-worms/common/thread.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
- /usr/include/c++/11/bits/atomic_lockfree_defines.h
+ /usr/include/c++/11/bits/atomic_lockfree_defines.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h

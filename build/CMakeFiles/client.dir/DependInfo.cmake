@@ -15,10 +15,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/fede/Documentos/Taller/tp-worms/common/broadcaster.cpp" "CMakeFiles/client.dir/common/broadcaster.cpp.o" "gcc" "CMakeFiles/client.dir/common/broadcaster.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/dto.cpp" "CMakeFiles/client.dir/common/dto.cpp.o" "gcc" "CMakeFiles/client.dir/common/dto.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/liberror.cpp" "CMakeFiles/client.dir/common/liberror.cpp.o" "gcc" "CMakeFiles/client.dir/common/liberror.cpp.o.d"
-  "/home/fede/Documentos/Taller/tp-worms/common/receiver_thread.cpp" "CMakeFiles/client.dir/common/receiver_thread.cpp.o" "gcc" "CMakeFiles/client.dir/common/receiver_thread.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/resolver.cpp" "CMakeFiles/client.dir/common/resolver.cpp.o" "gcc" "CMakeFiles/client.dir/common/resolver.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/resolvererror.cpp" "CMakeFiles/client.dir/common/resolvererror.cpp.o" "gcc" "CMakeFiles/client.dir/common/resolvererror.cpp.o.d"
-  "/home/fede/Documentos/Taller/tp-worms/common/sender_thread.cpp" "CMakeFiles/client.dir/common/sender_thread.cpp.o" "gcc" "CMakeFiles/client.dir/common/sender_thread.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/socket.cpp" "CMakeFiles/client.dir/common/socket.cpp.o" "gcc" "CMakeFiles/client.dir/common/socket.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/wrap_socket.cpp" "CMakeFiles/client.dir/common/wrap_socket.cpp.o" "gcc" "CMakeFiles/client.dir/common/wrap_socket.cpp.o.d"
   )

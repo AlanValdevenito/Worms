@@ -213,9 +213,6 @@ CMakeFiles/server.dir/server/server.cpp.o: \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_client.h \
- /home/fede/Documentos/Taller/tp-worms/common/receiver_thread.cpp \
- /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h \
- /home/fede/Documentos/Taller/tp-worms/common/thread.h \
- /home/fede/Documentos/Taller/tp-worms/common/sender_thread.cpp \
- /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h
+ /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
+ /home/fede/Documentos/Taller/tp-worms/server/sender_thread.h

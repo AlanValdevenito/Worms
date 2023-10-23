@@ -1,6 +1,8 @@
-CMakeFiles/client.dir/common/receiver_thread.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/common/receiver_thread.cpp \
- /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
+CMakeFiles/server.dir/server/sender_thread.cpp.o: \
+ /home/fede/Documentos/Taller/tp-worms/server/sender_thread.cpp \
+ /usr/include/stdc-predef.h \
+ /home/fede/Documentos/Taller/tp-worms/server/sender_thread.h \
+ /usr/include/c++/11/cstring \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -11,15 +13,18 @@ CMakeFiles/client.dir/common/receiver_thread.cpp.o: \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
- /usr/include/c++/11/pstl/pstl_config.h /usr/include/c++/11/ostream \
- /usr/include/c++/11/ios /usr/include/c++/11/iosfwd \
- /usr/include/c++/11/bits/stringfwd.h \
+ /usr/include/c++/11/pstl/pstl_config.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ /usr/include/strings.h /usr/include/c++/11/iostream \
+ /usr/include/c++/11/ostream /usr/include/c++/11/ios \
+ /usr/include/c++/11/iosfwd /usr/include/c++/11/bits/stringfwd.h \
  /usr/include/c++/11/bits/memoryfwd.h /usr/include/c++/11/bits/postypes.h \
  /usr/include/c++/11/cwchar /usr/include/wchar.h \
- /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
@@ -27,8 +32,6 @@ CMakeFiles/client.dir/common/receiver_thread.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
  /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
- /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /usr/include/c++/11/exception /usr/include/c++/11/bits/exception.h \
  /usr/include/c++/11/bits/exception_ptr.h \
  /usr/include/c++/11/bits/exception_defines.h \
@@ -190,9 +193,11 @@ CMakeFiles/client.dir/common/receiver_thread.cpp.o: \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_heap.h /usr/include/c++/11/bits/stl_queue.h \
  /home/fede/Documentos/Taller/tp-worms/common/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.h \
+ /home/fede/Documentos/Taller/tp-worms/common/thread.h \
+ /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
+ /usr/include/c++/11/bits/atomic_lockfree_defines.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
- /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h \
@@ -203,10 +208,4 @@ CMakeFiles/client.dir/common/receiver_thread.cpp.o: \
  /usr/include/c++/11/bits/algorithmfwd.h \
  /usr/include/c++/11/bits/stl_tempbuf.h \
  /usr/include/c++/11/bits/uniform_int_dist.h \
- /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
- /home/fede/Documentos/Taller/tp-worms/common/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h \
- /home/fede/Documentos/Taller/tp-worms/common/thread.h \
- /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
- /usr/include/c++/11/bits/atomic_lockfree_defines.h
+ /home/fede/Documentos/Taller/tp-worms/common/dto.h

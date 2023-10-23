@@ -322,33 +322,6 @@ common/liberror.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/liberror.cpp.s
 .PHONY : common/liberror.cpp.s
 
-common/receiver_thread.o: common/receiver_thread.cpp.o
-.PHONY : common/receiver_thread.o
-
-# target to build an object file
-common/receiver_thread.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/receiver_thread.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/receiver_thread.cpp.o
-.PHONY : common/receiver_thread.cpp.o
-
-common/receiver_thread.i: common/receiver_thread.cpp.i
-.PHONY : common/receiver_thread.i
-
-# target to preprocess a source file
-common/receiver_thread.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/receiver_thread.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/receiver_thread.cpp.i
-.PHONY : common/receiver_thread.cpp.i
-
-common/receiver_thread.s: common/receiver_thread.cpp.s
-.PHONY : common/receiver_thread.s
-
-# target to generate assembly for a file
-common/receiver_thread.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/receiver_thread.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/receiver_thread.cpp.s
-.PHONY : common/receiver_thread.cpp.s
-
 common/resolver.o: common/resolver.cpp.o
 .PHONY : common/resolver.o
 
@@ -402,33 +375,6 @@ common/resolvererror.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/resolvererror.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/resolvererror.cpp.s
 .PHONY : common/resolvererror.cpp.s
-
-common/sender_thread.o: common/sender_thread.cpp.o
-.PHONY : common/sender_thread.o
-
-# target to build an object file
-common/sender_thread.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/sender_thread.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/sender_thread.cpp.o
-.PHONY : common/sender_thread.cpp.o
-
-common/sender_thread.i: common/sender_thread.cpp.i
-.PHONY : common/sender_thread.i
-
-# target to preprocess a source file
-common/sender_thread.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/sender_thread.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/sender_thread.cpp.i
-.PHONY : common/sender_thread.cpp.i
-
-common/sender_thread.s: common/sender_thread.cpp.s
-.PHONY : common/sender_thread.s
-
-# target to generate assembly for a file
-common/sender_thread.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/sender_thread.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/sender_thread.cpp.s
-.PHONY : common/sender_thread.cpp.s
 
 common/socket.o: common/socket.cpp.o
 .PHONY : common/socket.o
@@ -531,6 +477,54 @@ server/main.s: server/main.cpp.s
 server/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/main.cpp.s
 .PHONY : server/main.cpp.s
+
+server/receiver_thread.o: server/receiver_thread.cpp.o
+.PHONY : server/receiver_thread.o
+
+# target to build an object file
+server/receiver_thread.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/receiver_thread.cpp.o
+.PHONY : server/receiver_thread.cpp.o
+
+server/receiver_thread.i: server/receiver_thread.cpp.i
+.PHONY : server/receiver_thread.i
+
+# target to preprocess a source file
+server/receiver_thread.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/receiver_thread.cpp.i
+.PHONY : server/receiver_thread.cpp.i
+
+server/receiver_thread.s: server/receiver_thread.cpp.s
+.PHONY : server/receiver_thread.s
+
+# target to generate assembly for a file
+server/receiver_thread.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/receiver_thread.cpp.s
+.PHONY : server/receiver_thread.cpp.s
+
+server/sender_thread.o: server/sender_thread.cpp.o
+.PHONY : server/sender_thread.o
+
+# target to build an object file
+server/sender_thread.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/sender_thread.cpp.o
+.PHONY : server/sender_thread.cpp.o
+
+server/sender_thread.i: server/sender_thread.cpp.i
+.PHONY : server/sender_thread.i
+
+# target to preprocess a source file
+server/sender_thread.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/sender_thread.cpp.i
+.PHONY : server/sender_thread.cpp.i
+
+server/sender_thread.s: server/sender_thread.cpp.s
+.PHONY : server/sender_thread.s
+
+# target to generate assembly for a file
+server/sender_thread.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/sender_thread.cpp.s
+.PHONY : server/sender_thread.cpp.s
 
 server/server.o: server/server.cpp.o
 .PHONY : server/server.o
@@ -635,18 +629,12 @@ help:
 	@echo "... common/liberror.o"
 	@echo "... common/liberror.i"
 	@echo "... common/liberror.s"
-	@echo "... common/receiver_thread.o"
-	@echo "... common/receiver_thread.i"
-	@echo "... common/receiver_thread.s"
 	@echo "... common/resolver.o"
 	@echo "... common/resolver.i"
 	@echo "... common/resolver.s"
 	@echo "... common/resolvererror.o"
 	@echo "... common/resolvererror.i"
 	@echo "... common/resolvererror.s"
-	@echo "... common/sender_thread.o"
-	@echo "... common/sender_thread.i"
-	@echo "... common/sender_thread.s"
 	@echo "... common/socket.o"
 	@echo "... common/socket.i"
 	@echo "... common/socket.s"
@@ -659,6 +647,12 @@ help:
 	@echo "... server/main.o"
 	@echo "... server/main.i"
 	@echo "... server/main.s"
+	@echo "... server/receiver_thread.o"
+	@echo "... server/receiver_thread.i"
+	@echo "... server/receiver_thread.s"
+	@echo "... server/sender_thread.o"
+	@echo "... server/sender_thread.i"
+	@echo "... server/sender_thread.s"
 	@echo "... server/server.o"
 	@echo "... server/server.i"
 	@echo "... server/server.s"
