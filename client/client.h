@@ -30,9 +30,5 @@ private:
     Socket skt;
     ClientProtocol protocolo;
     bool was_closed;
-
-    void encode(std::string data);
-    void receiveNTimes(std::string data, size_t pos);
-    void closeEverything();
 };
 #endif

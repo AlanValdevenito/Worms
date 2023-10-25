@@ -214,6 +214,33 @@ client/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/main.cpp.s
 .PHONY : client/main.cpp.s
 
+common/Dtos/dead.o: common/Dtos/dead.cpp.o
+.PHONY : common/Dtos/dead.o
+
+# target to build an object file
+common/Dtos/dead.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/dead.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/dead.cpp.o
+.PHONY : common/Dtos/dead.cpp.o
+
+common/Dtos/dead.i: common/Dtos/dead.cpp.i
+.PHONY : common/Dtos/dead.i
+
+# target to preprocess a source file
+common/Dtos/dead.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/dead.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/dead.cpp.i
+.PHONY : common/Dtos/dead.cpp.i
+
+common/Dtos/dead.s: common/Dtos/dead.cpp.s
+.PHONY : common/Dtos/dead.s
+
+# target to generate assembly for a file
+common/Dtos/dead.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/dead.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/dead.cpp.s
+.PHONY : common/Dtos/dead.cpp.s
+
 common/Dtos/dto.o: common/Dtos/dto.cpp.o
 .PHONY : common/Dtos/dto.o
 
@@ -240,6 +267,60 @@ common/Dtos/dto.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/dto.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/dto.cpp.s
 .PHONY : common/Dtos/dto.cpp.s
+
+common/Dtos/position.o: common/Dtos/position.cpp.o
+.PHONY : common/Dtos/position.o
+
+# target to build an object file
+common/Dtos/position.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/position.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/position.cpp.o
+.PHONY : common/Dtos/position.cpp.o
+
+common/Dtos/position.i: common/Dtos/position.cpp.i
+.PHONY : common/Dtos/position.i
+
+# target to preprocess a source file
+common/Dtos/position.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/position.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/position.cpp.i
+.PHONY : common/Dtos/position.cpp.i
+
+common/Dtos/position.s: common/Dtos/position.cpp.s
+.PHONY : common/Dtos/position.s
+
+# target to generate assembly for a file
+common/Dtos/position.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/position.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/position.cpp.s
+.PHONY : common/Dtos/position.cpp.s
+
+common/Dtos/viga.o: common/Dtos/viga.cpp.o
+.PHONY : common/Dtos/viga.o
+
+# target to build an object file
+common/Dtos/viga.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/viga.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/viga.cpp.o
+.PHONY : common/Dtos/viga.cpp.o
+
+common/Dtos/viga.i: common/Dtos/viga.cpp.i
+.PHONY : common/Dtos/viga.i
+
+# target to preprocess a source file
+common/Dtos/viga.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/viga.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/viga.cpp.i
+.PHONY : common/Dtos/viga.cpp.i
+
+common/Dtos/viga.s: common/Dtos/viga.cpp.s
+.PHONY : common/Dtos/viga.s
+
+# target to generate assembly for a file
+common/Dtos/viga.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/viga.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/viga.cpp.s
+.PHONY : common/Dtos/viga.cpp.s
 
 common/blockingqueue.o: common/blockingqueue.cpp.o
 .PHONY : common/blockingqueue.o
@@ -295,33 +376,6 @@ common/broadcaster.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/broadcaster.cpp.s
 .PHONY : common/broadcaster.cpp.s
 
-common/dto.o: common/dto.cpp.o
-.PHONY : common/dto.o
-
-# target to build an object file
-common/dto.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/dto.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/dto.cpp.o
-.PHONY : common/dto.cpp.o
-
-common/dto.i: common/dto.cpp.i
-.PHONY : common/dto.i
-
-# target to preprocess a source file
-common/dto.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/dto.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/dto.cpp.i
-.PHONY : common/dto.cpp.i
-
-common/dto.s: common/dto.cpp.s
-.PHONY : common/dto.s
-
-# target to generate assembly for a file
-common/dto.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/dto.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/dto.cpp.s
-.PHONY : common/dto.cpp.s
-
 common/liberror.o: common/liberror.cpp.o
 .PHONY : common/liberror.o
 
@@ -348,33 +402,6 @@ common/liberror.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/liberror.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/liberror.cpp.s
 .PHONY : common/liberror.cpp.s
-
-common/protocol.o: common/protocol.cpp.o
-.PHONY : common/protocol.o
-
-# target to build an object file
-common/protocol.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/protocol.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/protocol.cpp.o
-.PHONY : common/protocol.cpp.o
-
-common/protocol.i: common/protocol.cpp.i
-.PHONY : common/protocol.i
-
-# target to preprocess a source file
-common/protocol.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/protocol.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/protocol.cpp.i
-.PHONY : common/protocol.cpp.i
-
-common/protocol.s: common/protocol.cpp.s
-.PHONY : common/protocol.s
-
-# target to generate assembly for a file
-common/protocol.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/protocol.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/protocol.cpp.s
-.PHONY : common/protocol.cpp.s
 
 common/resolver.o: common/resolver.cpp.o
 .PHONY : common/resolver.o
@@ -671,24 +698,27 @@ help:
 	@echo "... client/main.o"
 	@echo "... client/main.i"
 	@echo "... client/main.s"
+	@echo "... common/Dtos/dead.o"
+	@echo "... common/Dtos/dead.i"
+	@echo "... common/Dtos/dead.s"
 	@echo "... common/Dtos/dto.o"
 	@echo "... common/Dtos/dto.i"
 	@echo "... common/Dtos/dto.s"
+	@echo "... common/Dtos/position.o"
+	@echo "... common/Dtos/position.i"
+	@echo "... common/Dtos/position.s"
+	@echo "... common/Dtos/viga.o"
+	@echo "... common/Dtos/viga.i"
+	@echo "... common/Dtos/viga.s"
 	@echo "... common/blockingqueue.o"
 	@echo "... common/blockingqueue.i"
 	@echo "... common/blockingqueue.s"
 	@echo "... common/broadcaster.o"
 	@echo "... common/broadcaster.i"
 	@echo "... common/broadcaster.s"
-	@echo "... common/dto.o"
-	@echo "... common/dto.i"
-	@echo "... common/dto.s"
 	@echo "... common/liberror.o"
 	@echo "... common/liberror.i"
 	@echo "... common/liberror.s"
-	@echo "... common/protocol.o"
-	@echo "... common/protocol.i"
-	@echo "... common/protocol.s"
 	@echo "... common/resolver.o"
 	@echo "... common/resolver.i"
 	@echo "... common/resolver.s"

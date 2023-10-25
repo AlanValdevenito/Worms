@@ -31,8 +31,8 @@ public:
             reap_dead();
 
             clients.push_back(th);
-            broadcaster.addQueueToList(std::ref(th->queue));
-            broadcaster.addMessageToQueues();
+            // broadcaster.addQueueToList(std::ref(th->queue));
+            // broadcaster.addMessageToQueues();
         }
         kill_all();
     }

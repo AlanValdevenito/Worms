@@ -194,5 +194,5 @@ CMakeFiles/client.dir/client/main.cpp.o: \
  /usr/include/c++/11/bits/this_thread_sleep.h \
  /home/fede/Documentos/Taller/tp-worms/client/client_protocol.h \
  /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
- /home/fede/Documentos/Taller/tp-worms/common/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/socket.h

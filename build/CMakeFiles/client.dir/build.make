@@ -69,10 +69,24 @@ include CMakeFiles/client.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/client.dir/flags.make
 
+CMakeFiles/client.dir/common/Dtos/dead.cpp.o: CMakeFiles/client.dir/flags.make
+CMakeFiles/client.dir/common/Dtos/dead.cpp.o: ../common/Dtos/dead.cpp
+CMakeFiles/client.dir/common/Dtos/dead.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/client.dir/common/Dtos/dead.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/Dtos/dead.cpp.o -MF CMakeFiles/client.dir/common/Dtos/dead.cpp.o.d -o CMakeFiles/client.dir/common/Dtos/dead.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.cpp
+
+CMakeFiles/client.dir/common/Dtos/dead.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/common/Dtos/dead.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.cpp > CMakeFiles/client.dir/common/Dtos/dead.cpp.i
+
+CMakeFiles/client.dir/common/Dtos/dead.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/common/Dtos/dead.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.cpp -o CMakeFiles/client.dir/common/Dtos/dead.cpp.s
+
 CMakeFiles/client.dir/common/Dtos/dto.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/common/Dtos/dto.cpp.o: ../common/Dtos/dto.cpp
 CMakeFiles/client.dir/common/Dtos/dto.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/client.dir/common/Dtos/dto.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/client.dir/common/Dtos/dto.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/Dtos/dto.cpp.o -MF CMakeFiles/client.dir/common/Dtos/dto.cpp.o.d -o CMakeFiles/client.dir/common/Dtos/dto.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.cpp
 
 CMakeFiles/client.dir/common/Dtos/dto.cpp.i: cmake_force
@@ -83,10 +97,38 @@ CMakeFiles/client.dir/common/Dtos/dto.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/common/Dtos/dto.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.cpp -o CMakeFiles/client.dir/common/Dtos/dto.cpp.s
 
+CMakeFiles/client.dir/common/Dtos/position.cpp.o: CMakeFiles/client.dir/flags.make
+CMakeFiles/client.dir/common/Dtos/position.cpp.o: ../common/Dtos/position.cpp
+CMakeFiles/client.dir/common/Dtos/position.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/client.dir/common/Dtos/position.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/Dtos/position.cpp.o -MF CMakeFiles/client.dir/common/Dtos/position.cpp.o.d -o CMakeFiles/client.dir/common/Dtos/position.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/Dtos/position.cpp
+
+CMakeFiles/client.dir/common/Dtos/position.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/common/Dtos/position.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/Documentos/Taller/tp-worms/common/Dtos/position.cpp > CMakeFiles/client.dir/common/Dtos/position.cpp.i
+
+CMakeFiles/client.dir/common/Dtos/position.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/common/Dtos/position.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/Dtos/position.cpp -o CMakeFiles/client.dir/common/Dtos/position.cpp.s
+
+CMakeFiles/client.dir/common/Dtos/viga.cpp.o: CMakeFiles/client.dir/flags.make
+CMakeFiles/client.dir/common/Dtos/viga.cpp.o: ../common/Dtos/viga.cpp
+CMakeFiles/client.dir/common/Dtos/viga.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/client.dir/common/Dtos/viga.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/Dtos/viga.cpp.o -MF CMakeFiles/client.dir/common/Dtos/viga.cpp.o.d -o CMakeFiles/client.dir/common/Dtos/viga.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.cpp
+
+CMakeFiles/client.dir/common/Dtos/viga.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/common/Dtos/viga.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.cpp > CMakeFiles/client.dir/common/Dtos/viga.cpp.i
+
+CMakeFiles/client.dir/common/Dtos/viga.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/common/Dtos/viga.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.cpp -o CMakeFiles/client.dir/common/Dtos/viga.cpp.s
+
 CMakeFiles/client.dir/common/blockingqueue.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/common/blockingqueue.cpp.o: ../common/blockingqueue.cpp
 CMakeFiles/client.dir/common/blockingqueue.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/client.dir/common/blockingqueue.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/client.dir/common/blockingqueue.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/blockingqueue.cpp.o -MF CMakeFiles/client.dir/common/blockingqueue.cpp.o.d -o CMakeFiles/client.dir/common/blockingqueue.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.cpp
 
 CMakeFiles/client.dir/common/blockingqueue.cpp.i: cmake_force
@@ -100,7 +142,7 @@ CMakeFiles/client.dir/common/blockingqueue.cpp.s: cmake_force
 CMakeFiles/client.dir/common/broadcaster.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/common/broadcaster.cpp.o: ../common/broadcaster.cpp
 CMakeFiles/client.dir/common/broadcaster.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/client.dir/common/broadcaster.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/client.dir/common/broadcaster.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/broadcaster.cpp.o -MF CMakeFiles/client.dir/common/broadcaster.cpp.o.d -o CMakeFiles/client.dir/common/broadcaster.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/broadcaster.cpp
 
 CMakeFiles/client.dir/common/broadcaster.cpp.i: cmake_force
@@ -111,24 +153,10 @@ CMakeFiles/client.dir/common/broadcaster.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/common/broadcaster.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/broadcaster.cpp -o CMakeFiles/client.dir/common/broadcaster.cpp.s
 
-CMakeFiles/client.dir/common/dto.cpp.o: CMakeFiles/client.dir/flags.make
-CMakeFiles/client.dir/common/dto.cpp.o: ../common/dto.cpp
-CMakeFiles/client.dir/common/dto.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/client.dir/common/dto.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/dto.cpp.o -MF CMakeFiles/client.dir/common/dto.cpp.o.d -o CMakeFiles/client.dir/common/dto.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/dto.cpp
-
-CMakeFiles/client.dir/common/dto.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/common/dto.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/Documentos/Taller/tp-worms/common/dto.cpp > CMakeFiles/client.dir/common/dto.cpp.i
-
-CMakeFiles/client.dir/common/dto.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/common/dto.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/dto.cpp -o CMakeFiles/client.dir/common/dto.cpp.s
-
 CMakeFiles/client.dir/common/liberror.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/common/liberror.cpp.o: ../common/liberror.cpp
 CMakeFiles/client.dir/common/liberror.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/client.dir/common/liberror.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/client.dir/common/liberror.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/liberror.cpp.o -MF CMakeFiles/client.dir/common/liberror.cpp.o.d -o CMakeFiles/client.dir/common/liberror.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/liberror.cpp
 
 CMakeFiles/client.dir/common/liberror.cpp.i: cmake_force
@@ -139,24 +167,10 @@ CMakeFiles/client.dir/common/liberror.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/common/liberror.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/liberror.cpp -o CMakeFiles/client.dir/common/liberror.cpp.s
 
-CMakeFiles/client.dir/common/protocol.cpp.o: CMakeFiles/client.dir/flags.make
-CMakeFiles/client.dir/common/protocol.cpp.o: ../common/protocol.cpp
-CMakeFiles/client.dir/common/protocol.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/client.dir/common/protocol.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/protocol.cpp.o -MF CMakeFiles/client.dir/common/protocol.cpp.o.d -o CMakeFiles/client.dir/common/protocol.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/protocol.cpp
-
-CMakeFiles/client.dir/common/protocol.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/common/protocol.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/Documentos/Taller/tp-worms/common/protocol.cpp > CMakeFiles/client.dir/common/protocol.cpp.i
-
-CMakeFiles/client.dir/common/protocol.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/common/protocol.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/protocol.cpp -o CMakeFiles/client.dir/common/protocol.cpp.s
-
 CMakeFiles/client.dir/common/resolver.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/common/resolver.cpp.o: ../common/resolver.cpp
 CMakeFiles/client.dir/common/resolver.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/client.dir/common/resolver.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/client.dir/common/resolver.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/resolver.cpp.o -MF CMakeFiles/client.dir/common/resolver.cpp.o.d -o CMakeFiles/client.dir/common/resolver.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/resolver.cpp
 
 CMakeFiles/client.dir/common/resolver.cpp.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/client.dir/common/resolver.cpp.s: cmake_force
 CMakeFiles/client.dir/common/resolvererror.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/common/resolvererror.cpp.o: ../common/resolvererror.cpp
 CMakeFiles/client.dir/common/resolvererror.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/client.dir/common/resolvererror.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/client.dir/common/resolvererror.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/resolvererror.cpp.o -MF CMakeFiles/client.dir/common/resolvererror.cpp.o.d -o CMakeFiles/client.dir/common/resolvererror.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/resolvererror.cpp
 
 CMakeFiles/client.dir/common/resolvererror.cpp.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/client.dir/common/resolvererror.cpp.s: cmake_force
 CMakeFiles/client.dir/common/socket.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/common/socket.cpp.o: ../common/socket.cpp
 CMakeFiles/client.dir/common/socket.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/client.dir/common/socket.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/client.dir/common/socket.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/socket.cpp.o -MF CMakeFiles/client.dir/common/socket.cpp.o.d -o CMakeFiles/client.dir/common/socket.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/socket.cpp
 
 CMakeFiles/client.dir/common/socket.cpp.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/client.dir/common/socket.cpp.s: cmake_force
 CMakeFiles/client.dir/common/wrap_socket.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp
 CMakeFiles/client.dir/common/wrap_socket.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/client.dir/common/wrap_socket.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/client.dir/common/wrap_socket.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/common/wrap_socket.cpp.o -MF CMakeFiles/client.dir/common/wrap_socket.cpp.o.d -o CMakeFiles/client.dir/common/wrap_socket.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/wrap_socket.cpp
 
 CMakeFiles/client.dir/common/wrap_socket.cpp.i: cmake_force
@@ -212,7 +226,7 @@ CMakeFiles/client.dir/common/wrap_socket.cpp.s: cmake_force
 CMakeFiles/client.dir/client/client.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/client/client.cpp.o: ../client/client.cpp
 CMakeFiles/client.dir/client/client.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/client.dir/client/client.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/client.dir/client/client.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/client/client.cpp.o -MF CMakeFiles/client.dir/client/client.cpp.o.d -o CMakeFiles/client.dir/client/client.cpp.o -c /home/fede/Documentos/Taller/tp-worms/client/client.cpp
 
 CMakeFiles/client.dir/client/client.cpp.i: cmake_force
@@ -226,7 +240,7 @@ CMakeFiles/client.dir/client/client.cpp.s: cmake_force
 CMakeFiles/client.dir/client/client_protocol.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/client/client_protocol.cpp.o: ../client/client_protocol.cpp
 CMakeFiles/client.dir/client/client_protocol.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/client.dir/client/client_protocol.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/client.dir/client/client_protocol.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/client/client_protocol.cpp.o -MF CMakeFiles/client.dir/client/client_protocol.cpp.o.d -o CMakeFiles/client.dir/client/client_protocol.cpp.o -c /home/fede/Documentos/Taller/tp-worms/client/client_protocol.cpp
 
 CMakeFiles/client.dir/client/client_protocol.cpp.i: cmake_force
@@ -240,7 +254,7 @@ CMakeFiles/client.dir/client/client_protocol.cpp.s: cmake_force
 CMakeFiles/client.dir/client/main.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/client/main.cpp.o: ../client/main.cpp
 CMakeFiles/client.dir/client/main.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/client.dir/client/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/client.dir/client/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/client/main.cpp.o -MF CMakeFiles/client.dir/client/main.cpp.o.d -o CMakeFiles/client.dir/client/main.cpp.o -c /home/fede/Documentos/Taller/tp-worms/client/main.cpp
 
 CMakeFiles/client.dir/client/main.cpp.i: cmake_force
@@ -253,12 +267,13 @@ CMakeFiles/client.dir/client/main.cpp.s: cmake_force
 
 # Object files for target client
 client_OBJECTS = \
+"CMakeFiles/client.dir/common/Dtos/dead.cpp.o" \
 "CMakeFiles/client.dir/common/Dtos/dto.cpp.o" \
+"CMakeFiles/client.dir/common/Dtos/position.cpp.o" \
+"CMakeFiles/client.dir/common/Dtos/viga.cpp.o" \
 "CMakeFiles/client.dir/common/blockingqueue.cpp.o" \
 "CMakeFiles/client.dir/common/broadcaster.cpp.o" \
-"CMakeFiles/client.dir/common/dto.cpp.o" \
 "CMakeFiles/client.dir/common/liberror.cpp.o" \
-"CMakeFiles/client.dir/common/protocol.cpp.o" \
 "CMakeFiles/client.dir/common/resolver.cpp.o" \
 "CMakeFiles/client.dir/common/resolvererror.cpp.o" \
 "CMakeFiles/client.dir/common/socket.cpp.o" \
@@ -270,12 +285,13 @@ client_OBJECTS = \
 # External object files for target client
 client_EXTERNAL_OBJECTS =
 
+client: CMakeFiles/client.dir/common/Dtos/dead.cpp.o
 client: CMakeFiles/client.dir/common/Dtos/dto.cpp.o
+client: CMakeFiles/client.dir/common/Dtos/position.cpp.o
+client: CMakeFiles/client.dir/common/Dtos/viga.cpp.o
 client: CMakeFiles/client.dir/common/blockingqueue.cpp.o
 client: CMakeFiles/client.dir/common/broadcaster.cpp.o
-client: CMakeFiles/client.dir/common/dto.cpp.o
 client: CMakeFiles/client.dir/common/liberror.cpp.o
-client: CMakeFiles/client.dir/common/protocol.cpp.o
 client: CMakeFiles/client.dir/common/resolver.cpp.o
 client: CMakeFiles/client.dir/common/resolvererror.cpp.o
 client: CMakeFiles/client.dir/common/socket.cpp.o
@@ -285,7 +301,7 @@ client: CMakeFiles/client.dir/client/client_protocol.cpp.o
 client: CMakeFiles/client.dir/client/main.cpp.o
 client: CMakeFiles/client.dir/build.make
 client: CMakeFiles/client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

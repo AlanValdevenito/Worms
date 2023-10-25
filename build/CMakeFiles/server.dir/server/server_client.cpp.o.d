@@ -188,7 +188,7 @@ CMakeFiles/server.dir/server/server_client.cpp.o: \
  /usr/include/c++/11/queue /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/fede/Documentos/Taller/tp-worms/common/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/list.tcc \
@@ -211,7 +211,6 @@ CMakeFiles/server.dir/server/server_client.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/fede/Documentos/Taller/tp-worms/common/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.h \
  /home/fede/Documentos/Taller/tp-worms/common/thread.h \

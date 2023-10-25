@@ -8,8 +8,9 @@ void Sender::run()
     {
         Dto *dto = queue.pop();
 
+        // protocol.send(was_closed, dto);
         if (dto->is_alive())
-            protocol.send(was_closed, dto);
+            std::cout << "hola\n";
         else
             was_closed = true;
 
