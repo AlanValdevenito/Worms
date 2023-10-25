@@ -41,6 +41,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic -pedantic-errors
 
 # Agrega directorios a la lista de directorios en los que el compilador buscará archivos de encabezado. 
 include_directories(common)
+include_directories(common/Dtos)
 include_directories(client)
 include_directories(server)
 
@@ -48,6 +49,9 @@ include_directories(server)
 # Se buscan archivos con extensiones .cpp y .h en los directorios common, client y server, y se almacenan en las variables correspondientes.
 file(GLOB COMMON_SOURCES common/*.cpp *.$(extension))
 file(GLOB COMMON_HEADERS common/*.h)
+
+file(GLOB DTO_SOURCES common/Dtos/*.cpp *.$(extension))
+file(GLOB DTO_HEADERS common/Dtos/*.h)
 
 file(GLOB CLIENT_SOURCES client/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS client/*.h)
@@ -57,10 +61,10 @@ file(GLOB SERVER_HEADERS server/*.h)
 
 #  Define los ejecutables que se compilarán. 
 # Se utilizan las variables que contienen las listas de archivos .cpp y .h en los directorios common, client y server para definir los objetivos.
-add_executable(client  ${COMMON_HEADERS} ${CLIENT_HEADERS} ${COMMON_SOURCES} ${CLIENT_SOURCES})
-add_executable(server ${COMMON_HEADERS} ${SERVER_HEADERS} ${COMMON_SOURCES} ${SERVER_SOURCES})
-# add_executable(server ${COMMON_HEADERS} ${SERVER_HEADERS} ${COMMON_SOURCES} ${SERVER_SOURCES})
+add_executable(client  ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES})
+add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${SERVER_SOURCES})
 
 # Enlaza las bibliotecas a los ejecutables. En este caso, se enlazan las bibliotecas definidas en LINK_LIBS.
 target_link_libraries(client ${LINK_LIBS})
 target_link_libraries(server ${LINK_LIBS})
+

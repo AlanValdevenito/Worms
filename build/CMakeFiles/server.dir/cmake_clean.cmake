@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/server.dir/common/Dtos/dto.cpp.o"
+  "CMakeFiles/server.dir/common/Dtos/dto.cpp.o.d"
   "CMakeFiles/server.dir/common/blockingqueue.cpp.o"
   "CMakeFiles/server.dir/common/blockingqueue.cpp.o.d"
   "CMakeFiles/server.dir/common/broadcaster.cpp.o"
@@ -7,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/server.dir/common/dto.cpp.o.d"
   "CMakeFiles/server.dir/common/liberror.cpp.o"
   "CMakeFiles/server.dir/common/liberror.cpp.o.d"
+  "CMakeFiles/server.dir/common/protocol.cpp.o"
+  "CMakeFiles/server.dir/common/protocol.cpp.o.d"
   "CMakeFiles/server.dir/common/resolver.cpp.o"
   "CMakeFiles/server.dir/common/resolver.cpp.o.d"
   "CMakeFiles/server.dir/common/resolvererror.cpp.o"

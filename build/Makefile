@@ -214,6 +214,33 @@ client/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/main.cpp.s
 .PHONY : client/main.cpp.s
 
+common/Dtos/dto.o: common/Dtos/dto.cpp.o
+.PHONY : common/Dtos/dto.o
+
+# target to build an object file
+common/Dtos/dto.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/dto.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/dto.cpp.o
+.PHONY : common/Dtos/dto.cpp.o
+
+common/Dtos/dto.i: common/Dtos/dto.cpp.i
+.PHONY : common/Dtos/dto.i
+
+# target to preprocess a source file
+common/Dtos/dto.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/dto.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/dto.cpp.i
+.PHONY : common/Dtos/dto.cpp.i
+
+common/Dtos/dto.s: common/Dtos/dto.cpp.s
+.PHONY : common/Dtos/dto.s
+
+# target to generate assembly for a file
+common/Dtos/dto.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/dto.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/dto.cpp.s
+.PHONY : common/Dtos/dto.cpp.s
+
 common/blockingqueue.o: common/blockingqueue.cpp.o
 .PHONY : common/blockingqueue.o
 
@@ -321,6 +348,33 @@ common/liberror.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/liberror.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/liberror.cpp.s
 .PHONY : common/liberror.cpp.s
+
+common/protocol.o: common/protocol.cpp.o
+.PHONY : common/protocol.o
+
+# target to build an object file
+common/protocol.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/protocol.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/protocol.cpp.o
+.PHONY : common/protocol.cpp.o
+
+common/protocol.i: common/protocol.cpp.i
+.PHONY : common/protocol.i
+
+# target to preprocess a source file
+common/protocol.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/protocol.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/protocol.cpp.i
+.PHONY : common/protocol.cpp.i
+
+common/protocol.s: common/protocol.cpp.s
+.PHONY : common/protocol.s
+
+# target to generate assembly for a file
+common/protocol.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/protocol.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/protocol.cpp.s
+.PHONY : common/protocol.cpp.s
 
 common/resolver.o: common/resolver.cpp.o
 .PHONY : common/resolver.o
@@ -617,6 +671,9 @@ help:
 	@echo "... client/main.o"
 	@echo "... client/main.i"
 	@echo "... client/main.s"
+	@echo "... common/Dtos/dto.o"
+	@echo "... common/Dtos/dto.i"
+	@echo "... common/Dtos/dto.s"
 	@echo "... common/blockingqueue.o"
 	@echo "... common/blockingqueue.i"
 	@echo "... common/blockingqueue.s"
@@ -629,6 +686,9 @@ help:
 	@echo "... common/liberror.o"
 	@echo "... common/liberror.i"
 	@echo "... common/liberror.s"
+	@echo "... common/protocol.o"
+	@echo "... common/protocol.i"
+	@echo "... common/protocol.s"
 	@echo "... common/resolver.o"
 	@echo "... common/resolver.i"
 	@echo "... common/resolver.s"

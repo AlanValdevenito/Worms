@@ -172,7 +172,7 @@ CMakeFiles/client.dir/common/broadcaster.cpp.o: \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/fede/Documentos/Taller/tp-worms/common/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
@@ -203,5 +203,4 @@ CMakeFiles/client.dir/common/broadcaster.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
  /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
- /home/fede/Documentos/Taller/tp-worms/common/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/socket.h
