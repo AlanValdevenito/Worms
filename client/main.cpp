@@ -37,6 +37,22 @@ int main(int argc, char *argv[])
         Client client(std::move(client_socket));
         client.start();
 
+        // std::string data;
+
+        // while (data != "exit")
+        // {
+        //     // queue.pop();
+        //     data.clear();
+
+        //     std::getline(std::cin, data);
+
+        //     if (data.empty())
+        //         break;
+        // }
+        Dto *d = new Dto();
+        client.send_queue.push(d);
+        client.join();
+
         ret = 0;
         return ret;
     }

@@ -29,6 +29,7 @@ public:
     void join();
     void kill();
     void start();
+    void addMapToQueue();
 
     BlockingQueue &common_queue;
     BlockingQueue sender_queue;

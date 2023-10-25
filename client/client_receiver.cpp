@@ -12,7 +12,7 @@ void ReceiverTH::run()
 
         if (dto->is_alive())
         {
-            std::cout << "recv: " << std::endl;
+            std::cout << "recv: " << dto->return_code() << std::endl;
             // lo recibo del lado del cliente
             // queue.push(dto);
         }

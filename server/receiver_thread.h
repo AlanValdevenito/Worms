@@ -15,7 +15,7 @@
 #include "thread.h"
 #include "server_protocol.h"
 
-struct Receiver : public Thread
+class Receiver : public Thread
 {
 private:
     ServerProtocol &protocol;

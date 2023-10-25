@@ -20,6 +20,7 @@ class ServerProtocol
 public:
     explicit ServerProtocol(Socket &skt);
     ~ServerProtocol();
+    Dto *recv(bool &was_closed);
 
 private:
     Socket &skt;

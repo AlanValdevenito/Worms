@@ -20,6 +20,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/fede/Documentos/Taller/tp-worms/common/socket.cpp" "CMakeFiles/server.dir/common/socket.cpp.o" "gcc" "CMakeFiles/server.dir/common/socket.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/wrap_socket.cpp" "CMakeFiles/server.dir/common/wrap_socket.cpp.o" "gcc" "CMakeFiles/server.dir/common/wrap_socket.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/aceptador.cpp" "CMakeFiles/server.dir/server/aceptador.cpp.o" "gcc" "CMakeFiles/server.dir/server/aceptador.cpp.o.d"
+  "/home/fede/Documentos/Taller/tp-worms/server/lobby.cpp" "CMakeFiles/server.dir/server/lobby.cpp.o" "gcc" "CMakeFiles/server.dir/server/lobby.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/main.cpp" "CMakeFiles/server.dir/server/main.cpp.o" "gcc" "CMakeFiles/server.dir/server/main.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/receiver_thread.cpp" "CMakeFiles/server.dir/server/receiver_thread.cpp.o" "gcc" "CMakeFiles/server.dir/server/receiver_thread.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/sender_thread.cpp" "CMakeFiles/server.dir/server/sender_thread.cpp.o" "gcc" "CMakeFiles/server.dir/server/sender_thread.cpp.o.d"

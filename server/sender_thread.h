@@ -14,7 +14,7 @@
 #include "thread.h"
 #include "server_protocol.h"
 
-struct Sender : public Thread
+class Sender : public Thread
 {
 private:
     ServerProtocol &protocol;

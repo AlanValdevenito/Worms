@@ -583,6 +583,30 @@ server/aceptador.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/aceptador.cpp.s
 .PHONY : server/aceptador.cpp.s
 
+server/lobby.o: server/lobby.cpp.o
+.PHONY : server/lobby.o
+
+# target to build an object file
+server/lobby.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/lobby.cpp.o
+.PHONY : server/lobby.cpp.o
+
+server/lobby.i: server/lobby.cpp.i
+.PHONY : server/lobby.i
+
+# target to preprocess a source file
+server/lobby.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/lobby.cpp.i
+.PHONY : server/lobby.cpp.i
+
+server/lobby.s: server/lobby.cpp.s
+.PHONY : server/lobby.s
+
+# target to generate assembly for a file
+server/lobby.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/lobby.cpp.s
+.PHONY : server/lobby.cpp.s
+
 server/main.o: server/main.cpp.o
 .PHONY : server/main.o
 
@@ -788,6 +812,9 @@ help:
 	@echo "... server/aceptador.o"
 	@echo "... server/aceptador.i"
 	@echo "... server/aceptador.s"
+	@echo "... server/lobby.o"
+	@echo "... server/lobby.i"
+	@echo "... server/lobby.s"
 	@echo "... server/main.o"
 	@echo "... server/main.i"
 	@echo "... server/main.s"

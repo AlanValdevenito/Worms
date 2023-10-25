@@ -19,6 +19,7 @@ class ClientProtocol
 public:
     explicit ClientProtocol(Socket &skt);
     ~ClientProtocol();
+    void send(bool &was_closed);
 
 private:
     Socket &skt;
