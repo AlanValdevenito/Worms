@@ -1,10 +1,10 @@
 #include "server_client.h"
 
-ServerClient::ServerClient(Socket &&socket, Broadcaster &b) : skt(std::move(socket)),
-                                                              broadcaster(b),
-                                                              serverproto(std::ref(skt)),
-                                                              recv_th(std::ref(serverproto), std::ref(queue), std::ref(b)),
-                                                              send_th(std::ref(serverproto), std::ref(queue)) {}
+ServerClient::ServerClient(Socket &&socket, Broadcaster &b, BlockingQueue &q) : common_queue(q), skt(std::move(socket)),
+                                                                                broadcaster(b),
+                                                                                serverproto(std::ref(skt)),
+                                                                                recv_th(std::ref(serverproto), std::ref(common_queue), std::ref(b)),
+                                                                                send_th(std::ref(serverproto), std::ref(sender_queue)) {}
 
 ServerClient::~ServerClient() {}
 

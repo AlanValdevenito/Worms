@@ -10,6 +10,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/fede/Documentos/Taller/tp-worms/client/client.cpp" "CMakeFiles/client.dir/client/client.cpp.o" "gcc" "CMakeFiles/client.dir/client/client.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/client/client_protocol.cpp" "CMakeFiles/client.dir/client/client_protocol.cpp.o" "gcc" "CMakeFiles/client.dir/client/client_protocol.cpp.o.d"
+  "/home/fede/Documentos/Taller/tp-worms/client/client_receiver.cpp" "CMakeFiles/client.dir/client/client_receiver.cpp.o" "gcc" "CMakeFiles/client.dir/client/client_receiver.cpp.o.d"
+  "/home/fede/Documentos/Taller/tp-worms/client/client_sender.cpp" "CMakeFiles/client.dir/client/client_sender.cpp.o" "gcc" "CMakeFiles/client.dir/client/client_sender.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/client/main.cpp" "CMakeFiles/client.dir/client/main.cpp.o" "gcc" "CMakeFiles/client.dir/client/main.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.cpp" "CMakeFiles/client.dir/common/Dtos/dead.cpp.o" "gcc" "CMakeFiles/client.dir/common/Dtos/dead.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.cpp" "CMakeFiles/client.dir/common/Dtos/dto.cpp.o" "gcc" "CMakeFiles/client.dir/common/Dtos/dto.cpp.o.d"

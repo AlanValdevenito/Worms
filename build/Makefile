@@ -190,6 +190,54 @@ client/client_protocol.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/client_protocol.cpp.s
 .PHONY : client/client_protocol.cpp.s
 
+client/client_receiver.o: client/client_receiver.cpp.o
+.PHONY : client/client_receiver.o
+
+# target to build an object file
+client/client_receiver.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/client_receiver.cpp.o
+.PHONY : client/client_receiver.cpp.o
+
+client/client_receiver.i: client/client_receiver.cpp.i
+.PHONY : client/client_receiver.i
+
+# target to preprocess a source file
+client/client_receiver.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/client_receiver.cpp.i
+.PHONY : client/client_receiver.cpp.i
+
+client/client_receiver.s: client/client_receiver.cpp.s
+.PHONY : client/client_receiver.s
+
+# target to generate assembly for a file
+client/client_receiver.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/client_receiver.cpp.s
+.PHONY : client/client_receiver.cpp.s
+
+client/client_sender.o: client/client_sender.cpp.o
+.PHONY : client/client_sender.o
+
+# target to build an object file
+client/client_sender.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/client_sender.cpp.o
+.PHONY : client/client_sender.cpp.o
+
+client/client_sender.i: client/client_sender.cpp.i
+.PHONY : client/client_sender.i
+
+# target to preprocess a source file
+client/client_sender.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/client_sender.cpp.i
+.PHONY : client/client_sender.cpp.i
+
+client/client_sender.s: client/client_sender.cpp.s
+.PHONY : client/client_sender.s
+
+# target to generate assembly for a file
+client/client_sender.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/client_sender.cpp.s
+.PHONY : client/client_sender.cpp.s
+
 client/main.o: client/main.cpp.o
 .PHONY : client/main.o
 
@@ -695,6 +743,12 @@ help:
 	@echo "... client/client_protocol.o"
 	@echo "... client/client_protocol.i"
 	@echo "... client/client_protocol.s"
+	@echo "... client/client_receiver.o"
+	@echo "... client/client_receiver.i"
+	@echo "... client/client_receiver.s"
+	@echo "... client/client_sender.o"
+	@echo "... client/client_sender.i"
+	@echo "... client/client_sender.s"
 	@echo "... client/main.o"
 	@echo "... client/main.i"
 	@echo "... client/main.s"

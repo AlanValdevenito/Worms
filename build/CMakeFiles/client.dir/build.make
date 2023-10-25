@@ -251,10 +251,38 @@ CMakeFiles/client.dir/client/client_protocol.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/client/client_protocol.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/client/client_protocol.cpp -o CMakeFiles/client.dir/client/client_protocol.cpp.s
 
+CMakeFiles/client.dir/client/client_receiver.cpp.o: CMakeFiles/client.dir/flags.make
+CMakeFiles/client.dir/client/client_receiver.cpp.o: ../client/client_receiver.cpp
+CMakeFiles/client.dir/client/client_receiver.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/client.dir/client/client_receiver.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/client/client_receiver.cpp.o -MF CMakeFiles/client.dir/client/client_receiver.cpp.o.d -o CMakeFiles/client.dir/client/client_receiver.cpp.o -c /home/fede/Documentos/Taller/tp-worms/client/client_receiver.cpp
+
+CMakeFiles/client.dir/client/client_receiver.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/client/client_receiver.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/Documentos/Taller/tp-worms/client/client_receiver.cpp > CMakeFiles/client.dir/client/client_receiver.cpp.i
+
+CMakeFiles/client.dir/client/client_receiver.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/client/client_receiver.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/client/client_receiver.cpp -o CMakeFiles/client.dir/client/client_receiver.cpp.s
+
+CMakeFiles/client.dir/client/client_sender.cpp.o: CMakeFiles/client.dir/flags.make
+CMakeFiles/client.dir/client/client_sender.cpp.o: ../client/client_sender.cpp
+CMakeFiles/client.dir/client/client_sender.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/client.dir/client/client_sender.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/client/client_sender.cpp.o -MF CMakeFiles/client.dir/client/client_sender.cpp.o.d -o CMakeFiles/client.dir/client/client_sender.cpp.o -c /home/fede/Documentos/Taller/tp-worms/client/client_sender.cpp
+
+CMakeFiles/client.dir/client/client_sender.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/client.dir/client/client_sender.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/Documentos/Taller/tp-worms/client/client_sender.cpp > CMakeFiles/client.dir/client/client_sender.cpp.i
+
+CMakeFiles/client.dir/client/client_sender.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/client.dir/client/client_sender.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/client/client_sender.cpp -o CMakeFiles/client.dir/client/client_sender.cpp.s
+
 CMakeFiles/client.dir/client/main.cpp.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/client/main.cpp.o: ../client/main.cpp
 CMakeFiles/client.dir/client/main.cpp.o: CMakeFiles/client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/client.dir/client/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/client.dir/client/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/client.dir/client/main.cpp.o -MF CMakeFiles/client.dir/client/main.cpp.o.d -o CMakeFiles/client.dir/client/main.cpp.o -c /home/fede/Documentos/Taller/tp-worms/client/main.cpp
 
 CMakeFiles/client.dir/client/main.cpp.i: cmake_force
@@ -280,6 +308,8 @@ client_OBJECTS = \
 "CMakeFiles/client.dir/common/wrap_socket.cpp.o" \
 "CMakeFiles/client.dir/client/client.cpp.o" \
 "CMakeFiles/client.dir/client/client_protocol.cpp.o" \
+"CMakeFiles/client.dir/client/client_receiver.cpp.o" \
+"CMakeFiles/client.dir/client/client_sender.cpp.o" \
 "CMakeFiles/client.dir/client/main.cpp.o"
 
 # External object files for target client
@@ -298,10 +328,12 @@ client: CMakeFiles/client.dir/common/socket.cpp.o
 client: CMakeFiles/client.dir/common/wrap_socket.cpp.o
 client: CMakeFiles/client.dir/client/client.cpp.o
 client: CMakeFiles/client.dir/client/client_protocol.cpp.o
+client: CMakeFiles/client.dir/client/client_receiver.cpp.o
+client: CMakeFiles/client.dir/client/client_sender.cpp.o
 client: CMakeFiles/client.dir/client/main.cpp.o
 client: CMakeFiles/client.dir/build.make
 client: CMakeFiles/client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

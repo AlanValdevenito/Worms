@@ -11,11 +11,11 @@
 #include <utility>
 #include <vector>
 
-const char CHAT[] = "Chat";
-const char READ[] = "Read";
-const char EXIT[] = "Exit";
-
 #include "client_protocol.h"
+#include "client_receiver.h"
+#include "broadcaster.h"
+#include "client_sender.h"
+#include "blockingqueue.h"
 #include "dto.h"
 #include "socket.h"
 
@@ -25,10 +25,16 @@ public:
     explicit Client(Socket &&socket);
     ~Client();
     void start();
+    void join();
+    BlockingQueue send_queue;
+    BlockingQueue recv_queue;
+    Broadcaster broadcaster;
 
 private:
     Socket skt;
     ClientProtocol protocolo;
     bool was_closed;
+    ReceiverTH recv_th;
+    SenderTH send_th;
 };
 #endif

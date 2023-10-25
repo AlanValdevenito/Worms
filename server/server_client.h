@@ -23,14 +23,15 @@
 class ServerClient
 {
 public:
-    ServerClient(Socket &&socket, Broadcaster &b);
+    ServerClient(Socket &&socket, Broadcaster &b, BlockingQueue &q);
     ~ServerClient();
     bool is_dead();
     void join();
     void kill();
     void start();
 
-    BlockingQueue queue;
+    BlockingQueue &common_queue;
+    BlockingQueue sender_queue;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_alive;
 

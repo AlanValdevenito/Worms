@@ -966,6 +966,8 @@ CMakeFiles/server.dir/common/blockingqueue.cpp.o: ../common/blockingqueue.cpp \
   /usr/include/c++/11/bits/vector.tcc \
   /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_queue.h \
+  ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
   ../common/Dtos/dto.h
 
 CMakeFiles/server.dir/common/broadcaster.cpp.o: ../common/broadcaster.cpp \
@@ -1186,6 +1188,8 @@ CMakeFiles/server.dir/common/broadcaster.cpp.o: ../common/broadcaster.cpp \
   /usr/include/c++/11/bits/vector.tcc \
   /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_queue.h \
+  ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
   ../common/Dtos/dto.h \
   ../server/server_protocol.h \
   /usr/include/c++/11/cstring \
@@ -2064,6 +2068,8 @@ CMakeFiles/server.dir/server/aceptador.cpp.o: ../server/aceptador.cpp \
   /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_queue.h \
   ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../server/server_protocol.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
@@ -2354,6 +2360,8 @@ CMakeFiles/server.dir/server/main.cpp.o: ../server/main.cpp \
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_queue.h \
   ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../server/server_protocol.h \
   ../common/blockingqueue.h \
   ../common/thread.h \
@@ -2605,6 +2613,8 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.o: ../server/receiver_thread.cp
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_queue.h \
+  ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
   ../common/Dtos/dto.h \
   ../common/broadcaster.h \
   ../common/blockingqueue.h \
@@ -2876,6 +2886,8 @@ CMakeFiles/server.dir/server/sender_thread.cpp.o: ../server/sender_thread.cpp \
   /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_queue.h \
   ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../common/socket.h \
   ../common/thread.h \
   /usr/include/c++/11/atomic \
@@ -3138,7 +3150,9 @@ CMakeFiles/server.dir/server/server.cpp.o: ../server/server.cpp \
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_queue.h \
-  ../common/dto.h \
+  ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../server/server_protocol.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
@@ -3157,7 +3171,6 @@ CMakeFiles/server.dir/server/server.cpp.o: ../server/server.cpp \
   /usr/include/c++/11/bits/stl_tempbuf.h \
   /usr/include/c++/11/bits/uniform_int_dist.h \
   ../common/blockingqueue.h \
-  ../common/dto.h \
   ../common/socket.h \
   ../common/thread.h \
   /usr/include/c++/11/atomic \
@@ -3405,7 +3418,9 @@ CMakeFiles/server.dir/server/server_client.cpp.o: ../server/server_client.cpp \
   /usr/include/c++/11/bits/stl_deque.h \
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_queue.h \
-  ../common/dto.h \
+  ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../common/broadcaster.h \
   /usr/include/c++/11/list \
   /usr/include/c++/11/bits/stl_list.h \
@@ -3431,7 +3446,6 @@ CMakeFiles/server.dir/server/server_client.cpp.o: ../server/server_client.cpp \
   /usr/include/asm-generic/sockios.h \
   /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
   /usr/include/x86_64-linux-gnu/bits/in.h \
-  ../common/dto.h \
   ../common/socket.h \
   ../server/receiver_thread.h \
   ../common/thread.h \
@@ -3688,8 +3702,9 @@ CMakeFiles/server.dir/server/server_protocol.cpp.o: ../server/server_protocol.cp
   /usr/include/c++/11/bits/stl_deque.h \
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_queue.h \
-  ../common/dto.h \
-  ../common/dto.h \
+  ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../common/socket.h
 
 
@@ -3728,8 +3743,6 @@ CMakeFiles/server.dir/server/server_protocol.cpp.o: ../server/server_protocol.cp
 /usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
 
 ../server/server_protocol.cpp:
-
-../common/dto.h:
 
 /usr/include/x86_64-linux-gnu/bits/getopt_core.h:
 

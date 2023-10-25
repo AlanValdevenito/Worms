@@ -17,6 +17,7 @@ private:
     std::list<ServerClient *> clients; // no es recurso compartido
     Socket &skt;
     Broadcaster broadcaster;
+    BlockingQueue common_queue;
 
 public:
     void run() override
@@ -25,13 +26,13 @@ public:
         {
             Socket peer = skt.accept();
 
-            ServerClient *th = new ServerClient(std::move(peer), std::ref(broadcaster));
+            ServerClient *th = new ServerClient(std::move(peer), std::ref(broadcaster), std::ref(common_queue));
             th->start();
 
             reap_dead();
 
             clients.push_back(th);
-            // broadcaster.addQueueToList(std::ref(th->queue));
+            // broadcaster.addQueueToList(std::ref(th->sender_queue));
             // broadcaster.addMessageToQueues();
         }
         kill_all();
@@ -61,7 +62,7 @@ public:
             if (c->is_dead()) {
                 c->join();
                 was_removed = true;
-                client_queue = &c->queue;  // obtengo el puntero de la queue para eliminarlo despues
+                client_queue = &c->sender_queue;  // obtengo el puntero de la queue para eliminarlo despues
                 delete c;
                 return true;
             }
