@@ -32,8 +32,7 @@ public:
             reap_dead();
 
             clients.push_back(th);
-            // broadcaster.addQueueToList(std::ref(th->sender_queue));
-            // broadcaster.addMessageToQueues();
+            // mandar mapa a la sender_queue del nuevo cliente
         }
         kill_all();
     }
@@ -55,20 +54,24 @@ public:
     void reap_dead()
     {
         bool was_removed = false;
-        BlockingQueue *client_queue;
+        std::list<BlockingQueue *> client_queues;
 
         clients.remove_if([&](ServerClient *c)
                           {
             if (c->is_dead()) {
                 c->join();
                 was_removed = true;
-                client_queue = &c->sender_queue;  // obtengo el puntero de la queue para eliminarlo despues
+                client_queues.push_back(&c->sender_queue);  // obtengo el puntero de la queue para eliminarlo despues
                 delete c;
                 return true;
             }
             return false; });
+
         if (was_removed)
-            broadcaster.removeQueueFromList(client_queue);
+        {
+            for (BlockingQueue *q : client_queues)
+                broadcaster.removeQueueFromList(q);
+        }
     }
 
     explicit Aceptador(Socket &skt) : skt(skt) {}
