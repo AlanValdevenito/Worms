@@ -6,17 +6,17 @@
  */
 void Broadcaster::addMessageToQueues()
 {
-    // std::unique_lock<std::mutex> lock(mutex);
-    // Dto *dto = new PlayersMessage(static_cast<uint8_t>(queues.size()));
-    // for (auto q : queues)
-    // {
-    //     Dto *d = new PlayersMessage(static_cast<uint8_t>(queues.size()));
-    //     q->push(d);
-    // }
+    std::unique_lock<std::mutex> lock(mutex);
+    Dto *dto = new Dto();
+    for (auto q : queues)
+    {
+        Dto *d = new Dto();
+        q->push(d);
+    }
 
     // std::cout << dto->message() << std::endl;
 
-    // delete dto;
+    delete dto;
 }
 
 /*
@@ -26,13 +26,13 @@ void Broadcaster::addMessageToQueues()
  */
 void Broadcaster::addMessageToQueues(Dto *dto)
 {
-    // std::unique_lock<std::mutex> lock(mutex);
-    // for (auto q : queues)
-    // {
-    //     Dto *d = new ChatMessage(dto->message());
-    //     q->push(d);
-    // }
-    // delete dto;
+    std::unique_lock<std::mutex> lock(mutex);
+    for (auto q : queues)
+    {
+        Dto *d = new Dto();
+        q->push(d);
+    }
+    delete dto;
 }
 
 /*
@@ -50,20 +50,20 @@ void Broadcaster::addQueueToList(BlockingQueue &q)
  */
 void Broadcaster::removeQueueFromList(BlockingQueue *q)
 {
-    // std::unique_lock<std::mutex> lock(mutex);
-    // DeadDto *dto = new DeadDto();
-    // for (auto it = queues.begin(); it != queues.end();)
-    // {
-    //     if (*it == q)
-    //     {
-    //         q->push(dto);
-    //         it = queues.erase(it);
-    //     }
-    //     else
-    //     {
-    //         ++it;
-    //     }
-    // }
+    std::unique_lock<std::mutex> lock(mutex);
+    DeadDto *dto = new DeadDto();
+    for (auto it = queues.begin(); it != queues.end();)
+    {
+        if (*it == q)
+        {
+            q->push(dto);
+            it = queues.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 /*
