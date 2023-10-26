@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "dto.h"
 
@@ -23,5 +24,18 @@ public:
     bool is_alive() override;
     uint8_t x_pos() override;
     uint8_t y_pos() override;
+};
+
+class Vigas : public Dto
+{
+private:
+    std::list<Viga *> vigas;
+
+public:
+    Vigas();
+    Vigas(std::list<Viga *> vs);
+    ~Vigas();
+    bool is_alive() override;
+    void addViga(Viga *v);
 };
 #endif

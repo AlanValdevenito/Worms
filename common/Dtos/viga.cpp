@@ -8,3 +8,14 @@ bool Viga::is_alive() { return true; }
 
 uint8_t Viga::x_pos() { return x; }
 uint8_t Viga::y_pos() { return y; }
+
+Vigas::Vigas() {}
+Vigas::Vigas(std::list<Viga *> vs) : vigas(vs) {}
+Vigas::~Vigas() {}
+
+bool Vigas::is_alive() { return true; }
+
+void Vigas::addViga(Viga *v)
+{
+    vigas.push_back(v);
+}

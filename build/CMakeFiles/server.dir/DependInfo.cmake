@@ -20,6 +20,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/fede/Documentos/Taller/tp-worms/common/socket.cpp" "CMakeFiles/server.dir/common/socket.cpp.o" "gcc" "CMakeFiles/server.dir/common/socket.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/wrap_socket.cpp" "CMakeFiles/server.dir/common/wrap_socket.cpp.o" "gcc" "CMakeFiles/server.dir/common/wrap_socket.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/aceptador.cpp" "CMakeFiles/server.dir/server/aceptador.cpp.o" "gcc" "CMakeFiles/server.dir/server/aceptador.cpp.o.d"
+  "/home/fede/Documentos/Taller/tp-worms/server/beam.cpp" "CMakeFiles/server.dir/server/beam.cpp.o" "gcc" "CMakeFiles/server.dir/server/beam.cpp.o.d"
+  "/home/fede/Documentos/Taller/tp-worms/server/game.cpp" "CMakeFiles/server.dir/server/game.cpp.o" "gcc" "CMakeFiles/server.dir/server/game.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/lobby.cpp" "CMakeFiles/server.dir/server/lobby.cpp.o" "gcc" "CMakeFiles/server.dir/server/lobby.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/main.cpp" "CMakeFiles/server.dir/server/main.cpp.o" "gcc" "CMakeFiles/server.dir/server/main.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/receiver_thread.cpp" "CMakeFiles/server.dir/server/receiver_thread.cpp.o" "gcc" "CMakeFiles/server.dir/server/receiver_thread.cpp.o.d"
@@ -27,6 +29,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/fede/Documentos/Taller/tp-worms/server/server.cpp" "CMakeFiles/server.dir/server/server.cpp.o" "gcc" "CMakeFiles/server.dir/server/server.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/server_client.cpp" "CMakeFiles/server.dir/server/server_client.cpp.o" "gcc" "CMakeFiles/server.dir/server/server_client.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/server_protocol.cpp" "CMakeFiles/server.dir/server/server_protocol.cpp.o" "gcc" "CMakeFiles/server.dir/server/server_protocol.cpp.o.d"
+  "/home/fede/Documentos/Taller/tp-worms/server/world.cpp" "CMakeFiles/server.dir/server/world.cpp.o" "gcc" "CMakeFiles/server.dir/server/world.cpp.o.d"
   )
 
 # Targets to which this target links.

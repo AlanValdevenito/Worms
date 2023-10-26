@@ -583,6 +583,54 @@ server/aceptador.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/aceptador.cpp.s
 .PHONY : server/aceptador.cpp.s
 
+server/beam.o: server/beam.cpp.o
+.PHONY : server/beam.o
+
+# target to build an object file
+server/beam.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/beam.cpp.o
+.PHONY : server/beam.cpp.o
+
+server/beam.i: server/beam.cpp.i
+.PHONY : server/beam.i
+
+# target to preprocess a source file
+server/beam.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/beam.cpp.i
+.PHONY : server/beam.cpp.i
+
+server/beam.s: server/beam.cpp.s
+.PHONY : server/beam.s
+
+# target to generate assembly for a file
+server/beam.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/beam.cpp.s
+.PHONY : server/beam.cpp.s
+
+server/game.o: server/game.cpp.o
+.PHONY : server/game.o
+
+# target to build an object file
+server/game.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/game.cpp.o
+.PHONY : server/game.cpp.o
+
+server/game.i: server/game.cpp.i
+.PHONY : server/game.i
+
+# target to preprocess a source file
+server/game.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/game.cpp.i
+.PHONY : server/game.cpp.i
+
+server/game.s: server/game.cpp.s
+.PHONY : server/game.s
+
+# target to generate assembly for a file
+server/game.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/game.cpp.s
+.PHONY : server/game.cpp.s
+
 server/lobby.o: server/lobby.cpp.o
 .PHONY : server/lobby.o
 
@@ -751,6 +799,30 @@ server/server_protocol.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/server_protocol.cpp.s
 .PHONY : server/server_protocol.cpp.s
 
+server/world.o: server/world.cpp.o
+.PHONY : server/world.o
+
+# target to build an object file
+server/world.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/world.cpp.o
+.PHONY : server/world.cpp.o
+
+server/world.i: server/world.cpp.i
+.PHONY : server/world.i
+
+# target to preprocess a source file
+server/world.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/world.cpp.i
+.PHONY : server/world.cpp.i
+
+server/world.s: server/world.cpp.s
+.PHONY : server/world.s
+
+# target to generate assembly for a file
+server/world.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/world.cpp.s
+.PHONY : server/world.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -812,6 +884,12 @@ help:
 	@echo "... server/aceptador.o"
 	@echo "... server/aceptador.i"
 	@echo "... server/aceptador.s"
+	@echo "... server/beam.o"
+	@echo "... server/beam.i"
+	@echo "... server/beam.s"
+	@echo "... server/game.o"
+	@echo "... server/game.i"
+	@echo "... server/game.s"
 	@echo "... server/lobby.o"
 	@echo "... server/lobby.i"
 	@echo "... server/lobby.s"
@@ -833,6 +911,9 @@ help:
 	@echo "... server/server_protocol.o"
 	@echo "... server/server_protocol.i"
 	@echo "... server/server_protocol.s"
+	@echo "... server/world.o"
+	@echo "... server/world.i"
+	@echo "... server/world.s"
 .PHONY : help
 
 

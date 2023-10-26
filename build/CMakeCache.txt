@@ -192,6 +192,9 @@ Worms_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Worms_SOURCE_DIR:STATIC=/home/fede/Documentos/Taller/tp-worms
 
+//The directory containing a CMake configuration file for box2d.
+box2d_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/box2d
+
 //Usar funciones de math.h
 math:BOOL=ON
 
