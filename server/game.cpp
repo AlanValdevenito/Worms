@@ -1,40 +1,46 @@
 #include "game.h"
 
+Game::Game(BlockingQueue &queue, Broadcaster &broadcaster) : common_queue(queue),
+                                                             broadcaster(broadcaster),
+                                                             world(World()),
+                                                             game_finished(false)
+{
+    world.addBeam(3, 0, 6, 0.8);
+}
 
-Game::Game(BlockingQueue& queue, Broadcaster& broadcaster) :
-    common_queue(queue),
-    broadcaster(broadcaster),
-    world(World()),
-    game_finished(false) {
-        world.addBeam(3, 0, 6, 0.8);
-    }
+void Game::run()
+{
 
-void Game::run() {
-
-    while (not game_finished) {
+    while (not game_finished)
+    {
         // dto = common_queue.try_pop();
         // execute_command(dto);
         update();
-        broadcast();
+        // broadcast();
     }
 }
 
-void Game::update() {
+void Game::update()
+{
     world.step();
 }
 
-void Game::broadcast() {
+void Game::broadcast(BlockingQueue &q)
+{
     // por cada viga manda un Dto Viga a los senders
-    for (auto& beam: world.getBeams()) {
+    for (auto &beam : world.getBeams())
+    {
         // cambiar los parametros a float
         Viga *viga = new Viga((int)beam.getXCoordinate(),
                               (int)beam.getYCoordinate(),
                               (int)beam.getWidth(),
                               (int)beam.getHeight());
-        broadcaster.addMessageToQueues(viga);
-    } 
+        q.push(viga);
+    }
+    // broadcaster.addVigaToQueues(viga);
 }
 
-void Game::stop() {
+void Game::stop()
+{
     game_finished = true;
 }

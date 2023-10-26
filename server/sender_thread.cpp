@@ -6,12 +6,10 @@ void Sender::run()
 {
     while (not was_closed)
     {
-        std::cout << "sender\n";
         Dto *dto = queue.pop();
 
-        // protocol.send(was_closed, dto);
         if (dto->is_alive())
-            std::cout << "hola\n";
+            protocol.sendViga(dto, was_closed);
         else
             was_closed = true;
 

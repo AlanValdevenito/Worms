@@ -35,6 +35,17 @@ void Broadcaster::addMessageToQueues(Dto *dto)
     delete dto;
 }
 
+void Broadcaster::addVigaToQueues(Dto *dto)
+{
+    std::unique_lock<std::mutex> lock(mutex);
+    for (auto q : queues)
+    {
+        Dto *d = new Viga(dto->x_pos(), dto->y_pos(), dto->return_ancho(), dto->return_alto());
+        q->push(d);
+    }
+    delete dto;
+}
+
 /*
  *  Agrega una cola a la lista de colas.
  */

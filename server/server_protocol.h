@@ -21,6 +21,7 @@ public:
     explicit ServerProtocol(Socket &skt);
     ~ServerProtocol();
     Dto *recv(bool &was_closed);
+    void sendViga(Dto *dto, bool &was_closed);
 
 private:
     Socket &skt;

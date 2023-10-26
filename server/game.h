@@ -14,19 +14,19 @@
 #include "dto.h"
 #include "viga.h"
 
-class Game : public Thread {
+class Game : public Thread
+{
 private:
-    BlockingQueue& common_queue;
-    Broadcaster& broadcaster;
+    BlockingQueue &common_queue;
+    Broadcaster &broadcaster;
     World world;
 
 public:
     bool game_finished;
-    Game(BlockingQueue& queue, Broadcaster& broadcaster);
+    Game(BlockingQueue &queue, Broadcaster &broadcaster);
     void update();
-    void broadcast();
     void run() override;
     void stop() override;
-
+    void broadcast(BlockingQueue &q);
 };
 #endif

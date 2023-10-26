@@ -22,6 +22,8 @@ public:
     virtual bool is_alive();
     virtual uint8_t x_pos();
     virtual uint8_t y_pos();
+    virtual uint8_t return_alto();
+    virtual uint8_t return_ancho();
     uint8_t return_code();
 };
 #endif

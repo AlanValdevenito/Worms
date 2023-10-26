@@ -194,8 +194,9 @@ CMakeFiles/client.dir/client/client_sender.cpp.o: \
  /usr/include/c++/11/bits/deque.tcc /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_queue.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \

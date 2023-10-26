@@ -17,8 +17,6 @@ class Aceptador : public Thread
 private:
     std::list<ServerClient *> clients; // no es recurso compartido
     Socket &skt;
-    Broadcaster broadcaster;
-    BlockingQueue common_queue;
     Lobby lobby;
 
 public:

@@ -8,6 +8,7 @@
 #include <string>
 
 #include "dto.h"
+#include "viga.h"
 #include "dead.h"
 
 class BlockingQueue

@@ -19,6 +19,7 @@ private:
 public:
     void addMessageToQueues();
     void addMessageToQueues(Dto *dto);
+    void addVigaToQueues(Dto *dto);
     void addQueueToList(BlockingQueue &q);
     void removeQueueFromList(BlockingQueue *q);
     void deleteAllQueues();

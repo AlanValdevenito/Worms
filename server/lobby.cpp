@@ -1,6 +1,7 @@
 #include "lobby.h"
 
-Lobby::Lobby() : game(common_queue, broadcaster) {
+Lobby::Lobby() : game(common_queue, broadcaster)
+{
     game.start();
 }
 
@@ -15,10 +16,13 @@ void Lobby::newClient(Socket &&s)
 
     clients.push_back(c);
 
+    broadcaster.addQueueToList(c->sender_queue); // agrego la cola send al broadcaster
+
     // aca se deberia pedir la partida
 
     // mandar_mapa
-    c->addMapToQueue();
+    // c->addMapToQueue();
+    game.broadcast(c->sender_queue); // le mando el mapa a la cola sender
 }
 
 void Lobby::reap_dead()

@@ -209,8 +209,9 @@ CMakeFiles/server.dir/server/main.cpp.o: \
  /usr/include/c++/11/deque /usr/include/c++/11/bits/stl_deque.h \
  /usr/include/c++/11/bits/deque.tcc /usr/include/c++/11/bits/stl_queue.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
  /home/fede/Documentos/Taller/tp-worms/common/thread.h \
@@ -278,5 +279,4 @@ CMakeFiles/server.dir/server/main.cpp.o: \
  /usr/include/box2d/b2_revolute_joint.h \
  /usr/include/box2d/b2_weld_joint.h /usr/include/box2d/b2_wheel_joint.h \
  /home/fede/Documentos/Taller/tp-worms/server/world.h \
- /home/fede/Documentos/Taller/tp-worms/server/beam.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h
+ /home/fede/Documentos/Taller/tp-worms/server/beam.h
