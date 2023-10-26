@@ -45,6 +45,11 @@ include_directories(common/Dtos)
 include_directories(client)
 include_directories(server)
 
+
+# Busca la data necesaria para incluir box2d
+find_package(box2d REQUIRED)
+
+
 # Se utilizan para buscar archivos y almacenarlos en variables. 
 # Se buscan archivos con extensiones .cpp y .h en los directorios common, client y server, y se almacenan en las variables correspondientes.
 file(GLOB COMMON_SOURCES common/*.cpp *.$(extension))
@@ -66,5 +71,5 @@ add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${DTO_S
 
 # Enlaza las bibliotecas a los ejecutables. En este caso, se enlazan las bibliotecas definidas en LINK_LIBS.
 target_link_libraries(client ${LINK_LIBS})
-target_link_libraries(server ${LINK_LIBS})
+target_link_libraries(server ${LINK_LIBS} box2d)
 
