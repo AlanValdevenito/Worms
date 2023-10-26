@@ -252,10 +252,10 @@ void Vista::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL
 void Vista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua) {
 	//int vcenter = renderer.GetOutputHeight() / 2;
 
-	/*renderer.Copy(background, NullOpt, NullOpt);
+	renderer.Copy(background, NullOpt, NullOpt);
 	renderer.Copy(agua, NullOpt, NullOpt);
 
-	Dto *vigas;
+	/*Dto *vigas;
 	Queue<Dto *> queue = cliente.recv_queue;
 
 	while (queue.try_pop(vigas)) {
