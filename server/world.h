@@ -12,16 +12,21 @@
 class World {
 private:
     b2World world;
-
-public:
     std::list<Beam> beams;
-    // crea un mundo con gravedad <gravity>
-    World(b2Vec2 gravity);
+public:
+    
+    // crea un mundo
+    World();
 
     // agrega una viga centrada en el punto (x, y) de ancho <width> y alto <height>
     void addBeam(float x, float y, float width, float height);
     
+    std::list<Beam> getBeams();
+
     b2Body* createStaticBody(float x, float y, float width, float height);
+
+    // avanza el mundo una fraccion de segundo
+    void step();
 
     ~World();
 };
