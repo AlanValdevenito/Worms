@@ -54,4 +54,5 @@ void Lobby::kill()
     }
     broadcaster.deleteAllQueues();
     clients.clear();
+    game.game_finished = true;
 }
