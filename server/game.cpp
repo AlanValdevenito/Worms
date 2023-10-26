@@ -2,10 +2,10 @@
 
 
 Game::Game(BlockingQueue& queue, Broadcaster& broadcaster) :
-    game_finished(false),
     common_queue(queue),
     broadcaster(broadcaster),
-    world(World()) {
+    world(World()),
+    game_finished(false) {
         world.addBeam(3, 0, 6, 0.8);
     }
 
