@@ -31,10 +31,10 @@ void Game::broadcast(BlockingQueue &q)
     for (auto &beam : world.getBeams())
     {
         // cambiar los parametros a float
-        Viga *viga = new Viga((int)beam.getXCoordinate(),
-                              (int)beam.getYCoordinate(),
-                              (int)beam.getWidth(),
-                              (int)beam.getHeight());
+        Viga *viga = new Viga((int)(beam.getXCoordinate() * 100),
+                              (int)(beam.getYCoordinate() * 100),
+                              (int)(beam.getWidth() * 100),
+                              (int)(beam.getHeight() * 100));
         q.push(viga);
     }
     // broadcaster.addVigaToQueues(viga);

@@ -12,6 +12,7 @@
 #include <netinet/in.h>
 
 #include "dto.h"
+#include "viga.h"
 #include "socket.h"
 
 class ClientProtocol
@@ -20,8 +21,11 @@ public:
     explicit ClientProtocol(Socket &skt);
     ~ClientProtocol();
     void send(bool &was_closed);
+    // Dto* receive(bool &was_closed);
+    Dto *receiveViga(bool &was_closed);
 
 private:
     Socket &skt;
+    // Dto *receiveViga(bool &was_closed);
 };
 #endif

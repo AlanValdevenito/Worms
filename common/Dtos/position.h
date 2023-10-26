@@ -19,7 +19,7 @@ public:
     Position(uint8_t x, uint8_t y);
     ~Position();
     bool is_alive() override;
-    uint8_t x_pos() override;
-    uint8_t y_pos() override;
+    // uint8_t x_pos() override;
+    // uint8_t y_pos() override;
 };
 #endif

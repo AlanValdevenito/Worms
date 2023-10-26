@@ -13,17 +13,19 @@ const uint8_t VIGA_CODE = 6; // CAMBIAR
 class Viga : public Dto
 {
 private:
-    uint8_t x;
-    uint8_t y;
-    uint8_t ancho;
-    uint8_t alto;
+    uint16_t x;
+    uint16_t y;
+    uint16_t ancho;
+    uint16_t alto;
 
 public:
-    Viga(uint8_t x, uint8_t y, uint8_t ancho, uint8_t alto);
+    Viga(uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto);
     ~Viga();
     bool is_alive() override;
-    uint8_t x_pos() override;
-    uint8_t y_pos() override;
+    uint16_t x_pos() override;
+    uint16_t y_pos() override;
+    uint16_t return_ancho() override;
+    uint16_t return_alto() override;
 };
 
 class Vigas : public Dto

@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
         // }
         Dto *d = new Dto();
         client.send_queue.push(d);
+        // client.recv_queue
         client.join();
 
         ret = 0;
