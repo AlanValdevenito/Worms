@@ -2,11 +2,11 @@
 
 ServerClient::ServerClient(Socket &&socket,
                            Broadcaster &b,
-                           BlockingQueue &q) : common_queue(q), skt(std::move(socket)),
-                                               broadcaster(b),
-                                               serverproto(std::ref(skt)),
-                                               recv_th(std::ref(serverproto), std::ref(common_queue), std::ref(b)),
-                                               send_th(std::ref(serverproto), std::ref(sender_queue)) {}
+                           Queue<Dto *> &q) : common_queue(q), skt(std::move(socket)),
+                                              broadcaster(b),
+                                              serverproto(std::ref(skt)),
+                                              recv_th(std::ref(serverproto), std::ref(common_queue), std::ref(b)),
+                                              send_th(std::ref(serverproto), std::ref(sender_queue)) {}
 
 ServerClient::~ServerClient() {}
 
@@ -23,7 +23,10 @@ void ServerClient::start()
     send_th.start();
 }
 
-bool ServerClient::is_dead() { return not is_alive; }
+bool ServerClient::is_dead()
+{
+    return not is_alive;
+}
 
 void ServerClient::kill()
 {

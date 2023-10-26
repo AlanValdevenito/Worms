@@ -1,6 +1,6 @@
 #include "sender_thread.h"
 
-Sender::Sender(ServerProtocol &p, BlockingQueue &q) : protocol(p), queue(q), was_closed(false) {}
+Sender::Sender(ServerProtocol &p, Queue<Dto *> &q) : protocol(p), queue(q), was_closed(false) {}
 
 void Sender::run()
 {

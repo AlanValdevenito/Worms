@@ -28,7 +28,7 @@ void Lobby::newClient(Socket &&s)
 void Lobby::reap_dead()
 {
     bool was_removed = false;
-    std::list<BlockingQueue *> client_queues;
+    std::list<Queue<Dto *> *> client_queues;
 
     clients.remove_if([&](ServerClient *c)
                       {
@@ -43,7 +43,7 @@ void Lobby::reap_dead()
 
     if (was_removed)
     {
-        for (BlockingQueue *q : client_queues)
+        for (Queue<Dto *> *q : client_queues)
             broadcaster.removeQueueFromList(q);
     }
 }

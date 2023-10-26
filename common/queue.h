@@ -7,8 +7,9 @@
 #include <mutex>
 #include <queue>
 
-struct ClosedQueue: public std::runtime_error {
-    ClosedQueue(): std::runtime_error("The queue is closed") {}
+struct ClosedQueue : public std::runtime_error
+{
+    ClosedQueue() : std::runtime_error("The queue is closed") {}
 };
 
 /*
@@ -23,8 +24,9 @@ struct ClosedQueue: public std::runtime_error {
  * On a closed queue, any method will raise ClosedQueue.
  *
  * */
-template <typename T, class C = std::deque<T> >
-class Queue {
+template <typename T, class C = std::deque<T>>
+class Queue
+{
 private:
     std::queue<T, C> q;
     const unsigned int max_size;
@@ -36,22 +38,25 @@ private:
     std::condition_variable is_not_empty;
 
 public:
-    Queue(): max_size(UINT_MAX - 1), closed(false) {}
-    explicit Queue(const unsigned int max_size): max_size(max_size), closed(false) {}
+    Queue() : max_size(UINT_MAX - 1), closed(false) {}
+    explicit Queue(const unsigned int max_size) : max_size(max_size), closed(false) {}
 
-
-    bool try_push(T const& val) {
+    bool try_push(T const &val)
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        if (closed) {
+        if (closed)
+        {
             throw ClosedQueue();
         }
 
-        if (q.size() == this->max_size) {
+        if (q.size() == this->max_size)
+        {
             return false;
         }
 
-        if (q.empty()) {
+        if (q.empty())
+        {
             is_not_empty.notify_all();
         }
 
@@ -59,17 +64,21 @@ public:
         return true;
     }
 
-    bool try_pop(T& val) {
+    bool try_pop(T &val)
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        if (q.empty()) {
-            if (closed) {
+        if (q.empty())
+        {
+            if (closed)
+            {
                 throw ClosedQueue();
             }
             return false;
         }
 
-        if (q.size() == this->max_size) {
+        if (q.size() == this->max_size)
+        {
             is_not_full.notify_all();
         }
 
@@ -78,36 +87,43 @@ public:
         return true;
     }
 
-    void push(T const& val) {
+    void push(T const &val)
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        if (closed) {
+        if (closed)
+        {
             throw ClosedQueue();
         }
 
-        while (q.size() == this->max_size) {
+        while (q.size() == this->max_size)
+        {
             is_not_full.wait(lck);
         }
 
-        if (q.empty()) {
+        if (q.empty())
+        {
             is_not_empty.notify_all();
         }
 
         q.push(val);
     }
 
-
-    T pop() {
+    T pop()
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        while (q.empty()) {
-            if (closed) {
+        while (q.empty())
+        {
+            if (closed)
+            {
                 throw ClosedQueue();
             }
             is_not_empty.wait(lck);
         }
 
-        if (q.size() == this->max_size) {
+        if (q.size() == this->max_size)
+        {
             is_not_full.notify_all();
         }
 
@@ -117,32 +133,37 @@ public:
         return val;
     }
 
-    void close(bool drain = false) {
+    void close(bool drain = false)
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        if (closed) {
+        if (closed)
+        {
             throw std::runtime_error("The queue is already closed.");
         }
 
         closed = true;
         is_not_empty.notify_all();
 
-        if (drain) {
-            while (!q.empty()) {
+        if (drain)
+        {
+            while (!q.empty())
+            {
                 q.pop();
             }
         }
     }
 
 private:
-    Queue(const Queue&) = delete;
-    Queue& operator=(const Queue&) = delete;
+    Queue(const Queue &) = delete;
+    Queue &operator=(const Queue &) = delete;
 };
 
 template <>
-class Queue<void*> {
+class Queue<void *>
+{
 private:
-    std::queue<void*> q;
+    std::queue<void *> q;
     const unsigned int max_size;
 
     bool closed;
@@ -152,21 +173,24 @@ private:
     std::condition_variable is_not_empty;
 
 public:
-    explicit Queue(const unsigned int max_size): max_size(max_size), closed(false) {}
+    explicit Queue(const unsigned int max_size) : max_size(max_size), closed(false) {}
 
-
-    bool try_push(void* const& val) {
+    bool try_push(void *const &val)
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        if (closed) {
+        if (closed)
+        {
             throw ClosedQueue();
         }
 
-        if (q.size() == this->max_size) {
+        if (q.size() == this->max_size)
+        {
             return false;
         }
 
-        if (q.empty()) {
+        if (q.empty())
+        {
             is_not_empty.notify_all();
         }
 
@@ -174,17 +198,21 @@ public:
         return true;
     }
 
-    bool try_pop(void*& val) {
+    bool try_pop(void *&val)
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        if (q.empty()) {
-            if (closed) {
+        if (q.empty())
+        {
+            if (closed)
+            {
                 throw ClosedQueue();
             }
             return false;
         }
 
-        if (q.size() == this->max_size) {
+        if (q.size() == this->max_size)
+        {
             is_not_full.notify_all();
         }
 
@@ -193,49 +221,58 @@ public:
         return true;
     }
 
-    void push(void* const& val) {
+    void push(void *const &val)
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        if (closed) {
+        if (closed)
+        {
             throw ClosedQueue();
         }
 
-        while (q.size() == this->max_size) {
+        while (q.size() == this->max_size)
+        {
             is_not_full.wait(lck);
         }
 
-        if (q.empty()) {
+        if (q.empty())
+        {
             is_not_empty.notify_all();
         }
 
         q.push(val);
     }
 
-
-    void* pop() {
+    void *pop()
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        while (q.empty()) {
-            if (closed) {
+        while (q.empty())
+        {
+            if (closed)
+            {
                 throw ClosedQueue();
             }
             is_not_empty.wait(lck);
         }
 
-        if (q.size() == this->max_size) {
+        if (q.size() == this->max_size)
+        {
             is_not_full.notify_all();
         }
 
-        void* const val = q.front();
+        void *const val = q.front();
         q.pop();
 
         return val;
     }
 
-    void close() {
+    void close()
+    {
         std::unique_lock<std::mutex> lck(mtx);
 
-        if (closed) {
+        if (closed)
+        {
             throw std::runtime_error("The queue is already closed.");
         }
 
@@ -244,31 +281,28 @@ public:
     }
 
 private:
-    Queue(const Queue&) = delete;
-    Queue& operator=(const Queue&) = delete;
+    Queue(const Queue &) = delete;
+    Queue &operator=(const Queue &) = delete;
 };
 
+// template <typename T>
+// class Queue<T*>: private Queue<void*> {
+// public:
+//     explicit Queue(const unsigned int max_size): Queue<void*>(max_size) {}
 
-template <typename T>
-class Queue<T*>: private Queue<void*> {
-public:
-    explicit Queue(const unsigned int max_size): Queue<void*>(max_size) {}
+//     bool try_push(T* const& val) { return Queue<void*>::try_push(val); }
 
+//     bool try_pop(T*& val) { return Queue<void*>::try_pop((void*&)val); }
 
-    bool try_push(T* const& val) { return Queue<void*>::try_push(val); }
+//     void push(T* const& val) { return Queue<void*>::push(val); }
 
-    bool try_pop(T*& val) { return Queue<void*>::try_pop((void*&)val); }
+//     T* pop() { return (T*)Queue<void*>::pop(); }
 
-    void push(T* const& val) { return Queue<void*>::push(val); }
+//     void close() { return Queue<void*>::close(); }
 
-
-    T* pop() { return (T*)Queue<void*>::pop(); }
-
-    void close() { return Queue<void*>::close(); }
-
-private:
-    Queue(const Queue&) = delete;
-    Queue& operator=(const Queue&) = delete;
-};
+// private:
+//     Queue(const Queue&) = delete;
+//     Queue& operator=(const Queue&) = delete;
+// };
 
 #endif

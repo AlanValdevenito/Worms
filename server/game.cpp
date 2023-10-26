@@ -1,9 +1,9 @@
 #include "game.h"
 
-Game::Game(BlockingQueue &queue, Broadcaster &broadcaster) : common_queue(queue),
-                                                             broadcaster(broadcaster),
-                                                             world(World()),
-                                                             game_finished(false)
+Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
+                                                            broadcaster(broadcaster),
+                                                            world(World()),
+                                                            game_finished(false)
 {
     world.addBeam(0, 9, 6, 0.8);
 }
@@ -25,7 +25,7 @@ void Game::update()
     world.step();
 }
 
-void Game::broadcast(BlockingQueue &q)
+void Game::broadcast(Queue<Dto *> &q)
 {
     // por cada viga manda un Dto Viga a los senders
     for (auto &beam : world.getBeams())

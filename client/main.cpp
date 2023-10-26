@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
 
         client.start();
 
-
         // std::string data;
 
         // while (data != "exit")
@@ -54,8 +53,8 @@ int main(int argc, char *argv[])
         //     if (data.empty())
         //         break;
         // }
-        //Dto *d = new Dto();
-        //client.send_queue.push(d);
+        // Dto *d = new Dto();
+        // client.send_queue.push(d);
         // client.recv_queue
 
         vista.iniciar();

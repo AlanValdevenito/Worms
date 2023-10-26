@@ -1,6 +1,6 @@
 #include "client_receiver.h"
 
-ReceiverTH::ReceiverTH(ClientProtocol &p, BlockingQueue &q) : protocol(p), queue(q), was_closed(false) {}
+ReceiverTH::ReceiverTH(ClientProtocol &p, Queue<Dto *> &q) : protocol(p), queue(q), was_closed(false) {}
 
 void ReceiverTH::run()
 {

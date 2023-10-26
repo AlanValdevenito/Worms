@@ -12,18 +12,19 @@
 #include "blockingqueue.h"
 #include "socket.h"
 #include "thread.h"
+#include "queue.h"
 #include "server_protocol.h"
 
 class Sender : public Thread
 {
 private:
     ServerProtocol &protocol;
-    BlockingQueue &queue;
+    Queue<Dto *> &queue;
 
 public:
     bool was_closed;
 
-    Sender(ServerProtocol &p, BlockingQueue &q);
+    Sender(ServerProtocol &p, Queue<Dto *> &q);
     void run() override;
 };
 

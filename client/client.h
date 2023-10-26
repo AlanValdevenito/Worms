@@ -27,8 +27,6 @@ public:
     ~Client();
     void start();
     void join();
-    //BlockingQueue send_queue;
-    //BlockingQueue recv_queue;
     Queue<Dto *> send_queue;
     Queue<Dto *> recv_queue;
     Broadcaster broadcaster;

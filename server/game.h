@@ -9,7 +9,7 @@
 #include "world.h"
 #include "server_protocol.h"
 #include "thread.h"
-#include "blockingqueue.h"
+#include "queue.h"
 #include "broadcaster.h"
 #include "dto.h"
 #include "viga.h"
@@ -17,16 +17,16 @@
 class Game : public Thread
 {
 private:
-    BlockingQueue &common_queue;
+    Queue<Dto *> &common_queue;
     Broadcaster &broadcaster;
     World world;
 
 public:
     bool game_finished;
-    Game(BlockingQueue &queue, Broadcaster &broadcaster);
+    Game(Queue<Dto *> &queue, Broadcaster &broadcaster);
     void update();
     void run() override;
     void stop() override;
-    void broadcast(BlockingQueue &q);
+    void broadcast(Queue<Dto *> &q);
 };
 #endif

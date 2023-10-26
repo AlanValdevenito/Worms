@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-#include "blockingqueue.h"
+#include "queue.h"
 #include "broadcaster.h"
 #include "receiver_thread.h"
 #include "sender_thread.h"
@@ -35,7 +35,7 @@ public:
 
 private:
     Broadcaster broadcaster;
-    BlockingQueue common_queue;
+    Queue<Dto *> common_queue;
     Game game;
 };
 #endif

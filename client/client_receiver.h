@@ -12,6 +12,7 @@
 #include "broadcaster.h"
 #include "dto.h"
 #include "socket.h"
+#include "queue.h"
 #include "thread.h"
 #include "client_protocol.h"
 
@@ -19,12 +20,12 @@ struct ReceiverTH : public Thread
 {
 private:
     ClientProtocol &protocol;
-    BlockingQueue &queue;
+    Queue<Dto *> &queue;
 
 public:
     bool was_closed;
 
-    ReceiverTH(ClientProtocol &p, BlockingQueue &q);
+    ReceiverTH(ClientProtocol &p, Queue<Dto *> &q);
     void run() override;
 };
 #endif

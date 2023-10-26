@@ -1,6 +1,6 @@
 #include "client_sender.h"
 
-SenderTH::SenderTH(ClientProtocol &p, BlockingQueue &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}
+SenderTH::SenderTH(ClientProtocol &p, Queue<Dto *> &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}
 
 void SenderTH::run()
 {

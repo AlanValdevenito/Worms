@@ -22,4 +22,4 @@ void Receiver::run()
     // broadcaster.addMessageToQueues();
 }
 
-Receiver::Receiver(ServerProtocol &p, BlockingQueue &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}
+Receiver::Receiver(ServerProtocol &p, Queue<Dto *> &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}

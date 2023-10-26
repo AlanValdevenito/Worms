@@ -14,18 +14,19 @@
 #include "socket.h"
 #include "thread.h"
 #include "server_protocol.h"
+#include "queue.h"
 
 class Receiver : public Thread
 {
 private:
     ServerProtocol &protocol;
-    BlockingQueue &queue;
+    Queue<Dto *> &queue;
     Broadcaster &broadcaster;
 
 public:
     bool was_closed;
 
-    Receiver(ServerProtocol &p, BlockingQueue &q, Broadcaster &b);
+    Receiver(ServerProtocol &p, Queue<Dto *> &q, Broadcaster &b);
     void run() override;
 };
 #endif
