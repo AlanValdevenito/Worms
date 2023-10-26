@@ -1,6 +1,8 @@
 #include "lobby.h"
 
-Lobby::Lobby() {}
+Lobby::Lobby() : game(common_queue, broadcaster) {
+    game.start();
+}
 
 Lobby::~Lobby() {}
 

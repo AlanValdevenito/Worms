@@ -20,6 +20,7 @@
 #include "thread.h"
 #include "server_protocol.h"
 #include "server_client.h"
+#include "game.h"
 
 class Lobby
 {
@@ -35,5 +36,6 @@ public:
 private:
     Broadcaster broadcaster;
     BlockingQueue common_queue;
+    Game game;
 };
 #endif
