@@ -55,7 +55,7 @@ find_package(box2d REQUIRED)
 
 # Agregamos una definicion de preprocesador al proyecto. DEfinimos la macro llamada "DATA_PATH" que apunta
 # al directorio "data" en el directorio fuente del proyecto.
-add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/data")
+add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/client/vista/data")
 # Incluimos los directorios de encabezado necesarios.
 # EN este caso, incluimos los directorios de encabezado de SDL2pp, que se definen en "SDL2PP_INCLUDE_DIRS"
 include_directories(${SDL2PP_INCLUDE_DIRS})
@@ -70,8 +70,8 @@ file(GLOB DTO_HEADERS common/Dtos/*.h)
 
 file(GLOB CLIENT_SOURCES client/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS client/*.h)
-file(GLOB CLIENT_SOURCES_VISTA client/vista*.cpp *.$(extension))
-file(GLOB CLIENT_HEADERS_VISTA client/vista*.h)
+file(GLOB CLIENT_SOURCES_VISTA client/vista/*.cpp *.$(extension))
+file(GLOB CLIENT_HEADERS_VISTA client/vista/*.h)
 
 file(GLOB SERVER_SOURCES server/*.cpp *.$(extension))
 file(GLOB SERVER_HEADERS server/*.h)

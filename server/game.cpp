@@ -5,7 +5,7 @@ Game::Game(BlockingQueue &queue, Broadcaster &broadcaster) : common_queue(queue)
                                                              world(World()),
                                                              game_finished(false)
 {
-    world.addBeam(3, 0, 6, 0.8);
+    world.addBeam(0, 9, 6, 0.8);
 }
 
 void Game::run()

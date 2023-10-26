@@ -250,12 +250,31 @@ void Vista::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL
 }
 
 void Vista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua) {
-	int vcenter = renderer.GetOutputHeight() / 2;
+	//int vcenter = renderer.GetOutputHeight() / 2;
 
 	renderer.Copy(background, NullOpt, NullOpt);
 	renderer.Copy(agua, NullOpt, NullOpt);
 
-	std::vector<Viga> listado_vigas = this->cliente.get_vigas();
+	Dto *vigaa;
+	cliente.recv_queue.try_pop(vigaa);
+
+	float x = vigaa->x_pos() / 100;
+	float y = vigaa->y_pos() / 100;
+	float ancho = vigaa->return_ancho();
+	float alto = vigaa->return_alto();
+
+	std::cout << x << std::endl;
+	std::cout << y << std::endl;
+	std::cout << ancho / 100 << std::endl;
+	std::cout << alto / 100 << std::endl;
+
+	renderer.Copy(
+		viga,
+		Rect(0, 0, 50, 50),
+		Rect(convertidor(x), convertidor(y), convertidor(ancho / 100), convertidor(alto / 100))
+	);
+
+	/*std::vector<Viga> listado_vigas = this->cliente.get_vigas();
 
 	for (int i = 0; i < listado_vigas.size(); i++) {
 		renderer.Copy(
@@ -263,7 +282,7 @@ void Vista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, S
 				Rect(0, 0, 50, 50),
 				Rect(convertidor(listado_vigas[i].x), convertidor(listado_vigas[i].y), convertidor(listado_vigas[i].ancho), convertidor(listado_vigas[i].alto))
 			);
-	}
+	}*/
 }
 
 void Vista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante) {

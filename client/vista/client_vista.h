@@ -8,11 +8,14 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "client_worm.h"
+#include "client.h"
+#include "viga.h"
+#include "dto.h"
 
 using namespace SDL2pp;
 
 struct Animacion {
-    Gusano gusano;
+    //Gusano gusano;
 	bool gusano_moviendose;
     bool gusano_moviendose_izquierda;
 	int run_phase;
