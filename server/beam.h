@@ -10,9 +10,17 @@
 class Beam {
 private:
     b2Body *body;
+    float x;
+    float y;
+    float width;
+    float height;
 
 public:
-    Beam(b2Body *body);
+    Beam(b2Body *body, float x, float y, float width, float height);
+    float getXCoordinate();
+    float getYCoordinate();
+    float getWidth();
+    float getHeight();
     ~Beam();
 };
 #endif
