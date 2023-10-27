@@ -19,6 +19,7 @@
 #include "socket.h"
 #include "thread.h"
 #include "server_protocol.h"
+#include "dto.h"
 
 class ServerClient
 {

@@ -21,6 +21,7 @@
 #include "server_protocol.h"
 #include "server_client.h"
 #include "game.h"
+#include "dto.h"
 
 class Lobby
 {

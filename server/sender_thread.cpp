@@ -16,3 +16,11 @@ void Sender::run()
         delete dto;
     }
 }
+
+void Sender::send(Dto *d)
+{
+    if (d->return_code() == VIGA)
+        protocol.sendViga(d, was_closed);
+    else
+        std::cerr << "Codigo de envio desconocido\n";
+}

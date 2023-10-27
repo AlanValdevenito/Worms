@@ -10,6 +10,7 @@
 
 #include "aceptador.cpp"
 #include "socket.h"
+#include "dto.h"
 #include "server_client.h"
 
 class Server

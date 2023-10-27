@@ -9,17 +9,20 @@
 
 #include <netinet/in.h>
 
-#include "blockingqueue.h"
 #include "socket.h"
 #include "thread.h"
 #include "queue.h"
+#include "dto.h"
 #include "server_protocol.h"
+
+const uint8_t VIGA = 6;
 
 class Sender : public Thread
 {
 private:
     ServerProtocol &protocol;
     Queue<Dto *> &queue;
+    void send(Dto *d);
 
 public:
     bool was_closed;

@@ -1,6 +1,7 @@
 #include "viga.h"
 
-Viga::Viga(uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto) : Dto(VIGA_CODE), x(x), y(y), ancho(ancho), alto(alto) {}
+// Viga::Viga(uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto) : Dto(VIGA_CODE), x(x), y(y), ancho(ancho), alto(alto) {}
+Viga::Viga(uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto) : x(x), y(y), ancho(ancho), alto(alto) {}
 
 Viga::~Viga() {}
 
@@ -11,8 +12,8 @@ uint16_t Viga::y_pos() { return y; }
 uint16_t Viga::return_ancho() { return ancho; }
 uint16_t Viga::return_alto() { return alto; }
 
-Vigas::Vigas() {}
-Vigas::Vigas(std::list<Viga *> vs) : vigas(vs) {}
+Vigas::Vigas() : Dto(VIGA_CODE) {}
+Vigas::Vigas(std::list<Viga *> vs) : Dto(VIGA_CODE), vigas(vs) {}
 Vigas::~Vigas() {}
 
 bool Vigas::is_alive() { return true; }

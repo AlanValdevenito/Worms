@@ -15,6 +15,7 @@
 #include "thread.h"
 #include "server_protocol.h"
 #include "queue.h"
+#include "dto.h"
 
 class Receiver : public Thread
 {
