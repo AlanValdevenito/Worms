@@ -1,43 +1,28 @@
 #include "beam.h"
 
+Beam::Beam(b2Body *body, float x, float y, float angle, BeamType type)
+    : body(body), x(x), y(y), angle(angle), type(type) {
+  if (type == SHORT) {
+    width = SHORT_BEAM_WIDTH;
+  } else if (type == LONG) {
+    width = LONG_BEAM_WIDTH;
+  } else {
+    throw std::runtime_error("Invalid BeamType");
+  }
+  height = BEAM_HEIGHT;
 
-Beam::Beam(b2Body *body, float x, float y, float angle, BeamType type) :
-    body(body),
-    x(x),
-    y(y),
-    type(type) {
-        if (type == SHORT) {
-            width = 3;
-        } else if (type == LONG) {
-            width = 6;
-        } else {
-            throw std::runtime_error("Invalid BeamType");
-        }
-        height = 0.8;
-        
-        // seteo el angulo de la viga
-        body->SetTransform(b2Vec2(x, y), angle);
-    }
-
-float Beam::getXCoordinate() {
-    return x;
+  // seteo el angulo de la viga pasandolo a radianes
+  body->SetTransform(b2Vec2(x, y), angle * 3.14 / 180);
 }
 
-float Beam::getYCoordinate() {
-    return y;
-}
+float Beam::getXCoordinate() { return x; }
 
-float Beam::getWidth() {
-    return width;
-}
+float Beam::getYCoordinate() { return y; }
 
-float Beam::getHeight() {
-    return height;
-}
+float Beam::getWidth() { return width; }
 
-float Beam::getAngle() {
-    return angle;
-}
+float Beam::getHeight() { return height; }
+
+float Beam::getAngle() { return angle; }
 
 Beam::~Beam() {}
-
