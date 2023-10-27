@@ -12,26 +12,28 @@
 #include <utility>
 #include <vector>
 
-#include "blockingqueue.h"
+#include "queue.h"
 #include "broadcaster.h"
 #include "receiver_thread.h"
 #include "sender_thread.h"
 #include "socket.h"
 #include "thread.h"
 #include "server_protocol.h"
+#include "dto.h"
 
 class ServerClient
 {
 public:
-    ServerClient(Socket &&socket, Broadcaster &b, BlockingQueue &q);
+    ServerClient(Socket &&socket, Broadcaster &b, Queue<Dto *> &common_queue);
     ~ServerClient();
     bool is_dead();
     void join();
     void kill();
     void start();
+    void addMapToQueue();
 
-    BlockingQueue &common_queue;
-    BlockingQueue sender_queue;
+    Queue<Dto *> &common_queue;
+    Queue<Dto *> sender_queue;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_alive;
 

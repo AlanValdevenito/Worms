@@ -12,6 +12,7 @@ const uint8_t ERROR = 1;
 
 #include "client.h"
 #include "socket.h"
+#include "client_vista.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +36,14 @@ int main(int argc, char *argv[])
 
         Socket client_socket(host, servname);
         Client client(std::move(client_socket));
+
+        Vista vista(client);
+
         client.start();
+
+        vista.iniciar();
+
+        client.join();
 
         ret = 0;
         return ret;

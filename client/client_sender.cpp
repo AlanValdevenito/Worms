@@ -1,6 +1,6 @@
 #include "client_sender.h"
 
-SenderTH::SenderTH(ClientProtocol &p, BlockingQueue &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}
+SenderTH::SenderTH(ClientProtocol &p, Queue<Dto *> &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}
 
 void SenderTH::run()
 {
@@ -8,10 +8,13 @@ void SenderTH::run()
     while (not was_closed)
     {
         Dto *dto = queue.pop();
+        std::cout << "send: " << dto->is_alive() << std::endl;
 
-        // protocol.sendChatMsj(dto->message(), was_closed);
-        if (dto->is_alive()) // se lo mando al protocolo
-            std::cout << "send: " << std::endl;
+        if (dto->is_alive())
+        {
+
+            protocol.send(was_closed);
+        } // se lo mando al protocolo
         else
             was_closed = true;
 

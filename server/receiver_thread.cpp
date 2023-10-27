@@ -4,7 +4,8 @@ void Receiver::run()
 {
     while (not was_closed)
     {
-        // Dto *dto = protocol.decode(was_closed);
+        Dto *dto = protocol.recv(was_closed);
+        std::cout << "server recv : " << dto->return_code() << std::endl;
 
         // if (dto->is_alive())
         // {
@@ -21,4 +22,4 @@ void Receiver::run()
     // broadcaster.addMessageToQueues();
 }
 
-Receiver::Receiver(ServerProtocol &p, BlockingQueue &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}
+Receiver::Receiver(ServerProtocol &p, Queue<Dto *> &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}

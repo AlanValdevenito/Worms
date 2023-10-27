@@ -9,21 +9,25 @@
 
 #include <netinet/in.h>
 
-#include "blockingqueue.h"
 #include "socket.h"
 #include "thread.h"
+#include "queue.h"
+#include "dto.h"
 #include "server_protocol.h"
 
-struct Sender : public Thread
+const uint8_t VIGA = 6;
+
+class Sender : public Thread
 {
 private:
     ServerProtocol &protocol;
-    BlockingQueue &queue;
+    Queue<Dto *> &queue;
+    void send(Dto *d);
 
 public:
     bool was_closed;
 
-    Sender(ServerProtocol &p, BlockingQueue &q);
+    Sender(ServerProtocol &p, Queue<Dto *> &q);
     void run() override;
 };
 

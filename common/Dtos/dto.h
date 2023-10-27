@@ -20,8 +20,12 @@ public:
     virtual std::string return_line();
     virtual uint8_t orientation();
     virtual bool is_alive();
-    virtual uint8_t x_pos();
-    virtual uint8_t y_pos();
+    virtual uint16_t x_pos();
+    virtual uint16_t y_pos();
+    virtual uint16_t return_alto();
+    virtual uint16_t return_ancho();
+    virtual void *popViga();
+    virtual uint8_t cantidad();
     uint8_t return_code();
 };
 #endif

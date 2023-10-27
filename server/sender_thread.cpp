@@ -1,6 +1,6 @@
 #include "sender_thread.h"
 
-Sender::Sender(ServerProtocol &p, BlockingQueue &q) : protocol(p), queue(q), was_closed(false) {}
+Sender::Sender(ServerProtocol &p, Queue<Dto *> &q) : protocol(p), queue(q), was_closed(false) {}
 
 void Sender::run()
 {
@@ -8,12 +8,19 @@ void Sender::run()
     {
         Dto *dto = queue.pop();
 
-        // protocol.send(was_closed, dto);
         if (dto->is_alive())
-            std::cout << "hola\n";
+            send(dto);
         else
             was_closed = true;
 
         delete dto;
     }
+}
+
+void Sender::send(Dto *d)
+{
+    if (d->return_code() == VIGA)
+        protocol.sendVigas(d, was_closed);
+    else
+        std::cerr << "Codigo de envio desconocido\n";
 }

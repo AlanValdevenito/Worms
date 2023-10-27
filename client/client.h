@@ -18,6 +18,7 @@
 #include "blockingqueue.h"
 #include "dto.h"
 #include "socket.h"
+#include "queue.h"
 
 class Client
 {
@@ -26,8 +27,8 @@ public:
     ~Client();
     void start();
     void join();
-    BlockingQueue send_queue;
-    BlockingQueue recv_queue;
+    Queue<Dto *> send_queue;
+    Queue<Dto *> recv_queue;
     Broadcaster broadcaster;
 
 private:

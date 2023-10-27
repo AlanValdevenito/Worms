@@ -8,7 +8,7 @@ void Broadcaster::addMessageToQueues()
 {
     std::unique_lock<std::mutex> lock(mutex);
     Dto *dto = new Dto();
-    for (auto q : queues)
+    for (Queue<Dto *> *q : queues.listado())
     {
         Dto *d = new Dto();
         q->push(d);
@@ -27,9 +27,21 @@ void Broadcaster::addMessageToQueues()
 void Broadcaster::addMessageToQueues(Dto *dto)
 {
     std::unique_lock<std::mutex> lock(mutex);
-    for (auto q : queues)
+    // for (auto q : queues)
+    for (Queue<Dto *> *q : queues.listado())
     {
         Dto *d = new Dto();
+        q->push(d);
+    }
+    delete dto;
+}
+
+void Broadcaster::addVigaToQueues(Dto *dto)
+{
+    std::unique_lock<std::mutex> lock(mutex);
+    for (Queue<Dto *> *q : queues.listado())
+    {
+        Dto *d = new Viga(dto->x_pos(), dto->y_pos(), dto->return_ancho(), dto->return_alto());
         q->push(d);
     }
     delete dto;
@@ -38,32 +50,35 @@ void Broadcaster::addMessageToQueues(Dto *dto)
 /*
  *  Agrega una cola a la lista de colas.
  */
-void Broadcaster::addQueueToList(BlockingQueue &q)
+void Broadcaster::addQueueToList(Queue<Dto *> &q)
 {
     std::unique_lock<std::mutex> lock(mutex);
-    queues.push_back(&q);
+    // queues.push_back(&q);
+    queues.agregar(&q);
 }
 
 /*
  *  Le agrega un mensaje que indica el fin a la cola del cliente.
  *  Luego elimina una cola de la lista de colas.
  */
-void Broadcaster::removeQueueFromList(BlockingQueue *q)
+void Broadcaster::removeQueueFromList(Queue<Dto *> *q)
 {
-    std::unique_lock<std::mutex> lock(mutex);
+    // std::unique_lock<std::mutex> lock(mutex);
     DeadDto *dto = new DeadDto();
-    for (auto it = queues.begin(); it != queues.end();)
-    {
-        if (*it == q)
-        {
-            q->push(dto);
-            it = queues.erase(it);
-        }
-        else
-        {
-            ++it;
-        }
-    }
+    q->push(dto);
+    queues.remover(q);
+    // for (auto it = queues.begin(); it != queues.end();)
+    // {
+    //     if (*it == q)
+    //     {
+    //         q->push(dto);
+    //         it = queues.remover(it);
+    //     }
+    //     else
+    //     {
+    //         ++it;
+    //     }
+    // }
 }
 
 /*
@@ -72,9 +87,9 @@ void Broadcaster::removeQueueFromList(BlockingQueue *q)
  */
 void Broadcaster::deleteAllQueues()
 {
-    for (BlockingQueue *queue : queues)
+    for (Queue<Dto *> *queue : queues.listado())
     {
-        queue->clear();
+        queue->close(true);
+        queues.remover(queue);
     }
-    queues.clear();
 }

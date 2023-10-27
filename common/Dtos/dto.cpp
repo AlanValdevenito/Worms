@@ -12,7 +12,13 @@ uint8_t Dto::orientation() { return 1; }
 
 std::string Dto::return_line() { return VACIO; }
 
-bool Dto::is_alive() { return false; }
+bool Dto::is_alive() { return true; }
 
-uint8_t Dto::x_pos() { return 0; }
-uint8_t Dto::y_pos() { return 0; }
+uint16_t Dto::x_pos() { return 0; }
+uint16_t Dto::y_pos() { return 0; }
+uint16_t Dto::return_alto() { return 0; }
+uint16_t Dto::return_ancho() { return 0; }
+
+void *Dto::popViga() { return nullptr; }
+
+uint8_t Dto::cantidad() { return 0; }
