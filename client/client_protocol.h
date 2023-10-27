@@ -14,9 +14,11 @@
 #include "dto.h"
 #include "dead.h"
 #include "viga.h"
+#include "gusano.h"
 #include "socket.h"
 
-const uint8_t VIGAS_CODE = 6;
+const uint8_t VIGAS_CODE = 1;
+const uint8_t GUSANO_CODE = 2;
 
 class ClientProtocol
 {
@@ -30,5 +32,6 @@ private:
     Socket &skt;
     Dto *receiveViga(bool &was_closed);
     Dto *receiveVigas(bool &was_closed);
+    Dto *receiveGusano(bool &was_closed);
 };
 #endif

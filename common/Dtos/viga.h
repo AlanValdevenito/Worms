@@ -8,7 +8,7 @@
 
 #include "dto.h"
 
-const uint8_t VIGA_CODE = 6; // CAMBIAR
+const uint8_t VIGA_CODE = 1;
 
 class Viga : public Dto
 {

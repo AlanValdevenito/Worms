@@ -14,37 +14,38 @@
 
 using namespace SDL2pp;
 
-struct Animacion {
-    //Gusano gusano;
-	bool gusano_moviendose;
+struct Animacion
+{
+    // Gusano gusano;
+    bool gusano_moviendose;
     bool gusano_moviendose_izquierda;
-	int run_phase;
+    int run_phase;
 };
 
-class Vista {
+class Vista
+{
 private:
     Client &cliente;
-    std::vector<Viga *> lista;
+    std::vector<Viga *> vigas;
 
 public:
     Vista(Client &cliente);
 
     int iniciar();
+    void guardar_vigas();
 
     bool handleEvents(Worm &worm);
 
-    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, Worm &worm, unsigned int tiempoRestante);
+    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, Worm &worm, unsigned int tiempoRestante);
     void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante);
     void renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua);
-    //void renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
-    //void renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
-    //void renderizar_informacion(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
+    // void renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
+    // void renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
 
     void actualizar(Worm &worm, float dt);
 
-    //std::string obtener_texto(Animacion &animacion);
-
-    float convertidor(float valor);
+    float metros_a_pixeles(float metros);
+    float centimetros_a_metros(float centimetros);
 };
 
 #endif

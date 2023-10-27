@@ -19,6 +19,8 @@ Dto *ClientProtocol::receive(bool &was_closed)
 
     if (code == VIGAS_CODE)
         return receiveVigas(was_closed);
+    else if (code == GUSANO_CODE)
+        return receiveGusano(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
@@ -56,7 +58,25 @@ Dto *ClientProtocol::receiveViga(bool &was_closed)
     ancho = ntohs(ancho);
     alto = ntohs(alto);
 
-    printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
+    // printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
 
     return new Viga(x, y, ancho, alto);
+}
+
+Dto *ClientProtocol::receiveGusano(bool &was_closed)
+{
+    uint8_t id;
+    uint16_t x;
+    uint16_t y;
+
+    skt.recvall(&id, sizeof(id), &was_closed);
+    skt.recvall(&x, sizeof(x), &was_closed);
+    skt.recvall(&y, sizeof(y), &was_closed);
+
+    x = ntohs(x);
+    y = ntohs(y);
+
+    printf("Cliente ---> id:%u  x:%u y:%u  \n", id, x, y);
+
+    return new Gusano(id, x, y);
 }

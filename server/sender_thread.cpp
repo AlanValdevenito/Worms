@@ -21,6 +21,8 @@ void Sender::send(Dto *d)
 {
     if (d->return_code() == VIGA)
         protocol.sendVigas(d, was_closed);
+    else if (d->return_code() == WORM)
+        protocol.sendWorms((Gusano *)d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
 }

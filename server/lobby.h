@@ -38,5 +38,7 @@ private:
     Broadcaster broadcaster;
     Queue<Dto *> common_queue;
     Game game;
+
+    void partida(Game &game, ServerClient *c);
 };
 #endif

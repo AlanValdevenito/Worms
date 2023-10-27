@@ -7,7 +7,7 @@ ServerProtocol::~ServerProtocol() {}
 void ServerProtocol::sendVigas(Dto *vs, bool &was_closed)
 {
     uint8_t code = vs->return_code();
-    skt.sendall(&(code), sizeof(code), &was_closed); // notifico que envio Dto
+    skt.sendall(&(code), sizeof(code), &was_closed); // notifico que envio una Viga
 
     uint8_t cant = vs->cantidad();
     skt.sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
@@ -33,6 +33,23 @@ void ServerProtocol::sendViga(Dto *dto, bool &was_closed)
     skt.sendall(&(y), sizeof(y), &was_closed);
     skt.sendall(&(ancho), sizeof(ancho), &was_closed);
     skt.sendall(&(alto), sizeof(alto), &was_closed);
+}
+
+void ServerProtocol::sendWorms(Gusano *g, bool &was_closed)
+{
+
+    uint8_t code = g->return_code();
+    skt.sendall(&(code), sizeof(code), &was_closed); // notifico que envio un gusano
+
+    uint8_t id = g->get_id();
+    uint16_t x = htons(g->x_pos());
+    uint16_t y = htons(g->y_pos());
+
+    // printf("id:%u  x:%u  y:%u \n", g->get_id(), g->x_pos(), g->y_pos());
+
+    skt.sendall(&(id), sizeof(id), &was_closed);
+    skt.sendall(&(x), sizeof(x), &was_closed);
+    skt.sendall(&(y), sizeof(y), &was_closed);
 }
 
 Dto *ServerProtocol::recv(bool &was_closed)

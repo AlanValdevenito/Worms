@@ -4,10 +4,10 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "client_animacion.h"
 
-class Worm {
+class Worm
+{
 
 private:
-
     // Objeto del tipo Animacion.
     // Se usa para almacenar y gestionar la animacion del Worm.
     Animation animacion;
@@ -21,7 +21,6 @@ private:
     int y;
 
 public:
-
     Worm(SDL2pp::Texture &texture, int x, int y);
 
     // Actualiza el Worm en funcion del tiempo transcurrido.

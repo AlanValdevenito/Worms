@@ -13,6 +13,7 @@
 #include "broadcaster.h"
 #include "dto.h"
 #include "viga.h"
+#include "gusano.h"
 
 class Game : public Thread
 {
@@ -27,8 +28,7 @@ public:
     void update();
     void run() override;
     void stop() override;
-    void broadcast(Queue<Dto *> &q);
+    void sendMap(Queue<Dto *> &q);
+    void sendWorms(Queue<Dto *> &q);
 };
 #endif
-
-

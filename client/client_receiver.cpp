@@ -8,11 +8,9 @@ void ReceiverTH::run()
     {
 
         Dto *dto = protocol.receive(was_closed);
-        //
+
         if (dto->is_alive())
         {
-            // std::cout << "recv: " << dto->return_code() << std::endl;
-            // lo recibo del lado del cliente
             queue.push(dto);
         }
         else

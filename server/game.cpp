@@ -4,10 +4,12 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                             broadcaster(broadcaster),
                                                             world(World()),
                                                             game_finished(false)
-{   
+{
     world.addBeam(0, 9, 0, LONG);
     world.addBeam(6, 9, 0, LONG);
     world.addBeam(12, 9, 0, LONG);
+    world.addWorm(0, 9);
+    world.addWorm(12, 9);
     world.addBeam(18, 9, 0, LONG);
     world.addBeam(24, 9, 0, LONG);
     world.addBeam(30, 9, 0, LONG);
@@ -30,7 +32,19 @@ void Game::update()
     world.step();
 }
 
-void Game::broadcast(Queue<Dto *> &q)
+void Game::sendWorms(Queue<Dto *> &q)
+{
+    for (auto &w : world.getWorms())
+    {
+        Gusano *g = new Gusano((w.getId()),
+                               (int)(w.getXCoordinate() * 100),
+                               (int)(w.getYCoordinate() * 100));
+
+        q.push(g);
+    }
+}
+
+void Game::sendMap(Queue<Dto *> &q)
 {
     std::list<Viga *> vs;
     // por cada viga manda un Dto Viga a los senders
@@ -46,8 +60,6 @@ void Game::broadcast(Queue<Dto *> &q)
     }
     Vigas *vigas = new Vigas(vs);
     q.push(vigas); // agrego a la cola una lista de viga
-
-    // broadcaster.addVigaToQueues(viga);
 }
 
 void Game::stop()
