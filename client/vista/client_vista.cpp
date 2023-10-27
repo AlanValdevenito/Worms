@@ -70,8 +70,7 @@ int Vista::iniciar() {
 	Worm worm(sprites, convertidor(0), convertidor(9));
 
 	// Vigas del juego
-	Dto *vigas;
-	cliente.recv_queue.try_pop(vigas);
+	Dto *vigas = cliente.recv_queue.pop();
 
 	for (int i = 0; i < vigas->cantidad(); i++) {
 		Viga *viga = (Viga *) vigas->popViga();

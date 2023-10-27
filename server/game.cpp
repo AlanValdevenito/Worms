@@ -8,6 +8,9 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
     world.addBeam(0, 9, 0, LONG);
     world.addBeam(6, 9, 0, LONG);
     world.addBeam(12, 9, 0, LONG);
+    world.addBeam(18, 9, 0, LONG);
+    world.addBeam(24, 9, 0, LONG);
+    world.addBeam(30, 9, 0, LONG);
 }
 
 void Game::run()
