@@ -12,7 +12,32 @@ void ClientProtocol::send(bool &was_closed)
 }
 
 // ACA SE HACE LA SEPARACION MEDIANTE EL CODIGO QUE RECIBO PRIMERO
-// Dto *ClientProtocol::receive(bool &was_closed)
+Dto *ClientProtocol::receive(bool &was_closed)
+{
+    uint8_t code;
+    skt.recvall(&code, sizeof(code), &was_closed);
+
+    if (code == VIGAS_CODE)
+        return receiveVigas(was_closed);
+    else
+        std::cerr << "Codigo recibido sin identificar\n";
+
+    return new DeadDto();
+}
+
+Dto *ClientProtocol::receiveVigas(bool &was_closed)
+{
+    uint8_t cant;
+    skt.recvall(&cant, sizeof(cant), &was_closed);
+
+    std::list<Viga *> vs;
+    for (int i = 0; i < cant; i++)
+    {
+        Viga *v = (Viga *)receiveViga(was_closed);
+        vs.push_back(v);
+    }
+    return new Vigas(vs);
+}
 
 Dto *ClientProtocol::receiveViga(bool &was_closed)
 {

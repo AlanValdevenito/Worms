@@ -38,6 +38,7 @@ public:
     Vigas(std::list<Viga *> vs);
     ~Vigas();
     bool is_alive() override;
-    void addViga(Viga *v);
+    void *popViga() override;
+    uint8_t cantidad() override;
 };
 #endif

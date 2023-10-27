@@ -37,27 +37,11 @@ int main(int argc, char *argv[])
         Socket client_socket(host, servname);
         Client client(std::move(client_socket));
 
-        Vista vista(client);
+        // Vista vista(client);
 
         client.start();
 
-        // std::string data;
-
-        // while (data != "exit")
-        // {
-        //     // queue.pop();
-        //     data.clear();
-
-        //     std::getline(std::cin, data);
-
-        //     if (data.empty())
-        //         break;
-        // }
-        // Dto *d = new Dto();
-        // client.send_queue.push(d);
-        // client.recv_queue
-
-        vista.iniciar();
+        // vista.iniciar();
 
         client.join();
 

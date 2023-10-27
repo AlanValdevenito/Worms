@@ -4,6 +4,22 @@ ServerProtocol::ServerProtocol(Socket &skt) : skt(skt) {}
 
 ServerProtocol::~ServerProtocol() {}
 
+void ServerProtocol::sendVigas(Dto *vs, bool &was_closed)
+{
+    uint8_t code = vs->return_code();
+    skt.sendall(&(code), sizeof(code), &was_closed); // notifico que envio Dto
+
+    uint8_t cant = vs->cantidad();
+    skt.sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
+
+    for (int i = 0; i < cant; i++)
+    {
+        Viga *v = (Viga *)vs->popViga();
+        sendViga(v, was_closed); // envio la viga
+        delete v;                // libero la memoria de la viga
+    }
+}
+
 void ServerProtocol::sendViga(Dto *dto, bool &was_closed)
 {
     uint16_t x = htons(dto->x_pos());

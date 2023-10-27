@@ -7,7 +7,7 @@ void ReceiverTH::run()
     while (not was_closed)
     {
 
-        Dto *dto = protocol.receiveViga(was_closed);
+        Dto *dto = protocol.receive(was_closed);
         //
         if (dto->is_alive())
         {

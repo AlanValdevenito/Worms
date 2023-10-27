@@ -195,11 +195,12 @@ CMakeFiles/client.dir/client/client.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/list.tcc \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /home/fede/Documentos/Taller/tp-worms/client/client_receiver.h \
  /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
@@ -212,7 +213,6 @@ CMakeFiles/client.dir/client/client.cpp.o: \
  /usr/include/c++/11/queue /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
  /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
  /home/fede/Documentos/Taller/tp-worms/common/queue.h \
  /usr/include/c++/11/climits \

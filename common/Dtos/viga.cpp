@@ -18,7 +18,14 @@ Vigas::~Vigas() {}
 
 bool Vigas::is_alive() { return true; }
 
-void Vigas::addViga(Viga *v)
+void *Vigas::popViga()
 {
-    vigas.push_back(v);
+    Viga *v = vigas.front();
+    vigas.pop_front();
+    return v;
+}
+
+uint8_t Vigas::cantidad()
+{
+    return static_cast<uint8_t>(vigas.size());
 }

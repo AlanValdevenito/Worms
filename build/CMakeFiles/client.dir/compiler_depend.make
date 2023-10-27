@@ -244,12 +244,13 @@ CMakeFiles/client.dir/client/client.cpp.o: ../client/client.cpp \
   /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
   /usr/include/x86_64-linux-gnu/bits/in.h \
   ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../common/Dtos/viga.h \
   /usr/include/c++/11/list \
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/allocated_ptr.h \
   /usr/include/c++/11/bits/list.tcc \
-  ../common/Dtos/dto.h \
   ../common/socket.h \
   ../client/client_receiver.h \
   ../common/blockingqueue.h \
@@ -265,7 +266,6 @@ CMakeFiles/client.dir/client/client.cpp.o: ../client/client.cpp \
   /usr/include/c++/11/bits/stl_deque.h \
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_queue.h \
-  ../common/Dtos/dead.h \
   ../common/broadcaster.h \
   ../common/queue.h \
   /usr/include/c++/11/climits \
@@ -520,12 +520,13 @@ CMakeFiles/client.dir/client/client_protocol.cpp.o: ../client/client_protocol.cp
   /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
   /usr/include/x86_64-linux-gnu/bits/in.h \
   ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../common/Dtos/viga.h \
   /usr/include/c++/11/list \
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/allocated_ptr.h \
   /usr/include/c++/11/bits/list.tcc \
-  ../common/Dtos/dto.h \
   ../common/socket.h
 
 CMakeFiles/client.dir/client/client_receiver.cpp.o: ../client/client_receiver.cpp \
@@ -1339,12 +1340,13 @@ CMakeFiles/client.dir/client/main.cpp.o: ../client/main.cpp \
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/bits/sstream.tcc \
   ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../common/Dtos/viga.h \
   /usr/include/c++/11/list \
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/allocated_ptr.h \
   /usr/include/c++/11/bits/list.tcc \
-  ../common/Dtos/dto.h \
   ../common/socket.h \
   ../client/client_receiver.h \
   ../common/blockingqueue.h \
@@ -1360,7 +1362,6 @@ CMakeFiles/client.dir/client/main.cpp.o: ../client/main.cpp \
   /usr/include/c++/11/bits/stl_deque.h \
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_queue.h \
-  ../common/Dtos/dead.h \
   ../common/broadcaster.h \
   ../common/queue.h \
   /usr/include/c++/11/climits \
@@ -2493,11 +2494,12 @@ CMakeFiles/client.dir/client/vista/client_vista.cpp.o: ../client/vista/client_vi
   /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
   /usr/include/x86_64-linux-gnu/bits/in.h \
   ../common/Dtos/dto.h \
+  ../common/Dtos/dead.h \
+  ../common/Dtos/dto.h \
   ../common/Dtos/viga.h \
   /usr/include/c++/11/list \
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/list.tcc \
-  ../common/Dtos/dto.h \
   ../common/socket.h \
   ../client/client_receiver.h \
   ../common/blockingqueue.h \
@@ -2510,7 +2512,6 @@ CMakeFiles/client.dir/client/vista/client_vista.cpp.o: ../client/vista/client_vi
   /usr/include/c++/11/bits/stl_deque.h \
   /usr/include/c++/11/bits/deque.tcc \
   /usr/include/c++/11/bits/stl_queue.h \
-  ../common/Dtos/dead.h \
   ../common/broadcaster.h \
   ../common/queue.h \
   /usr/include/c++/11/climits \
@@ -5378,8 +5379,6 @@ CMakeFiles/client.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h:
 
-../common/Dtos/dead.h:
-
 /usr/include/c++/11/bits/deque.tcc:
 
 /usr/include/c++/11/deque:
@@ -5391,6 +5390,8 @@ CMakeFiles/client.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp \
 /usr/include/c++/11/queue:
 
 /usr/include/c++/11/mutex:
+
+/usr/include/c++/11/ext/concurrence.h:
 
 ../client/main.cpp:
 
@@ -5623,6 +5624,8 @@ CMakeFiles/client.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp \
 /usr/include/c++/11/tr1/gamma.tcc:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+../common/Dtos/dead.h:
 
 /usr/include/c++/11/cstdio:
 
@@ -5879,8 +5882,6 @@ CMakeFiles/client.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vlbwintrin.h:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
-
-/usr/include/c++/11/ext/concurrence.h:
 
 ../common/Dtos/dto.cpp:
 

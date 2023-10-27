@@ -9,7 +9,7 @@ void Sender::run()
         Dto *dto = queue.pop();
 
         if (dto->is_alive())
-            protocol.sendViga(dto, was_closed);
+            send(dto);
         else
             was_closed = true;
 
@@ -20,7 +20,7 @@ void Sender::run()
 void Sender::send(Dto *d)
 {
     if (d->return_code() == VIGA)
-        protocol.sendViga(d, was_closed);
+        protocol.sendVigas(d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
 }

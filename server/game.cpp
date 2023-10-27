@@ -6,6 +6,8 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                             game_finished(false)
 {
     world.addBeam(0, 9, 6, 0.8);
+    world.addBeam(3, 9, 6, 0.8);
+    world.addBeam(6, 9, 6, 0.8);
 }
 
 void Game::run()
@@ -27,6 +29,7 @@ void Game::update()
 
 void Game::broadcast(Queue<Dto *> &q)
 {
+    std::list<Viga *> vs;
     // por cada viga manda un Dto Viga a los senders
     for (auto &beam : world.getBeams())
     {
@@ -35,8 +38,12 @@ void Game::broadcast(Queue<Dto *> &q)
                               (int)(beam.getYCoordinate() * 100),
                               (int)(beam.getWidth() * 100),
                               (int)(beam.getHeight() * 100));
-        q.push(viga);
+
+        vs.push_back(viga);
     }
+    Vigas *vigas = new Vigas(vs);
+    q.push(vigas); // agrego a la cola una lista de viga
+
     // broadcaster.addVigaToQueues(viga);
 }
 
