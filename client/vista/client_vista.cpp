@@ -46,7 +46,7 @@ int Vista::iniciar() {
 	sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
 
 	// Cargamos la imagen para una viga
-	Texture viga(renderer, Surface(DATA_PATH "/viga_corta.png")
+	Texture viga(renderer, Surface(DATA_PATH "/viga_larga.png")
 			.SetColorKey(true, 0xff));
 
 	viga.SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -67,8 +67,16 @@ int Vista::iniciar() {
 	Font font(DATA_PATH "/Vera.ttf", 12);
 
 	// Estado del juego
-	//Gusano gusano = this->cliente.get_gusano();
 	Worm worm(sprites, convertidor(0), convertidor(9));
+
+	// Vigas del juego
+	Dto *vigas;
+	cliente.recv_queue.try_pop(vigas);
+
+	for (int i = 0; i < vigas->cantidad(); i++) {
+		Viga *viga = (Viga *) vigas->popViga();
+		this->lista.push_back(viga);
+	}
 
 	// unsigned int prev_ticks = SDL_GetTicks();
 
@@ -250,69 +258,23 @@ void Vista::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL
 }
 
 void Vista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua) {
-	//int vcenter = renderer.GetOutputHeight() / 2;
 
 	renderer.Copy(background, NullOpt, NullOpt);
 	renderer.Copy(agua, NullOpt, NullOpt);
 
-	/*Dto *vigas;
-	Queue<Dto *> queue = cliente.recv_queue;
-
-	while (queue.try_pop(vigas)) {
-
-		float x = vigaa->x_pos();
-		float y = vigaa->y_pos();
-		float ancho = vigaa->return_ancho();
-		float alto = vigaa->return_alto();
+	for (int i = 0; i < (int) this->lista.size(); i++) {
+		
+		float x = this->lista[i]->x_pos();
+		float y = this->lista[i]->y_pos();
+		float ancho = this->lista[i]->return_ancho();
+		float alto = this->lista[i]->return_alto();
 
 		renderer.Copy(
 			viga,
 			Rect(0, 0, 50, 50),
 			Rect(convertidor(x / 100), convertidor(y / 100), convertidor(ancho / 100), convertidor(alto / 100))
 		);
-	}*/
-
-	/****************************************************************************************************************/
-
-	Dto *vigaa;
-	bool booleano = cliente.recv_queue.try_pop(vigaa);
-
-	if (booleano) {
-		float x = vigaa->x_pos() / 100;
-		float y = vigaa->y_pos() / 100;
-		float ancho = vigaa->return_ancho();
-		float alto = vigaa->return_alto();
-
-		std::cout << x << std::endl;
-		std::cout << y << std::endl;
-		std::cout << ancho / 100 << std::endl;
-		std::cout << alto / 100 << std::endl;
-
-		renderer.Copy(
-			viga,
-			Rect(0, 0, 50, 50),
-			Rect(convertidor(x), convertidor(y), convertidor(ancho / 100), convertidor(alto / 100))
-		);
-	
-	} else {
-		renderer.Copy(
-			viga,
-			Rect(0, 0, 50, 50),
-			Rect(convertidor(0), convertidor(9), convertidor(6), convertidor(0.8))
-		);
 	}
-
-	/****************************************************************************************************************/
-
-	/*std::vector<Viga> listado_vigas = this->cliente.get_vigas();
-
-	for (int i = 0; i < listado_vigas.size(); i++) {
-		renderer.Copy(
-				viga,
-				Rect(0, 0, 50, 50),
-				Rect(convertidor(listado_vigas[i].x), convertidor(listado_vigas[i].y), convertidor(listado_vigas[i].ancho), convertidor(listado_vigas[i].alto))
-			);
-	}*/
 }
 
 void Vista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante) {

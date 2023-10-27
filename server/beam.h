@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 #define SHORT_BEAM_WIDTH 3
-#define LONG_BEAM_WIDTH 3
+#define LONG_BEAM_WIDTH 6
 #define BEAM_HEIGHT 0.8
 
 enum BeamType { SHORT, LONG };

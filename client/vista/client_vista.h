@@ -24,6 +24,7 @@ struct Animacion {
 class Vista {
 private:
     Client &cliente;
+    std::vector<Viga *> lista;
 
 public:
     Vista(Client &cliente);

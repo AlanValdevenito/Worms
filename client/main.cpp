@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
         Socket client_socket(host, servname);
         Client client(std::move(client_socket));
 
-        // Vista vista(client);
+        Vista vista(client);
 
         client.start();
 
-        // vista.iniciar();
+        vista.iniciar();
 
         client.join();
 

@@ -21,7 +21,7 @@ void Worm::update(float dt) {
 
 void Worm::render(SDL2pp::Renderer &renderer) {
     SDL_RendererFlip flip = mirandoIzquierda ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    animacion.render(renderer, SDL2pp::Rect(x, y - 18, ANCHO_SPRITE, ALTO_SPRITE), flip);
+    animacion.render(renderer, SDL2pp::Rect(x, y - 42, ANCHO_SPRITE, ALTO_SPRITE), flip);
 }
 
 void Worm::moveRigth() {
