@@ -15,11 +15,21 @@ b2Body* World::createStaticBody(float x, float y, float width, float height) {
     return body;
 }
 
-void World::addBeam(float x, float y, float width, float height) {
+void World::addBeam(float x, float y, float angle, BeamType type) {
+    
+    float width;
+    float height = 0.8;
+    if (type == SHORT) {
+        width = 3;
+    } else if (type == LONG) {
+        width = 6;
+    } else {
+        throw std::runtime_error("Invalid BeamType");
+    }
     // creo el cuerpo de la viga
     b2Body *beamBody = createStaticBody(x, y, width, height);
     // creo la viga pasandole el cuerpo
-    Beam beam(beamBody, x, y, width, height);
+    Beam beam(beamBody, x, y, angle, type);
     // agrego la viga a la lista de vigas
     beams.push_back(beam);
 }
@@ -33,3 +43,6 @@ void World::step() {
 }
 
 World::~World() {}
+
+
+

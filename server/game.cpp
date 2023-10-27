@@ -4,10 +4,10 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                             broadcaster(broadcaster),
                                                             world(World()),
                                                             game_finished(false)
-{
-    world.addBeam(0, 9, 6, 0.8);
-    world.addBeam(3, 9, 6, 0.8);
-    world.addBeam(6, 9, 6, 0.8);
+{   
+    world.addBeam(0, 9, 0, LONG);
+    world.addBeam(3, 9, 0, LONG);
+    world.addBeam(6, 9, 0, LONG);
 }
 
 void Game::run()

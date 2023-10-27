@@ -19,7 +19,7 @@ public:
     World();
 
     // agrega una viga centrada en el punto (x, y) de ancho <width> y alto <height>
-    void addBeam(float x, float y, float width, float height);
+    void addBeam(float x, float y, float angle, BeamType type);
     
     std::list<Beam> getBeams();
 
@@ -31,3 +31,4 @@ public:
     ~World();
 };
 #endif
+
