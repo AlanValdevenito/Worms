@@ -19,6 +19,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.cpp" "CMakeFiles/client.dir/common/Dtos/dead.cpp.o" "gcc" "CMakeFiles/client.dir/common/Dtos/dead.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.cpp" "CMakeFiles/client.dir/common/Dtos/dto.cpp.o" "gcc" "CMakeFiles/client.dir/common/Dtos/dto.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.cpp" "CMakeFiles/client.dir/common/Dtos/gusano.cpp.o" "gcc" "CMakeFiles/client.dir/common/Dtos/gusano.cpp.o.d"
+  "/home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.cpp" "CMakeFiles/client.dir/common/Dtos/mover.cpp.o" "gcc" "CMakeFiles/client.dir/common/Dtos/mover.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/Dtos/position.cpp" "CMakeFiles/client.dir/common/Dtos/position.cpp.o" "gcc" "CMakeFiles/client.dir/common/Dtos/position.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.cpp" "CMakeFiles/client.dir/common/Dtos/viga.cpp.o" "gcc" "CMakeFiles/client.dir/common/Dtos/viga.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/common/blockingqueue.cpp" "CMakeFiles/client.dir/common/blockingqueue.cpp.o" "gcc" "CMakeFiles/client.dir/common/blockingqueue.cpp.o.d"

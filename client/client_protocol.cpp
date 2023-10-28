@@ -76,7 +76,14 @@ Dto *ClientProtocol::receiveGusano(bool &was_closed)
     x = ntohs(x);
     y = ntohs(y);
 
-    printf("Cliente ---> id:%u  x:%u y:%u  \n", id, x, y);
+    // printf("Cliente ---> id:%u  x:%u y:%u  \n", id, x, y);
 
     return new Gusano(id, x, y);
+}
+
+void ClientProtocol::moverADerecha(MoverADerecha *m, bool &was_closed)
+{
+    uint8_t code = m->return_code();
+    // printf("enviar: %u\n", a);
+    skt.sendall(&code, sizeof(code), &was_closed);
 }

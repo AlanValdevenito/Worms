@@ -24,7 +24,7 @@ public:
     Worm(SDL2pp::Texture &texture, int x, int y);
 
     // Actualiza el Worm en funcion del tiempo transcurrido.
-    void update(float dt);
+    void update(float dt, float nuevoX);
     // Renderiza el Worm.
     void render(SDL2pp::Renderer &renderer);
     // Actualiza los booleanos para indicar que el Worm se mueve a la derecha.

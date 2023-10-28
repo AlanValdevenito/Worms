@@ -8,11 +8,11 @@ void SenderTH::run()
     while (not was_closed)
     {
         Dto *dto = queue.pop();
-        std::cout << "send: " << dto->is_alive() << std::endl;
+        // std::cout << "send: " << dto->is_alive() << std::endl;
 
         if (dto->is_alive())
         {
-
+            send(dto);
             protocol.send(was_closed);
         } // se lo mando al protocolo
         else
@@ -20,4 +20,12 @@ void SenderTH::run()
 
         delete dto;
     }
+}
+
+void SenderTH::send(Dto *d)
+{
+    if (d->return_code() == MOVER_A_DERECHA)
+        protocol.moverADerecha((MoverADerecha *)d, was_closed);
+    else
+        ;
 }

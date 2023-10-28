@@ -19,6 +19,16 @@ void Broadcaster::addMessageToQueues()
     delete dto;
 }
 
+void Broadcaster::AddGusanoToQueues(Gusano *g)
+{
+    std::unique_lock<std::mutex> lock(mutex);
+    for (Queue<Dto *> *q : queues.listado())
+    {
+        Dto *d = new Gusano(g->get_id(), g->x_pos(), g->y_pos());
+        q->push(d);
+    }
+}
+
 /*
  *   Por cada cola, crea una nueva instancia del Dto recibido, y se lo agrega a todas.
  *   Luego lo elimina el Dto original del HEAP
@@ -27,7 +37,6 @@ void Broadcaster::addMessageToQueues()
 void Broadcaster::addMessageToQueues(Dto *dto)
 {
     std::unique_lock<std::mutex> lock(mutex);
-    // for (auto q : queues)
     for (Queue<Dto *> *q : queues.listado())
     {
         Dto *d = new Dto();

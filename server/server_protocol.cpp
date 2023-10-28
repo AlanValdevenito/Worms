@@ -54,8 +54,8 @@ void ServerProtocol::sendWorms(Gusano *g, bool &was_closed)
 
 Dto *ServerProtocol::recv(bool &was_closed)
 {
-    uint8_t a;
-    skt.recvall(&a, sizeof(a), &was_closed);
+    uint8_t code;
+    skt.recvall(&code, sizeof(code), &was_closed);
     // printf("recibido: %u\n", a);
-    return new Dto(a);
+    return new Dto(code);
 }

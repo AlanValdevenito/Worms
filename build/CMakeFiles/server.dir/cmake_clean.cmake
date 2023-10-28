@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/server.dir/common/Dtos/dto.cpp.o.d"
   "CMakeFiles/server.dir/common/Dtos/gusano.cpp.o"
   "CMakeFiles/server.dir/common/Dtos/gusano.cpp.o.d"
+  "CMakeFiles/server.dir/common/Dtos/mover.cpp.o"
+  "CMakeFiles/server.dir/common/Dtos/mover.cpp.o.d"
   "CMakeFiles/server.dir/common/Dtos/position.cpp.o"
   "CMakeFiles/server.dir/common/Dtos/position.cpp.o.d"
   "CMakeFiles/server.dir/common/Dtos/viga.cpp.o"

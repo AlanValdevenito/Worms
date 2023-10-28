@@ -415,6 +415,33 @@ common/Dtos/gusano.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/gusano.cpp.s
 .PHONY : common/Dtos/gusano.cpp.s
 
+common/Dtos/mover.o: common/Dtos/mover.cpp.o
+.PHONY : common/Dtos/mover.o
+
+# target to build an object file
+common/Dtos/mover.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/mover.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/mover.cpp.o
+.PHONY : common/Dtos/mover.cpp.o
+
+common/Dtos/mover.i: common/Dtos/mover.cpp.i
+.PHONY : common/Dtos/mover.i
+
+# target to preprocess a source file
+common/Dtos/mover.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/mover.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/mover.cpp.i
+.PHONY : common/Dtos/mover.cpp.i
+
+common/Dtos/mover.s: common/Dtos/mover.cpp.s
+.PHONY : common/Dtos/mover.s
+
+# target to generate assembly for a file
+common/Dtos/mover.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/Dtos/mover.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/Dtos/mover.cpp.s
+.PHONY : common/Dtos/mover.cpp.s
+
 common/Dtos/position.o: common/Dtos/position.cpp.o
 .PHONY : common/Dtos/position.o
 
@@ -1016,6 +1043,9 @@ help:
 	@echo "... common/Dtos/gusano.o"
 	@echo "... common/Dtos/gusano.i"
 	@echo "... common/Dtos/gusano.s"
+	@echo "... common/Dtos/mover.o"
+	@echo "... common/Dtos/mover.i"
+	@echo "... common/Dtos/mover.s"
 	@echo "... common/Dtos/position.o"
 	@echo "... common/Dtos/position.i"
 	@echo "... common/Dtos/position.s"

@@ -111,10 +111,24 @@ CMakeFiles/server.dir/common/Dtos/gusano.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server.dir/common/Dtos/gusano.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.cpp -o CMakeFiles/server.dir/common/Dtos/gusano.cpp.s
 
+CMakeFiles/server.dir/common/Dtos/mover.cpp.o: CMakeFiles/server.dir/flags.make
+CMakeFiles/server.dir/common/Dtos/mover.cpp.o: ../common/Dtos/mover.cpp
+CMakeFiles/server.dir/common/Dtos/mover.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/server.dir/common/Dtos/mover.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/Dtos/mover.cpp.o -MF CMakeFiles/server.dir/common/Dtos/mover.cpp.o.d -o CMakeFiles/server.dir/common/Dtos/mover.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.cpp
+
+CMakeFiles/server.dir/common/Dtos/mover.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server.dir/common/Dtos/mover.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.cpp > CMakeFiles/server.dir/common/Dtos/mover.cpp.i
+
+CMakeFiles/server.dir/common/Dtos/mover.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server.dir/common/Dtos/mover.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.cpp -o CMakeFiles/server.dir/common/Dtos/mover.cpp.s
+
 CMakeFiles/server.dir/common/Dtos/position.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/Dtos/position.cpp.o: ../common/Dtos/position.cpp
 CMakeFiles/server.dir/common/Dtos/position.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/server.dir/common/Dtos/position.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/server.dir/common/Dtos/position.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/Dtos/position.cpp.o -MF CMakeFiles/server.dir/common/Dtos/position.cpp.o.d -o CMakeFiles/server.dir/common/Dtos/position.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/Dtos/position.cpp
 
 CMakeFiles/server.dir/common/Dtos/position.cpp.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/server.dir/common/Dtos/position.cpp.s: cmake_force
 CMakeFiles/server.dir/common/Dtos/viga.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/Dtos/viga.cpp.o: ../common/Dtos/viga.cpp
 CMakeFiles/server.dir/common/Dtos/viga.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/server.dir/common/Dtos/viga.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/server.dir/common/Dtos/viga.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/Dtos/viga.cpp.o -MF CMakeFiles/server.dir/common/Dtos/viga.cpp.o.d -o CMakeFiles/server.dir/common/Dtos/viga.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.cpp
 
 CMakeFiles/server.dir/common/Dtos/viga.cpp.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/server.dir/common/Dtos/viga.cpp.s: cmake_force
 CMakeFiles/server.dir/common/blockingqueue.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/blockingqueue.cpp.o: ../common/blockingqueue.cpp
 CMakeFiles/server.dir/common/blockingqueue.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/server.dir/common/blockingqueue.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/server.dir/common/blockingqueue.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/blockingqueue.cpp.o -MF CMakeFiles/server.dir/common/blockingqueue.cpp.o.d -o CMakeFiles/server.dir/common/blockingqueue.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.cpp
 
 CMakeFiles/server.dir/common/blockingqueue.cpp.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/server.dir/common/blockingqueue.cpp.s: cmake_force
 CMakeFiles/server.dir/common/broadcaster.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/broadcaster.cpp.o: ../common/broadcaster.cpp
 CMakeFiles/server.dir/common/broadcaster.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/server.dir/common/broadcaster.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/server.dir/common/broadcaster.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/broadcaster.cpp.o -MF CMakeFiles/server.dir/common/broadcaster.cpp.o.d -o CMakeFiles/server.dir/common/broadcaster.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/broadcaster.cpp
 
 CMakeFiles/server.dir/common/broadcaster.cpp.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/server.dir/common/broadcaster.cpp.s: cmake_force
 CMakeFiles/server.dir/common/liberror.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/liberror.cpp.o: ../common/liberror.cpp
 CMakeFiles/server.dir/common/liberror.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/server.dir/common/liberror.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/server.dir/common/liberror.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/liberror.cpp.o -MF CMakeFiles/server.dir/common/liberror.cpp.o.d -o CMakeFiles/server.dir/common/liberror.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/liberror.cpp
 
 CMakeFiles/server.dir/common/liberror.cpp.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/server.dir/common/liberror.cpp.s: cmake_force
 CMakeFiles/server.dir/common/resolver.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/resolver.cpp.o: ../common/resolver.cpp
 CMakeFiles/server.dir/common/resolver.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/server.dir/common/resolver.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/server.dir/common/resolver.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/resolver.cpp.o -MF CMakeFiles/server.dir/common/resolver.cpp.o.d -o CMakeFiles/server.dir/common/resolver.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/resolver.cpp
 
 CMakeFiles/server.dir/common/resolver.cpp.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/server.dir/common/resolver.cpp.s: cmake_force
 CMakeFiles/server.dir/common/resolvererror.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/resolvererror.cpp.o: ../common/resolvererror.cpp
 CMakeFiles/server.dir/common/resolvererror.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/server.dir/common/resolvererror.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/server.dir/common/resolvererror.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/resolvererror.cpp.o -MF CMakeFiles/server.dir/common/resolvererror.cpp.o.d -o CMakeFiles/server.dir/common/resolvererror.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/resolvererror.cpp
 
 CMakeFiles/server.dir/common/resolvererror.cpp.i: cmake_force
@@ -212,7 +226,7 @@ CMakeFiles/server.dir/common/resolvererror.cpp.s: cmake_force
 CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.o: ../common/server_monitor_outgoing_queues.cpp
 CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.o -MF CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.o.d -o CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.cpp
 
 CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.i: cmake_force
@@ -226,7 +240,7 @@ CMakeFiles/server.dir/common/server_monitor_outgoing_queues.cpp.s: cmake_force
 CMakeFiles/server.dir/common/socket.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/socket.cpp.o: ../common/socket.cpp
 CMakeFiles/server.dir/common/socket.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/server.dir/common/socket.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/server.dir/common/socket.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/socket.cpp.o -MF CMakeFiles/server.dir/common/socket.cpp.o.d -o CMakeFiles/server.dir/common/socket.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/socket.cpp
 
 CMakeFiles/server.dir/common/socket.cpp.i: cmake_force
@@ -240,7 +254,7 @@ CMakeFiles/server.dir/common/socket.cpp.s: cmake_force
 CMakeFiles/server.dir/common/wrap_socket.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp
 CMakeFiles/server.dir/common/wrap_socket.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/server.dir/common/wrap_socket.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/server.dir/common/wrap_socket.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/common/wrap_socket.cpp.o -MF CMakeFiles/server.dir/common/wrap_socket.cpp.o.d -o CMakeFiles/server.dir/common/wrap_socket.cpp.o -c /home/fede/Documentos/Taller/tp-worms/common/wrap_socket.cpp
 
 CMakeFiles/server.dir/common/wrap_socket.cpp.i: cmake_force
@@ -254,7 +268,7 @@ CMakeFiles/server.dir/common/wrap_socket.cpp.s: cmake_force
 CMakeFiles/server.dir/server/aceptador.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/aceptador.cpp.o: ../server/aceptador.cpp
 CMakeFiles/server.dir/server/aceptador.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/server.dir/server/aceptador.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/server.dir/server/aceptador.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/aceptador.cpp.o -MF CMakeFiles/server.dir/server/aceptador.cpp.o.d -o CMakeFiles/server.dir/server/aceptador.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/aceptador.cpp
 
 CMakeFiles/server.dir/server/aceptador.cpp.i: cmake_force
@@ -268,7 +282,7 @@ CMakeFiles/server.dir/server/aceptador.cpp.s: cmake_force
 CMakeFiles/server.dir/server/beam.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/beam.cpp.o: ../server/beam.cpp
 CMakeFiles/server.dir/server/beam.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/server.dir/server/beam.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/server.dir/server/beam.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/beam.cpp.o -MF CMakeFiles/server.dir/server/beam.cpp.o.d -o CMakeFiles/server.dir/server/beam.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/beam.cpp
 
 CMakeFiles/server.dir/server/beam.cpp.i: cmake_force
@@ -282,7 +296,7 @@ CMakeFiles/server.dir/server/beam.cpp.s: cmake_force
 CMakeFiles/server.dir/server/game.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/game.cpp.o: ../server/game.cpp
 CMakeFiles/server.dir/server/game.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/server.dir/server/game.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/server.dir/server/game.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/game.cpp.o -MF CMakeFiles/server.dir/server/game.cpp.o.d -o CMakeFiles/server.dir/server/game.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/game.cpp
 
 CMakeFiles/server.dir/server/game.cpp.i: cmake_force
@@ -296,7 +310,7 @@ CMakeFiles/server.dir/server/game.cpp.s: cmake_force
 CMakeFiles/server.dir/server/lobby.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/lobby.cpp.o: ../server/lobby.cpp
 CMakeFiles/server.dir/server/lobby.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/server.dir/server/lobby.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/server.dir/server/lobby.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/lobby.cpp.o -MF CMakeFiles/server.dir/server/lobby.cpp.o.d -o CMakeFiles/server.dir/server/lobby.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/lobby.cpp
 
 CMakeFiles/server.dir/server/lobby.cpp.i: cmake_force
@@ -310,7 +324,7 @@ CMakeFiles/server.dir/server/lobby.cpp.s: cmake_force
 CMakeFiles/server.dir/server/main.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/main.cpp.o: ../server/main.cpp
 CMakeFiles/server.dir/server/main.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/server.dir/server/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/server.dir/server/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/main.cpp.o -MF CMakeFiles/server.dir/server/main.cpp.o.d -o CMakeFiles/server.dir/server/main.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/main.cpp
 
 CMakeFiles/server.dir/server/main.cpp.i: cmake_force
@@ -324,7 +338,7 @@ CMakeFiles/server.dir/server/main.cpp.s: cmake_force
 CMakeFiles/server.dir/server/receiver_thread.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/receiver_thread.cpp.o: ../server/receiver_thread.cpp
 CMakeFiles/server.dir/server/receiver_thread.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/server.dir/server/receiver_thread.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/server.dir/server/receiver_thread.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/receiver_thread.cpp.o -MF CMakeFiles/server.dir/server/receiver_thread.cpp.o.d -o CMakeFiles/server.dir/server/receiver_thread.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.cpp
 
 CMakeFiles/server.dir/server/receiver_thread.cpp.i: cmake_force
@@ -338,7 +352,7 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.s: cmake_force
 CMakeFiles/server.dir/server/sender_thread.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/sender_thread.cpp.o: ../server/sender_thread.cpp
 CMakeFiles/server.dir/server/sender_thread.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/server.dir/server/sender_thread.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/server.dir/server/sender_thread.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/sender_thread.cpp.o -MF CMakeFiles/server.dir/server/sender_thread.cpp.o.d -o CMakeFiles/server.dir/server/sender_thread.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/sender_thread.cpp
 
 CMakeFiles/server.dir/server/sender_thread.cpp.i: cmake_force
@@ -352,7 +366,7 @@ CMakeFiles/server.dir/server/sender_thread.cpp.s: cmake_force
 CMakeFiles/server.dir/server/server.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/server.cpp.o: ../server/server.cpp
 CMakeFiles/server.dir/server/server.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/server.dir/server/server.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/server.dir/server/server.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/server.cpp.o -MF CMakeFiles/server.dir/server/server.cpp.o.d -o CMakeFiles/server.dir/server/server.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/server.cpp
 
 CMakeFiles/server.dir/server/server.cpp.i: cmake_force
@@ -366,7 +380,7 @@ CMakeFiles/server.dir/server/server.cpp.s: cmake_force
 CMakeFiles/server.dir/server/server_client.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/server_client.cpp.o: ../server/server_client.cpp
 CMakeFiles/server.dir/server/server_client.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/server.dir/server/server_client.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/server.dir/server/server_client.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/server_client.cpp.o -MF CMakeFiles/server.dir/server/server_client.cpp.o.d -o CMakeFiles/server.dir/server/server_client.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/server_client.cpp
 
 CMakeFiles/server.dir/server/server_client.cpp.i: cmake_force
@@ -380,7 +394,7 @@ CMakeFiles/server.dir/server/server_client.cpp.s: cmake_force
 CMakeFiles/server.dir/server/server_protocol.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/server_protocol.cpp.o: ../server/server_protocol.cpp
 CMakeFiles/server.dir/server/server_protocol.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/server.dir/server/server_protocol.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/server.dir/server/server_protocol.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/server_protocol.cpp.o -MF CMakeFiles/server.dir/server/server_protocol.cpp.o.d -o CMakeFiles/server.dir/server/server_protocol.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/server_protocol.cpp
 
 CMakeFiles/server.dir/server/server_protocol.cpp.i: cmake_force
@@ -394,7 +408,7 @@ CMakeFiles/server.dir/server/server_protocol.cpp.s: cmake_force
 CMakeFiles/server.dir/server/world.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/world.cpp.o: ../server/world.cpp
 CMakeFiles/server.dir/server/world.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/server.dir/server/world.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/server.dir/server/world.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/world.cpp.o -MF CMakeFiles/server.dir/server/world.cpp.o.d -o CMakeFiles/server.dir/server/world.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/world.cpp
 
 CMakeFiles/server.dir/server/world.cpp.i: cmake_force
@@ -408,7 +422,7 @@ CMakeFiles/server.dir/server/world.cpp.s: cmake_force
 CMakeFiles/server.dir/server/worm.cpp.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/server/worm.cpp.o: ../server/worm.cpp
 CMakeFiles/server.dir/server/worm.cpp.o: CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/server.dir/server/worm.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/server.dir/server/worm.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/server.dir/server/worm.cpp.o -MF CMakeFiles/server.dir/server/worm.cpp.o.d -o CMakeFiles/server.dir/server/worm.cpp.o -c /home/fede/Documentos/Taller/tp-worms/server/worm.cpp
 
 CMakeFiles/server.dir/server/worm.cpp.i: cmake_force
@@ -424,6 +438,7 @@ server_OBJECTS = \
 "CMakeFiles/server.dir/common/Dtos/dead.cpp.o" \
 "CMakeFiles/server.dir/common/Dtos/dto.cpp.o" \
 "CMakeFiles/server.dir/common/Dtos/gusano.cpp.o" \
+"CMakeFiles/server.dir/common/Dtos/mover.cpp.o" \
 "CMakeFiles/server.dir/common/Dtos/position.cpp.o" \
 "CMakeFiles/server.dir/common/Dtos/viga.cpp.o" \
 "CMakeFiles/server.dir/common/blockingqueue.cpp.o" \
@@ -453,6 +468,7 @@ server_EXTERNAL_OBJECTS =
 server: CMakeFiles/server.dir/common/Dtos/dead.cpp.o
 server: CMakeFiles/server.dir/common/Dtos/dto.cpp.o
 server: CMakeFiles/server.dir/common/Dtos/gusano.cpp.o
+server: CMakeFiles/server.dir/common/Dtos/mover.cpp.o
 server: CMakeFiles/server.dir/common/Dtos/position.cpp.o
 server: CMakeFiles/server.dir/common/Dtos/viga.cpp.o
 server: CMakeFiles/server.dir/common/blockingqueue.cpp.o
@@ -477,7 +493,7 @@ server: CMakeFiles/server.dir/server/world.cpp.o
 server: CMakeFiles/server.dir/server/worm.cpp.o
 server: CMakeFiles/server.dir/build.make
 server: CMakeFiles/server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Linking CXX executable server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Linking CXX executable server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

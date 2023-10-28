@@ -8,6 +8,7 @@
 
 #include "queue.h"
 #include "dto.h"
+#include "gusano.h"
 #include "server_monitor_outgoing_queues.h"
 #include "server_protocol.h"
 
@@ -20,6 +21,7 @@ private:
 
 public:
     void addMessageToQueues();
+    void AddGusanoToQueues(Gusano *g);
     void addMessageToQueues(Dto *dto);
     void addVigaToQueues(Dto *dto);
     void addQueueToList(Queue<Dto *> &q);

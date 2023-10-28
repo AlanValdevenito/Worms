@@ -188,6 +188,7 @@ CMakeFiles/client.dir/client/client_protocol.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
@@ -196,4 +197,4 @@ CMakeFiles/client.dir/client/client_protocol.cpp.o: \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/list.tcc \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.h

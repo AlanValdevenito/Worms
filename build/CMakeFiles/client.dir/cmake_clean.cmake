@@ -21,6 +21,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/client.dir/common/Dtos/dto.cpp.o.d"
   "CMakeFiles/client.dir/common/Dtos/gusano.cpp.o"
   "CMakeFiles/client.dir/common/Dtos/gusano.cpp.o.d"
+  "CMakeFiles/client.dir/common/Dtos/mover.cpp.o"
+  "CMakeFiles/client.dir/common/Dtos/mover.cpp.o.d"
   "CMakeFiles/client.dir/common/Dtos/position.cpp.o"
   "CMakeFiles/client.dir/common/Dtos/position.cpp.o.d"
   "CMakeFiles/client.dir/common/Dtos/viga.cpp.o"

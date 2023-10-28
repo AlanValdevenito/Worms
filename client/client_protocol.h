@@ -11,14 +11,16 @@
 
 #include <netinet/in.h>
 
+#include "socket.h"
 #include "dto.h"
 #include "dead.h"
 #include "viga.h"
 #include "gusano.h"
-#include "socket.h"
+#include "mover.h"
 
 const uint8_t VIGAS_CODE = 1;
 const uint8_t GUSANO_CODE = 2;
+// const uint8_t MOVER_A_DERECHA_CODE = 3;
 
 class ClientProtocol
 {
@@ -27,6 +29,7 @@ public:
     ~ClientProtocol();
     void send(bool &was_closed);
     Dto *receive(bool &was_closed);
+    void moverADerecha(MoverADerecha *m, bool &was_closed);
 
 private:
     Socket &skt;

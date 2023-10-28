@@ -15,6 +15,8 @@
 #include "viga.h"
 #include "gusano.h"
 
+const uint8_t MOVER_A_DERECHA_CODE = 3;
+
 class Game : public Thread
 {
 private:
@@ -30,5 +32,8 @@ public:
     void stop() override;
     void sendMap(Queue<Dto *> &q);
     void sendWorms(Queue<Dto *> &q);
+    void moveWormRight();
+    void executeCommand(Dto *dto);
+    void broadcast();
 };
 #endif

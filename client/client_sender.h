@@ -15,10 +15,13 @@
 #include "queue.h"
 #include "thread.h"
 #include "client_protocol.h"
+#include "dto.h"
+#include "mover.h"
 
-const char CHAT[] = "Chat";
-const char READ[] = "Read";
-const char EXIT[] = "Exit";
+// const char CHAT[] = "Chat";
+// const char READ[] = "Read";
+// const char EXIT[] = "Exit";
+const uint8_t MOVER_A_DERECHA = 3;
 
 struct SenderTH : public Thread
 {
@@ -32,6 +35,7 @@ public:
 
     SenderTH(ClientProtocol &p, Queue<Dto *> &q, Broadcaster &b);
     void run() override;
+    void send(Dto *d);
 };
 
 #endif

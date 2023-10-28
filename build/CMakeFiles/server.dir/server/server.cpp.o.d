@@ -203,6 +203,8 @@ CMakeFiles/server.dir/server/server.cpp.o: \
  /usr/include/c++/11/queue /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_queue.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
@@ -218,9 +220,7 @@ CMakeFiles/server.dir/server/server.cpp.o: \
  /usr/include/c++/11/bits/uniform_int_dist.h \
  /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
  /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /home/fede/Documentos/Taller/tp-worms/common/thread.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \

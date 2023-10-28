@@ -194,6 +194,7 @@ CMakeFiles/client.dir/client/main.cpp.o: \
  /usr/include/c++/11/bits/this_thread_sleep.h \
  /home/fede/Documentos/Taller/tp-worms/client/client_protocol.h \
  /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
@@ -202,7 +203,7 @@ CMakeFiles/client.dir/client/main.cpp.o: \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/list.tcc \
  /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.h \
  /home/fede/Documentos/Taller/tp-worms/client/client_receiver.h \
  /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
  /usr/include/c++/11/condition_variable \

@@ -7,16 +7,15 @@ void Receiver::run()
         Dto *dto = protocol.recv(was_closed);
         std::cout << "server recv : " << dto->return_code() << std::endl;
 
-        // if (dto->is_alive())
-        // {
-        //     // std::cout << dto->message() << std::endl; // proteger
-        //     // broadcaster.addMessageToQueues(dto);
-        // }
-        // else
-        // {
-        //     was_closed = true;
-        //     delete dto;
-        // }
+        if (dto->is_alive())
+        {
+            queue.push(dto);
+        }
+        else
+        {
+            was_closed = true;
+            delete dto;
+        }
     }
     broadcaster.removeQueueFromList(&queue);
     // broadcaster.addMessageToQueues();

@@ -78,7 +78,7 @@ int Vista::iniciar()
 		if (tiempoTranscurrido > cuentaRegresiva)
 		{
 			tiempoInicial = tiempoActual;
-				}
+		}
 
 		if (handleEvents(worm))
 		{
@@ -102,6 +102,7 @@ void Vista::guardar_vigas()
 	{
 		Viga *viga = (Viga *)dto->popViga();
 		this->vigas.push_back(viga); // Liberar memoria de las vigas cuando se sale de la vista
+									 // delete;
 	}
 }
 
@@ -109,6 +110,8 @@ bool Vista::handleEvents(Worm &worm)
 {
 	// Procesamiento de evento
 	SDL_Event event;
+
+	Dto *mover = new MoverADerecha();
 
 	// REvisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
 	while (SDL_PollEvent(&event))
@@ -153,9 +156,8 @@ bool Vista::handleEvents(Worm &worm)
 
 			// Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
 			case SDLK_RIGHT:
-				// worm.moveRigth();
-				// Dto *d = new Mover();
-				// cliente.send_queue.push(d);
+				worm.moveRigth();
+				cliente.send_queue.push(mover);
 				break;
 
 			// Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
@@ -348,7 +350,8 @@ void Vista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &fo
 
 void Vista::actualizar(Worm &worm, float dt)
 {
-	worm.update(dt);
+	Dto *gusano = cliente.recv_queue.pop();
+	worm.update(dt, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())));
 }
 
 float Vista::metros_a_pixeles(float metros)

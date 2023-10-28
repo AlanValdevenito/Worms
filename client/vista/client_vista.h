@@ -10,23 +10,18 @@
 #include "client_worm.h"
 #include "client.h"
 #include "viga.h"
+#include "mover.h"
 #include "dto.h"
 
 using namespace SDL2pp;
-
-struct Animacion
-{
-    // Gusano gusano;
-    bool gusano_moviendose;
-    bool gusano_moviendose_izquierda;
-    int run_phase;
-};
 
 class Vista
 {
 private:
     Client &cliente;
     std::vector<Viga *> vigas;
+    // std::vector<Worm *> worms;
+    // Worm worm_turno;
 
 public:
     Vista(Client &cliente);

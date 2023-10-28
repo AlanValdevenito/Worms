@@ -13,5 +13,6 @@ public:
     float getXCoordinate();
     float getYCoordinate();
     uint8_t getId();
+    void moveRight();
     ~Worm();
 };

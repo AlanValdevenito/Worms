@@ -206,6 +206,7 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
  /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
@@ -219,7 +220,6 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.o: \
  /usr/include/c++/11/bits/algorithmfwd.h \
  /usr/include/c++/11/bits/stl_tempbuf.h \
  /usr/include/c++/11/bits/uniform_int_dist.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
  /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /home/fede/Documentos/Taller/tp-worms/common/thread.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
