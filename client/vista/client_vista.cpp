@@ -63,6 +63,7 @@ int Vista::iniciar()
 
 	Dto *gusano = cliente.recv_queue.pop();
 	Worm worm(sprites, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), metros_a_pixeles(centimetros_a_metros(gusano->y_pos())));
+	delete gusano;
 
 	/******************** GAME LOOP ********************/
 
@@ -350,8 +351,14 @@ void Vista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &fo
 
 void Vista::actualizar(Worm &worm, float dt)
 {
-	Dto *gusano = cliente.recv_queue.pop();
-	worm.update(dt, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())));
+	Dto *gusano;
+
+	if (cliente.recv_queue.try_pop(gusano)) {
+		std::cout << (int) gusano->x_pos() << std::endl;
+		worm.update(dt, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())));
+		delete gusano;
+	}
+
 }
 
 float Vista::metros_a_pixeles(float metros)

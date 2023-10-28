@@ -27,5 +27,5 @@ void SenderTH::send(Dto *d)
     if (d->return_code() == MOVER_A_DERECHA)
         protocol.moverADerecha((MoverADerecha *)d, was_closed);
     else
-        ;
+        std::cerr << "Codigo de envio desconocido\n";
 }

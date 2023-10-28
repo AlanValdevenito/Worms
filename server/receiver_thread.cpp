@@ -5,7 +5,8 @@ void Receiver::run()
     while (not was_closed)
     {
         Dto *dto = protocol.recv(was_closed);
-        std::cout << "server recv : " << dto->return_code() << std::endl;
+        // std::cout << "server recv : " << dto->return_code() << std::endl;
+        printf("return code: %u\n",dto->return_code());
 
         if (dto->is_alive())
         {

@@ -19,7 +19,7 @@ uint8_t Worm::getId()
 
 void Worm::moveRight()
 {
-    body->SetLinearVelocity(b2Vec2(0.2f, 0.0f));
+    body->SetLinearVelocity(b2Vec2(2.0f, 0.0f));
 }
 
 Worm::~Worm() {}

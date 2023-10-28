@@ -13,6 +13,8 @@ const uint8_t ERROR = 1;
 #include "client.h"
 #include "socket.h"
 #include "client_vista.h"
+#include "dto.h"
+#include "mover.h"
 
 int main(int argc, char *argv[])
 {
@@ -42,6 +44,8 @@ int main(int argc, char *argv[])
         client.start();
 
         vista.iniciar();
+        //Dto* d = new MoverADerecha();
+        //client.send_queue.push(d);
 
         client.join();
 

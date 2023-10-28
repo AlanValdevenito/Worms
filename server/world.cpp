@@ -61,7 +61,7 @@ std::list<Beam> &World::getBeams()
     return beams;
 }
 
-std::list<Worm> &World::getWorms()
+std::list<Worm*> &World::getWorms()
 {
     return worms;
 }
@@ -70,7 +70,7 @@ void World::addWorm(float x, float y)
 {
     b2Body *body = createDynamicBody(x, y);
     Worm worm(body, x, y, 0);
-    worms.push_back(worm);
+    worms.push_back(&worm);
 }
 
 void World::step()

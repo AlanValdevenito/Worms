@@ -76,7 +76,7 @@ Dto *ClientProtocol::receiveGusano(bool &was_closed)
     x = ntohs(x);
     y = ntohs(y);
 
-    // printf("Cliente ---> id:%u  x:%u y:%u  \n", id, x, y);
+    printf("Cliente ---> id:%u  x:%u y:%u  \n", id, x, y);
 
     return new Gusano(id, x, y);
 }
