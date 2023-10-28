@@ -74,8 +74,9 @@ void World::addWorm(float x, float y)
 }
 
 void World::step()
-{
-    world.Step(1 / 60, 10, 10);
+{   
+    float timeStep = 1.0f / 60.0f;
+    world.Step(timeStep, 10, 10);
 }
 
 World::~World() {}
