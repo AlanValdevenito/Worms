@@ -58,7 +58,7 @@ Dto *ClientProtocol::receiveViga(bool &was_closed)
     ancho = ntohs(ancho);
     alto = ntohs(alto);
 
-    printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
+    // printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
 
     return new Viga(x, y, ancho, alto);
 }

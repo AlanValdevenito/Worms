@@ -22,6 +22,7 @@ private:
     Queue<Dto *> &common_queue;
     Broadcaster &broadcaster;
     World world;
+    b2Body *body_w;
 
 public:
     bool game_finished;
