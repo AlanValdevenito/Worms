@@ -27,6 +27,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/fede/Documentos/Taller/tp-worms/server/game.cpp" "CMakeFiles/server.dir/server/game.cpp.o" "gcc" "CMakeFiles/server.dir/server/game.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/lobby.cpp" "CMakeFiles/server.dir/server/lobby.cpp.o" "gcc" "CMakeFiles/server.dir/server/lobby.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/main.cpp" "CMakeFiles/server.dir/server/main.cpp.o" "gcc" "CMakeFiles/server.dir/server/main.cpp.o.d"
+  "/home/fede/Documentos/Taller/tp-worms/server/partida.cpp" "CMakeFiles/server.dir/server/partida.cpp.o" "gcc" "CMakeFiles/server.dir/server/partida.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/receiver_thread.cpp" "CMakeFiles/server.dir/server/receiver_thread.cpp.o" "gcc" "CMakeFiles/server.dir/server/receiver_thread.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/sender_thread.cpp" "CMakeFiles/server.dir/server/sender_thread.cpp.o" "gcc" "CMakeFiles/server.dir/server/sender_thread.cpp.o.d"
   "/home/fede/Documentos/Taller/tp-worms/server/server.cpp" "CMakeFiles/server.dir/server/server.cpp.o" "gcc" "CMakeFiles/server.dir/server/server.cpp.o.d"

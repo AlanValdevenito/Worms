@@ -1,40 +1,44 @@
 #include "lobby.h"
 
-Lobby::Lobby() : game(common_queue, broadcaster)
+// crear una nueva instancia de game cuando creo una partida y pasarselo a la partida
+Lobby::Lobby() : mapId(0), partida(std::ref(common_queue))
 {
-    game.start();
+    // partida.start();
 }
 
 Lobby::~Lobby() {}
 
-void Lobby::partida(Game &game, ServerClient *c)
-{
-    // partida le va a pasar el mapa  y se lo guarda
+// void Lobby::partida(Game &game, ServerClient *c)
+// {
+//     // partida le va a pasar el mapa  y se lo guarda
 
-    // mandar_mapa
-    // c->addMapToQueue();
-    game.sendMap(c->sender_queue); // le mando el mapa a la cola sender // CAMBIAAARS
+//     // mandar_mapa
+//     // c->addMapToQueue();
+//     game.sendMap(c->sender_queue); // le mando el mapa a la cola sender // CAMBIAAARS
 
-    game.sendWorms(c->sender_queue);
-}
+//     game.sendWorms(c->sender_queue);
+// }
 
 void Lobby::newClient(Socket &&s)
 {
-    ServerClient *c = new ServerClient(std::move(s), std::ref(broadcaster), std::ref(common_queue));
+    ServerClient *c = new ServerClient(std::move(s), std::ref(broadcaster), std::ref(common_queue)); // no necesita el broadcaster
     c->start();
 
     reap_dead();
 
     clients.push_back(c);
+    // sendMatchList();
 
-    broadcaster.addQueueToList(c->sender_queue); // agrego la cola send al broadcaster
+    // me parece que va a ser de cada partida
+    // broadcaster.addQueueToList(c->sender_queue); // agrego la cola send al broadcaster
 
     // aca se deberia pedir la partida
     // send y recv lista de partidas
+    // enviar_lista_de_partidas(c->sender_queue);
 
-    // send y recv lista de mapas
-
-    partida(game, c);
+    // send y recv lista de mapas ----------------> SOLO PARA PARTIDAS NUEVAS????
+    // Partida p(std::ref(common_queue)); // NO PASARLE EL BROADCASTER
+    partida.start(c);
 }
 
 void Lobby::reap_dead()
@@ -70,5 +74,8 @@ void Lobby::kill()
     }
     broadcaster.deleteAllQueues();
     clients.clear();
-    game.game_finished = true;
+
+    // game.game_finished = true;
+    partida.finish();
+    // paridas.finish();
 }

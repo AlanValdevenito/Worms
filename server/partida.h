@@ -1,5 +1,5 @@
-#ifndef LOBBY_H
-#define LOBBY_H
+#ifndef PARTIDA_H
+#define PARTIDA_H
 
 #include <atomic>
 #include <chrono>
@@ -20,29 +20,20 @@
 #include "thread.h"
 #include "server_protocol.h"
 #include "server_client.h"
-#include "partida.h"
 #include "game.h"
 #include "dto.h"
 
-class Lobby
+class Partida
 {
 public:
-    Lobby();
-    ~Lobby();
-    void kill();
-    void reap_dead();
-    void newClient(Socket &&s);
-
-    std::list<ServerClient *> clients;
+    Partida(Queue<Dto *> &cq);
+    ~Partida();
+    void start(ServerClient *c);
+    void finish();
 
 private:
     Broadcaster broadcaster;
-    Queue<Dto *> common_queue;
-    uint8_t mapId;
-    Partida partida;
-    // Game game;
-
-    // void partida(ServerClient *c);
-    // void partida(Game &game, ServerClient *c);
+    Queue<Dto *> &common_queue;
+    Game game;
 };
 #endif

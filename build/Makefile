@@ -832,6 +832,30 @@ server/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/main.cpp.s
 .PHONY : server/main.cpp.s
 
+server/partida.o: server/partida.cpp.o
+.PHONY : server/partida.o
+
+# target to build an object file
+server/partida.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/partida.cpp.o
+.PHONY : server/partida.cpp.o
+
+server/partida.i: server/partida.cpp.i
+.PHONY : server/partida.i
+
+# target to preprocess a source file
+server/partida.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/partida.cpp.i
+.PHONY : server/partida.cpp.i
+
+server/partida.s: server/partida.cpp.s
+.PHONY : server/partida.s
+
+# target to generate assembly for a file
+server/partida.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/server/partida.cpp.s
+.PHONY : server/partida.cpp.s
+
 server/receiver_thread.o: server/receiver_thread.cpp.o
 .PHONY : server/receiver_thread.o
 
@@ -1091,6 +1115,9 @@ help:
 	@echo "... server/main.o"
 	@echo "... server/main.i"
 	@echo "... server/main.s"
+	@echo "... server/partida.o"
+	@echo "... server/partida.i"
+	@echo "... server/partida.s"
 	@echo "... server/receiver_thread.o"
 	@echo "... server/receiver_thread.i"
 	@echo "... server/receiver_thread.s"

@@ -37,6 +37,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/server.dir/server/lobby.cpp.o.d"
   "CMakeFiles/server.dir/server/main.cpp.o"
   "CMakeFiles/server.dir/server/main.cpp.o.d"
+  "CMakeFiles/server.dir/server/partida.cpp.o"
+  "CMakeFiles/server.dir/server/partida.cpp.o.d"
   "CMakeFiles/server.dir/server/receiver_thread.cpp.o"
   "CMakeFiles/server.dir/server/receiver_thread.cpp.o.d"
   "CMakeFiles/server.dir/server/sender_thread.cpp.o"

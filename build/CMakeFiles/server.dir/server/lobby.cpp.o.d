@@ -233,6 +233,7 @@ CMakeFiles/server.dir/server/lobby.cpp.o: \
  /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /home/fede/Documentos/Taller/tp-worms/server/sender_thread.h \
  /home/fede/Documentos/Taller/tp-worms/server/server_client.h \
+ /home/fede/Documentos/Taller/tp-worms/server/partida.h \
  /home/fede/Documentos/Taller/tp-worms/server/game.h \
  /usr/include/box2d/box2d.h /usr/include/box2d/b2_settings.h \
  /usr/include/box2d/b2_types.h /usr/include/box2d/b2_api.h \
