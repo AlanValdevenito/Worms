@@ -1,0 +1,4 @@
+/home/ricomateo/Desktop/taller/Worms/build/CMakeFiles/client.dir
+/home/ricomateo/Desktop/taller/Worms/build/CMakeFiles/server.dir
+/home/ricomateo/Desktop/taller/Worms/build/CMakeFiles/edit_cache.dir
+/home/ricomateo/Desktop/taller/Worms/build/CMakeFiles/rebuild_cache.dir
