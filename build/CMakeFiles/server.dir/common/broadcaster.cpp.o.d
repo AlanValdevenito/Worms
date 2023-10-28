@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/common/broadcaster.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/common/broadcaster.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/broadcaster.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/common/broadcaster.h \
+ /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -160,7 +160,7 @@ CMakeFiles/server.dir/common/broadcaster.cpp.o: \
  /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /home/ricomateo/Desktop/taller/Worms/common/queue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/queue.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -182,11 +182,12 @@ CMakeFiles/server.dir/common/broadcaster.cpp.o: \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/gusano.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/server_monitor_outgoing_queues.h \
- /home/ricomateo/Desktop/taller/Worms/server/server_protocol.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/constantes.h \
+ /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
@@ -215,7 +216,7 @@ CMakeFiles/server.dir/common/broadcaster.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/ricomateo/Desktop/taller/Worms/common/blockingqueue.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/viga.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dead.h \
- /home/ricomateo/Desktop/taller/Worms/common/socket.h
+ /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.h

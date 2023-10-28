@@ -1,7 +1,8 @@
 CMakeFiles/server.dir/server/world.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/server/world.cpp \
+ /home/fede/Documentos/Taller/tp-worms/server/world.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/server/world.h /usr/include/stdio.h \
+ /home/fede/Documentos/Taller/tp-worms/server/world.h \
+ /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -208,5 +209,5 @@ CMakeFiles/server.dir/server/world.cpp.o: \
  /usr/include/box2d/b2_pulley_joint.h \
  /usr/include/box2d/b2_revolute_joint.h \
  /usr/include/box2d/b2_weld_joint.h /usr/include/box2d/b2_wheel_joint.h \
- /home/ricomateo/Desktop/taller/Worms/server/beam.h \
- /home/ricomateo/Desktop/taller/Worms/server/worm.h
+ /home/fede/Documentos/Taller/tp-worms/server/beam.h \
+ /home/fede/Documentos/Taller/tp-worms/server/worm.h

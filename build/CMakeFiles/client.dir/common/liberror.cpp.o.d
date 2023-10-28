@@ -1,7 +1,7 @@
 CMakeFiles/client.dir/common/liberror.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/common/liberror.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/liberror.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/common/liberror.h \
+ /home/fede/Documentos/Taller/tp-worms/common/liberror.h \
  /usr/include/c++/11/exception \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

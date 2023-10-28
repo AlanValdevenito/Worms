@@ -1,5 +1,5 @@
 CMakeFiles/client.dir/client/vista/client_animacion.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/client/vista/client_animacion.cpp \
+ /home/fede/Documentos/Taller/tp-worms/client/vista/client_animacion.cpp \
  /usr/include/stdc-predef.h /usr/local/include/SDL2pp/SDL2pp.hh \
  /usr/local/include/SDL2pp/Config.hh /usr/local/include/SDL2pp/SDL.hh \
  /usr/include/SDL2/SDL_stdinc.h /usr/include/SDL2/SDL_config.h \
@@ -340,4 +340,4 @@ CMakeFiles/client.dir/client/vista/client_animacion.cpp.o: \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /usr/local/include/SDL2pp/Music.hh /usr/local/include/SDL2pp/SDLMixer.hh \
- /home/ricomateo/Desktop/taller/Worms/client/vista/client_animacion.h
+ /home/fede/Documentos/Taller/tp-worms/client/vista/client_animacion.h

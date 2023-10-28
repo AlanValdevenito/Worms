@@ -6,8 +6,7 @@
 #include <vector>
 
 #include "dto.h"
-
-const uint8_t CODE_MOVER_A_DERECHA = 3;
+#include "constantes.h"
 
 class MoverADerecha : public Dto
 {

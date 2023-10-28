@@ -1,7 +1,7 @@
 CMakeFiles/client.dir/common/server_monitor_outgoing_queues.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/common/server_monitor_outgoing_queues.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/common/server_monitor_outgoing_queues.h \
+ /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -145,7 +145,7 @@ CMakeFiles/client.dir/common/server_monitor_outgoing_queues.cpp.o: \
  /usr/include/c++/11/bits/basic_string.tcc \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /home/ricomateo/Desktop/taller/Worms/common/queue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/queue.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -167,7 +167,7 @@ CMakeFiles/client.dir/common/server_monitor_outgoing_queues.cpp.o: \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /usr/include/c++/11/iostream /usr/include/c++/11/ostream \
  /usr/include/c++/11/ios /usr/include/c++/11/bits/ios_base.h \
  /usr/include/c++/11/bits/locale_classes.h \

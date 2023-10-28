@@ -17,7 +17,7 @@ Dto *ClientProtocol::receive(bool &was_closed)
     uint8_t code;
     skt.recvall(&code, sizeof(code), &was_closed);
 
-    if (code == VIGAS_CODE)
+    if (code == VIGA_CODE)
         return receiveVigas(was_closed);
     else if (code == GUSANO_CODE)
         return receiveGusano(was_closed);

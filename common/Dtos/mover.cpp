@@ -1,6 +1,6 @@
 #include "mover.h"
 
-MoverADerecha::MoverADerecha() : Dto(CODE_MOVER_A_DERECHA) {}
+MoverADerecha::MoverADerecha() : Dto(MOVER_A_DERECHA_CODE) {}
 
 MoverADerecha::~MoverADerecha() {}
 

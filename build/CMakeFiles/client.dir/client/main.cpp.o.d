@@ -1,5 +1,5 @@
 CMakeFiles/client.dir/client/main.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/client/main.cpp \
+ /home/fede/Documentos/Taller/tp-worms/client/main.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/cstring \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -185,27 +185,28 @@ CMakeFiles/client.dir/client/main.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/ricomateo/Desktop/taller/Worms/client/client.h \
+ /home/fede/Documentos/Taller/tp-worms/client/client.h \
  /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
  /usr/include/c++/11/limits /usr/include/c++/11/ctime \
  /usr/include/c++/11/bits/parse_numbers.h /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
- /home/ricomateo/Desktop/taller/Worms/client/client_protocol.h \
+ /home/fede/Documentos/Taller/tp-worms/client/client_protocol.h \
  /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
- /home/ricomateo/Desktop/taller/Worms/common/socket.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dead.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/viga.h \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.h \
+ /home/fede/Documentos/Taller/tp-worms/common/constantes.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/list.tcc \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/gusano.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/mover.h \
- /home/ricomateo/Desktop/taller/Worms/client/client_receiver.h \
- /home/ricomateo/Desktop/taller/Worms/common/blockingqueue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.h \
+ /home/fede/Documentos/Taller/tp-worms/client/client_receiver.h \
+ /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
  /usr/include/c++/11/condition_variable \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
@@ -215,8 +216,8 @@ CMakeFiles/client.dir/client/main.cpp.o: \
  /usr/include/c++/11/queue /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/ricomateo/Desktop/taller/Worms/common/broadcaster.h \
- /home/ricomateo/Desktop/taller/Worms/common/queue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
+ /home/fede/Documentos/Taller/tp-worms/common/queue.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -226,14 +227,14 @@ CMakeFiles/client.dir/client/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
- /home/ricomateo/Desktop/taller/Worms/common/server_monitor_outgoing_queues.h \
- /home/ricomateo/Desktop/taller/Worms/server/server_protocol.h \
- /home/ricomateo/Desktop/taller/Worms/common/queue.h \
- /home/ricomateo/Desktop/taller/Worms/common/thread.h \
+ /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
+ /home/fede/Documentos/Taller/tp-worms/common/queue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/thread.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
- /home/ricomateo/Desktop/taller/Worms/client/client_sender.h \
- /home/ricomateo/Desktop/taller/Worms/client/vista/client_vista.h \
+ /home/fede/Documentos/Taller/tp-worms/client/client_sender.h \
+ /home/fede/Documentos/Taller/tp-worms/client/vista/client_vista.h \
  /usr/include/c++/11/algorithm \
  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
  /usr/include/c++/11/pstl/execution_defs.h \
@@ -400,6 +401,6 @@ CMakeFiles/client.dir/client/main.cpp.o: \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /usr/local/include/SDL2pp/Music.hh /usr/local/include/SDL2pp/SDLMixer.hh \
- /home/ricomateo/Desktop/taller/Worms/client/vista/client_worm.h \
- /home/ricomateo/Desktop/taller/Worms/client/vista/client_animacion.h \
- /home/ricomateo/Desktop/taller/Worms/client/client.h
+ /home/fede/Documentos/Taller/tp-worms/client/vista/client_worm.h \
+ /home/fede/Documentos/Taller/tp-worms/client/vista/client_animacion.h \
+ /home/fede/Documentos/Taller/tp-worms/client/client.h

@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/server/sender_thread.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/server/sender_thread.cpp \
+ /home/fede/Documentos/Taller/tp-worms/server/sender_thread.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/server/sender_thread.h \
+ /home/fede/Documentos/Taller/tp-worms/server/sender_thread.h \
  /usr/include/c++/11/cstring \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -182,11 +182,11 @@ CMakeFiles/server.dir/server/sender_thread.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/ricomateo/Desktop/taller/Worms/common/socket.h \
- /home/ricomateo/Desktop/taller/Worms/common/thread.h \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.h \
+ /home/fede/Documentos/Taller/tp-worms/common/thread.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
- /home/ricomateo/Desktop/taller/Worms/common/queue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/queue.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -205,10 +205,11 @@ CMakeFiles/server.dir/server/sender_thread.cpp.o: \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/mutex /usr/include/c++/11/queue \
  /usr/include/c++/11/bits/stl_heap.h /usr/include/c++/11/bits/stl_queue.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/gusano.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/server/server_protocol.h \
+ /home/fede/Documentos/Taller/tp-worms/common/constantes.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
  /usr/include/c++/11/bits/hashtable_policy.h \
@@ -219,6 +220,6 @@ CMakeFiles/server.dir/server/sender_thread.cpp.o: \
  /usr/include/c++/11/bits/algorithmfwd.h \
  /usr/include/c++/11/bits/stl_tempbuf.h \
  /usr/include/c++/11/bits/uniform_int_dist.h \
- /home/ricomateo/Desktop/taller/Worms/common/blockingqueue.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/viga.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dead.h
+ /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h

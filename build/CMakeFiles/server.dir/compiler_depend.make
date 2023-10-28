@@ -562,7 +562,8 @@ CMakeFiles/server.dir/common/Dtos/gusano.cpp.o: ../common/Dtos/gusano.cpp \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  ../common/Dtos/dto.h
+  ../common/Dtos/dto.h \
+  ../common/constantes.h
 
 CMakeFiles/server.dir/common/Dtos/mover.cpp.o: ../common/Dtos/mover.cpp \
   /usr/include/stdc-predef.h \
@@ -750,7 +751,8 @@ CMakeFiles/server.dir/common/Dtos/mover.cpp.o: ../common/Dtos/mover.cpp \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  ../common/Dtos/dto.h
+  ../common/Dtos/dto.h \
+  ../common/constantes.h
 
 CMakeFiles/server.dir/common/Dtos/position.cpp.o: ../common/Dtos/position.cpp \
   /usr/include/stdc-predef.h
@@ -946,7 +948,8 @@ CMakeFiles/server.dir/common/Dtos/viga.cpp.o: ../common/Dtos/viga.cpp \
   /usr/include/c++/11/bits/allocated_ptr.h \
   /usr/include/c++/11/ext/aligned_buffer.h \
   /usr/include/c++/11/bits/list.tcc \
-  ../common/Dtos/dto.h
+  ../common/Dtos/dto.h \
+  ../common/constantes.h
 
 CMakeFiles/server.dir/common/blockingqueue.cpp.o: ../common/blockingqueue.cpp \
   /usr/include/stdc-predef.h \
@@ -1168,6 +1171,7 @@ CMakeFiles/server.dir/common/blockingqueue.cpp.o: ../common/blockingqueue.cpp \
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/list.tcc \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/Dtos/dead.h
 
 CMakeFiles/server.dir/common/broadcaster.cpp.o: ../common/broadcaster.cpp \
@@ -1401,6 +1405,7 @@ CMakeFiles/server.dir/common/broadcaster.cpp.o: ../common/broadcaster.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/server_monitor_outgoing_queues.h \
   ../server/server_protocol.h \
   /usr/include/c++/11/cstring \
@@ -2523,6 +2528,7 @@ CMakeFiles/server.dir/server/aceptador.cpp.o: ../server/aceptador.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/server_monitor_outgoing_queues.h \
   ../server/server_protocol.h \
   /usr/include/c++/11/cstring \
@@ -3215,6 +3221,7 @@ CMakeFiles/server.dir/server/game.cpp.o: ../server/game.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/viga.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/Dtos/dead.h \
   ../common/Dtos/gusano.h \
   ../common/socket.h \
@@ -3487,6 +3494,7 @@ CMakeFiles/server.dir/server/lobby.cpp.o: ../server/lobby.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/server_monitor_outgoing_queues.h \
   ../server/server_protocol.h \
   /usr/include/netinet/in.h \
@@ -3860,6 +3868,7 @@ CMakeFiles/server.dir/server/main.cpp.o: ../server/main.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/server_monitor_outgoing_queues.h \
   ../server/server_protocol.h \
   ../common/blockingqueue.h \
@@ -4187,6 +4196,7 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.o: ../server/receiver_thread.cp
   ../common/Dtos/dto.h \
   ../common/Dtos/viga.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/Dtos/dead.h \
   ../common/broadcaster.h \
   ../common/queue.h \
@@ -4485,6 +4495,7 @@ CMakeFiles/server.dir/server/sender_thread.cpp.o: ../server/sender_thread.cpp \
   /usr/include/c++/11/queue \
   /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_queue.h \
+  ../common/constantes.h \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
@@ -4761,6 +4772,7 @@ CMakeFiles/server.dir/server/server.cpp.o: ../server/server.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/server_monitor_outgoing_queues.h \
   ../server/server_protocol.h \
   /usr/include/c++/11/cstring \
@@ -5117,6 +5129,7 @@ CMakeFiles/server.dir/server/server_client.cpp.o: ../server/server_client.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/server_monitor_outgoing_queues.h \
   ../server/server_protocol.h \
   /usr/include/netinet/in.h \
@@ -5403,6 +5416,7 @@ CMakeFiles/server.dir/server/server_protocol.cpp.o: ../server/server_protocol.cp
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/list.tcc \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/Dtos/dead.h \
   ../common/Dtos/gusano.h \
   ../common/socket.h
@@ -5823,112 +5837,7 @@ CMakeFiles/server.dir/server/worm.cpp.o: ../server/worm.cpp \
   /usr/include/box2d/b2_pulley_joint.h \
   /usr/include/box2d/b2_revolute_joint.h \
   /usr/include/box2d/b2_weld_joint.h \
-  /usr/include/box2d/b2_wheel_joint.h \
-  /usr/include/c++/11/iostream \
-  /usr/include/c++/11/ostream \
-  /usr/include/c++/11/ios \
-  /usr/include/c++/11/iosfwd \
-  /usr/include/c++/11/bits/stringfwd.h \
-  /usr/include/c++/11/bits/memoryfwd.h \
-  /usr/include/c++/11/bits/postypes.h \
-  /usr/include/c++/11/cwchar \
-  /usr/include/wchar.h \
-  /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
-  /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
-  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
-  /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
-  /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
-  /usr/include/c++/11/exception \
-  /usr/include/c++/11/bits/exception.h \
-  /usr/include/c++/11/bits/exception_ptr.h \
-  /usr/include/c++/11/bits/cxxabi_init_exception.h \
-  /usr/include/c++/11/typeinfo \
-  /usr/include/c++/11/bits/hash_bytes.h \
-  /usr/include/c++/11/new \
-  /usr/include/c++/11/bits/nested_exception.h \
-  /usr/include/c++/11/bits/char_traits.h \
-  /usr/include/c++/11/cstdint \
-  /usr/include/c++/11/bits/localefwd.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/c++locale.h \
-  /usr/include/c++/11/clocale \
-  /usr/include/locale.h \
-  /usr/include/x86_64-linux-gnu/bits/locale.h \
-  /usr/include/c++/11/cctype \
-  /usr/include/ctype.h \
-  /usr/include/c++/11/bits/ios_base.h \
-  /usr/include/c++/11/ext/atomicity.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h \
-  /usr/include/pthread.h \
-  /usr/include/sched.h \
-  /usr/include/x86_64-linux-gnu/bits/sched.h \
-  /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
-  /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
-  /usr/include/time.h \
-  /usr/include/x86_64-linux-gnu/bits/time.h \
-  /usr/include/x86_64-linux-gnu/bits/timex.h \
-  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
-  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
-  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
-  /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/atomic_word.h \
-  /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
-  /usr/include/c++/11/bits/locale_classes.h \
-  /usr/include/c++/11/string \
-  /usr/include/c++/11/bits/allocator.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/c++allocator.h \
-  /usr/include/c++/11/ext/new_allocator.h \
-  /usr/include/c++/11/bits/ostream_insert.h \
-  /usr/include/c++/11/bits/cxxabi_forced.h \
-  /usr/include/c++/11/bits/stl_function.h \
-  /usr/include/c++/11/backward/binders.h \
-  /usr/include/c++/11/bits/range_access.h \
-  /usr/include/c++/11/initializer_list \
-  /usr/include/c++/11/bits/basic_string.h \
-  /usr/include/c++/11/ext/alloc_traits.h \
-  /usr/include/c++/11/bits/alloc_traits.h \
-  /usr/include/c++/11/bits/stl_construct.h \
-  /usr/include/c++/11/string_view \
-  /usr/include/c++/11/bits/functional_hash.h \
-  /usr/include/c++/11/bits/string_view.tcc \
-  /usr/include/c++/11/ext/string_conversions.h \
-  /usr/include/c++/11/cstdlib \
-  /usr/include/c++/11/cstdio \
-  /usr/include/stdio.h \
-  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
-  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
-  /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
-  /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h \
-  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
-  /usr/include/c++/11/cerrno \
-  /usr/include/errno.h \
-  /usr/include/x86_64-linux-gnu/bits/errno.h \
-  /usr/include/linux/errno.h \
-  /usr/include/x86_64-linux-gnu/asm/errno.h \
-  /usr/include/asm-generic/errno.h \
-  /usr/include/asm-generic/errno-base.h \
-  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
-  /usr/include/c++/11/bits/charconv.h \
-  /usr/include/c++/11/bits/basic_string.tcc \
-  /usr/include/c++/11/bits/locale_classes.tcc \
-  /usr/include/c++/11/system_error \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h \
-  /usr/include/c++/11/stdexcept \
-  /usr/include/c++/11/streambuf \
-  /usr/include/c++/11/bits/streambuf.tcc \
-  /usr/include/c++/11/bits/basic_ios.h \
-  /usr/include/c++/11/bits/locale_facets.h \
-  /usr/include/c++/11/cwctype \
-  /usr/include/wctype.h \
-  /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_base.h \
-  /usr/include/c++/11/bits/streambuf_iterator.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h \
-  /usr/include/c++/11/bits/locale_facets.tcc \
-  /usr/include/c++/11/bits/basic_ios.tcc \
-  /usr/include/c++/11/bits/ostream.tcc \
-  /usr/include/c++/11/istream \
-  /usr/include/c++/11/bits/istream.tcc
+  /usr/include/box2d/b2_wheel_joint.h
 
 
 ../server/worm.cpp:
@@ -6101,6 +6010,8 @@ CMakeFiles/server.dir/server/worm.cpp.o: ../server/worm.cpp \
 
 /usr/include/netinet/in.h:
 
+/usr/include/c++/11/bits/algorithmfwd.h:
+
 /usr/include/c++/11/bits/cxxabi_forced.h:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
@@ -6150,6 +6061,8 @@ CMakeFiles/server.dir/server/worm.cpp.o: ../server/worm.cpp \
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 /usr/include/time.h:
+
+../common/constantes.h:
 
 ../common/Dtos/viga.h:
 
@@ -6726,5 +6639,3 @@ CMakeFiles/server.dir/server/worm.cpp.o: ../server/worm.cpp \
 /usr/include/c++/11/bits/erase_if.h:
 
 /usr/include/c++/11/bits/stl_algo.h:
-
-/usr/include/c++/11/bits/algorithmfwd.h:

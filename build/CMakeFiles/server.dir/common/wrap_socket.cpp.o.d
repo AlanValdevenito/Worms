@@ -1,5 +1,5 @@
 CMakeFiles/server.dir/common/wrap_socket.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/common/wrap_socket.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/wrap_socket.cpp \
  /usr/include/stdc-predef.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
  /usr/include/c++/11/stdlib.h /usr/include/c++/11/cstdlib \

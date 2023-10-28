@@ -244,6 +244,7 @@ CMakeFiles/client.dir/client/client.cpp.o: ../client/client.cpp \
   /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
   /usr/include/x86_64-linux-gnu/bits/in.h \
   ../common/socket.h \
+  ../common/constantes.h \
   ../common/Dtos/dto.h \
   ../common/Dtos/dead.h \
   ../common/Dtos/dto.h \
@@ -522,6 +523,7 @@ CMakeFiles/client.dir/client/client_protocol.cpp.o: ../client/client_protocol.cp
   /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
   /usr/include/x86_64-linux-gnu/bits/in.h \
   ../common/socket.h \
+  ../common/constantes.h \
   ../common/Dtos/dto.h \
   ../common/Dtos/dead.h \
   ../common/Dtos/dto.h \
@@ -776,6 +778,7 @@ CMakeFiles/client.dir/client/client_receiver.cpp.o: ../client/client_receiver.cp
   ../common/Dtos/dto.h \
   ../common/Dtos/viga.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/Dtos/dead.h \
   ../common/broadcaster.h \
   ../common/queue.h \
@@ -1076,6 +1079,7 @@ CMakeFiles/client.dir/client/client_sender.cpp.o: ../client/client_sender.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/server_monitor_outgoing_queues.h \
   ../server/server_protocol.h \
   /usr/include/c++/11/functional \
@@ -1348,6 +1352,7 @@ CMakeFiles/client.dir/client/main.cpp.o: ../client/main.cpp \
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/bits/sstream.tcc \
   ../common/socket.h \
+  ../common/constantes.h \
   ../common/Dtos/dto.h \
   ../common/Dtos/dead.h \
   ../common/Dtos/dto.h \
@@ -2504,6 +2509,7 @@ CMakeFiles/client.dir/client/vista/client_vista.cpp.o: ../client/vista/client_vi
   /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
   /usr/include/x86_64-linux-gnu/bits/in.h \
   ../common/socket.h \
+  ../common/constantes.h \
   ../common/Dtos/dto.h \
   ../common/Dtos/dead.h \
   ../common/Dtos/dto.h \
@@ -3544,7 +3550,8 @@ CMakeFiles/client.dir/common/Dtos/gusano.cpp.o: ../common/Dtos/gusano.cpp \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  ../common/Dtos/dto.h
+  ../common/Dtos/dto.h \
+  ../common/constantes.h
 
 CMakeFiles/client.dir/common/Dtos/mover.cpp.o: ../common/Dtos/mover.cpp \
   /usr/include/stdc-predef.h \
@@ -3732,7 +3739,8 @@ CMakeFiles/client.dir/common/Dtos/mover.cpp.o: ../common/Dtos/mover.cpp \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  ../common/Dtos/dto.h
+  ../common/Dtos/dto.h \
+  ../common/constantes.h
 
 CMakeFiles/client.dir/common/Dtos/position.cpp.o: ../common/Dtos/position.cpp \
   /usr/include/stdc-predef.h
@@ -3928,7 +3936,8 @@ CMakeFiles/client.dir/common/Dtos/viga.cpp.o: ../common/Dtos/viga.cpp \
   /usr/include/c++/11/bits/allocated_ptr.h \
   /usr/include/c++/11/ext/aligned_buffer.h \
   /usr/include/c++/11/bits/list.tcc \
-  ../common/Dtos/dto.h
+  ../common/Dtos/dto.h \
+  ../common/constantes.h
 
 CMakeFiles/client.dir/common/blockingqueue.cpp.o: ../common/blockingqueue.cpp \
   /usr/include/stdc-predef.h \
@@ -4150,6 +4159,7 @@ CMakeFiles/client.dir/common/blockingqueue.cpp.o: ../common/blockingqueue.cpp \
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/list.tcc \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/Dtos/dead.h
 
 CMakeFiles/client.dir/common/broadcaster.cpp.o: ../common/broadcaster.cpp \
@@ -4383,6 +4393,7 @@ CMakeFiles/client.dir/common/broadcaster.cpp.o: ../common/broadcaster.cpp \
   ../common/Dtos/dto.h \
   ../common/Dtos/gusano.h \
   ../common/Dtos/dto.h \
+  ../common/constantes.h \
   ../common/server_monitor_outgoing_queues.h \
   ../server/server_protocol.h \
   /usr/include/c++/11/cstring \
@@ -5669,6 +5680,10 @@ CMakeFiles/client.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp \
 
 /usr/include/c++/11/bits/allocated_ptr.h:
 
+/usr/include/c++/11/bits/unique_lock.h:
+
+/usr/include/c++/11/bits/uses_allocator.h:
+
 /usr/include/SDL2/SDL_timer.h:
 
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
@@ -6091,6 +6106,8 @@ CMakeFiles/client.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp \
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
 
+../common/constantes.h:
+
 ../common/Dtos/dto.cpp:
 
 /usr/include/c++/11/ext/alloc_traits.h:
@@ -6310,7 +6327,3 @@ CMakeFiles/client.dir/common/wrap_socket.cpp.o: ../common/wrap_socket.cpp \
 ../common/Dtos/gusano.h:
 
 ../client/client_receiver.h:
-
-/usr/include/c++/11/bits/uses_allocator.h:
-
-/usr/include/c++/11/bits/unique_lock.h:

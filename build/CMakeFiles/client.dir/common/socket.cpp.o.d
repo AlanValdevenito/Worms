@@ -1,7 +1,7 @@
 CMakeFiles/client.dir/common/socket.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/common/socket.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/common/socket.h \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.h \
  /usr/include/c++/11/stdexcept /usr/include/c++/11/exception \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -163,5 +163,5 @@ CMakeFiles/client.dir/common/socket.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
  /usr/include/linux/close_range.h \
- /home/ricomateo/Desktop/taller/Worms/common/liberror.h \
- /home/ricomateo/Desktop/taller/Worms/common/resolver.h
+ /home/fede/Documentos/Taller/tp-worms/common/liberror.h \
+ /home/fede/Documentos/Taller/tp-worms/common/resolver.h

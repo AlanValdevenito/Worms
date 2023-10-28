@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/common/Dtos/mover.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/mover.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/mover.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -152,4 +152,5 @@ CMakeFiles/server.dir/common/Dtos/mover.cpp.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/constantes.h

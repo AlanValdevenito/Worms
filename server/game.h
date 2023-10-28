@@ -11,11 +11,10 @@
 #include "thread.h"
 #include "queue.h"
 #include "broadcaster.h"
+#include "constantes.h"
 #include "dto.h"
 #include "viga.h"
 #include "gusano.h"
-
-const uint8_t MOVER_A_DERECHA_CODE = 3;
 
 class Game : public Thread
 {

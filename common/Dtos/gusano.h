@@ -6,8 +6,7 @@
 #include <vector>
 
 #include "dto.h"
-
-const uint8_t CODE_GUSANO = 2;
+#include "constantes.h"
 
 class Gusano : public Dto
 {

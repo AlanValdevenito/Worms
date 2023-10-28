@@ -1,7 +1,7 @@
 CMakeFiles/client.dir/common/blockingqueue.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/common/blockingqueue.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/common/blockingqueue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
  /usr/include/c++/11/condition_variable /usr/include/c++/11/chrono \
  /usr/include/c++/11/ratio /usr/include/c++/11/type_traits \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
@@ -168,9 +168,10 @@ CMakeFiles/client.dir/common/blockingqueue.cpp.o: \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc /usr/include/c++/11/bits/stl_heap.h \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/viga.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/list.tcc \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dead.h
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/constantes.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h

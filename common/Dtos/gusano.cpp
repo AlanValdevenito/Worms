@@ -1,6 +1,6 @@
 #include "gusano.h"
 
-Gusano::Gusano(uint8_t id, uint16_t x, uint16_t y) : Dto(CODE_GUSANO), id(id), x(x), y(y) {}
+Gusano::Gusano(uint8_t id, uint16_t x, uint16_t y) : Dto(GUSANO_CODE), id(id), x(x), y(y) {}
 
 Gusano::~Gusano() {}
 

@@ -7,8 +7,7 @@
 #include <list>
 
 #include "dto.h"
-
-const uint8_t VIGA_CODE = 1;
+#include "constantes.h"
 
 class Viga : public Dto
 {

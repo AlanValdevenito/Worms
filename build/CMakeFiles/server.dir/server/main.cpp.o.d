@@ -1,5 +1,5 @@
 CMakeFiles/server.dir/server/main.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/server/main.cpp \
+ /home/fede/Documentos/Taller/tp-worms/server/main.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/cstdint \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -187,8 +187,8 @@ CMakeFiles/server.dir/server/main.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/ricomateo/Desktop/taller/Worms/common/socket.h \
- /home/ricomateo/Desktop/taller/Worms/server/server.h \
+ /home/fede/Documentos/Taller/tp-worms/common/socket.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/bits/list.tcc /usr/include/c++/11/thread \
@@ -197,11 +197,11 @@ CMakeFiles/server.dir/server/main.cpp.o: \
  /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/chrono \
  /usr/include/c++/11/ratio /usr/include/c++/11/limits \
  /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
- /home/ricomateo/Desktop/taller/Worms/server/aceptador.cpp \
- /home/ricomateo/Desktop/taller/Worms/common/broadcaster.h \
+ /home/fede/Documentos/Taller/tp-worms/server/aceptador.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
  /usr/include/c++/11/mutex /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /home/ricomateo/Desktop/taller/Worms/common/queue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/queue.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -217,24 +217,25 @@ CMakeFiles/server.dir/server/main.cpp.o: \
  /usr/include/c++/11/ext/concurrence.h /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/queue /usr/include/c++/11/bits/stl_queue.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/gusano.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
- /home/ricomateo/Desktop/taller/Worms/common/server_monitor_outgoing_queues.h \
- /home/ricomateo/Desktop/taller/Worms/server/server_protocol.h \
- /home/ricomateo/Desktop/taller/Worms/common/blockingqueue.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/viga.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dead.h \
- /home/ricomateo/Desktop/taller/Worms/common/thread.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/constantes.h \
+ /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
+ /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
+ /home/fede/Documentos/Taller/tp-worms/common/thread.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
- /home/ricomateo/Desktop/taller/Worms/server/server_client.h \
- /home/ricomateo/Desktop/taller/Worms/common/queue.h \
- /home/ricomateo/Desktop/taller/Worms/server/receiver_thread.h \
- /home/ricomateo/Desktop/taller/Worms/server/server_protocol.h \
- /home/ricomateo/Desktop/taller/Worms/server/sender_thread.h \
- /home/ricomateo/Desktop/taller/Worms/server/lobby.h \
- /home/ricomateo/Desktop/taller/Worms/server/game.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server_client.h \
+ /home/fede/Documentos/Taller/tp-worms/common/queue.h \
+ /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.h \
+ /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
+ /home/fede/Documentos/Taller/tp-worms/server/sender_thread.h \
+ /home/fede/Documentos/Taller/tp-worms/server/lobby.h \
+ /home/fede/Documentos/Taller/tp-worms/server/game.h \
  /usr/include/box2d/box2d.h /usr/include/box2d/b2_settings.h \
  /usr/include/box2d/b2_types.h /usr/include/box2d/b2_api.h \
  /usr/include/box2d/b2_common.h /usr/include/assert.h \
@@ -281,6 +282,6 @@ CMakeFiles/server.dir/server/main.cpp.o: \
  /usr/include/box2d/b2_pulley_joint.h \
  /usr/include/box2d/b2_revolute_joint.h \
  /usr/include/box2d/b2_weld_joint.h /usr/include/box2d/b2_wheel_joint.h \
- /home/ricomateo/Desktop/taller/Worms/server/world.h \
- /home/ricomateo/Desktop/taller/Worms/server/beam.h \
- /home/ricomateo/Desktop/taller/Worms/server/worm.h
+ /home/fede/Documentos/Taller/tp-worms/server/world.h \
+ /home/fede/Documentos/Taller/tp-worms/server/beam.h \
+ /home/fede/Documentos/Taller/tp-worms/server/worm.h

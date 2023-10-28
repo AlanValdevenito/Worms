@@ -1,7 +1,7 @@
 CMakeFiles/client.dir/common/Dtos/dto.cpp.o: \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.cpp \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.cpp \
  /usr/include/stdc-predef.h \
- /home/ricomateo/Desktop/taller/Worms/common/Dtos/dto.h \
+ /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
