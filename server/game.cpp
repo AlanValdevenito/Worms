@@ -13,7 +13,7 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
     world.addBeam(30, 9, 0, LONG);
 
     world.addWorm(0, 9);
-    //world.addWorm(12, 9);
+    // world.addWorm(12, 9);
 }
 
 void Game::run()
@@ -38,7 +38,7 @@ void Game::update()
 void Game::sendWorms(Queue<Dto *> &q)
 {
     for (Worm *w : world.getWorms())
-    {   
+    {
         std::cout << "x = " << (int)(w->getXCoordinate() * 100) << "\n";
         std::cout << "y = " << (int)(w->getYCoordinate() * 100) << "\n";
         Gusano *g = new Gusano((w->getId()),
