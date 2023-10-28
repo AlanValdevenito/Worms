@@ -1,7 +1,7 @@
 CMakeFiles/client.dir/common/Dtos/viga.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.cpp \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/viga.cpp \
  /usr/include/stdc-predef.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/viga.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -156,5 +156,5 @@ CMakeFiles/client.dir/common/Dtos/viga.cpp.o: \
  /usr/include/c++/11/bits/allocated_ptr.h \
  /usr/include/c++/11/ext/aligned_buffer.h \
  /usr/include/c++/11/bits/list.tcc \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/constantes.h
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dto.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/constantes.h

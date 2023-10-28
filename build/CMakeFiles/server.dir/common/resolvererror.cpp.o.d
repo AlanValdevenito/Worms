@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/common/resolvererror.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/common/resolvererror.cpp \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/resolvererror.cpp \
  /usr/include/stdc-predef.h \
- /home/fede/Documentos/Taller/tp-worms/common/resolvererror.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/resolvererror.h \
  /usr/include/c++/11/exception \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

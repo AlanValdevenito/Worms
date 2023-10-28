@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/server/partida.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/server/partida.cpp \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/partida.cpp \
  /usr/include/stdc-predef.h \
- /home/fede/Documentos/Taller/tp-worms/server/partida.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/partida.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -177,7 +177,7 @@ CMakeFiles/server.dir/server/partida.cpp.o: \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
- /home/fede/Documentos/Taller/tp-worms/common/queue.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/queue.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -197,16 +197,16 @@ CMakeFiles/server.dir/server/partida.cpp.o: \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/mutex /usr/include/c++/11/queue \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/broadcaster.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/list.tcc \
- /home/fede/Documentos/Taller/tp-worms/common/queue.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/constantes.h \
- /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
- /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/queue.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dto.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/gusano.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dto.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/constantes.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/server_monitor_outgoing_queues.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/server_protocol.h \
  /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/sys/socket.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/x86_64-linux-gnu/bits/socket.h \
@@ -224,16 +224,16 @@ CMakeFiles/server.dir/server/partida.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h \
- /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.h \
- /home/fede/Documentos/Taller/tp-worms/common/thread.h \
- /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
- /home/fede/Documentos/Taller/tp-worms/server/sender_thread.h \
- /home/fede/Documentos/Taller/tp-worms/server/server_client.h \
- /home/fede/Documentos/Taller/tp-worms/server/game.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/blockingqueue.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/viga.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dead.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/socket.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/receiver_thread.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/thread.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/server_protocol.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/sender_thread.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/server_client.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/game.h \
  /usr/include/box2d/box2d.h /usr/include/box2d/b2_settings.h \
  /usr/include/box2d/b2_types.h /usr/include/box2d/b2_api.h \
  /usr/include/box2d/b2_common.h /usr/include/assert.h \
@@ -280,6 +280,6 @@ CMakeFiles/server.dir/server/partida.cpp.o: \
  /usr/include/box2d/b2_pulley_joint.h \
  /usr/include/box2d/b2_revolute_joint.h \
  /usr/include/box2d/b2_weld_joint.h /usr/include/box2d/b2_wheel_joint.h \
- /home/fede/Documentos/Taller/tp-worms/server/world.h \
- /home/fede/Documentos/Taller/tp-worms/server/beam.h \
- /home/fede/Documentos/Taller/tp-worms/server/worm.h
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/world.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/beam.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/worm.h

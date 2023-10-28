@@ -1,7 +1,7 @@
 CMakeFiles/client.dir/client/vista/client_vista.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/client/vista/client_vista.cpp \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/client/vista/client_vista.cpp \
  /usr/include/stdc-predef.h \
- /home/fede/Documentos/Taller/tp-worms/client/vista/client_vista.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/client/vista/client_vista.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -225,7 +225,7 @@ CMakeFiles/client.dir/client/vista/client_vista.cpp.o: \
  /usr/local/include/SDL2pp/ContainerRWops.hh \
  /usr/local/include/SDL2pp/StreamRWops.hh /usr/include/c++/11/cassert \
  /usr/include/assert.h /usr/local/include/SDL2pp/SDLTTF.hh \
- /usr/local/include/SDL2pp/Font.hh /usr/include/SDL2/SDL_ttf.h \
+ /usr/local/include/SDL2pp/Font.hh /usr/local/include/SDL2/SDL_ttf.h \
  /usr/include/SDL2/SDL.h /usr/include/SDL2/SDL_main.h \
  /usr/include/SDL2/SDL_assert.h /usr/include/SDL2/SDL_audio.h \
  /usr/include/SDL2/SDL_clipboard.h /usr/include/SDL2/SDL_cpuinfo.h \
@@ -327,9 +327,10 @@ CMakeFiles/client.dir/client/vista/client_vista.cpp.o: \
  /usr/include/SDL2/SDL_shape.h /usr/include/SDL2/SDL_system.h \
  /usr/include/SDL2/SDL_timer.h /usr/include/SDL2/SDL_version.h \
  /usr/include/SDL2/SDL_locale.h /usr/include/SDL2/SDL_misc.h \
+ /usr/include/SDL2/begin_code.h /usr/include/SDL2/close_code.h \
  /usr/local/include/SDL2pp/SDLImage.hh /usr/local/include/SDL2pp/Chunk.hh \
- /usr/include/SDL2/SDL_mixer.h /usr/local/include/SDL2pp/Mixer.hh \
- /usr/include/c++/11/memory \
+ /usr/local/include/SDL2/SDL_mixer.h /usr/include/SDL2/SDL_endian.h \
+ /usr/local/include/SDL2pp/Mixer.hh /usr/include/c++/11/memory \
  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
  /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
  /usr/include/c++/11/bits/unique_ptr.h \
@@ -343,15 +344,15 @@ CMakeFiles/client.dir/client/vista/client_vista.cpp.o: \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /usr/local/include/SDL2pp/Music.hh /usr/local/include/SDL2pp/SDLMixer.hh \
- /home/fede/Documentos/Taller/tp-worms/client/vista/client_worm.h \
- /home/fede/Documentos/Taller/tp-worms/client/vista/client_animacion.h \
- /home/fede/Documentos/Taller/tp-worms/client/client.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/client/vista/client_worm.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/client/vista/client_animacion.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/client/client.h \
  /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
  /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/cstring /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h \
- /home/fede/Documentos/Taller/tp-worms/client/client_protocol.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/client/client_protocol.h \
  /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
  /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/sys/socket.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
@@ -370,26 +371,26 @@ CMakeFiles/client.dir/client/vista/client_vista.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h \
- /home/fede/Documentos/Taller/tp-worms/common/constantes.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/socket.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/constantes.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dto.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dead.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dto.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/viga.h \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/list.tcc \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/mover.h \
- /home/fede/Documentos/Taller/tp-worms/client/client_receiver.h \
- /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/gusano.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/mover.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/client/client_receiver.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/blockingqueue.h \
  /usr/include/c++/11/condition_variable \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h /usr/include/c++/11/mutex \
  /usr/include/c++/11/queue /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_queue.h \
- /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
- /home/fede/Documentos/Taller/tp-worms/common/queue.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/broadcaster.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/queue.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -399,12 +400,12 @@ CMakeFiles/client.dir/client/vista/client_vista.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
- /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
- /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
- /home/fede/Documentos/Taller/tp-worms/common/queue.h \
- /home/fede/Documentos/Taller/tp-worms/common/thread.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/server_monitor_outgoing_queues.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/server_protocol.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/queue.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/thread.h \
  /usr/include/c++/11/atomic \
- /home/fede/Documentos/Taller/tp-worms/client/client_sender.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/client/client_sender.h \
  /usr/include/unistd.h /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \

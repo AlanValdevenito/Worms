@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/server/receiver_thread.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.cpp \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/receiver_thread.cpp \
  /usr/include/stdc-predef.h \
- /home/fede/Documentos/Taller/tp-worms/server/receiver_thread.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/receiver_thread.h \
  /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -181,7 +181,7 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/in.h \
- /home/fede/Documentos/Taller/tp-worms/common/blockingqueue.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/blockingqueue.h \
  /usr/include/c++/11/condition_variable \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
@@ -191,13 +191,13 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.o: \
  /usr/include/c++/11/queue /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_heap.h /usr/include/c++/11/bits/stl_queue.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/viga.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dto.h \
- /home/fede/Documentos/Taller/tp-worms/common/constantes.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/dead.h \
- /home/fede/Documentos/Taller/tp-worms/common/broadcaster.h \
- /home/fede/Documentos/Taller/tp-worms/common/queue.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dto.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/viga.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dto.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/constantes.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/dead.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/broadcaster.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/queue.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h \
@@ -207,9 +207,9 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
- /home/fede/Documentos/Taller/tp-worms/common/Dtos/gusano.h \
- /home/fede/Documentos/Taller/tp-worms/common/server_monitor_outgoing_queues.h \
- /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/Dtos/gusano.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/server_monitor_outgoing_queues.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/server_protocol.h \
  /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
  /usr/include/c++/11/functional /usr/include/c++/11/bits/std_function.h \
  /usr/include/c++/11/unordered_map /usr/include/c++/11/bits/hashtable.h \
@@ -221,9 +221,9 @@ CMakeFiles/server.dir/server/receiver_thread.cpp.o: \
  /usr/include/c++/11/bits/algorithmfwd.h \
  /usr/include/c++/11/bits/stl_tempbuf.h \
  /usr/include/c++/11/bits/uniform_int_dist.h \
- /home/fede/Documentos/Taller/tp-worms/common/socket.h \
- /home/fede/Documentos/Taller/tp-worms/common/thread.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/socket.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/thread.h \
  /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
  /usr/include/c++/11/bits/atomic_lockfree_defines.h \
- /home/fede/Documentos/Taller/tp-worms/server/server_protocol.h \
- /home/fede/Documentos/Taller/tp-worms/common/queue.h
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/server_protocol.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/queue.h

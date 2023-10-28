@@ -1,4 +1,4 @@
-/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles/client.dir
-/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles/server.dir
-/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles/edit_cache.dir
-/home/fede/Documentos/Taller/tp-worms/build/CMakeFiles/rebuild_cache.dir
+/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/build/CMakeFiles/client.dir
+/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/build/CMakeFiles/server.dir
+/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/build/CMakeFiles/edit_cache.dir
+/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/build/CMakeFiles/rebuild_cache.dir

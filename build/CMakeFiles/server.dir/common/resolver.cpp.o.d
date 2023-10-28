@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/common/resolver.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/common/resolver.cpp \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/resolver.cpp \
  /usr/include/stdc-predef.h \
- /home/fede/Documentos/Taller/tp-worms/common/resolver.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/resolver.h \
  /usr/include/netdb.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -163,5 +163,5 @@ CMakeFiles/server.dir/common/resolver.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
  /usr/include/linux/close_range.h \
- /home/fede/Documentos/Taller/tp-worms/common/liberror.h \
- /home/fede/Documentos/Taller/tp-worms/common/resolvererror.h
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/liberror.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/common/resolvererror.h

@@ -1,4 +1,4 @@
-# Install script for directory: /home/fede/Documentos/Taller/tp-worms
+# Install script for directory: /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/fede/Documentos/Taller/tp-worms/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

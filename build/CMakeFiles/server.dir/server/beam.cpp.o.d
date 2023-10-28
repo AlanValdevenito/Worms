@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/server/beam.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/server/beam.cpp \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/beam.cpp \
  /usr/include/stdc-predef.h \
- /home/fede/Documentos/Taller/tp-worms/server/beam.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/beam.h \
  /usr/include/box2d/box2d.h /usr/include/box2d/b2_settings.h \
  /usr/include/box2d/b2_types.h /usr/include/box2d/b2_api.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \

@@ -1,7 +1,7 @@
 CMakeFiles/server.dir/server/worm.cpp.o: \
- /home/fede/Documentos/Taller/tp-worms/server/worm.cpp \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/worm.cpp \
  /usr/include/stdc-predef.h \
- /home/fede/Documentos/Taller/tp-worms/server/worm.h \
+ /home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3\ -\ Worms/Worms/server/worm.h \
  /usr/include/box2d/box2d.h /usr/include/box2d/b2_settings.h \
  /usr/include/box2d/b2_types.h /usr/include/box2d/b2_api.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
