@@ -61,7 +61,8 @@ int Vista::iniciar()
 	guardar_vigas();
 
 	Dto *gusano = cliente.recv_queue.pop();
-	Worm worm(sprites, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), metros_a_pixeles(centimetros_a_metros(gusano->y_pos())));
+	float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) gusano->y_pos()));
+	Worm worm(sprites, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY);
 	delete gusano;
 
 	/******************** GAME LOOP ********************/
@@ -88,7 +89,8 @@ int Vista::iniciar()
 		actualizar(worm, FRAME_RATE);
 		renderizar(renderer, viga, background, agua, font, worm, tiempoRestante);
 
-		usleep(FRAME_RATE);
+		SDL_Delay(1);
+		// usleep(FRAME_RATE);
 	}
 
 	return 0;
@@ -138,6 +140,8 @@ bool Vista::handleEvents(Worm &worm)
 			// Si se hace click izquierdo...
 			case SDL_BUTTON_LEFT:
 				std::cout << "Click izquierdo" << std::endl;
+				// std::cout << event.button.x << std::endl;
+				// std::cout << event.button.y << std::endl;
 				break;
 			}
 
@@ -156,13 +160,11 @@ bool Vista::handleEvents(Worm &worm)
 
 			// Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
 			case SDLK_RIGHT:
-				worm.moveRigth();
 				cliente.send_queue.push(mover);
 				break;
 
 			// Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
 			case SDLK_LEFT:
-				worm.moveLeft();
 				break;
 
 			// Si se presiona la flecha hacia ariba el gusano direcciona su arma
@@ -206,12 +208,10 @@ bool Vista::handleEvents(Worm &worm)
 
 			// Si se suelta la flecha hacia la derecha cambiamos el estado del gusano
 			case SDLK_RIGHT:
-				worm.stopMoving();
 				break;
 
 			// Si se suelta la flecha hacia la izquierda cambiamos el estado del gusano
 			case SDLK_LEFT:
-				worm.stopMoving();
 				break;
 
 			// Si se suelta la flecha hacia ariba...

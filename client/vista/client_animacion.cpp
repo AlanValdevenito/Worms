@@ -16,6 +16,7 @@ Animation::Animation(SDL2pp::Texture &texture): texture(texture), currentFrame(0
 
 void Animation::update(float dt) {
     this->elapsed += dt;
+    // std::cout << this->currentFrame << std::endl;
     // Comprueba si el frame deberia ser actualizado en base al tiempo transcurrido desde la ultima actualizacion
     while (this->elapsed > FRAME_RATE) {
         this->advanceFrame();

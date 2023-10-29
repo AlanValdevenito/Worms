@@ -53,13 +53,22 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
 {
     // mundo();
     world.addBeam(0, 9, 0, LONG);
-    world.addBeam(6, 9, 0, LONG);
-    world.addBeam(12, 9, 0, LONG);
-    world.addBeam(18, 9, 0, LONG);
-    world.addBeam(24, 9, 0, LONG);
-    world.addBeam(30, 9, 0, LONG);
 
-    world.addWorm(0, 11);
+    /* AGUA */
+
+    world.addBeam(0, 0, 0, LONG);
+    world.addBeam(6, 0, 0, LONG);
+    world.addBeam(12, 0, 0, LONG);
+
+    /*******/
+
+    // world.addBeam(6, 9, 0, LONG);
+    // world.addBeam(12, 9, 0, LONG);
+    // world.addBeam(18, 9, 0, LONG);
+    // world.addBeam(24, 9, 0, LONG);
+    // world.addBeam(30, 9, 0, LONG);
+
+    world.addWorm(0, 10);
 
     /*b2World *mundo = new b2World(b2Vec2(0.0f, -10.0f));
     Worm worm(mundo, 10, 100, 0);
