@@ -14,7 +14,7 @@ class World
 private:
     b2World world;
     std::list<Beam> beams;
-    std::list<Worm*> worms;
+    std::list<Worm> worms;
 
 public:
     // crea un mundo
@@ -28,7 +28,7 @@ public:
 
     std::list<Beam> &getBeams();
 
-    std::list<Worm*> &getWorms();
+    std::list<Worm> &getWorms();
 
     b2Body *createStaticBody(float x, float y, float width, float height);
 
