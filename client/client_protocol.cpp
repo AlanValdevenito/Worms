@@ -105,6 +105,13 @@ void ClientProtocol::moverADerecha(MoverADerecha *m, bool &was_closed)
     skt.sendall(&code, sizeof(code), &was_closed);
 }
 
+void ClientProtocol::moverAIzquierda(MoverAIzquierda *m, bool &was_closed)
+{
+    uint8_t code = m->return_code();
+    // printf("enviar: %u\n", a);
+    skt.sendall(&code, sizeof(code), &was_closed);
+}
+
 void ClientProtocol::enviarSeleccion(ListaDePartidas *l, bool &was_closed)
 {
     uint8_t code = l->return_code();

@@ -69,6 +69,13 @@ void ServerProtocol::sendPartidas(ListaDePartidas *l, bool &was_closed)
     }
 }
 
+Dto *ServerProtocol::recvPartidaSeleccionada(bool &was_closed)
+{
+    uint8_t op;
+    skt.recvall(&op, sizeof(op), &was_closed);
+    return new ListaDePartidas(op);
+}
+
 Dto *ServerProtocol::recv(bool &was_closed)
 {
     uint8_t code;
@@ -76,11 +83,11 @@ Dto *ServerProtocol::recv(bool &was_closed)
     // printf("recibido: %u\n", a);
 
     if (code == LISTA_DE_PARTIDAS_CODE)
-    {
-        uint8_t op;
-        skt.recvall(&op, sizeof(op), &was_closed);
-        return new ListaDePartidas(op);
-    }
+        return recvPartidaSeleccionada(was_closed);
+    else if (code == MOVER_A_DERECHA_CODE)
+        return new MoverADerecha();
+    else if (code == MOVER_A_IZQUERDA_CODE)
+        return new MoverAIzquierda();
 
-    return new Dto(code);
+    return new Dto(code); // DEBERIA SER UN DEAD DTO
 }

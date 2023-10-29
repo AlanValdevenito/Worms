@@ -28,6 +28,7 @@ public:
     void send(bool &was_closed);
     Dto *receive(bool &was_closed);
     void moverADerecha(MoverADerecha *m, bool &was_closed);
+    void moverAIzquierda(MoverAIzquierda *m, bool &was_closed);
     void enviarSeleccion(ListaDePartidas *l, bool &was_closed);
 
 private:

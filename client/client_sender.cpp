@@ -26,7 +26,9 @@ void SenderTH::send(Dto *d)
 {
     if (d->return_code() == MOVER_A_DERECHA_CODE)
         protocol.moverADerecha((MoverADerecha *)d, was_closed);
-    if (d->return_code() == LISTA_DE_PARTIDAS_CODE)
+    else if (d->return_code() == MOVER_A_IZQUERDA_CODE)
+        protocol.moverAIzquierda((MoverAIzquierda *)d, was_closed);
+    else if (d->return_code() == LISTA_DE_PARTIDAS_CODE)
         protocol.enviarSeleccion((ListaDePartidas *)d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";

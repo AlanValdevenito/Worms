@@ -15,6 +15,7 @@
 #include "dto.h"
 #include "dead.h"
 #include "gusano.h"
+#include "mover.h"
 #include "partidas_lista.h"
 #include "socket.h"
 
@@ -31,6 +32,7 @@ public:
 private:
     Socket &skt;
     void sendViga(Dto *dto, bool &was_closed);
+    Dto *recvPartidaSeleccionada(bool &was_closed);
     // Dto *recv_message(bool &was_closed, uint16_t sz, uint8_t code);
 };
 #endif
