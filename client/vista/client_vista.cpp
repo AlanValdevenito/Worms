@@ -114,7 +114,7 @@ bool Vista::handleEvents(Worm &worm)
 	SDL_Event event;
 
 	Dto *mover = new MoverADerecha();
-
+	Dto *mover_izquierda = new MoverAIzquierda();
 	// REvisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
 	while (SDL_PollEvent(&event))
 	{
@@ -165,6 +165,7 @@ bool Vista::handleEvents(Worm &worm)
 
 			// Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
 			case SDLK_LEFT:
+				cliente.send_queue.push(mover_izquierda);
 				break;
 
 			// Si se presiona la flecha hacia ariba el gusano direcciona su arma

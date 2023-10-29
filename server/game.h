@@ -32,6 +32,8 @@ public:
     void stop() override;
     void sendMap(Queue<Dto *> &q);
     void sendWorms(Queue<Dto *> &q);
+
+    void moveWormLeft();
     void moveWormRight();
     void executeCommand(Dto *dto);
     void broadcast();

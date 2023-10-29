@@ -53,7 +53,10 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
 {
     // mundo();
     world.addBeam(0, 9, 0, LONG);
-
+    world.addBeam(6, 9, 0, LONG);
+    world.addBeam(6, 9, 0, LONG);
+    world.addBeam(12, 9, 0, LONG);
+    world.addBeam(18, 9, 0, LONG);
     /* AGUA */
 
     world.addBeam(0, 0, 0, LONG);
@@ -68,7 +71,7 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
     // world.addBeam(24, 9, 0, LONG);
     // world.addBeam(30, 9, 0, LONG);
 
-    world.addWorm(0, 10);
+    world.addWorm(9, 10);
 
     /*b2World *mundo = new b2World(b2Vec2(0.0f, -10.0f));
     Worm worm(mundo, 10, 100, 0);
@@ -143,6 +146,10 @@ void Game::moveWormRight()
     //std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
 }
 
+void Game::moveWormLeft() {
+    world.getWorms().front().moveLeft();
+}
+
 void Game::stop()
 {
     game_finished = true;
@@ -154,6 +161,14 @@ void Game::executeCommand(Dto *dto)
     if (code == MOVER_A_DERECHA_CODE)
     {
         moveWormRight();
+        Worm worm = world.getWorms().front();
+        uint16_t x = worm.getXCoordinate() * 100;
+        uint16_t y = worm.getYCoordinate() * 100;
+        uint8_t id = worm.getId();
+        Gusano *g = new Gusano(id, x, y);
+        broadcaster.AddGusanoToQueues(g);
+    } else if (code == MOVER_A_IZQUERDA_CODE) {
+        moveWormLeft();
         Worm worm = world.getWorms().front();
         uint16_t x = worm.getXCoordinate() * 100;
         uint16_t y = worm.getYCoordinate() * 100;
