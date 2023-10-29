@@ -29,7 +29,6 @@ public:
     void join();
     Queue<Dto *> send_queue;
     Queue<Dto *> recv_queue;
-    Broadcaster broadcaster;
 
 private:
     Socket skt;

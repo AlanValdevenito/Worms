@@ -21,10 +21,27 @@ Dto *ClientProtocol::receive(bool &was_closed)
         return receiveVigas(was_closed);
     else if (code == GUSANO_CODE)
         return receiveGusano(was_closed);
+    else if (code == LISTA_DE_PARTIDAS_CODE)
+        return receivePartidas(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
     return new DeadDto();
+}
+
+Dto *ClientProtocol::receivePartidas(bool &was_closed)
+{
+    uint8_t op1;
+    skt.recvall(&op1, sizeof(op1), &was_closed);
+    uint8_t op2;
+    skt.recvall(&op2, sizeof(op2), &was_closed);
+
+    printf("op1: %u    op2: %u \n", op1, op2);
+
+    ListaDePartidas *l = new ListaDePartidas();
+    l->addOption(op1);
+    l->addOption(op2);
+    return l;
 }
 
 Dto *ClientProtocol::receiveVigas(bool &was_closed)
@@ -58,7 +75,7 @@ Dto *ClientProtocol::receiveViga(bool &was_closed)
     ancho = ntohs(ancho);
     alto = ntohs(alto);
 
-    // printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
+    printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
 
     return new Viga(x, y, ancho, alto);
 }
@@ -86,4 +103,15 @@ void ClientProtocol::moverADerecha(MoverADerecha *m, bool &was_closed)
     uint8_t code = m->return_code();
     // printf("enviar: %u\n", a);
     skt.sendall(&code, sizeof(code), &was_closed);
+}
+
+void ClientProtocol::enviarSeleccion(ListaDePartidas *l, bool &was_closed)
+{
+    uint8_t code = l->return_code();
+    // printf("enviar: %u\n", a);
+    skt.sendall(&code, sizeof(code), &was_closed);
+
+    uint8_t opcion = l->seleccionada;
+    // printf("enviar: %u\n", a);
+    skt.sendall(&opcion, sizeof(opcion), &was_closed);
 }

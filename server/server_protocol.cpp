@@ -52,10 +52,35 @@ void ServerProtocol::sendWorms(Gusano *g, bool &was_closed)
     skt.sendall(&(y), sizeof(y), &was_closed);
 }
 
+void ServerProtocol::sendPartidas(ListaDePartidas *l, bool &was_closed)
+{
+    uint8_t code = l->return_code();
+    skt.sendall(&(code), sizeof(code), &was_closed);
+
+    std::list<uint8_t> lista = l->return_list();
+
+    // uint8_t cant = vs->cantidad();
+    // skt.sendall(&(cant), sizeof(cant), &was_closed); // cuantas opciones envio
+
+    for (uint8_t o : lista)
+    {
+        printf("opcion: %u\n", o);
+        skt.sendall(&(o), sizeof(o), &was_closed);
+    }
+}
+
 Dto *ServerProtocol::recv(bool &was_closed)
 {
     uint8_t code;
     skt.recvall(&code, sizeof(code), &was_closed);
     // printf("recibido: %u\n", a);
+
+    if (code == LISTA_DE_PARTIDAS_CODE)
+    {
+        uint8_t op;
+        skt.recvall(&op, sizeof(op), &was_closed);
+        return new ListaDePartidas(op);
+    }
+
     return new Dto(code);
 }

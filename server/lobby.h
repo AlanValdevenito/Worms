@@ -11,9 +11,10 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <list>
 
 #include "queue.h"
-#include "broadcaster.h"
+// #include "broadcaster.h"
 #include "receiver_thread.h"
 #include "sender_thread.h"
 #include "socket.h"
@@ -21,6 +22,7 @@
 #include "server_protocol.h"
 #include "server_client.h"
 #include "partida.h"
+#include "partidas_lista.h"
 #include "game.h"
 #include "dto.h"
 
@@ -33,16 +35,15 @@ public:
     void reap_dead();
     void newClient(Socket &&s);
 
-    std::list<ServerClient *> clients;
-
 private:
-    Broadcaster broadcaster;
+    std::list<ServerClient *> clients;
     Queue<Dto *> common_queue;
+    Queue<Dto *> lobby_queue;
     uint8_t mapId;
-    Partida partida;
-    // Game game;
+    std::list<Partida *> partidas;
+    // Broadcaster broadcaster;
+    // Partida partida;
 
-    // void partida(ServerClient *c);
-    // void partida(Game &game, ServerClient *c);
+    void sendMatchList(ServerClient *c);
 };
 #endif

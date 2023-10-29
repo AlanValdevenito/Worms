@@ -23,6 +23,8 @@ void Sender::send(Dto *d)
         protocol.sendVigas(d, was_closed);
     else if (d->return_code() == GUSANO_CODE)
         protocol.sendWorms((Gusano *)d, was_closed);
+    else if (d->return_code() == LISTA_DE_PARTIDAS_CODE)
+        protocol.sendPartidas((ListaDePartidas *)d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
 }

@@ -1,6 +1,6 @@
 #include "partida.h"
 
-Partida::Partida(Queue<Dto *> &cq) : common_queue(cq), game(cq, broadcaster) { game.start(); }
+Partida::Partida(Queue<Dto *> &cq, uint8_t id) : common_queue(cq), game(cq, broadcaster), id(id) { game.start(); }
 Partida::~Partida() {}
 
 void Partida::start(ServerClient *c)
@@ -13,3 +13,5 @@ void Partida::start(ServerClient *c)
 }
 
 void Partida::finish() { game.game_finished = true; }
+
+uint8_t Partida::getId() { return id; }

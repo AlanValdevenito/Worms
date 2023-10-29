@@ -15,6 +15,7 @@
 #include "dto.h"
 #include "dead.h"
 #include "gusano.h"
+#include "partidas_lista.h"
 #include "socket.h"
 
 class ServerProtocol
@@ -25,6 +26,7 @@ public:
     Dto *recv(bool &was_closed);
     void sendVigas(Dto *vs, bool &was_closed);
     void sendWorms(Gusano *g, bool &was_closed);
+    void sendPartidas(ListaDePartidas *l, bool &was_closed);
 
 private:
     Socket &skt;

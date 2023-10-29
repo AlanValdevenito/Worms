@@ -26,14 +26,17 @@
 class Partida
 {
 public:
-    Partida(Queue<Dto *> &cq);
+    Partida(Queue<Dto *> &cq, uint8_t id);
     ~Partida();
     void start(ServerClient *c);
     void finish();
+    uint8_t getId();
 
 private:
-    Broadcaster broadcaster;
     Queue<Dto *> &common_queue;
+    Broadcaster broadcaster;
     Game game;
+    uint8_t id;
+    std::list<ServerClient *> clients;
 };
 #endif

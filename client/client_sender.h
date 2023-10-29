@@ -24,12 +24,11 @@ struct SenderTH : public Thread
 private:
     ClientProtocol &protocol;
     Queue<Dto *> &queue;
-    Broadcaster &broadcaster;
 
 public:
     bool was_closed;
 
-    SenderTH(ClientProtocol &p, Queue<Dto *> &q, Broadcaster &b);
+    SenderTH(ClientProtocol &p, Queue<Dto *> &q);
     void run() override;
     void send(Dto *d);
 };

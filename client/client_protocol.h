@@ -18,6 +18,7 @@
 #include "viga.h"
 #include "gusano.h"
 #include "mover.h"
+#include "partidas_lista.h"
 
 class ClientProtocol
 {
@@ -27,11 +28,13 @@ public:
     void send(bool &was_closed);
     Dto *receive(bool &was_closed);
     void moverADerecha(MoverADerecha *m, bool &was_closed);
+    void enviarSeleccion(ListaDePartidas *l, bool &was_closed);
 
 private:
     Socket &skt;
     Dto *receiveViga(bool &was_closed);
     Dto *receiveVigas(bool &was_closed);
     Dto *receiveGusano(bool &was_closed);
+    Dto *receivePartidas(bool &was_closed);
 };
 #endif

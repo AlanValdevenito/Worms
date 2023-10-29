@@ -24,7 +24,7 @@
 class ServerClient
 {
 public:
-    ServerClient(Socket &&socket, Broadcaster &b, Queue<Dto *> &common_queue);
+    ServerClient(Socket &&socket, Queue<Dto *> &q, Queue<Dto *> &common_queue);
     ~ServerClient();
     bool is_dead();
     void join();
@@ -39,7 +39,7 @@ public:
 
 private:
     Socket skt;
-    Broadcaster &broadcaster;
+    Queue<Dto *> &lobby_queue;
     ServerProtocol serverproto;
     Receiver recv_th;
     Sender send_th;

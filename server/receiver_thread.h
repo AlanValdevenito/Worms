@@ -22,12 +22,12 @@ class Receiver : public Thread
 private:
     ServerProtocol &protocol;
     Queue<Dto *> &queue;
-    Broadcaster &broadcaster;
+    Queue<Dto *> &lobby_queue;
 
 public:
     bool was_closed;
 
-    Receiver(ServerProtocol &p, Queue<Dto *> &q, Broadcaster &b);
+    Receiver(ServerProtocol &p, Queue<Dto *> &q, Queue<Dto *> &lq);
     void run() override;
 };
 #endif

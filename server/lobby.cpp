@@ -1,33 +1,60 @@
 #include "lobby.h"
 
 // crear una nueva instancia de game cuando creo una partida y pasarselo a la partida
-Lobby::Lobby() : mapId(0), partida(std::ref(common_queue))
+Lobby::Lobby() : mapId(0)
 {
     // partida.start();
 }
 
 Lobby::~Lobby() {}
 
-// void Lobby::partida(Game &game, ServerClient *c)
-// {
-//     // partida le va a pasar el mapa  y se lo guarda
+void Lobby::sendMatchList(ServerClient *c)
+{
 
-//     // mandar_mapa
-//     // c->addMapToQueue();
-//     game.sendMap(c->sender_queue); // le mando el mapa a la cola sender // CAMBIAAARS
+    // if (partidas.size() == 0)
+    // {
+    //     Partida p(std::ref(common_queue));
+    //     p.start(c);
+    //     partidas.push_back(p);
+    // }
+    Partida *p1 = new Partida(std::ref(common_queue), 1);
+    Partida *p2 = new Partida(std::ref(common_queue), 2);
+    partidas.push_back(p1);
+    partidas.push_back(p2);
 
-//     game.sendWorms(c->sender_queue);
-// }
+    ListaDePartidas *l = new ListaDePartidas();
+    l->addOption(p1->getId());
+    l->addOption(p2->getId());
+
+    c->sender_queue.push(l); // le envio la lista al cliente
+
+    ListaDePartidas *partida = (ListaDePartidas *)lobby_queue.pop(); // recibo la rta
+
+    if (partida->seleccionada == 1)
+    {
+        std::cout << "Entro a la partida 1\n";
+        p1->start(c);
+    }
+    else if (partida->seleccionada == 2)
+    {
+
+        std::cout << "Entro a la partida 2\n";
+        p2->start(c);
+    }
+    else
+        std::cout << "ninguna partida seleccionada\n";
+}
 
 void Lobby::newClient(Socket &&s)
 {
-    ServerClient *c = new ServerClient(std::move(s), std::ref(broadcaster), std::ref(common_queue)); // no necesita el broadcaster
+    // agregar lobby queue
+    ServerClient *c = new ServerClient(std::move(s), std::ref(lobby_queue), std::ref(common_queue)); // no necesita el broadcaster
     c->start();
 
     reap_dead();
 
     clients.push_back(c);
-    // sendMatchList();
+    sendMatchList(c);
 
     // me parece que va a ser de cada partida
     // broadcaster.addQueueToList(c->sender_queue); // agrego la cola send al broadcaster
@@ -37,8 +64,8 @@ void Lobby::newClient(Socket &&s)
     // enviar_lista_de_partidas(c->sender_queue);
 
     // send y recv lista de mapas ----------------> SOLO PARA PARTIDAS NUEVAS????
-    // Partida p(std::ref(common_queue)); // NO PASARLE EL BROADCASTER
-    partida.start(c);
+    // Partida p(std::ref(common_queue));
+    // partida.start(c);
 }
 
 void Lobby::reap_dead()
@@ -57,11 +84,11 @@ void Lobby::reap_dead()
             }
             return false; });
 
-    if (was_removed)
-    {
-        for (Queue<Dto *> *q : client_queues)
-            broadcaster.removeQueueFromList(q);
-    }
+    // if (was_removed)
+    // {
+    //     for (Queue<Dto *> *q : client_queues)
+    //         broadcaster.removeQueueFromList(q);
+    // }
 }
 
 void Lobby::kill()
@@ -72,10 +99,14 @@ void Lobby::kill()
         c->join();
         delete c;
     }
-    broadcaster.deleteAllQueues();
+    // broadcaster.deleteAllQueues();
     clients.clear();
 
     // game.game_finished = true;
-    partida.finish();
+    for (Partida *p : partidas)
+    {
+        p->finish();
+        delete p;
+    }
     // paridas.finish();
 }

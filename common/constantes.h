@@ -5,6 +5,6 @@ const uint8_t VIGA_CODE = 1;
 const uint8_t GUSANO_CODE = 2;
 const uint8_t MOVER_A_DERECHA_CODE = 3;
 const uint8_t MOVER_A_IZQUERDA_CODE = 4;
-
+const uint8_t LISTA_DE_PARTIDAS_CODE = 5;
 
 #endif

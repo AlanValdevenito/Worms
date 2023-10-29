@@ -6,11 +6,14 @@ void Receiver::run()
     {
         Dto *dto = protocol.recv(was_closed);
         // std::cout << "server recv : " << dto->return_code() << std::endl;
-        printf("return code: %u\n",dto->return_code());
+        // printf("return code: %u\n", dto->return_code());
 
         if (dto->is_alive())
         {
-            queue.push(dto);
+            if (dto->return_code() == LISTA_DE_PARTIDAS_CODE)
+                lobby_queue.push(dto);
+            else
+                queue.push(dto);
         }
         else
         {
@@ -18,8 +21,6 @@ void Receiver::run()
             delete dto;
         }
     }
-    broadcaster.removeQueueFromList(&queue);
-    // broadcaster.addMessageToQueues();
 }
 
-Receiver::Receiver(ServerProtocol &p, Queue<Dto *> &q, Broadcaster &b) : protocol(p), queue(q), broadcaster(b), was_closed(false) {}
+Receiver::Receiver(ServerProtocol &p, Queue<Dto *> &q, Queue<Dto *> &lq) : protocol(p), queue(q), lobby_queue(lq), was_closed(false) {}
