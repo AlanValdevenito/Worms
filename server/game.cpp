@@ -56,26 +56,40 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
     world.addBeam(24, 9, 0, LONG);
     world.addBeam(30, 9, 0, LONG);
 
-    world.addWorm(0, 9);
+    world.addWorm(0, 20);
+
+    /*b2World *mundo = new b2World(b2Vec2(0.0f, -10.0f));
+    Worm worm(mundo, 10, 100, 0);
+    float timeStep = 1.0f / 60.0f;
+    for (int i = 0; i < 1000; i++) {
+        std::cout << "worm x = " << worm.getXCoordinate() << " y = " << worm.getYCoordinate() << "\n";
+        mundo->Step(timeStep, 10, 10);
+    }*/
 }
 
 void Game::run()
 {
-
     while (not game_finished)
     {
-        // Dto *dto;
-        // bool popeo = common_queue.try_pop(dto);
-        Dto *dto = common_queue.pop();
-        executeCommand(dto);
+        Dto *dto;
+        if (common_queue.try_pop(dto)) {
+            executeCommand(dto);
+        }
+        //Dto *dto = common_queue.pop();
         update();
         // broadcast();
     }
 }
 
 void Game::update()
-{
+{   
     world.step();
+    Worm *worm = world.getWorms().front();
+    uint16_t x = worm->getXCoordinate() * 100;
+    uint16_t y = worm->getYCoordinate() * 100;
+    uint8_t id = worm->getId();
+    Gusano *g = new Gusano(id, x, y);
+    broadcaster.AddGusanoToQueues(g);
 }
 
 void Game::sendWorms(Queue<Dto *> &q)
@@ -113,7 +127,7 @@ void Game::sendMap(Queue<Dto *> &q)
 void Game::moveWormRight()
 {
     world.getWorms().front()->moveRight();
-    std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
+    //std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
 }
 
 void Game::stop()

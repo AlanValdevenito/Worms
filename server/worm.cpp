@@ -1,15 +1,29 @@
 #include "worm.h"
 
-Worm::Worm(b2Body *body, float x, float y, uint8_t id) : body(body), x(x), y(y), id(id) {}
+Worm::Worm(b2World *world, float x, float y, uint8_t id) : x(x), y(y), id(id) {
+    b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(x, y);
+	body = world->CreateBody(&bodyDef);
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(1.0f, 1.0f);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 1.0f;
+
+	fixtureDef.friction = 0.3f;
+	body->CreateFixture(&fixtureDef);
+}
 
 float Worm::getXCoordinate()
 {
-    return x;
+    return body->GetPosition().x;
 }
 
 float Worm::getYCoordinate()
 {
-    return y;
+    return body->GetPosition().y;
 }
 
 uint8_t Worm::getId()

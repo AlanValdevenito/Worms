@@ -68,8 +68,8 @@ std::list<Worm *> &World::getWorms()
 
 void World::addWorm(float x, float y)
 {
-    b2Body *body = createDynamicBody(x, y);
-    Worm *worm = new Worm(body, x, y, 0);
+    //b2Body *body = createDynamicBody(x, y);
+    Worm *worm = new Worm(&world, x, y, 0);
     worms.push_back(worm);
 }
 
@@ -77,6 +77,7 @@ void World::step()
 {   
     float timeStep = 1.0f / 60.0f;
     world.Step(timeStep, 10, 10);
+    std::cout << "coordenada y = " << worms.front()->getYCoordinate() << "\n";
 }
 
 World::~World() {}

@@ -354,8 +354,8 @@ void Vista::actualizar(Worm &worm, float dt)
 	Dto *gusano;
 
 	if (cliente.recv_queue.try_pop(gusano)) {
-		std::cout << (int) gusano->x_pos() << std::endl;
-		worm.update(dt, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())));
+		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) gusano->y_pos()));
+		worm.update(dt, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())), nuevoY);
 		delete gusano;
 	}
 
