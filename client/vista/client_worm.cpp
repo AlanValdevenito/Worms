@@ -23,7 +23,7 @@ void Worm::update(float dt, float nuevoX, float nuevoY)
         }
     }
 
-    y += nuevoY;
+    //y += nuevoY;
 }
 
 void Worm::render(SDL2pp::Renderer &renderer)

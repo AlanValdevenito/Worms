@@ -19,4 +19,16 @@ public:
     bool is_alive() override;
     // uint8_t get_id();
 };
+
+class MoverAIzquierda : public Dto
+{
+private:
+    uint8_t id_gusano;
+
+public:
+    MoverAIzquierda();
+    ~MoverAIzquierda();
+    bool is_alive() override;
+    // uint8_t get_id();
+};
 #endif

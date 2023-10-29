@@ -1,6 +1,5 @@
 #include "client_vista.h"
 #include <unistd.h>
-
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
@@ -75,7 +74,7 @@ int Vista::iniciar()
 		unsigned int tiempoActual = SDL_GetTicks();
 		unsigned int tiempoTranscurrido = tiempoActual - tiempoInicial;
 		unsigned int tiempoRestante = cuentaRegresiva - tiempoTranscurrido;
-
+		
 		if (tiempoTranscurrido > cuentaRegresiva)
 		{
 			tiempoInicial = tiempoActual;
@@ -117,7 +116,7 @@ bool Vista::handleEvents(Worm &worm)
 	// REvisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
 	while (SDL_PollEvent(&event))
 	{
-
+		
 		// Si la ventana se cierra terminamos la ejecucion
 		if (event.type == SDL_QUIT)
 		{

@@ -1,4 +1,7 @@
 #include "game.h"
+#include <chrono>
+#include <thread>
+
 
 void mundo()
 {
@@ -56,7 +59,7 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
     world.addBeam(24, 9, 0, LONG);
     world.addBeam(30, 9, 0, LONG);
 
-    world.addWorm(0, 20);
+    world.addWorm(0, 11);
 
     /*b2World *mundo = new b2World(b2Vec2(0.0f, -10.0f));
     Worm worm(mundo, 10, 100, 0);
@@ -70,13 +73,14 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
 void Game::run()
 {
     while (not game_finished)
-    {
+    {   
         Dto *dto;
         if (common_queue.try_pop(dto)) {
             executeCommand(dto);
         }
         //Dto *dto = common_queue.pop();
         update();
+        std::this_thread::sleep_for(std::chrono::milliseconds(8));
         // broadcast();
     }
 }
@@ -84,12 +88,12 @@ void Game::run()
 void Game::update()
 {   
     world.step();
-    Worm *worm = world.getWorms().front();
+    /*Worm *worm = world.getWorms().front();
     uint16_t x = worm->getXCoordinate() * 100;
     uint16_t y = worm->getYCoordinate() * 100;
     uint8_t id = worm->getId();
     Gusano *g = new Gusano(id, x, y);
-    broadcaster.AddGusanoToQueues(g);
+    broadcaster.AddGusanoToQueues(g);*/
 }
 
 void Game::sendWorms(Queue<Dto *> &q)
