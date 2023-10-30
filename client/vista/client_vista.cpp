@@ -49,11 +49,7 @@ int Vista::iniciar()
 	/******************** ESTADO DEL JUEGO ********************/
 
 	guardar_vigas();
-
-	Dto *gusano = cliente.recv_queue.pop();
-	float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) gusano->y_pos()));
-	Worm worm(sprites, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY);
-	delete gusano;
+	guardar_worms(sprites);
 
 	/******************** GAME LOOP ********************/
 
@@ -78,13 +74,13 @@ int Vista::iniciar()
 			tiempoInicial = tiempoActual;
 		}
 
-		if (handleEvents(worm))
+		if (handleEvents())
 		{
 			return 0;
 		}
 
-		actualizar(worm, it);
-		renderizar(renderer, viga, background, agua, font, worm, tiempoRestante);
+		actualizar(it);
+		renderizar(renderer, viga, background, agua, font, tiempoRestante);
 
 		/* IF BEHIND, KEEP WORKING */
 		// Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -131,12 +127,40 @@ void Vista::guardar_vigas()
 	for (int i = 0; i < cantidad; i++)
 	{
 		Viga *viga = (Viga *)dto->popViga();
-		std::cout << "Agregando viga" << std::endl;
+		std::cout << "Agregando worm" << std::endl;
 		this->vigas.push_back(viga);
 	}
+
+	delete dto;
 }
 
-bool Vista::handleEvents(Worm &worm)
+void Vista::guardar_worms(SDL2pp::Texture &sprites)
+{
+
+	/* PRIMER WORM */
+
+	Dto *dto = cliente.recv_queue.pop();
+
+	float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
+
+	std::cout << "Agregando worm" << std::endl;
+	this->worms.push_back(new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY));
+
+	delete dto;
+
+	/* SEGUNDO WORM */
+
+	dto = cliente.recv_queue.pop();
+
+	nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
+
+	std::cout << "Agregando worm" << std::endl;
+	this->worms.push_back(new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY));
+
+	delete dto;
+}
+
+bool Vista::handleEvents()
 {
 	// Procesamiento de evento
 	SDL_Event event;
@@ -278,15 +302,13 @@ bool Vista::handleEvents(Worm &worm)
 	return false;
 }
 
-void Vista::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, Worm &worm, Uint32 tiempoRestante)
+void Vista::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, Uint32 tiempoRestante)
 {
 	renderer.Clear();
 
 	renderizar_mapa(renderer, viga, background, agua);
-
 	renderizar_temporizador(renderer, font, tiempoRestante);
-
-	worm.render(renderer);
+	renderizar_worms(renderer);
 
 	// renderizar_nombre(renderer, font, animacion);
 	// renderizar_vida(renderer, font, animacion);
@@ -314,6 +336,14 @@ void Vista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, S
 			Rect(0, 0, 50, 50),
 			Rect(metros_a_pixeles(centimetros_a_metros(x)), metros_a_pixeles(centimetros_a_metros(y)),
 				 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))));
+	}
+}
+
+void Vista::renderizar_worms(SDL2pp::Renderer &renderer) 
+{
+	for (int i = 0; i < (int)this->worms.size(); i++)
+	{
+		this->worms[i]->render(renderer);
 	}
 }
 
@@ -377,13 +407,13 @@ void Vista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &fo
 	renderer.Copy(texture, NullOpt, vida);
 }*/
 
-void Vista::actualizar(Worm &worm, int it)
+void Vista::actualizar(int it)
 {
 	Dto *gusano;
 
 	if (cliente.recv_queue.try_pop(gusano)) {
 		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) gusano->y_pos()));
-		worm.update(it, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())), nuevoY);
+		this->worms[0]->update(it, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())), nuevoY);
 		delete gusano;
 	}
 
@@ -400,10 +430,18 @@ float Vista::centimetros_a_metros(float centimetros)
 }
 
 void Vista::liberar_memoria() {
+	
 	for (int i = 0; i < (int) this->vigas.size(); i++)
 	{
 		Viga *viga = this->vigas[i];
 		std::cout << "Eliminando viga" << std::endl;
 		delete viga;
+	}
+
+	for (int i = 0; i < (int) this->worms.size(); i++)
+	{
+		Worm *worm = this->worms[i];
+		std::cout << "Eliminando worm" << std::endl;
+		delete worm;
 	}
 }

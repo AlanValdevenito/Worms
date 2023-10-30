@@ -20,24 +20,25 @@ class Vista
 private:
     Client &cliente;
     std::vector<Viga *> vigas;
-    // std::vector<Worm *> worms;
-    // Worm worm_turno;
+    std::vector<Worm *> worms;
 
 public:
     Vista(Client &cliente);
 
     int iniciar();
     void guardar_vigas();
+    void guardar_worms(SDL2pp::Texture &sprites);
 
-    bool handleEvents(Worm &worm);
+    bool handleEvents();
 
-    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, Worm &worm, unsigned int tiempoRestante);
+    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, unsigned int tiempoRestante);
     void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante);
     void renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua);
+    void renderizar_worms(SDL2pp::Renderer &renderer);
     // void renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
     // void renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
 
-    void actualizar(Worm &worm, int it);
+    void actualizar(int it);
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);
