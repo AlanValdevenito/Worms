@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
         Vista vista(client);
 
         client.start();
-        elegirPartida(std::ref(client));
+        // elegirPartida(std::ref(client));
 
         vista.iniciar();
 
