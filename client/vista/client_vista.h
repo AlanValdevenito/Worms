@@ -1,8 +1,6 @@
 #ifndef VISTA_H
 #define VISTA_H 
 
-// Probando .gitignore
-
 #include <iostream>
 #include <exception>
 #include <algorithm>

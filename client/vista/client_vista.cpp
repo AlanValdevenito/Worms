@@ -60,10 +60,10 @@ int Vista::iniciar()
 	unsigned int tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
 	unsigned int cuentaRegresiva = 60000;		 // 60 segundos en milisegundos
 
-	auto t1 = SDL_GetTicks();
+	auto t1 = SDL_GetTicks(); 
 	int it = 0; // Registro del numero de iteraciones
-	auto rate = 1000 / 40; // El tiempo entre cada iteracion sera de '1000 / 40' milisegundos. Como 'rate' es igual a '1000 / 40' quiere 
-						   // decir que la velocidad entre iteraciones sera de 40 veces por segundo
+	auto rate = 1000 / 30; // El tiempo entre cada iteracion sera de '1000 / 30' milisegundos. Como 'rate' es igual a '1000 / 30' quiere 
+						   // decir que la velocidad entre iteraciones sera de 30 veces por segundo
 
 	while (true)
 	{

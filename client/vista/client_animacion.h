@@ -3,10 +3,6 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-// Constante que se utiliza para determinar el tiempo entre frames.
-// Funciona a una velocidad de 30 frames por segundo.
-#define FRAME_RATE 1000000.0f/30.0f
-
 class SdlTexture;
 class Area;
 

@@ -10,23 +10,23 @@ Worm::Worm(SDL2pp::Texture &texture, float x, float y) : animacion(texture), mir
 void Worm::update(int it, float nuevoX, float nuevoY)
 {
  
-    animacion.update(it);
+    this->animacion.update(it);
 
-    if (nuevoX < x)
+    if (nuevoX < this->x)
     {
-        mirandoIzquierda = true;
+        this->mirandoIzquierda = true;
     
-    } else if (nuevoX >= x)
+    } else if (nuevoX > this->x)
     {
-        mirandoIzquierda = false;
+        this->mirandoIzquierda = false;
     }
 
-    x = nuevoX;
-    y = nuevoY;
+    this->x = nuevoX;
+    this->y = nuevoY;
 }
 
 void Worm::render(SDL2pp::Renderer &renderer)
 {
-    SDL_RendererFlip flip = mirandoIzquierda ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-    animacion.render(renderer, SDL2pp::Rect(x - 30, y - 55, ANCHO_SPRITE, ALTO_SPRITE), flip);
+    SDL_RendererFlip flip = this->mirandoIzquierda ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+    this->animacion.render(renderer, SDL2pp::Rect(x - 30, y - 55, ANCHO_SPRITE, ALTO_SPRITE), flip);
 }
