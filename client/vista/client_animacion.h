@@ -5,7 +5,7 @@
 
 // Constante que se utiliza para determinar el tiempo entre frames.
 // Funciona a una velocidad de 30 frames por segundo.
-#define FRAME_RATE 1000000.0f/45.0f
+#define FRAME_RATE 1000000.0f/30.0f
 
 class SdlTexture;
 class Area;
@@ -15,8 +15,6 @@ class Area;
 class Animation {
 
 private:
-    // Avanza al siguiente frame de la animacion.
-    void advanceFrame();
     // Atributo que almacena la textura de la animacion
     SDL2pp::Texture &texture;
     // Entero que almacena el indice del frame actual en la animacion.
@@ -34,7 +32,7 @@ public:
     Animation(SDL2pp::Texture &texture);
 
     // Actualiza la animacion. 
-    void update(float dt);
+    void update(int it);
     // Renderiza la animacion en el area especificada. 
     // El ultimo parametro se utiliza para controlar el volteo de la imagen.
     void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType);

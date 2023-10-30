@@ -7,32 +7,22 @@ Vista::Vista(Client &cliente) : cliente(cliente) {}
 
 int Vista::iniciar()
 {
-	// Inicializamos la libreria SDL
 	SDL sdl(SDL_INIT_VIDEO);
 
-	// Inicializamos la libreria SDL_ttf
 	SDLTTF ttf;
 
-	// Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-	// Creamos la ventana main: Dimensiones de 640x480, Redimensionable, Titulo de la ventana "Worms 2D"
 	Window window("Worms 2D",
 				  SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 				  ANCHO_VENTANA, ALTO_VENTANA,
 				  SDL_WINDOW_RESIZABLE);
 
-	// Create accelerated video renderer with default driver
 	Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	/******************** TEXTURAS ********************/
 
-	// Load sprites image as a new texture; since there's no alpha channel
-	// but we need transparency, use helper surface for which set color key
-	// to color index 0 -> black background on image will be transparent on our
-	// texture
 	Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png")
 								  .SetColorKey(true, 0));
 
-	// Enable alpha blending for the sprites
 	sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
 
 	// Cargamos la imagen para una viga
@@ -53,7 +43,7 @@ int Vista::iniciar()
 
 	agua.SetBlendMode(SDL_BLENDMODE_BLEND);
 
-	// Cargamos la fuente de la letra y le ajustamos un tamaño de 12 pt
+	// Cargamos la fuente de la letra
 	Font font(DATA_PATH "/Vera.ttf", 12);
 
 	/******************** ESTADO DEL JUEGO ********************/
@@ -70,8 +60,15 @@ int Vista::iniciar()
 	unsigned int tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
 	unsigned int cuentaRegresiva = 60000;		 // 60 segundos en milisegundos
 
-	while (1)
+	auto t1 = SDL_GetTicks();
+	int it = 0; // Registro del numero de iteraciones
+	auto rate = 1000 / 40; // El tiempo entre cada iteracion sera de '1000 / 40' milisegundos. Como 'rate' es igual a '1000 / 40' quiere 
+						   // decir que la velocidad entre iteraciones sera de 40 veces por segundo
+
+	while (true)
 	{
+		t1 = SDL_GetTicks(); // Inicializamos 't1' con el tiempo actual en milisegundos
+
 		unsigned int tiempoActual = SDL_GetTicks();
 		unsigned int tiempoTranscurrido = tiempoActual - tiempoInicial;
 		unsigned int tiempoRestante = cuentaRegresiva - tiempoTranscurrido;
@@ -86,11 +83,39 @@ int Vista::iniciar()
 			return 0;
 		}
 
-		actualizar(worm, FRAME_RATE);
+		actualizar(worm, it);
 		renderizar(renderer, viga, background, agua, font, worm, tiempoRestante);
 
-		SDL_Delay(1);
-		// usleep(FRAME_RATE);
+		/* IF BEHIND, KEEP WORKING */
+		// Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
+		// a una velocidad especifica 'rate'
+
+		auto t2 = SDL_GetTicks(); // Inicializamos 't2' con el tiempo actual en milisegundos
+		int rest = rate - (t2 - t1); // Cantidad de tiempo que debe esperarse
+									 // antes de la proxima iteracion. Al tiempo deseado entre iteraciones le restamos
+									 // la diferencia entre 't2' y 't1' que es el tiempo que se tardo en actualizar y renderizar
+
+		// Si 'rest' es menor a cero quiere decir que nos estamos retrasando en comparacion
+		// con el ritmo deseado
+		if (rest < 0) {
+			auto behind = -rest; // ¿Cuanto tiempo estamos retrasados?
+			auto lost = behind - behind % rate; // ¿Cuanto tiempo perdimos?
+			t1 += lost; // Ajustamos 't1' para ponernos al dia con el tiempo perdido
+			it += int(lost / rate); // Aumentamos 'it' para reflejar las iteraciones que
+									// se han perdido debido al retraso
+		
+		// Si 'rest' es mayor o igual a cero quiere decir que no nos estamos quedando atras
+		} else {
+			std::cout << rest << std::endl;
+			SDL_Delay(rest); // Descansamos el valor 'rest' antes de la proxima iteracion para
+							 // mantener un ritmo constante
+		}
+
+		t1 += rate; // Aumentamos 't1' en 'rate' para programar la proxima iteracion
+		it +=1; // Aumentamos 'it' en 1 para mantener un registro del numero de iteraciones
+	
+		// Nota: Si no casteamos a int la variable 'rest' se produce un desbordamiento y rest puede ser igual a '4294967294' lo cual hace 
+		// 		 que se cuelgue el juego
 	}
 
 	return 0;
@@ -104,7 +129,6 @@ void Vista::guardar_vigas()
 	{
 		Viga *viga = (Viga *)dto->popViga();
 		this->vigas.push_back(viga); // Liberar memoria de las vigas cuando se sale de la vista
-									 // delete;
 	}
 }
 
@@ -113,9 +137,7 @@ bool Vista::handleEvents(Worm &worm)
 	// Procesamiento de evento
 	SDL_Event event;
 
-	Dto *mover = new MoverADerecha();
-	Dto *mover_izquierda = new MoverAIzquierda();
-	// REvisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
+	// Revisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
 	while (SDL_PollEvent(&event))
 	{
 		
@@ -160,12 +182,12 @@ bool Vista::handleEvents(Worm &worm)
 
 			// Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
 			case SDLK_RIGHT:
-				cliente.send_queue.push(mover);
+				cliente.send_queue.push(new MoverADerecha());
 				break;
 
 			// Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
 			case SDLK_LEFT:
-				cliente.send_queue.push(mover_izquierda);
+				cliente.send_queue.push(new MoverAIzquierda());
 				break;
 
 			// Si se presiona la flecha hacia ariba el gusano direcciona su arma
@@ -349,13 +371,13 @@ void Vista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &fo
 	renderer.Copy(texture, NullOpt, vida);
 }*/
 
-void Vista::actualizar(Worm &worm, float dt)
+void Vista::actualizar(Worm &worm, int it)
 {
 	Dto *gusano;
 
 	if (cliente.recv_queue.try_pop(gusano)) {
 		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) gusano->y_pos()));
-		worm.update(dt, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())), nuevoY);
+		worm.update(it, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())), nuevoY);
 		delete gusano;
 	}
 

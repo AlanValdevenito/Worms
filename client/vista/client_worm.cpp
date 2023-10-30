@@ -7,16 +7,16 @@ Worm::Worm(SDL2pp::Texture &texture, float x, float y) : animacion(texture), mir
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos. Esto les va a resultar muy util.
 
-void Worm::update(float dt, float nuevoX, float nuevoY)
+void Worm::update(int it, float nuevoX, float nuevoY)
 {
  
-    animacion.update(dt);
+    animacion.update(it);
 
     if (nuevoX < x)
     {
         mirandoIzquierda = true;
     
-    } else if (nuevoX > x)
+    } else if (nuevoX >= x)
     {
         mirandoIzquierda = false;
     }

@@ -22,7 +22,7 @@ public:
     Worm(SDL2pp::Texture &texture, float x, float y);
 
     // Actualiza el Worm en funcion del tiempo transcurrido.
-    void update(float dt, float nuevoX, float nuevoY);
+    void update(int it, float nuevoX, float nuevoY);
     // Renderiza el Worm.
     void render(SDL2pp::Renderer &renderer);
 };

@@ -14,14 +14,9 @@ Animation::Animation(SDL2pp::Texture &texture): texture(texture), currentFrame(0
     assert(this->size > 0);
 }
 
-void Animation::update(float dt) {
-    this->elapsed += dt;
-    // std::cout << this->currentFrame << std::endl;
-    // Comprueba si el frame deberia ser actualizado en base al tiempo transcurrido desde la ultima actualizacion
-    while (this->elapsed > FRAME_RATE) {
-        this->advanceFrame();
-        this->elapsed -= FRAME_RATE;
-    }
+void Animation::update(int it) {
+    this->currentFrame = it;
+    this->currentFrame = this->currentFrame % this->numFrames; 
 }
 
 void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
@@ -33,10 +28,4 @@ void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_R
             SDL2pp::NullOpt,    // rotation center - not needed
             flipType
         );
-}
-
-void Animation::advanceFrame() {
-    this->currentFrame += 1;
-    // Aseguramos que la animacion sea ciclica, volviendo al primer frame si se alcanza el ultimo.
-    this->currentFrame = this->currentFrame % this->numFrames; 
 }

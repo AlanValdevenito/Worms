@@ -39,7 +39,7 @@ public:
     // void renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
     // void renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
 
-    void actualizar(Worm &worm, float dt);
+    void actualizar(Worm &worm, int it);
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);
