@@ -127,7 +127,7 @@ void Vista::guardar_vigas()
 	for (int i = 0; i < cantidad; i++)
 	{
 		Viga *viga = (Viga *)dto->popViga();
-		std::cout << "Agregando worm" << std::endl;
+		std::cout << "Agregando viga" << std::endl;
 		this->vigas.push_back(viga);
 	}
 
@@ -144,7 +144,7 @@ void Vista::guardar_worms(SDL2pp::Texture &sprites)
 	float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
 
 	std::cout << "Agregando worm" << std::endl;
-	this->worms.push_back(new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY));
+	this->worms[((Gusano *)dto)->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
 
 	delete dto;
 
@@ -155,7 +155,10 @@ void Vista::guardar_worms(SDL2pp::Texture &sprites)
 	nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
 
 	std::cout << "Agregando worm" << std::endl;
-	this->worms.push_back(new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY));
+	//this->worms[((Gusano *)dto)->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
+
+	// Borrar esta linea y descomentar la de arriba cuando se implemente la logica para incrementar los ID de los Worms
+	this->worms[1] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
 
 	delete dto;
 }
@@ -341,9 +344,8 @@ void Vista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, S
 
 void Vista::renderizar_worms(SDL2pp::Renderer &renderer) 
 {
-	for (int i = 0; i < (int)this->worms.size(); i++)
-	{
-		this->worms[i]->render(renderer);
+	for (const auto& elemento: this->worms) {
+		elemento.second->render(renderer);
 	}
 }
 
@@ -413,10 +415,9 @@ void Vista::actualizar(int it)
 
 	if (cliente.recv_queue.try_pop(gusano)) {
 		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) gusano->y_pos()));
-		this->worms[0]->update(it, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())), nuevoY);
+		this->worms[((Gusano *)gusano)->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int) gusano->x_pos())), nuevoY);
 		delete gusano;
 	}
-
 }
 
 float Vista::metros_a_pixeles(float metros)

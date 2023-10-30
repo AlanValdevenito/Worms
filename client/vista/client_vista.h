@@ -4,6 +4,7 @@
 #include <iostream>
 #include <exception>
 #include <algorithm>
+#include <map>
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -20,7 +21,7 @@ class Vista
 private:
     Client &cliente;
     std::vector<Viga *> vigas;
-    std::vector<Worm *> worms;
+    std::map<int, Worm *> worms;
 
 public:
     Vista(Client &cliente);
