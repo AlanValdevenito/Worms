@@ -41,6 +41,8 @@ public:
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);
+
+    void liberar_memoria();
 };
 
 #endif

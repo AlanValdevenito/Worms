@@ -125,10 +125,14 @@ void Vista::guardar_vigas()
 {
 	Dto *dto = cliente.recv_queue.pop();
 
-	for (int i = 0; i < dto->cantidad(); i++)
+	// Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todas
+	// las vigas ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
+	int cantidad = dto->cantidad();
+	for (int i = 0; i < cantidad; i++)
 	{
 		Viga *viga = (Viga *)dto->popViga();
-		this->vigas.push_back(viga); // Liberar memoria de las vigas cuando se sale de la vista
+		std::cout << "Agregando viga" << std::endl;
+		this->vigas.push_back(viga);
 	}
 }
 
@@ -178,6 +182,7 @@ bool Vista::handleEvents(Worm &worm)
 			// Si se presiona la tecla "Q" o "ESC" terminamos la ejecucion
 			case SDLK_ESCAPE:
 			case SDLK_q:
+				liberar_memoria();
 				return true;
 
 			// Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
@@ -297,8 +302,9 @@ void Vista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, S
 
 	for (int i = 0; i < (int)this->vigas.size(); i++)
 	{
-
-		float x = this->vigas[i]->x_pos();
+		// Debemos hacer un corrimiento en 'x' ya que las fisicas modeladas con Box2D
+		// tienen el (0,0) de los cuerpos en el centro
+		float x = this->vigas[i]->x_pos() - (this->vigas[i]->return_ancho() / 2);
 		float y = this->vigas[i]->y_pos();
 		float ancho = this->vigas[i]->return_ancho();
 		float alto = this->vigas[i]->return_alto();
@@ -391,4 +397,13 @@ float Vista::metros_a_pixeles(float metros)
 float Vista::centimetros_a_metros(float centimetros)
 {
 	return centimetros / 100;
+}
+
+void Vista::liberar_memoria() {
+	for (int i = 0; i < (int) this->vigas.size(); i++)
+	{
+		Viga *viga = this->vigas[i];
+		std::cout << "Eliminando viga" << std::endl;
+		delete viga;
+	}
 }

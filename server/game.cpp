@@ -52,26 +52,20 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                             game_finished(false)
 {
     // mundo();
-    world.addBeam(0, 9, 0, LONG);
-    world.addBeam(6, 9, 0, LONG);
-    world.addBeam(6, 9, 0, LONG);
-    world.addBeam(12, 9, 0, LONG);
-    world.addBeam(18, 9, 0, LONG);
+    world.addBeam(3, 9, 0, LONG); // Ocupa del 1 al 6
+    world.addBeam(9, 9, 0, LONG); // Ocupa del 7 al 12
+    world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
+    world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
+
     /* AGUA */
 
-    world.addBeam(0, 0, 0, LONG);
-    world.addBeam(6, 0, 0, LONG);
-    world.addBeam(12, 0, 0, LONG);
+    // world.addBeam(0, 0, 0, LONG);
+    // world.addBeam(6, 0, 0, LONG);
+    // world.addBeam(12, 0, 0, LONG);
 
     /*******/
 
-    // world.addBeam(6, 9, 0, LONG);
-    // world.addBeam(12, 9, 0, LONG);
-    // world.addBeam(18, 9, 0, LONG);
-    // world.addBeam(24, 9, 0, LONG);
-    // world.addBeam(30, 9, 0, LONG);
-
-    world.addWorm(9, 10);
+    world.addWorm(3, 10);
 
     /*b2World *mundo = new b2World(b2Vec2(0.0f, -10.0f));
     Worm worm(mundo, 10, 100, 0);
