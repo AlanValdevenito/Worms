@@ -136,31 +136,14 @@ void Vista::guardar_vigas()
 
 void Vista::guardar_worms(SDL2pp::Texture &sprites)
 {
+	Dto *dto;
 
-	/* PRIMER WORM */
-
-	Dto *dto = cliente.recv_queue.pop();
-
-	float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
-
-	std::cout << "Agregando worm" << std::endl;
-	this->worms[((Gusano *)dto)->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
-
-	delete dto;
-
-	/* SEGUNDO WORM */
-
-	dto = cliente.recv_queue.pop();
-
-	nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
-
-	std::cout << "Agregando worm" << std::endl;
-	//this->worms[((Gusano *)dto)->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
-
-	// Borrar esta linea y descomentar la de arriba cuando se implemente la logica para incrementar los ID de los Worms
-	this->worms[1] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
-
-	delete dto;
+	while (cliente.recv_queue.try_pop(dto)) {
+		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
+		std::cout << "Agregando worm" << std::endl;
+		this->worms[((Gusano *)dto)->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
+		delete dto;
+	}
 }
 
 bool Vista::handleEvents()
