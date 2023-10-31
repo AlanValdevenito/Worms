@@ -25,6 +25,7 @@ private:
     b2Body *body_w;
 
 public:
+    int idTurn = -1;
     bool game_finished;
     Game(Queue<Dto *> &queue, Broadcaster &broadcaster);
     void update();

@@ -68,8 +68,9 @@ std::list<Worm> &World::getWorms()
 
 void World::addWorm(float x, float y)
 {
-    Worm worm(&world, x, y, 0);
+    Worm worm(&world, x, y, idWorms);
     worms.push_back(worm);
+    idWorms = idWorms + 1;
 }
 
 void World::step()

@@ -2,56 +2,14 @@
 #include <chrono>
 #include <thread>
 
+#define TURN_DURATION 5
 
-void mundo()
-{
-    b2Vec2 gravity(0.0f, -10.0f);
-    b2World world(gravity);
-    // creo el piso
-    b2BodyDef groundBodyDef;
-    groundBodyDef.position.Set(0.0f, -10.0f);
-    b2Body *groundBody = world.CreateBody(&groundBodyDef);
-    b2PolygonShape groundBox;
-    groundBox.SetAsBox(50.0f, 10.0f);
-    groundBody->CreateFixture(&groundBox, 0.0f);
-    // creo el cuerpo dinamico
-    b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(0.0f, 4.0f);
-    b2Body *body = world.CreateBody(&bodyDef);
-    b2PolygonShape dynamicBox;
-    dynamicBox.SetAsBox(1.0f, 1.0f);
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &dynamicBox;
-    fixtureDef.density = 1.0f;
-    fixtureDef.friction = 0.3f;
-    body->CreateFixture(&fixtureDef);
-    float timeStep = 1.0f / 60.0f;
-    int32 velocityIterations = 6;
-    int32 positionIterations = 2;
-    for (int32 i = 0; i < 60; ++i)
-    {
-        world.Step(timeStep, velocityIterations, positionIterations);
-        b2Vec2 position = body->GetPosition();
-        float angle = body->GetAngle();
-        printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
-    }
-    body->SetLinearVelocity(b2Vec2(10, 0));
-    for (int32 i = 0; i < 60; ++i)
-    {
-        world.Step(timeStep, velocityIterations, positionIterations);
-        b2Vec2 position = body->GetPosition();
-        float angle = body->GetAngle();
-        printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
-    }
-}
 
 Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                             broadcaster(broadcaster),
                                                             world(World()),
                                                             game_finished(false)
 {
-    // mundo();
 
     /* VIGAS */
 
@@ -70,27 +28,33 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
 
     world.addWorm(3, 10);
     world.addWorm(15, 10);
-
-    /*b2World *mundo = new b2World(b2Vec2(0.0f, -10.0f));
-    Worm worm(mundo, 10, 100, 0);
-    float timeStep = 1.0f / 60.0f;
-    for (int i = 0; i < 1000; i++) {
-        std::cout << "worm x = " << worm.getXCoordinate() << " y = " << worm.getYCoordinate() << "\n";
-        mundo->Step(timeStep, 10, 10);
-    }*/
 }
 
 void Game::run()
-{
+{   
+    int idFirstWorm = world.getWorms().front().getId();
+    int idSecondWorm = world.getWorms().back().getId();
+    idTurn = idFirstWorm;
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    std::chrono::steady_clock::time_point end;
     while (not game_finished)
     {   
         Dto *dto;
         if (common_queue.try_pop(dto)) {
             executeCommand(dto);
         }
-        //Dto *dto = common_queue.pop();
         update();
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        end = std::chrono::steady_clock::now();
+        if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION) {
+            std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
+            begin = std::chrono::steady_clock::now();
+            if (idTurn == idFirstWorm) {
+                idTurn = idSecondWorm;
+            } else if (idTurn == idSecondWorm) {
+                idTurn = idFirstWorm;
+            }
+        }
         // broadcast();
     }
 }
@@ -139,13 +103,22 @@ void Game::sendMap(Queue<Dto *> &q)
 }
 
 void Game::moveWormRight()
-{
-    world.getWorms().front().moveRight();
+{   
+
+    for (Worm worm : world.getWorms()) {
+        if (worm.getId() == idTurn) {
+            worm.moveRight();
+        }
+    }
     //std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
 }
 
 void Game::moveWormLeft() {
-    world.getWorms().front().moveLeft();
+    for (Worm worm : world.getWorms()) {
+        if (worm.getId() == idTurn) {
+            worm.moveLeft();
+        }
+    }
 }
 
 void Game::stop()
@@ -159,21 +132,21 @@ void Game::executeCommand(Dto *dto)
     if (code == MOVER_A_DERECHA_CODE)
     {
         moveWormRight();
-        Worm worm = world.getWorms().front();
-        uint16_t x = worm.getXCoordinate() * 100;
-        uint16_t y = worm.getYCoordinate() * 100;
-        uint8_t id = worm.getId();
-        Gusano *g = new Gusano(id, x, y);
-        broadcaster.AddGusanoToQueues(g);
+        
     } else if (code == MOVER_A_IZQUERDA_CODE) {
         moveWormLeft();
-        Worm worm = world.getWorms().front();
-        uint16_t x = worm.getXCoordinate() * 100;
-        uint16_t y = worm.getYCoordinate() * 100;
-        uint8_t id = worm.getId();
-        Gusano *g = new Gusano(id, x, y);
-        broadcaster.AddGusanoToQueues(g);
     }
+
+    for (Worm worm : world.getWorms()) {
+        if (worm.getId() == idTurn) {
+            uint16_t x = worm.getXCoordinate() * 100;
+            uint16_t y = worm.getYCoordinate() * 100;
+            uint8_t id = worm.getId();
+            Gusano *g = new Gusano(id, x, y);
+            broadcaster.AddGusanoToQueues(g);
+        }
+    }
+    delete dto;
 }
 
 void Game::broadcast()

@@ -15,6 +15,7 @@ private:
     b2World world;
     std::list<Beam> beams;
     std::list<Worm> worms;
+    int idWorms = 0;
 
 public:
     // crea un mundo

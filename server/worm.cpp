@@ -32,12 +32,12 @@ uint8_t Worm::getId()
 }
 
 void Worm::moveLeft() {
-	body->SetLinearVelocity(b2Vec2(-0.2f, 0.0f));
+	body->SetLinearVelocity(b2Vec2(-0.6f, 0.0f));
 }
 
 void Worm::moveRight()
 {
-    body->SetLinearVelocity(b2Vec2(0.2f, 0.0f));
+    body->SetLinearVelocity(b2Vec2(0.6f, 0.0f));
 }
 
 
