@@ -4,6 +4,15 @@ ServerProtocol::ServerProtocol(Socket &skt) : skt(skt) {}
 
 ServerProtocol::~ServerProtocol() {}
 
+void ServerProtocol::sendId(ClienteId *id, bool &was_closed){
+    uint8_t code = id->return_code();
+    skt.sendall(&(code), sizeof(code), &was_closed); 
+    
+    uint8_t id_cliente = id->get_cliente_id();
+    // printf("id enviado: %u\n",id_cliente );
+    skt.sendall(&(id_cliente), sizeof(id_cliente), &was_closed); 
+}
+
 void ServerProtocol::sendVigas(Dto *vs, bool &was_closed)
 {
     uint8_t code = vs->return_code();
@@ -78,16 +87,20 @@ Dto *ServerProtocol::recvPartidaSeleccionada(bool &was_closed)
 
 Dto *ServerProtocol::recv(bool &was_closed)
 {
+    uint8_t id;
+    skt.recvall(&id, sizeof(id), &was_closed);
+
+    printf("cliente id: %u\n", id);
+
     uint8_t code;
     skt.recvall(&code, sizeof(code), &was_closed);
-    // printf("recibido: %u\n", a);
-
+    
     if (code == LISTA_DE_PARTIDAS_CODE)
         return recvPartidaSeleccionada(was_closed);
     else if (code == MOVER_A_DERECHA_CODE)
-        return new MoverADerecha();
+        return new MoverADerecha(id);
     else if (code == MOVER_A_IZQUERDA_CODE)
-        return new MoverAIzquierda();
+        return new MoverAIzquierda(id);
 
     return new Dto(code); // DEBERIA SER UN DEAD DTO
 }

@@ -14,7 +14,6 @@
 #include <list>
 
 #include "queue.h"
-// #include "broadcaster.h"
 #include "receiver_thread.h"
 #include "sender_thread.h"
 #include "socket.h"
@@ -43,6 +42,7 @@ private:
     // std::list<Partida *> partidas;
     // Broadcaster broadcaster;
     Partida partida;
+    uint8_t id_cliente;
 
     void sendMatchList(ServerClient *c);
 };

@@ -27,6 +27,7 @@ public:
     ~Client();
     void start();
     void join();
+    uint8_t id;
     Queue<Dto *> send_queue;
     Queue<Dto *> recv_queue;
 

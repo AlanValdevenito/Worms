@@ -14,7 +14,7 @@ private:
     uint8_t id_gusano;
 
 public:
-    MoverADerecha();
+    MoverADerecha(uint8_t id);
     ~MoverADerecha();
     bool is_alive() override;
     // uint8_t get_id();
@@ -26,7 +26,7 @@ private:
     uint8_t id_gusano;
 
 public:
-    MoverAIzquierda();
+    MoverAIzquierda(uint8_t id);
     ~MoverAIzquierda();
     bool is_alive() override;
     // uint8_t get_id();

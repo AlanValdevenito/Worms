@@ -8,6 +8,10 @@ void Client::start()
 {
     recv_th.start();
     send_th.start();
+    
+    Dto *d = recv_queue.pop();
+    id = d->get_cliente_id();
+    delete d;
 }
 
 void Client::join()

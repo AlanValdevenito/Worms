@@ -1,5 +1,5 @@
-#ifndef POSITION_H
-#define POSITION_H
+#ifndef DEAD_H
+#define DEAD_H
 
 #include <iostream>
 #include <string>

@@ -67,10 +67,11 @@ std::list<Worm> &World::getWorms()
 }
 
 void World::addWorm(float x, float y)
-{
+{   
+    idWorms = idWorms + 1;
     Worm worm(&world, x, y, idWorms);
     worms.push_back(worm);
-    idWorms = idWorms + 1;
+    
 }
 
 void World::step()

@@ -24,6 +24,8 @@ private:
     World world;
     b2Body *body_w;
 
+    // std::map<int, LISTA DE WORMS>;
+
 public:
     int idTurn = -1;
     bool game_finished;
@@ -34,8 +36,8 @@ public:
     void sendMap(Queue<Dto *> &q);
     void sendWorms(Queue<Dto *> &q);
 
-    void moveWormLeft();
-    void moveWormRight();
+    void moveWormLeft(uint8_t id);
+    void moveWormRight(uint8_t id);
     void executeCommand(Dto *dto);
     void broadcast();
 };

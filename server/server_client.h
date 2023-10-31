@@ -20,11 +20,12 @@
 #include "thread.h"
 #include "server_protocol.h"
 #include "dto.h"
+#include "cliente_id.h"
 
 class ServerClient
 {
 public:
-    ServerClient(Socket &&socket, Queue<Dto *> &q, Queue<Dto *> &common_queue);
+    ServerClient(Socket &&socket, Queue<Dto *> &q, Queue<Dto *> &common_queue, uint8_t id);
     ~ServerClient();
     bool is_dead();
     void join();
@@ -32,6 +33,7 @@ public:
     void start();
     void addMapToQueue();
 
+    uint8_t id;
     Queue<Dto *> &common_queue;
     Queue<Dto *> sender_queue;
     std::atomic<bool> keep_talking;

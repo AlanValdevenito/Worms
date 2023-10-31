@@ -23,10 +23,20 @@ Dto *ClientProtocol::receive(bool &was_closed)
         return receiveGusano(was_closed);
     else if (code == LISTA_DE_PARTIDAS_CODE)
         return receivePartidas(was_closed);
+    else if (code == CLIENTE_ID_CODE)
+        return receiveId(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
     return new DeadDto();
+}
+
+Dto* ClientProtocol::receiveId(bool &was_closed){
+    uint8_t id;
+    skt.recvall(&id, sizeof(id), &was_closed);
+    // printf("id recibido: %u\n",id );
+    return new ClienteId(id);
+
 }
 
 Dto *ClientProtocol::receivePartidas(bool &was_closed)
@@ -75,7 +85,7 @@ Dto *ClientProtocol::receiveViga(bool &was_closed)
     ancho = ntohs(ancho);
     alto = ntohs(alto);
 
-    printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
+    // printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
 
     return new Viga(x, y, ancho, alto);
 }
@@ -100,6 +110,9 @@ Dto *ClientProtocol::receiveGusano(bool &was_closed)
 
 void ClientProtocol::moverADerecha(MoverADerecha *m, bool &was_closed)
 {
+    uint8_t id_cliente = m->get_cliente_id();
+    skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
+
     uint8_t code = m->return_code();
     // printf("enviar: %u\n", a);
     skt.sendall(&code, sizeof(code), &was_closed);
@@ -107,6 +120,9 @@ void ClientProtocol::moverADerecha(MoverADerecha *m, bool &was_closed)
 
 void ClientProtocol::moverAIzquierda(MoverAIzquierda *m, bool &was_closed)
 {
+    uint8_t id_cliente = m->get_cliente_id();
+    skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
+    
     uint8_t code = m->return_code();
     // printf("enviar: %u\n", a);
     skt.sendall(&code, sizeof(code), &was_closed);
@@ -114,6 +130,8 @@ void ClientProtocol::moverAIzquierda(MoverAIzquierda *m, bool &was_closed)
 
 void ClientProtocol::enviarSeleccion(ListaDePartidas *l, bool &was_closed)
 {
+    // skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
+    
     uint8_t code = l->return_code();
     // printf("enviar: %u\n", a);
     skt.sendall(&code, sizeof(code), &was_closed);

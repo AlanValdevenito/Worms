@@ -16,6 +16,7 @@
 #include "dto.h"
 #include "gusano.h"
 #include "partidas_lista.h"
+#include "cliente_id.h"
 #include "server_protocol.h"
 
 class Sender : public Thread

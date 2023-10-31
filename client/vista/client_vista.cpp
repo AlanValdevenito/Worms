@@ -102,7 +102,7 @@ int Vista::iniciar()
 		
 		// Si 'rest' es mayor o igual a cero quiere decir que no nos estamos quedando atras
 		} else {
-			std::cout << rest << std::endl;
+			// std::cout << rest << std::endl;
 			SDL_Delay(rest); // Descansamos el valor 'rest' antes de la proxima iteracion para
 							 // mantener un ritmo constante
 		}
@@ -197,12 +197,12 @@ bool Vista::handleEvents()
 
 			// Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
 			case SDLK_RIGHT:
-				cliente.send_queue.push(new MoverADerecha());
+				cliente.send_queue.push(new MoverADerecha(this->cliente.id));
 				break;
 
 			// Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
 			case SDLK_LEFT:
-				cliente.send_queue.push(new MoverAIzquierda());
+				cliente.send_queue.push(new MoverAIzquierda(this->cliente.id));
 				break;
 
 			// Si se presiona la flecha hacia ariba el gusano direcciona su arma

@@ -4,6 +4,8 @@ Dto::Dto() {}
 
 Dto::Dto(uint8_t code) : code(code) {}
 
+Dto::Dto(uint8_t code, uint8_t id) : code(code), id_cliente(id) {}
+
 Dto::~Dto() {}
 
 uint8_t Dto::return_code() { return code; }
@@ -22,3 +24,5 @@ uint16_t Dto::return_ancho() { return 0; }
 void *Dto::popViga() { return nullptr; }
 
 uint8_t Dto::cantidad() { return 0; }
+
+uint8_t Dto::get_cliente_id() { return id_cliente; }

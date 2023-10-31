@@ -4,7 +4,6 @@
 
 #define TURN_DURATION 5
 
-
 Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                             broadcaster(broadcaster),
                                                             world(World()),
@@ -32,11 +31,11 @@ Game::Game(Queue<Dto *> &queue, Broadcaster &broadcaster) : common_queue(queue),
 
 void Game::run()
 {   
-    int idFirstWorm = world.getWorms().front().getId();
-    int idSecondWorm = world.getWorms().back().getId();
-    idTurn = idFirstWorm;
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    std::chrono::steady_clock::time_point end;
+    //int idFirstWorm = world.getWorms().front().getId();
+    //int idSecondWorm = world.getWorms().back().getId();
+    //idTurn = idFirstWorm;
+    //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    //std::chrono::steady_clock::time_point end;
     while (not game_finished)
     {   
         Dto *dto;
@@ -45,8 +44,8 @@ void Game::run()
         }
         update();
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
-        end = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION) {
+        //end = std::chrono::steady_clock::now();
+        /*if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION) {
             std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
             begin = std::chrono::steady_clock::now();
             if (idTurn == idFirstWorm) {
@@ -54,7 +53,7 @@ void Game::run()
             } else if (idTurn == idSecondWorm) {
                 idTurn = idFirstWorm;
             }
-        }
+        }*/
         // broadcast();
     }
 }
@@ -102,20 +101,27 @@ void Game::sendMap(Queue<Dto *> &q)
     q.push(vigas); // agrego a la cola una lista de viga
 }
 
-void Game::moveWormRight()
+void Game::moveWormRight(uint8_t id)
 {   
 
+    // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
+
+    // lista de gusano = diccionario [ID];
+
     for (Worm worm : world.getWorms()) {
-        if (worm.getId() == idTurn) {
+        if (worm.getId() == id) {
             worm.moveRight();
         }
     }
     //std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
 }
 
-void Game::moveWormLeft() {
+void Game::moveWormLeft(uint8_t id) {
+
+    // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
+
     for (Worm worm : world.getWorms()) {
-        if (worm.getId() == idTurn) {
+        if (worm.getId() == id) {
             worm.moveLeft();
         }
     }
@@ -128,23 +134,30 @@ void Game::stop()
 
 void Game::executeCommand(Dto *dto)
 {
+    // VER EL ID QUE LLEGA EN EL DTO
+    uint8_t clientId = dto->get_cliente_id();
+
+    // COMPROBAR SI ES SU TURNO
+    // ...
+
     uint8_t code = dto->return_code();
     if (code == MOVER_A_DERECHA_CODE)
     {
-        moveWormRight();
+        moveWormRight(clientId); // SI ES SU TURNO, LE PASAMOS EL ID
         
     } else if (code == MOVER_A_IZQUERDA_CODE) {
-        moveWormLeft();
+        moveWormLeft(clientId); // SI ES SU TURNO, LE PASAMOS EL ID
     }
 
     for (Worm worm : world.getWorms()) {
-        if (worm.getId() == idTurn) {
+        if (worm.getId() == clientId) {
             uint16_t x = worm.getXCoordinate() * 100;
             uint16_t y = worm.getYCoordinate() * 100;
             uint8_t id = worm.getId();
             Gusano *g = new Gusano(id, x, y);
             broadcaster.AddGusanoToQueues(g);
         }
+        
     }
     delete dto;
 }

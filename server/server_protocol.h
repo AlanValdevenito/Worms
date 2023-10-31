@@ -17,6 +17,7 @@
 #include "gusano.h"
 #include "mover.h"
 #include "partidas_lista.h"
+#include "cliente_id.h"
 #include "socket.h"
 
 class ServerProtocol
@@ -25,6 +26,7 @@ public:
     explicit ServerProtocol(Socket &skt);
     ~ServerProtocol();
     Dto *recv(bool &was_closed);
+    void sendId(ClienteId *id, bool &was_closed);
     void sendVigas(Dto *vs, bool &was_closed);
     void sendWorms(Gusano *g, bool &was_closed);
     void sendPartidas(ListaDePartidas *l, bool &was_closed);

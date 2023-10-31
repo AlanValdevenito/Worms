@@ -19,6 +19,7 @@
 #include "gusano.h"
 #include "mover.h"
 #include "partidas_lista.h"
+#include "cliente_id.h"
 
 class ClientProtocol
 {
@@ -32,10 +33,11 @@ public:
     void enviarSeleccion(ListaDePartidas *l, bool &was_closed);
 
 private:
-    Socket &skt;
+    Socket &skt; 
     Dto *receiveViga(bool &was_closed);
     Dto *receiveVigas(bool &was_closed);
     Dto *receiveGusano(bool &was_closed);
     Dto *receivePartidas(bool &was_closed);
+    Dto* receiveId(bool &was_closed);
 };
 #endif
