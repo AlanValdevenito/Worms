@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "dto.h"
 #include "constantes.h"
@@ -23,4 +24,21 @@ public:
     uint16_t y_pos() override;
     uint8_t get_id();
 };
+
+
+class Gusanos : public Dto
+{
+private:
+    std::list<Gusano *> gusanos;
+
+public:
+    Gusanos();
+    Gusanos(std::list<Gusano *> gs);
+    ~Gusanos();
+    bool is_alive() override;
+    Gusano *popGusano();
+    std::list<Gusano*> return_gusanos_list();
+    uint8_t cantidad() override;
+};
+
 #endif

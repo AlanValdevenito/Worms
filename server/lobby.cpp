@@ -2,7 +2,7 @@
 
 // crear una nueva instancia de game cuando creo una partida y pasarselo a la partida
 // Lobby::Lobby() : mapId(0)
-Lobby::Lobby() : mapId(0), partida(std::ref(common_queue), 1), id_cliente(0)
+Lobby::Lobby() : mapId(0), partida(std::ref(common_queue), 1, 2), id_cliente(0)
 {
     // partida.start();
 }
@@ -49,7 +49,6 @@ Lobby::~Lobby() {}
 void Lobby::newClient(Socket &&s)
 {
     id_cliente++;
-    printf("id_cliente: %u\n", id_cliente);
 
     // agregar lobby queue
     ServerClient *c = new ServerClient(std::move(s), std::ref(lobby_queue), std::ref(common_queue), id_cliente); // no necesita el broadcaster
@@ -69,7 +68,8 @@ void Lobby::newClient(Socket &&s)
 
     // send y recv lista de mapas ----------------> SOLO PARA PARTIDAS NUEVAS????
     // Partida p(std::ref(common_queue));
-    partida.start(c);
+    partida.sendMapTo(c);
+    partida.start();
 }
 
 void Lobby::reap_dead()

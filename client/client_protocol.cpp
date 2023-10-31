@@ -21,6 +21,8 @@ Dto *ClientProtocol::receive(bool &was_closed)
         return receiveVigas(was_closed);
     else if (code == GUSANO_CODE)
         return receiveGusano(was_closed);
+    else if (code == GUSANOS_CODE)
+        return receiveGusanos(was_closed);
     else if (code == LISTA_DE_PARTIDAS_CODE)
         return receivePartidas(was_closed);
     else if (code == CLIENTE_ID_CODE)
@@ -88,6 +90,19 @@ Dto *ClientProtocol::receiveViga(bool &was_closed)
     // printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
 
     return new Viga(x, y, ancho, alto);
+}
+
+Dto *ClientProtocol::receiveGusanos(bool &was_closed){
+    uint8_t cant;
+    skt.recvall(&cant, sizeof(cant), &was_closed);
+
+    std::list<Gusano*> lista;
+    for(int i = 0; i < cant; i++){
+        Gusano *g = (Gusano*)receiveGusano(was_closed);
+        printf("gusano %d)  id:%u  x:%u  y:%u \n", i, g->get_id(), g->x_pos(), g->y_pos());
+        lista.push_back(g);
+    }
+    return new Gusanos(lista);
 }
 
 Dto *ClientProtocol::receiveGusano(bool &was_closed)

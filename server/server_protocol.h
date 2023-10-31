@@ -29,6 +29,7 @@ public:
     void sendId(ClienteId *id, bool &was_closed);
     void sendVigas(Dto *vs, bool &was_closed);
     void sendWorms(Gusano *g, bool &was_closed);
+    void sendAllWorms(Gusanos *gs, bool &was_closed);
     void sendPartidas(ListaDePartidas *l, bool &was_closed);
 
 private:

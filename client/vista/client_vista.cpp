@@ -136,14 +136,37 @@ void Vista::guardar_vigas()
 
 void Vista::guardar_worms(SDL2pp::Texture &sprites)
 {
-	Dto *dto;
+	/*Dto *dto;
 
-	while (cliente.recv_queue.try_pop(dto)) {
+	while (cliente.recv_queue.pop(dto)) {
 		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
 		std::cout << "Agregando worm" << std::endl;
 		this->worms[((Gusano *)dto)->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
 		delete dto;
+	}*/
+
+	/*************************/
+
+	std::cout << "Antes del pop de la lista de gusanos" << std::endl;
+
+	Gusanos *dto = (Gusanos *)cliente.recv_queue.pop();
+
+	std::cout << "Despues del pop de la lista de gusanos" << std::endl;
+
+	// Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
+	// los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
+	int cantidad = dto->cantidad();
+	for (int i = 0; i < cantidad; i++)
+	{
+		Gusano *gusano = dto->popGusano();
+
+		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) gusano->y_pos()));
+
+		std::cout << "Agregando worm" << std::endl;
+		this->worms[gusano->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY);
 	}
+
+	delete dto;
 }
 
 bool Vista::handleEvents()

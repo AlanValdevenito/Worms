@@ -27,6 +27,18 @@ void Broadcaster::AddGusanoToQueues(Gusano *g)
         Dto *d = new Gusano(g->get_id(), g->x_pos(), g->y_pos());
         q->push(d);
     }
+    // delete g;
+}
+
+void Broadcaster::AddGusanosToQueues(Gusanos *gs)
+{
+    std::unique_lock<std::mutex> lock(mutex);
+    for (Queue<Dto *> *q : queues.listado())
+    {
+        Dto *d = new Gusanos(gs->return_gusanos_list());
+        q->push(d);
+    }
+    // delete gs;
 }
 
 /*

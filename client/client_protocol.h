@@ -37,6 +37,7 @@ private:
     Dto *receiveViga(bool &was_closed);
     Dto *receiveVigas(bool &was_closed);
     Dto *receiveGusano(bool &was_closed);
+    Dto *receiveGusanos(bool &was_closed);
     Dto *receivePartidas(bool &was_closed);
     Dto* receiveId(bool &was_closed);
 };

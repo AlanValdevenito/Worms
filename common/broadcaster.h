@@ -22,6 +22,7 @@ private:
 public:
     void addMessageToQueues();
     void AddGusanoToQueues(Gusano *g);
+    void AddGusanosToQueues(Gusanos *gs);
     void addMessageToQueues(Dto *dto);
     void addVigaToQueues(Dto *dto);
     void addQueueToList(Queue<Dto *> &q);

@@ -26,9 +26,10 @@
 class Partida
 {
 public:
-    Partida(Queue<Dto *> &cq, uint8_t id);
+    Partida(Queue<Dto *> &cq, uint8_t id, int cant);
     ~Partida();
-    void start(ServerClient *c);
+    void start();
+    void sendMapTo(ServerClient *c);
     void finish();
     uint8_t getId();
 
@@ -37,6 +38,8 @@ private:
     Broadcaster broadcaster;
     Game game;
     uint8_t id;
+    int jugadores;
+    int conectados;
     std::list<ServerClient *> clients;
 };
 #endif

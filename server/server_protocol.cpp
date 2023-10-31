@@ -44,6 +44,30 @@ void ServerProtocol::sendViga(Dto *dto, bool &was_closed)
     skt.sendall(&(alto), sizeof(alto), &was_closed);
 }
 
+void ServerProtocol::sendAllWorms(Gusanos *gs, bool &was_closed){
+    uint8_t code = gs->return_code();
+    skt.sendall(&(code), sizeof(code), &was_closed); // notifico que envio una Viga
+
+    uint8_t cant = gs->cantidad();
+    skt.sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
+
+    for (int i = 0; i < cant; i++)
+    {
+        Gusano * g = gs->popGusano();
+        uint8_t id = g->get_id();
+        uint16_t x = htons(g->x_pos());
+        uint16_t y = htons(g->y_pos());
+
+        printf("gusano %d)  id:%u  x:%u  y:%u \n", i, g->get_id(), g->x_pos(), g->y_pos());
+
+        skt.sendall(&(id), sizeof(id), &was_closed);
+        skt.sendall(&(x), sizeof(x), &was_closed);
+        skt.sendall(&(y), sizeof(y), &was_closed);
+
+        delete g;                // libero la memoria de la viga
+    }
+}
+
 void ServerProtocol::sendWorms(Gusano *g, bool &was_closed)
 {
 

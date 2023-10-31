@@ -34,7 +34,7 @@ public:
     void run() override;
     void stop() override;
     void sendMap(Queue<Dto *> &q);
-    void sendWorms(Queue<Dto *> &q);
+    void sendWorms();
 
     void moveWormLeft(uint8_t id);
     void moveWormRight(uint8_t id);

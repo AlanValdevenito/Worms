@@ -69,18 +69,21 @@ void Game::update()
     broadcaster.AddGusanoToQueues(g);*/
 }
 
-void Game::sendWorms(Queue<Dto *> &q)
-{
+void Game::sendWorms()
+{ 
+
+    std::list<Gusano *> listaGusanos;
     for (Worm w : world.getWorms())
     {
-        std::cout << "x = " << (int)(w.getXCoordinate() * 100) << "\n";
-        std::cout << "y = " << (int)(w.getYCoordinate() * 100) << "\n";
         Gusano *g = new Gusano((w.getId()),
                                (int)(w.getXCoordinate() * 100),
                                (int)(w.getYCoordinate() * 100));
 
-        q.push(g);
+        listaGusanos.push_back(g);
+
     }
+    Gusanos *gusanos = new Gusanos(listaGusanos);
+    broadcaster.AddGusanosToQueues(gusanos);
 }
 
 void Game::sendMap(Queue<Dto *> &q)
@@ -157,7 +160,6 @@ void Game::executeCommand(Dto *dto)
             Gusano *g = new Gusano(id, x, y);
             broadcaster.AddGusanoToQueues(g);
         }
-        
     }
     delete dto;
 }
