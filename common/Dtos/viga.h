@@ -39,5 +39,6 @@ public:
     bool is_alive() override;
     void *popViga() override;
     uint8_t cantidad() override;
+    std::list<Viga*> return_vigas_list();
 };
 #endif

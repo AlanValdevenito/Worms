@@ -29,6 +29,8 @@ void Sender::send(Dto *d)
         protocol.sendAllWorms((Gusanos *)d, was_closed);
     else if (d->return_code() == LISTA_DE_PARTIDAS_CODE)
         protocol.sendPartidas((ListaDePartidas *)d, was_closed);
+    else if (d->return_code() == INICIAR_PARIDA)
+        protocol.sendIniciarPartida(d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
 }

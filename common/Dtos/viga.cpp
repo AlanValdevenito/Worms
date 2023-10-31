@@ -25,6 +25,8 @@ void *Vigas::popViga()
     return v;
 }
 
+std::list<Viga*> Vigas::return_vigas_list(){return vigas;}
+
 uint8_t Vigas::cantidad()
 {
     return static_cast<uint8_t>(vigas.size());

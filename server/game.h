@@ -33,7 +33,7 @@ public:
     void update();
     void run() override;
     void stop() override;
-    void sendMap(Queue<Dto *> &q);
+    void sendMap();
     void sendWorms();
 
     void moveWormLeft(uint8_t id);

@@ -5,8 +5,12 @@ Partida::~Partida() {}
 
 void Partida::start(){
     if(jugadores > conectados) return;
+   
+    broadcaster.addMessageToQueues();
 
+    game.sendMap(); // le mando el mapa a la cola sender 
     game.sendWorms();
+
 
     game.start();
 }
@@ -18,7 +22,6 @@ void Partida::sendMapTo(ServerClient *c)
     conectados++;
     broadcaster.addQueueToList(c->sender_queue); // agrego la cola send al broadcaster
 
-    game.sendMap(c->sender_queue); // le mando el mapa a la cola sender // CAMBIAAARS
 
 }
 

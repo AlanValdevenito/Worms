@@ -51,6 +51,7 @@ void ServerProtocol::sendAllWorms(Gusanos *gs, bool &was_closed){
     uint8_t cant = gs->cantidad();
     skt.sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
 
+    printf("cantidad de gusanos a enviar %u\n",cant);
     for (int i = 0; i < cant; i++)
     {
         Gusano * g = gs->popGusano();
@@ -64,7 +65,7 @@ void ServerProtocol::sendAllWorms(Gusanos *gs, bool &was_closed){
         skt.sendall(&(x), sizeof(x), &was_closed);
         skt.sendall(&(y), sizeof(y), &was_closed);
 
-        delete g;                // libero la memoria de la viga
+        delete g; // Liberar memoria
     }
 }
 
@@ -100,6 +101,11 @@ void ServerProtocol::sendPartidas(ListaDePartidas *l, bool &was_closed)
         printf("opcion: %u\n", o);
         skt.sendall(&(o), sizeof(o), &was_closed);
     }
+}
+
+void ServerProtocol::sendIniciarPartida(Dto *dto, bool &was_closed){
+    uint8_t code = dto->return_code();
+    skt.sendall(&(code), sizeof(code), &was_closed);
 }
 
 Dto *ServerProtocol::recvPartidaSeleccionada(bool &was_closed)

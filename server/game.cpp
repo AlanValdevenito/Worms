@@ -86,7 +86,7 @@ void Game::sendWorms()
     broadcaster.AddGusanosToQueues(gusanos);
 }
 
-void Game::sendMap(Queue<Dto *> &q)
+void Game::sendMap()
 {
     std::list<Viga *> vs;
     // por cada viga manda un Dto Viga a los senders
@@ -101,7 +101,8 @@ void Game::sendMap(Queue<Dto *> &q)
         vs.push_back(viga);
     }
     Vigas *vigas = new Vigas(vs);
-    q.push(vigas); // agrego a la cola una lista de viga
+    //q.push(vigas); // agrego a la cola una lista de viga
+    broadcaster.AddVigasToQueues(vigas);
 }
 
 void Game::moveWormRight(uint8_t id)
@@ -137,11 +138,7 @@ void Game::stop()
 
 void Game::executeCommand(Dto *dto)
 {
-    // VER EL ID QUE LLEGA EN EL DTO
     uint8_t clientId = dto->get_cliente_id();
-
-    // COMPROBAR SI ES SU TURNO
-    // ...
 
     uint8_t code = dto->return_code();
     if (code == MOVER_A_DERECHA_CODE)

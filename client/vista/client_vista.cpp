@@ -7,6 +7,26 @@ Vista::Vista(Client &cliente) : cliente(cliente) {}
 
 int Vista::iniciar()
 {
+	/******************** VISTA BLOQUEADA HASTA QUE SE CONECTEN TODOS LOS CLIENTES ********************/
+
+	// ME QUEDO BLOQUEADO ESPERANDO LA SEÑAL DEL SERVIDOR PARA AVISAR QUE TODOS LOS JUGADORES SE CONECTARON
+	// LUEGO DE QUE TODOS LOS JUGADORES SE CONECTAN EL SERVIDOR ENVIA EL MAPA Y LOS WORMS
+
+	// Como en la vista debemos hacer pop() de lo que recibe el cliente desde el servidor luego de iniciar SDL, nos 
+	// puede pasar de quedarnos bloqueados y esto ocasionaria que la ventana de SDL deje de responder
+
+	// Para solucionar esto, al iniciar la vista lo primero que hacemos es un pop() para bloquearnos antes de iniciar SDL. Lo 
+	// que esperamos recibir es una señal avisandonos que todos los jugadores se conectaron
+
+	// Luego de que todos los jugadores se conectan, el servidor le envia a todos los clientes el mapa (vigas) y los worms. Por lo tanto
+	// cuando se quiera hacer pop() de estas cosas ya no nos quedaremos bloqueados y no se frenara la ejecucion de SDL
+
+	std::cout << "Esperando la señal para iniciar la vista" << std::endl;
+	cliente.recv_queue.pop();
+	std::cout << "Inicia la vista" << std::endl;
+
+	/******************** INICIAR SDL ********************/
+
 	SDL sdl(SDL_INIT_VIDEO);
 
 	SDLTTF ttf;
@@ -20,6 +40,7 @@ int Vista::iniciar()
 
 	/******************** TEXTURAS ********************/
 
+	// Cargamos la imagen para un worm
 	Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png")
 								  .SetColorKey(true, 0));
 
@@ -46,7 +67,7 @@ int Vista::iniciar()
 	// Cargamos la fuente de la letra
 	Font font(DATA_PATH "/Vera.ttf", 12);
 
-	/******************** ESTADO DEL JUEGO ********************/
+	/******************** INICIAR EL JUEGO ********************/
 
 	guardar_vigas();
 	guardar_worms(sprites);
@@ -127,7 +148,7 @@ void Vista::guardar_vigas()
 	for (int i = 0; i < cantidad; i++)
 	{
 		Viga *viga = (Viga *)dto->popViga();
-		std::cout << "Agregando viga" << std::endl;
+		// std::cout << "Agregando viga" << std::endl;
 		this->vigas.push_back(viga);
 	}
 
@@ -136,22 +157,7 @@ void Vista::guardar_vigas()
 
 void Vista::guardar_worms(SDL2pp::Texture &sprites)
 {
-	/*Dto *dto;
-
-	while (cliente.recv_queue.pop(dto)) {
-		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) dto->y_pos()));
-		std::cout << "Agregando worm" << std::endl;
-		this->worms[((Gusano *)dto)->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(dto->x_pos())), nuevoY);
-		delete dto;
-	}*/
-
-	/*************************/
-
-	std::cout << "Antes del pop de la lista de gusanos" << std::endl;
-
 	Gusanos *dto = (Gusanos *)cliente.recv_queue.pop();
-
-	std::cout << "Despues del pop de la lista de gusanos" << std::endl;
 
 	// Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
 	// los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
@@ -162,7 +168,7 @@ void Vista::guardar_worms(SDL2pp::Texture &sprites)
 
 		float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int) gusano->y_pos()));
 
-		std::cout << "Agregando worm" << std::endl;
+		// std::cout << "Agregando worm" << std::endl;
 		this->worms[gusano->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY);
 	}
 
@@ -441,14 +447,14 @@ void Vista::liberar_memoria() {
 	for (int i = 0; i < (int) this->vigas.size(); i++)
 	{
 		Viga *viga = this->vigas[i];
-		std::cout << "Eliminando viga" << std::endl;
+		// std::cout << "Eliminando viga" << std::endl;
 		delete viga;
 	}
 
 	for (int i = 0; i < (int) this->worms.size(); i++)
 	{
 		Worm *worm = this->worms[i];
-		std::cout << "Eliminando worm" << std::endl;
+		// std::cout << "Eliminando worm" << std::endl;
 		delete worm;
 	}
 }

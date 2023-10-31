@@ -27,6 +27,8 @@ Dto *ClientProtocol::receive(bool &was_closed)
         return receivePartidas(was_closed);
     else if (code == CLIENTE_ID_CODE)
         return receiveId(was_closed);
+    else if (code == INICIAR_PARIDA)
+        return new Dto(INICIAR_PARIDA);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 

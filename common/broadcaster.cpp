@@ -7,16 +7,15 @@
 void Broadcaster::addMessageToQueues()
 {
     std::unique_lock<std::mutex> lock(mutex);
-    Dto *dto = new Dto();
     for (Queue<Dto *> *q : queues.listado())
     {
-        Dto *d = new Dto();
+        Dto *d = new Dto(INICIAR_PARIDA);
         q->push(d);
     }
 
     // std::cout << dto->message() << std::endl;
 
-    delete dto;
+    // delete dto;  
 }
 
 void Broadcaster::AddGusanoToQueues(Gusano *g)
@@ -33,12 +32,46 @@ void Broadcaster::AddGusanoToQueues(Gusano *g)
 void Broadcaster::AddGusanosToQueues(Gusanos *gs)
 {
     std::unique_lock<std::mutex> lock(mutex);
+
+    std::list<Gusano*> gusanos = gs->return_gusanos_list();
+
+        std::list<Gusano*> lista;
     for (Queue<Dto *> *q : queues.listado())
     {
-        Dto *d = new Gusanos(gs->return_gusanos_list());
+        for (Gusano *g: gusanos){
+            Gusano* worm = new Gusano(g->get_id(), g->x_pos(), g->y_pos());
+            lista.push_back(worm); 
+        }
+
+        Dto *d = new Gusanos(lista);
         q->push(d);
+
+        lista.clear();
     }
-    // delete gs;
+    delete gs;
+}
+
+void Broadcaster::AddVigasToQueues(Vigas *vs)
+{
+    std::unique_lock<std::mutex> lock(mutex);
+
+    std::list<Viga*> vigas = vs->return_vigas_list();
+
+    std::list<Viga*> lista;
+    for (Queue<Dto *> *q : queues.listado())
+    {
+        for (Viga *v: vigas){
+            Viga *viga = new Viga(v->x_pos(), v->y_pos(), v->return_ancho(), v->return_alto());
+            lista.push_back(viga); 
+        }
+
+        Dto *d = new Vigas(lista);
+        q->push(d);
+        
+        lista.clear();
+    }
+
+    delete vs;
 }
 
 /*

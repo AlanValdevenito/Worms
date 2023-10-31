@@ -31,6 +31,7 @@ public:
     void sendWorms(Gusano *g, bool &was_closed);
     void sendAllWorms(Gusanos *gs, bool &was_closed);
     void sendPartidas(ListaDePartidas *l, bool &was_closed);
+    void sendIniciarPartida(Dto *dto, bool &was_closed);
 
 private:
     Socket &skt;
