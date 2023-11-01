@@ -9,9 +9,6 @@ int Vista::iniciar()
 {
 	/******************** VISTA BLOQUEADA HASTA QUE SE CONECTEN TODOS LOS CLIENTES ********************/
 
-	// ME QUEDO BLOQUEADO ESPERANDO LA SEÑAL DEL SERVIDOR PARA AVISAR QUE TODOS LOS JUGADORES SE CONECTARON
-	// LUEGO DE QUE TODOS LOS JUGADORES SE CONECTAN EL SERVIDOR ENVIA EL MAPA Y LOS WORMS
-
 	// Como en la vista debemos hacer pop() de lo que recibe el cliente desde el servidor luego de iniciar SDL, nos 
 	// puede pasar de quedarnos bloqueados y esto ocasionaria que la ventana de SDL deje de responder
 

@@ -12,6 +12,7 @@ class Animation {
 
 private:
     // Atributo que almacena la textura de la animacion
+    // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
     SDL2pp::Texture &texture;
     // Entero que almacena el indice del frame actual en la animacion.
     int currentFrame;
