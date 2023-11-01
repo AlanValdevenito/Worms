@@ -1,11 +1,11 @@
-#include "client_partida_vista.h"
+#include "client_partida.h"
 #include <unistd.h>
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
-PartidaVista::PartidaVista(Client &cliente) : cliente(cliente) {}
+Partida::Partida(Client &cliente) : cliente(cliente) {}
 
-int PartidaVista::iniciar()
+int Partida::iniciar()
 {
 	/******************** INICIAR SDL ********************/
 
@@ -120,7 +120,7 @@ int PartidaVista::iniciar()
 	return 0;
 }
 
-void PartidaVista::guardar_vigas()
+void Partida::guardar_vigas()
 {
 	Dto *dto = cliente.recv_queue.pop();
 
@@ -137,7 +137,7 @@ void PartidaVista::guardar_vigas()
 	delete dto;
 }
 
-void PartidaVista::guardar_worms(SDL2pp::Texture &sprites)
+void Partida::guardar_worms(SDL2pp::Texture &sprites)
 {
 	Gusanos *dto = (Gusanos *)cliente.recv_queue.pop();
 
@@ -157,7 +157,7 @@ void PartidaVista::guardar_worms(SDL2pp::Texture &sprites)
 	delete dto;
 }
 
-bool PartidaVista::handleEvents()
+bool Partida::handleEvents()
 {
 	// Procesamiento de evento
 	SDL_Event event;
@@ -299,7 +299,7 @@ bool PartidaVista::handleEvents()
 	return false;
 }
 
-void PartidaVista::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, Uint32 tiempoRestante)
+void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, Uint32 tiempoRestante)
 {
 	renderer.Clear();
 
@@ -313,7 +313,7 @@ void PartidaVista::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga,
 	renderer.Present();
 }
 
-void PartidaVista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua)
+void Partida::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua)
 {
 
 	renderer.Copy(background, NullOpt, NullOpt);
@@ -336,14 +336,14 @@ void PartidaVista::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &
 	}
 }
 
-void PartidaVista::renderizar_worms(SDL2pp::Renderer &renderer) 
+void Partida::renderizar_worms(SDL2pp::Renderer &renderer) 
 {
 	for (const auto& elemento: this->worms) {
 		elemento.second->render(renderer);
 	}
 }
 
-void PartidaVista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante)
+void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante)
 {
 	Rect borde(5, 438, 65, 36);
 	Color blanco(255, 255, 255, 255);
@@ -363,7 +363,7 @@ void PartidaVista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::F
 	renderer.Copy(texture, NullOpt, nombre);
 }
 
-/*void PartidaVista::renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion) {
+/*void Partida::renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion) {
 	int vcenter = renderer.GetOutputHeight() / 2;
 
 	Rect borde((int)animacion.gusano.x + 6, vcenter - 77, 50, 21);
@@ -383,7 +383,7 @@ void PartidaVista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::F
 	renderer.Copy(texture, NullOpt, nombre);
 }*/
 
-/*void PartidaVista::renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion) {
+/*void Partida::renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion) {
 	int vcenter = renderer.GetOutputHeight() / 2;
 
 	Rect borde((int)animacion.gusano.x + 16, vcenter - 52, 29, 21);
@@ -403,7 +403,7 @@ void PartidaVista::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::F
 	renderer.Copy(texture, NullOpt, vida);
 }*/
 
-void PartidaVista::actualizar(int it)
+void Partida::actualizar(int it)
 {
 	Dto *gusano;
 
@@ -414,17 +414,17 @@ void PartidaVista::actualizar(int it)
 	}
 }
 
-float PartidaVista::metros_a_pixeles(float metros)
+float Partida::metros_a_pixeles(float metros)
 {
 	return metros * 24;
 }
 
-float PartidaVista::centimetros_a_metros(float centimetros)
+float Partida::centimetros_a_metros(float centimetros)
 {
 	return centimetros / 100;
 }
 
-void PartidaVista::liberar_memoria() {
+void Partida::liberar_memoria() {
 	
 	for (int i = 0; i < (int) this->vigas.size(); i++)
 	{

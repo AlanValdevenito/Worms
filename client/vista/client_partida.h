@@ -16,7 +16,7 @@
 
 using namespace SDL2pp;
 
-class PartidaVista
+class Partida
 {
 private:
     Client &cliente;
@@ -24,7 +24,7 @@ private:
     std::map<int, Worm *> worms;
 
 public:
-    PartidaVista(Client &cliente);
+    Partida(Client &cliente);
 
     int iniciar();
     void guardar_vigas();

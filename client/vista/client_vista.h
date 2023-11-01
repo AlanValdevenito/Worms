@@ -2,7 +2,7 @@
 #define VISTA_H 
 
 #include "client_menu.h"
-#include "client_partida_vista.h"
+#include "client_partida.h"
 
 class Vista
 {
@@ -10,7 +10,7 @@ private:
     Client &cliente;
     
     Menu menu;
-    PartidaVista partida;
+    Partida partida;
 
 public:
     Vista(Client &cliente);
