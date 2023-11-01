@@ -13,7 +13,6 @@ const uint8_t ERROR = 1;
 #include "client.h"
 #include "socket.h"
 #include "client_vista.h"
-#include "client_menu.h"
 #include "dto.h"
 #include "mover.h"
 
@@ -42,14 +41,11 @@ int main(int argc, char *argv[])
         Socket client_socket(host, servname);
         Client client(std::move(client_socket));
 
-        // Menu menu(client);
+        Vista vista(client);
 
         client.start();
         // elegirPartida(std::ref(client));
 
-        // menu.iniciar();
-
-        Vista vista(client);
         vista.iniciar();
 
         // Dto* d = new MoverADerecha();
