@@ -14,13 +14,13 @@ class ListaDePartidas : public Dto
 {
 private:
     std::list<uint8_t> partidas;
-    std::string mensaje;
+    // std::string mensaje;
 
 public:
     uint8_t seleccionada;
 
     ListaDePartidas();
-    ListaDePartidas(uint8_t s);
+    ListaDePartidas(uint8_t id, uint8_t s);
     ~ListaDePartidas();
     bool is_alive() override;
     std::list<uint8_t> return_list();

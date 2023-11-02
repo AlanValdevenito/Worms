@@ -31,15 +31,16 @@ public:
 class Vigas : public Dto
 {
 private:
-    std::list<std::shared_ptr<Viga>> vigas;
+    // std::list<std::shared_ptr<Viga>> vigas;
+    std::vector<std::shared_ptr<Viga>> vigas;
 
 public:
     Vigas();
-    Vigas(std::list<std::shared_ptr<Viga>> vs);
+    Vigas(std::vector<std::shared_ptr<Viga>> vs);
     ~Vigas();
     bool is_alive() override;
-    std::shared_ptr<Viga> popViga();
+    std::shared_ptr<Viga> popViga(int i);
     uint8_t cantidad() override;
-    std::list<std::shared_ptr<Viga>> return_vigas_list();
+    std::vector<std::shared_ptr<Viga>> return_vigas_list();
 };
 #endif

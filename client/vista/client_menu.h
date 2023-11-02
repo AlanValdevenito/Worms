@@ -22,6 +22,7 @@ public:
     int iniciar();
     bool handleEvents();
     void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &background, SDL2pp::Texture &boton, SDL2pp::Font &font);
+    void elegirPartida();
 };
 
 #endif

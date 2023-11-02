@@ -132,7 +132,7 @@ void Partida::guardar_vigas()
     int cantidad = dto->cantidad();
     for (int i = 0; i < cantidad; i++)
     {
-        std::shared_ptr<Viga> viga = std::dynamic_pointer_cast<Vigas>(dto)->popViga();
+        std::shared_ptr<Viga> viga = std::dynamic_pointer_cast<Vigas>(dto)->popViga(i);
         // std::cout << "Agregando viga" << std::endl;
         this->vigas.push_back(viga);
     }
@@ -149,7 +149,7 @@ void Partida::guardar_worms(SDL2pp::Texture &sprites)
     int cantidad = dto->cantidad();
     for (int i = 0; i < cantidad; i++)
     {
-        std::shared_ptr<Gusano> gusano = dto->popGusano();
+        std::shared_ptr<Gusano> gusano = dto->popGusano(i);
 
         float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 

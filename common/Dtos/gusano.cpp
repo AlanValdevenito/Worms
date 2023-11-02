@@ -13,19 +13,21 @@ uint16_t Gusano::y_pos() { return y; }
 uint8_t Gusano::get_id() { return id; }
 
 Gusanos::Gusanos() : Dto(GUSANOS_CODE) {}
-Gusanos::Gusanos(std::list<std::shared_ptr<Gusano>> gs) : Dto(GUSANOS_CODE), gusanos(gs) {}
+Gusanos::Gusanos(std::vector<std::shared_ptr<Gusano>> gs) : Dto(GUSANOS_CODE), gusanos(gs) {}
 Gusanos::~Gusanos() {}
 
 bool Gusanos::is_alive() { return true; }
 
-std::shared_ptr<Gusano> Gusanos::popGusano()
+std::shared_ptr<Gusano> Gusanos::popGusano(int i)
 {
-    std::shared_ptr<Gusano> g = gusanos.front();
-    gusanos.pop_front();
-    return g;
+    // std::shared_ptr<Gusano> g = gusanos.front();
+    // gusanos.pop_front();
+    // return g;
+
+    return this->gusanos[i];
 }
 
-std::list<std::shared_ptr<Gusano>> Gusanos::return_gusanos_list() { return gusanos; }
+std::vector<std::shared_ptr<Gusano>> Gusanos::return_gusanos_list() { return gusanos; }
 
 uint8_t Gusanos::cantidad()
 {

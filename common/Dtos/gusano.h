@@ -29,15 +29,16 @@ public:
 class Gusanos : public Dto
 {
 private:
-    std::list<std::shared_ptr<Gusano>> gusanos;
+    // std::list<std::shared_ptr<Gusano>> gusanos;
+    std::vector<std::shared_ptr<Gusano>> gusanos;
 
 public:
     Gusanos();
-    Gusanos(std::list<std::shared_ptr<Gusano>> gs);
+    Gusanos(std::vector<std::shared_ptr<Gusano>> gs);
     ~Gusanos();
     bool is_alive() override;
-    std::shared_ptr<Gusano> popGusano();
-    std::list<std::shared_ptr<Gusano>> return_gusanos_list();
+    std::shared_ptr<Gusano> popGusano(int i);
+    std::vector<std::shared_ptr<Gusano>> return_gusanos_list();
     uint8_t cantidad() override;
 };
 

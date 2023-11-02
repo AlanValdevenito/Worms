@@ -37,7 +37,7 @@ public:
 private:
     Socket &skt;
     void sendViga(std::shared_ptr<Dto> dto, bool &was_closed);
-    std::shared_ptr<Dto> recvPartidaSeleccionada(bool &was_closed);
+    std::shared_ptr<Dto> recvPartidaSeleccionada(uint8_t id, bool &was_closed);
     // std::shared_ptr<Dto>recv_message(bool &was_closed, uint16_t sz, uint8_t code);
 };
 #endif

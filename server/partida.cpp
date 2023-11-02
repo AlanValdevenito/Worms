@@ -5,10 +5,15 @@ Partida::~Partida() {}
 
 void Partida::start()
 {
+    std::cout<<"cantidad de jugadores: "<<jugadores<<std::endl;
+    std::cout<<"cantidad de conectados: "<<conectados<<std::endl;
     if (jugadores > conectados)
         return;
 
+    std::cout << "primero mando msj \n";
     broadcaster.addMessageToQueues();
+
+    std::cout << "empieza la partida \n";
 
     game.sendMap(); // le mando el mapa a la cola sender
     game.sendWorms();

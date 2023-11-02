@@ -1,5 +1,6 @@
 #include "client_menu.h"
 #include <unistd.h>
+#include <memory>
 
 #define ALTO_VENTANA 480
 #define ANCHO_VENTANA 640
@@ -7,6 +8,23 @@
 #define OFFSET_BOTON 50
 
 Menu::Menu(Client &cliente) : cliente(cliente)  {}
+
+void Menu::elegirPartida()
+{
+    std::shared_ptr<ListaDePartidas> l = std::dynamic_pointer_cast<ListaDePartidas>(cliente.recv_queue.pop());
+
+    std::list<uint8_t> lista = l->return_list();
+    for (uint8_t o : lista)
+    {
+        printf("opcion: %u \n", o); // ver de hacer un MAP
+        // que ListaDePartidas sea un map y el seleccionar sea pasandole la key
+		// Renderizar las partidas
+    }
+
+    // uint8_t s = 2;
+    // std::shared_ptr<ListaDePartidas> seleccion = std::make_shared<ListaDePartidas>(s);
+    // cliente.send_queue.push(seleccion);
+}
 
 int Menu::iniciar() 
 {
@@ -40,6 +58,8 @@ int Menu::iniciar()
 
     // Cargamos la fuente de la letra y le ajustamos un tamaño de 15 pt
 	Font font(DATA_PATH "/Vera.ttf", 20);
+
+	elegirPartida();
 
 	while (true) {
 
@@ -75,7 +95,20 @@ bool Menu::handleEvents() {
 				case SDL_BUTTON_LEFT:
 		
 					if ((200 < event.button.x && event.button.x < 440) && (240 < event.button.y && event.button.y < 290)) {
+						uint8_t s = 1;
+   	 					std::shared_ptr<ListaDePartidas> seleccion = std::make_shared<ListaDePartidas>(this->cliente.id, s);
+    					cliente.send_queue.push(seleccion);
+
 						std::cout << "Te uniste a 'Partida 1'" << std::endl;
+						return true;
+					}
+
+					if ((200 < event.button.x && event.button.x < 440) && (290 < event.button.y && event.button.y < 340)) {
+						uint8_t s = 2;
+   	 					std::shared_ptr<ListaDePartidas> seleccion = std::make_shared<ListaDePartidas>(this->cliente.id,s);
+    					cliente.send_queue.push(seleccion);
+
+						std::cout << "Te uniste a 'Partida 2'" << std::endl;
 						return true;
 					}
 

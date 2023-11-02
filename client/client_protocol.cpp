@@ -66,7 +66,7 @@ std::shared_ptr<Dto> ClientProtocol::receiveVigas(bool &was_closed)
     uint8_t cant;
     skt.recvall(&cant, sizeof(cant), &was_closed);
 
-    std::list<std::shared_ptr<Viga>> vs;
+    std::vector<std::shared_ptr<Viga>> vs;
     for (int i = 0; i < cant; i++)
     {
         std::shared_ptr<Viga> v = receiveViga(was_closed);
@@ -104,7 +104,7 @@ std::shared_ptr<Dto> ClientProtocol::receiveGusanos(bool &was_closed)
     uint8_t cant;
     skt.recvall(&cant, sizeof(cant), &was_closed);
 
-    std::list<std::shared_ptr<Gusano>> lista;
+    std::vector<std::shared_ptr<Gusano>> lista;
     for (int i = 0; i < cant; i++)
     {
         std::shared_ptr<Gusano> g = (std::shared_ptr<Gusano>)receiveGusano(was_closed);
@@ -156,13 +156,14 @@ void ClientProtocol::moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &w
 
 void ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed)
 {
-    // skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
+     uint8_t id_cliente = l->get_cliente_id();
+    skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
 
     uint8_t code = l->return_code();
     // printf("enviar: %u\n", a);
     skt.sendall(&code, sizeof(code), &was_closed);
 
     uint8_t opcion = l->seleccionada;
-    // printf("enviar: %u\n", a);
+    printf("enviar opcion: %u\n", opcion);
     skt.sendall(&opcion, sizeof(opcion), &was_closed);
 }

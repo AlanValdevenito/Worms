@@ -7,7 +7,7 @@ int Vista::iniciar()
 
     /******************** MENU DE PARTIDAS ********************/
 
-    // menu.iniciar();
+    menu.iniciar();
 
     /******************** PARTIDA BLOQUEADA HASTA QUE SE CONECTEN TODOS LOS CLIENTES ********************/
 

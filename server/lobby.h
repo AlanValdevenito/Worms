@@ -40,9 +40,9 @@ private:
     Queue<std::shared_ptr<Dto>> common_queue;
     Queue<std::shared_ptr<Dto>> lobby_queue;
     uint8_t mapId;
-    // std::list<Partida *> partidas;
-    // Broadcaster broadcaster;
-    Partida partida;
+    std::list<Partida *> partidas;
+    Broadcaster broadcaster;
+    // Partida partida;
     uint8_t id_cliente;
 
     void sendMatchList(ServerClient *c);

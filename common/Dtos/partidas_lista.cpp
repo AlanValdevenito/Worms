@@ -2,7 +2,7 @@
 
 ListaDePartidas::ListaDePartidas() : Dto(LISTA_DE_PARTIDAS_CODE) {}
 
-ListaDePartidas::ListaDePartidas(uint8_t s) : Dto(LISTA_DE_PARTIDAS_CODE), seleccionada(s) {}
+ListaDePartidas::ListaDePartidas(uint8_t id, uint8_t s) : Dto(LISTA_DE_PARTIDAS_CODE, id), seleccionada(s) {}
 
 ListaDePartidas::~ListaDePartidas() {}
 
@@ -17,3 +17,4 @@ std::list<uint8_t> ListaDePartidas::return_list()
 {
     return partidas;
 }
+

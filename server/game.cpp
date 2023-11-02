@@ -73,7 +73,7 @@ void Game::update()
 void Game::sendWorms()
 {
 
-    std::list<std::shared_ptr<Gusano>> listaGusanos;
+    std::vector<std::shared_ptr<Gusano>> vectorGusanos;
     for (Worm w : world.getWorms())
     {
         std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w.getId()),
@@ -83,9 +83,9 @@ void Game::sendWorms()
         //                                        (int)(w.getXCoordinate() * 100),
         //                                        (int)(w.getYCoordinate() * 100));
 
-        listaGusanos.push_back(g);
+        vectorGusanos.push_back(g);
     }
-    std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(listaGusanos);
+    std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(vectorGusanos);
     broadcaster.AddGusanosToQueues2(gusanos);
 }
 
@@ -108,7 +108,7 @@ void Game::sendWorms()
 
 void Game::sendMap()
 {
-    std::list<std::shared_ptr<Viga>> vs;
+    std::vector<std::shared_ptr<Viga>> vs;
     // por cada viga manda un Dto Viga a los senders
     for (auto &beam : world.getBeams())
     {

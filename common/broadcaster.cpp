@@ -9,8 +9,8 @@ void Broadcaster::addMessageToQueues()
     std::unique_lock<std::mutex> lock(mutex);
     for (Queue<std::shared_ptr<Dto>> *q : queues.listado())
     {
+        std::cout << "agrego msj a las queues msj \n";
         std::shared_ptr<Dto> d = std::make_shared<Dto>(INICIAR_PARIDA);
-        // std::shared_ptr<Dto> d = new Dto(INICIAR_PARIDA);
         q->push(d);
     }
 

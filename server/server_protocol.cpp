@@ -24,7 +24,7 @@ void ServerProtocol::sendVigas(std::shared_ptr<Dto> vs, bool &was_closed)
 
     for (int i = 0; i < cant; i++)
     {
-        std::shared_ptr<Viga> v = std::dynamic_pointer_cast<Vigas>(vs)->popViga();
+        std::shared_ptr<Viga> v = std::dynamic_pointer_cast<Vigas>(vs)->popViga(i);
         sendViga(v, was_closed); // envio la viga
         // delete v;                // libero la memoria de la viga
     }
@@ -56,7 +56,7 @@ void ServerProtocol::sendAllWorms(std::shared_ptr<Gusanos> gs, bool &was_closed)
     printf("cantidad de gusanos a enviar %u\n", cant);
     for (int i = 0; i < cant; i++)
     {
-        std::shared_ptr<Gusano> g = gs->popGusano();
+        std::shared_ptr<Gusano> g = gs->popGusano(i);
         uint8_t id = g->get_id();
         uint16_t x = htons(g->x_pos());
         uint16_t y = htons(g->y_pos());
@@ -111,11 +111,13 @@ void ServerProtocol::sendIniciarPartida(std::shared_ptr<Dto> dto, bool &was_clos
     skt.sendall(&(code), sizeof(code), &was_closed);
 }
 
-std::shared_ptr<Dto> ServerProtocol::recvPartidaSeleccionada(bool &was_closed)
+std::shared_ptr<Dto> ServerProtocol::recvPartidaSeleccionada(uint8_t id, bool &was_closed)
 {
+    
     uint8_t op;
     skt.recvall(&op, sizeof(op), &was_closed);
-    return std::make_shared<ListaDePartidas>(op);
+    printf("opcion recibida: %u\n", op);
+    return std::make_shared<ListaDePartidas>(id,op);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recv(bool &was_closed)
@@ -129,7 +131,7 @@ std::shared_ptr<Dto> ServerProtocol::recv(bool &was_closed)
     skt.recvall(&code, sizeof(code), &was_closed);
 
     if (code == LISTA_DE_PARTIDAS_CODE)
-        return recvPartidaSeleccionada(was_closed);
+        return recvPartidaSeleccionada(id, was_closed);
     else if (code == MOVER_A_DERECHA_CODE)
         return std::make_shared<MoverADerecha>(id);
     else if (code == MOVER_A_IZQUERDA_CODE)
