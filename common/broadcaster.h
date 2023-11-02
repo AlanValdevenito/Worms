@@ -9,6 +9,7 @@
 
 #include "queue.h"
 #include "dto.h"
+#include "viga.h"
 #include "gusano.h"
 #include "server_monitor_outgoing_queues.h"
 #include "server_protocol.h"

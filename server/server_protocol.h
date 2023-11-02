@@ -12,10 +12,10 @@
 
 #include <netinet/in.h>
 
-#include "blockingqueue.h"
 #include "dto.h"
 #include "dead.h"
 #include "gusano.h"
+#include "viga.h"
 #include "mover.h"
 #include "partidas_lista.h"
 #include "cliente_id.h"
