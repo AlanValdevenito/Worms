@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 #include <list>
+#include <memory>
 
 #include "queue.h"
 #include "receiver_thread.h"
@@ -36,8 +37,8 @@ public:
 
 private:
     std::list<ServerClient *> clients;
-    Queue<Dto *> common_queue;
-    Queue<Dto *> lobby_queue;
+    Queue<std::shared_ptr<Dto>> common_queue;
+    Queue<std::shared_ptr<Dto>> lobby_queue;
     uint8_t mapId;
     // std::list<Partida *> partidas;
     // Broadcaster broadcaster;

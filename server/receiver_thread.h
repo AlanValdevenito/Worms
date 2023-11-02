@@ -5,6 +5,7 @@
 #include <list>
 #include <thread>
 #include <vector>
+#include <memory>
 
 #include <netinet/in.h>
 
@@ -21,13 +22,13 @@ class Receiver : public Thread
 {
 private:
     ServerProtocol &protocol;
-    Queue<Dto *> &queue;
-    Queue<Dto *> &lobby_queue;
+    Queue<std::shared_ptr<Dto>> &queue;
+    Queue<std::shared_ptr<Dto>> &lobby_queue;
 
 public:
     bool was_closed;
 
-    Receiver(ServerProtocol &p, Queue<Dto *> &q, Queue<Dto *> &lq);
+    Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &lq);
     void run() override;
 };
 #endif

@@ -75,7 +75,7 @@ void Lobby::newClient(Socket &&s)
 void Lobby::reap_dead()
 {
     bool was_removed = false;
-    std::list<Queue<Dto *> *> client_queues;
+    std::list<Queue<std::shared_ptr<Dto>> *> client_queues;
 
     clients.remove_if([&](ServerClient *c)
                       {
@@ -83,7 +83,7 @@ void Lobby::reap_dead()
                 c->join();
                 was_removed = true;
                 client_queues.push_back(&c->sender_queue);  // obtengo el puntero de la queue para eliminarlo despues
-                delete c;
+                // delete c;//creo que va
                 return true;
             }
             return false; });
@@ -101,7 +101,7 @@ void Lobby::kill()
     {
         c->kill();
         c->join();
-        delete c;
+        // delete c; // creo que va
     }
     // broadcaster.deleteAllQueues();
     clients.clear();

@@ -1,12 +1,12 @@
 #include "server_client.h"
 
-ServerClient::ServerClient(Socket &&socket, Queue<Dto *> &lq,Queue<Dto *> &q, uint8_t id) :
- id(id), common_queue(q), skt(std::move(socket)), lobby_queue(lq), serverproto(std::ref(skt)),
-recv_th(std::ref(serverproto), std::ref(common_queue), std::ref(lq)), send_th(std::ref(serverproto), std::ref(sender_queue))
- { 
-    Dto* d = new ClienteId(id); // agrego el id del cliente a la cola de envios
+ServerClient::ServerClient(Socket &&socket, Queue<std::shared_ptr<Dto>> &lq, Queue<std::shared_ptr<Dto>> &q, uint8_t id) : id(id),
+                                                                                                                           common_queue(q), skt(std::move(socket)), lobby_queue(lq), serverproto(std::ref(skt)),
+                                                                                                                           recv_th(std::ref(serverproto), std::ref(common_queue), std::ref(lq)), send_th(std::ref(serverproto), std::ref(sender_queue))
+{
+    std::shared_ptr<Dto> d = std::make_shared<ClienteId>(id); // agrego el id del cliente a la cola de envios
     sender_queue.push(d);
- }
+}
 
 ServerClient::~ServerClient() {}
 

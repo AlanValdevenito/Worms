@@ -13,19 +13,19 @@ uint16_t Viga::return_ancho() { return ancho; }
 uint16_t Viga::return_alto() { return alto; }
 
 Vigas::Vigas() : Dto(VIGA_CODE) {}
-Vigas::Vigas(std::list<Viga *> vs) : Dto(VIGA_CODE), vigas(vs) {}
+Vigas::Vigas(std::list<std::shared_ptr<Viga>> vs) : Dto(VIGA_CODE), vigas(vs) {}
 Vigas::~Vigas() {}
 
 bool Vigas::is_alive() { return true; }
 
-void *Vigas::popViga()
+std::shared_ptr<Viga> Vigas::popViga()
 {
-    Viga *v = vigas.front();
+    std::shared_ptr<Viga> v = vigas.front();
     vigas.pop_front();
     return v;
 }
 
-std::list<Viga*> Vigas::return_vigas_list(){return vigas;}
+std::list<std::shared_ptr<Viga>> Vigas::return_vigas_list() { return vigas; }
 
 uint8_t Vigas::cantidad()
 {

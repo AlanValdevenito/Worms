@@ -6,6 +6,7 @@
 #include <list>
 #include <thread>
 #include <vector>
+#include <memory>
 
 #include <netinet/in.h>
 
@@ -23,13 +24,13 @@ class Sender : public Thread
 {
 private:
     ServerProtocol &protocol;
-    Queue<Dto *> &queue;
-    void send(Dto *d);
+    Queue<std::shared_ptr<Dto>> &queue;
+    void send(std::shared_ptr<Dto> d);
 
 public:
     bool was_closed;
 
-    Sender(ServerProtocol &p, Queue<Dto *> &q);
+    Sender(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q);
     void run() override;
 };
 

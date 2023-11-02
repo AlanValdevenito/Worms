@@ -133,7 +133,8 @@ public:
         return val;
     }
 
-    void close(bool drain = false)
+    // void close(bool drain = false)
+    void close()
     {
         std::unique_lock<std::mutex> lck(mtx);
 
@@ -145,13 +146,13 @@ public:
         closed = true;
         is_not_empty.notify_all();
 
-        if (drain)
-        {
-            while (!q.empty())
-            {
-                q.pop();
-            }
-        }
+        // if (drain)
+        // {
+        //     while (!q.empty())
+        //     {
+        //         q.pop();
+        //     }
+        // }
     }
 
 private:
@@ -285,24 +286,25 @@ private:
     Queue &operator=(const Queue &) = delete;
 };
 
-// template <typename T>
-// class Queue<T*>: private Queue<void*> {
-// public:
-//     explicit Queue(const unsigned int max_size): Queue<void*>(max_size) {}
+template <typename T>
+class Queue<T *> : private Queue<void *>
+{
+public:
+    explicit Queue(const unsigned int max_size) : Queue<void *>(max_size) {}
 
-//     bool try_push(T* const& val) { return Queue<void*>::try_push(val); }
+    bool try_push(T *const &val) { return Queue<void *>::try_push(val); }
 
-//     bool try_pop(T*& val) { return Queue<void*>::try_pop((void*&)val); }
+    bool try_pop(T *&val) { return Queue<void *>::try_pop((void *&)val); }
 
-//     void push(T* const& val) { return Queue<void*>::push(val); }
+    void push(T *const &val) { return Queue<void *>::push(val); }
 
-//     T* pop() { return (T*)Queue<void*>::pop(); }
+    T *pop() { return (T *)Queue<void *>::pop(); }
 
-//     void close() { return Queue<void*>::close(); }
+    void close() { return Queue<void *>::close(); }
 
-// private:
-//     Queue(const Queue&) = delete;
-//     Queue& operator=(const Queue&) = delete;
-// };
+private:
+    Queue(const Queue &) = delete;
+    Queue &operator=(const Queue &) = delete;
+};
 
 #endif

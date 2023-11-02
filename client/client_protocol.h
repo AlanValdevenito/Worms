@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <netinet/in.h>
 
@@ -27,18 +28,18 @@ public:
     explicit ClientProtocol(Socket &skt);
     ~ClientProtocol();
     void send(bool &was_closed);
-    Dto *receive(bool &was_closed);
-    void moverADerecha(MoverADerecha *m, bool &was_closed);
-    void moverAIzquierda(MoverAIzquierda *m, bool &was_closed);
-    void enviarSeleccion(ListaDePartidas *l, bool &was_closed);
+    std::shared_ptr<Dto> receive(bool &was_closed);
+    void moverADerecha(std::shared_ptr<MoverADerecha> m, bool &was_closed);
+    void moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &was_closed);
+    void enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed);
 
 private:
-    Socket &skt; 
-    Dto *receiveViga(bool &was_closed);
-    Dto *receiveVigas(bool &was_closed);
-    Dto *receiveGusano(bool &was_closed);
-    Dto *receiveGusanos(bool &was_closed);
-    Dto *receivePartidas(bool &was_closed);
-    Dto* receiveId(bool &was_closed);
+    Socket &skt;
+    std::shared_ptr<Viga> receiveViga(bool &was_closed);
+    std::shared_ptr<Dto> receiveVigas(bool &was_closed);
+    std::shared_ptr<Gusano> receiveGusano(bool &was_closed);
+    std::shared_ptr<Dto> receiveGusanos(bool &was_closed);
+    std::shared_ptr<Dto> receivePartidas(bool &was_closed);
+    std::shared_ptr<Dto> receiveId(bool &was_closed);
 };
 #endif

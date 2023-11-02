@@ -5,6 +5,8 @@
 #include <iostream>
 #include <exception>
 #include <list>
+#include <memory>
+
 #include "box2d/box2d.h"
 #include "world.h"
 #include "server_protocol.h"
@@ -19,7 +21,7 @@
 class Game : public Thread
 {
 private:
-    Queue<Dto *> &common_queue;
+    Queue<std::shared_ptr<Dto>> &common_queue;
     Broadcaster &broadcaster;
     World world;
     b2Body *body_w;
@@ -29,7 +31,7 @@ private:
 public:
     int idTurn = -1;
     bool game_finished;
-    Game(Queue<Dto *> &queue, Broadcaster &broadcaster);
+    Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
     void update();
     void run() override;
     void stop() override;
@@ -38,7 +40,7 @@ public:
 
     void moveWormLeft(uint8_t id);
     void moveWormRight(uint8_t id);
-    void executeCommand(Dto *dto);
+    void executeCommand(std::shared_ptr<Dto> dto);
     void broadcast();
 };
 #endif

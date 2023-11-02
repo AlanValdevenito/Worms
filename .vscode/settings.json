@@ -60,6 +60,19 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "optional": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "any": "cpp",
+        "forward_list": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "buffer": "cpp",
+        "executor": "cpp",
+        "io_context": "cpp",
+        "netfwd": "cpp",
+        "socket": "cpp",
+        "future": "cpp",
+        "iomanip": "cpp",
+        "span": "cpp",
+        "variant": "cpp"
     }
 }

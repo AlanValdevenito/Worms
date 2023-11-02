@@ -3,6 +3,7 @@
 
 #include <list>
 #include <mutex>
+#include <memory>
 
 #include "queue.h"
 #include "dto.h"
@@ -10,18 +11,15 @@
 class OutgoingQueuesMonitor
 {
 private:
-    std::list<Queue<Dto *> *> queues;
+    std::list<Queue<std::shared_ptr<Dto>> *> queues;
     std::mutex m;
 
 public:
     OutgoingQueuesMonitor();
 
-    void agregar(Queue<Dto *> *queue);
-    void remover(Queue<Dto *> *queue);
-    std::list<Queue<Dto *> *> listado();
-    // void broadcast(const Mensaje &mensaje);
-
-    // int get_contador();
+    void agregar(Queue<std::shared_ptr<Dto>> *queue);
+    void remover(Queue<std::shared_ptr<Dto>> *queue);
+    std::list<Queue<std::shared_ptr<Dto>> *> listado();
 };
 
 #endif

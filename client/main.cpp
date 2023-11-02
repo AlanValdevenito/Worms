@@ -41,12 +41,12 @@ int main(int argc, char *argv[])
         Socket client_socket(host, servname);
         Client client(std::move(client_socket));
 
-        Vista vista(client);
+        // Vista vista(client);
 
         client.start();
         // elegirPartida(std::ref(client));
 
-        vista.iniciar();
+        // vista.iniciar();
 
         // Dto* d = new MoverADerecha();
         // client.send_queue.push(d);
@@ -70,16 +70,16 @@ int main(int argc, char *argv[])
 
 void elegirPartida(Client &client)
 {
-    ListaDePartidas *l = (ListaDePartidas *)client.recv_queue.pop();
+    // ListaDePartidas *l = (ListaDePartidas *)client.recv_queue.pop();
 
-    std::list<uint8_t> lista = l->return_list();
-    for (uint8_t o : lista)
-    {
-        printf("opcion: %u \n", o); // ver de hacer un MAP
-        // que ListaDePartidas sea un map y el seleccionar sea pasandole la key
-    }
+    // std::list<uint8_t> lista = l->return_list();
+    // for (uint8_t o : lista)
+    // {
+    //     printf("opcion: %u \n", o); // ver de hacer un MAP
+    //     // que ListaDePartidas sea un map y el seleccionar sea pasandole la key
+    // }
 
-    uint8_t s = 2;
-    ListaDePartidas *seleccion = new ListaDePartidas(s);
-    client.send_queue.push(seleccion);
+    // uint8_t s = 2;
+    // ListaDePartidas *seleccion = new ListaDePartidas(s);
+    // client.send_queue.push(seleccion);
 }

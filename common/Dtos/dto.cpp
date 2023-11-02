@@ -21,7 +21,7 @@ uint16_t Dto::y_pos() { return 0; }
 uint16_t Dto::return_alto() { return 0; }
 uint16_t Dto::return_ancho() { return 0; }
 
-void *Dto::popViga() { return nullptr; }
+// void *Dto::popViga() { return nullptr; }
 
 uint8_t Dto::cantidad() { return 0; }
 

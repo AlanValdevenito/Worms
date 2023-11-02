@@ -5,6 +5,7 @@
 #include <list>
 #include <thread>
 #include <vector>
+#include <memory>
 
 #include <netinet/in.h>
 
@@ -20,12 +21,12 @@ struct ReceiverTH : public Thread
 {
 private:
     ClientProtocol &protocol;
-    Queue<Dto *> &queue;
+    Queue<std::shared_ptr<Dto>> &queue;
 
 public:
     bool was_closed;
 
-    ReceiverTH(ClientProtocol &p, Queue<Dto *> &q);
+    ReceiverTH(ClientProtocol &p, Queue<std::shared_ptr<Dto>> &q);
     void run() override;
 };
 #endif

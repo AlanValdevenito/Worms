@@ -11,6 +11,7 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <memory>
 
 #include "queue.h"
 #include "broadcaster.h"
@@ -26,7 +27,7 @@
 class Partida
 {
 public:
-    Partida(Queue<Dto *> &cq, uint8_t id, int cant);
+    Partida(Queue<std::shared_ptr<Dto>> &cq, uint8_t id, int cant);
     ~Partida();
     void start();
     void sendMapTo(ServerClient *c);
@@ -34,7 +35,7 @@ public:
     uint8_t getId();
 
 private:
-    Queue<Dto *> &common_queue;
+    Queue<std::shared_ptr<Dto>> &common_queue;
     Broadcaster broadcaster;
     Game game;
     uint8_t id;

@@ -1,10 +1,11 @@
 #ifndef PARTIDA_VISTA_H
-#define PARTIDA_VISTA_H 
+#define PARTIDA_VISTA_H
 
 #include <iostream>
 #include <exception>
 #include <algorithm>
 #include <map>
+#include <memory>
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -20,7 +21,7 @@ class Partida
 {
 private:
     Client &cliente;
-    std::vector<Viga *> vigas;
+    std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
 
 public:

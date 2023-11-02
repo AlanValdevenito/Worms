@@ -10,6 +10,7 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <memory>
 
 #include "client_protocol.h"
 #include "client_receiver.h"
@@ -28,8 +29,8 @@ public:
     void start();
     void join();
     uint8_t id;
-    Queue<Dto *> send_queue;
-    Queue<Dto *> recv_queue;
+    Queue<std::shared_ptr<Dto>> send_queue;
+    Queue<std::shared_ptr<Dto>> recv_queue;
 
 private:
     Socket skt;

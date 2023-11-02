@@ -4,7 +4,7 @@ void Receiver::run()
 {
     while (not was_closed)
     {
-        Dto *dto = protocol.recv(was_closed);
+        std::shared_ptr<Dto> dto = protocol.recv(was_closed);
 
         if (dto->is_alive())
         {
@@ -16,9 +16,9 @@ void Receiver::run()
         else
         {
             was_closed = true;
-            delete dto;
+            // delete dto;
         }
     }
 }
 
-Receiver::Receiver(ServerProtocol &p, Queue<Dto *> &q, Queue<Dto *> &lq) : protocol(p), queue(q), lobby_queue(lq), was_closed(false) {}
+Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &lq) : protocol(p), queue(q), lobby_queue(lq), was_closed(false) {}

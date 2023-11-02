@@ -6,6 +6,7 @@
 #include <list>
 #include <thread>
 #include <vector>
+#include <memory>
 
 #include <netinet/in.h>
 
@@ -23,14 +24,14 @@ struct SenderTH : public Thread
 {
 private:
     ClientProtocol &protocol;
-    Queue<Dto *> &queue;
+    Queue<std::shared_ptr<Dto>> &queue;
 
 public:
     bool was_closed;
 
-    SenderTH(ClientProtocol &p, Queue<Dto *> &q);
+    SenderTH(ClientProtocol &p, Queue<std::shared_ptr<Dto>> &q);
     void run() override;
-    void send(Dto *d);
+    void send(std::shared_ptr<Dto> d);
 };
 
 #endif

@@ -1,13 +1,13 @@
 #include "client_receiver.h"
 
-ReceiverTH::ReceiverTH(ClientProtocol &p, Queue<Dto *> &q) : protocol(p), queue(q), was_closed(false) {}
+ReceiverTH::ReceiverTH(ClientProtocol &p, Queue<std::shared_ptr<Dto>> &q) : protocol(p), queue(q), was_closed(false) {}
 
 void ReceiverTH::run()
 {
     while (not was_closed)
     {
 
-        Dto *dto = protocol.receive(was_closed);
+        std::shared_ptr<Dto> dto = protocol.receive(was_closed);
 
         if (dto->is_alive())
         {
@@ -16,7 +16,7 @@ void ReceiverTH::run()
         else
         {
             was_closed = true;
-            delete dto;
+            // delete dto;
         }
     }
 }
