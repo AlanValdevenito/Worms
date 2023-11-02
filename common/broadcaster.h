@@ -22,14 +22,9 @@ private:
 
 public:
     void addMessageToQueues();
-    // void AddGusanoToQueues(Gusano *g);
-    void AddGusanosToQueues2(std::shared_ptr<Gusanos> gs);
-    void AddGusanoToQueues2(std::shared_ptr<Gusano> g);
-    // void AddGusanosToQueues(Gusanos *gs);
-    void AddVigasToQueues2(std::shared_ptr<Vigas> vs);
-    // void AddVigasToQueues(Vigas *vs);
-    // void addMessageToQueues(std::shared_ptr<Dto> dto);
-    // void addVigaToQueues(std::shared_ptr<Dto> dto);
+    void AddGusanosToQueues(std::shared_ptr<Gusanos> gs);
+    void AddGusanoToQueues(std::shared_ptr<Gusano> g);
+    void AddVigasToQueues(std::shared_ptr<Vigas> vs);
     void addQueueToList(Queue<std::shared_ptr<Dto>> &q);
     void removeQueueFromList(Queue<std::shared_ptr<Dto>> *q);
     void deleteAllQueues();

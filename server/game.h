@@ -17,6 +17,7 @@
 #include "dto.h"
 #include "viga.h"
 #include "gusano.h"
+#include "player.h"
 
 class Game : public Thread
 {
@@ -25,11 +26,15 @@ private:
     Broadcaster &broadcaster;
     World world;
     b2Body *body_w;
+    std::vector<Player> players;
+    std::chrono::steady_clock::time_point begin;
+    std::chrono::steady_clock::time_point end;
+    int numberOfPlayers = 2;
 
     // std::map<int, LISTA DE WORMS>;
 
 public:
-    int idTurn = -1;
+    int idTurn = 1;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
     void update();
@@ -42,5 +47,7 @@ public:
     void moveWormRight(uint8_t id);
     void executeCommand(std::shared_ptr<Dto> dto);
     void broadcast();
+    void createPlayers();
+    void passTurn();
 };
 #endif
