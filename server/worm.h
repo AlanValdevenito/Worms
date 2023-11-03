@@ -9,6 +9,7 @@ private:
     uint8_t id;
 
 public:
+    bool isRunning;
     Worm(b2World *world, float x, float y, uint8_t id);
     float getXCoordinate();
     float getYCoordinate();

@@ -1,6 +1,6 @@
 #include "worm.h"
 
-Worm::Worm(b2World *world, float x, float y, uint8_t id) : x(x), y(y), id(id) {
+Worm::Worm(b2World *world, float x, float y, uint8_t id) : x(x), y(y), id(id), isRunning(false) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -32,11 +32,13 @@ uint8_t Worm::getId()
 }
 
 void Worm::moveLeft() {
+	isRunning = true;
 	body->SetLinearVelocity(b2Vec2(-0.6f, 0.0f));
 }
 
 void Worm::moveRight()
-{
+{	
+	isRunning = true;
     body->SetLinearVelocity(b2Vec2(0.6f, 0.0f));
 }
 

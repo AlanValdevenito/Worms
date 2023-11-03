@@ -31,7 +31,7 @@ public:
     void guardar_vigas();
     void guardar_worms(SDL2pp::Texture &sprites);
 
-    bool handleEvents();
+    bool handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites);
 
     void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, unsigned int tiempoRestante);
     void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante);

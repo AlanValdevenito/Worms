@@ -23,8 +23,7 @@ int Partida::iniciar()
     /******************** TEXTURAS ********************/
 
     // Cargamos la imagen para un worm
-    Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png")
-                                  .SetColorKey(true, 0));
+    Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
 
     sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
 
@@ -77,7 +76,7 @@ int Partida::iniciar()
             tiempoInicial = tiempoActual;
         }
 
-        if (handleEvents())
+        if (handleEvents(renderer, sprites))
         {
             return 0;
         }
@@ -160,7 +159,7 @@ void Partida::guardar_worms(SDL2pp::Texture &sprites)
     // delete dto;
 }
 
-bool Partida::handleEvents()
+bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
 {
     // Procesamiento de evento
     SDL_Event event;
@@ -190,8 +189,6 @@ bool Partida::handleEvents()
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
                 std::cout << "Click izquierdo" << std::endl;
-                // std::cout << event.button.x << std::endl;
-                // std::cout << event.button.y << std::endl;
                 break;
             }
 
@@ -211,11 +208,15 @@ bool Partida::handleEvents()
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
+                // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+
                 cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 break;
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
+                // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+
                 cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 break;
 
@@ -236,7 +237,16 @@ bool Partida::handleEvents()
 
             // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
             case SDLK_SPACE:
-                // ...
+                //sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+                
+                if (this->worms[1]->get_mira()) {
+                    // Enviar mensaje al cliente para disparar
+                    this->worms[1]->desactivar_mira();
+                
+                } else {
+                   this->worms[1]->activar_mira();
+                }
+
                 break;
 
             // Si se presiona la tecla de retroceso el gusano cambia su direccion (se da la vuelta)
@@ -283,7 +293,7 @@ bool Partida::handleEvents()
 
             // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
-                // ...
+                // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
                 break;
 
             // Si se suelta la tecla de retroceso...

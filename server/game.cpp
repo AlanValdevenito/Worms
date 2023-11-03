@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 
-#define TURN_DURATION 5
+#define TURN_DURATION 10
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
@@ -14,8 +14,8 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 
     world.addBeam(3, 9, 0, LONG);  // Ocupa del 1 al 6
     world.addBeam(9, 9, 0, LONG);  // Ocupa del 7 al 12
-    world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
-    world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
+    //world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
+    //world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
 
     /* AGUA */
 
@@ -26,7 +26,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
     /* WORMS */
 
     world.addWorm(3, 10);
-    world.addWorm(15, 10);
+    world.addWorm(6, 10);
     createPlayers();
 }
 
@@ -81,6 +81,16 @@ void Game::update()
 {
     world.step();
     passTurn();
+    //sendWorms();
+    /*for (Worm worm : world.getWorms()) {
+        if (worm.isRunning) {
+            uint16_t x = worm.getXCoordinate() * 100;
+            uint16_t y = worm.getYCoordinate() * 100;
+            uint8_t id = worm.getId();
+            std::shared_ptr<Gusano> g = std::make_shared<Gusano>(id, x, y);
+            broadcaster.AddGusanoToQueues(g);
+        }
+    }*/
     /*Worm *worm = world.getWorms().front();
     uint16_t x = worm->getXCoordinate() * 100;
     uint16_t y = worm->getYCoordinate() * 100;
