@@ -11,11 +11,11 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id),
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 2.0f;
+	fixtureDef.density = 1.0f;
 	fixtureDef.filter.categoryBits = 0x02;
     fixtureDef.filter.maskBits = 0xFD;
 
-	fixtureDef.friction = 0.3f;
+	fixtureDef.friction = 0.7f;
 	body->CreateFixture(&fixtureDef);
 }
 
@@ -53,7 +53,7 @@ void Worm::bat(std::list<Worm*>& worms) {
 		if (distance == 0) continue;
 		std::cout << "distance = " << distance << "\n";
 		if (distance < 2.0f && distance > -2.0f) {
-			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(2.0f, 2.0f), true);
+			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(30.0f, 20.0f), true);
 			worm->makeDamage(10);
 			std::cout << "vida del gusano golpeado : " << (int)worm->getHp() << "\n";
 		}
