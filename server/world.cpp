@@ -61,7 +61,7 @@ std::list<Beam> &World::getBeams()
     return beams;
 }
 
-std::list<Worm> &World::getWorms()
+std::list<Worm*> &World::getWorms()
 {
     return worms;
 }
@@ -69,9 +69,9 @@ std::list<Worm> &World::getWorms()
 void World::addWorm(float x, float y)
 {   
     idWorms = idWorms + 1;
-    Worm worm(&world, x, y, idWorms);
+    Worm *worm = new Worm(&world, x, y, idWorms);
     worms.push_back(worm);
-    
+
 }
 
 void World::step()

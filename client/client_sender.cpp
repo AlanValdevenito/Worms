@@ -30,6 +30,8 @@ void SenderTH::send(std::shared_ptr<Dto> d)
         protocol.moverAIzquierda(std::dynamic_pointer_cast<MoverAIzquierda>(d), was_closed);
     else if (d->return_code() == LISTA_DE_PARTIDAS_CODE)
         protocol.enviarSeleccion(std::dynamic_pointer_cast<ListaDePartidas>(d), was_closed);
+    else if (d->return_code() == BATEAR_CODE)
+        protocol.enviarAtaqueConBate(std::dynamic_pointer_cast<Batear>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
 }

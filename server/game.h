@@ -45,6 +45,7 @@ public:
 
     void moveWormLeft(uint8_t id);
     void moveWormRight(uint8_t id);
+    void batWorm(uint8_t id);
     void executeCommand(std::shared_ptr<Dto> dto);
     void broadcast();
     void createPlayers();

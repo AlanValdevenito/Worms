@@ -24,15 +24,17 @@ private:
     // Enteros que indican la posicion del Worm en pixeles.
     float x;
     float y;
+    int vida;
 
 public:
 
-    Worm(SDL2pp::Texture &texture, SDL2pp::Texture &potencia, float x, float y);
+    Worm(SDL2pp::Texture &texture, SDL2pp::Texture &potencia, float x, float y, int vida);
 
     // Actualiza el Worm en funcion del tiempo transcurrido.
-    void update(int it, float nuevoX, float nuevoY);
+    void update(int it, float nuevoX, float nuevoY, int vida);
     // Renderiza el Worm.
     void render(SDL2pp::Renderer &renderer);
+    void render_vida(SDL2pp::Renderer &renderer);
 
     void activar_mira();
     void desactivar_mira();

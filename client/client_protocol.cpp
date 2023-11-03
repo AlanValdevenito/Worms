@@ -120,18 +120,20 @@ std::shared_ptr<Gusano> ClientProtocol::receiveGusano(bool &was_closed)
     uint8_t id;
     uint16_t x;
     uint16_t y;
+    uint8_t vida;
 
     skt.recvall(&id, sizeof(id), &was_closed);
     skt.recvall(&x, sizeof(x), &was_closed);
     skt.recvall(&y, sizeof(y), &was_closed);
+    skt.recvall(&vida, sizeof(vida), &was_closed);
 
     x = ntohs(x);
     y = ntohs(y);
 
-    printf("Cliente ---> id:%u  x:%u y:%u  \n", id, x, y);
+    printf("Cliente ---> id:%u  x:%u y:%u  vida:%u \n", id, x, y, vida);
 
     // return new Gusano(id, x, y);
-    return std::make_shared<Gusano>(id, x, y);
+    return std::make_shared<Gusano>(id, x, y, vida);
 }
 
 void ClientProtocol::moverADerecha(std::shared_ptr<MoverADerecha> m, bool &was_closed)
@@ -156,7 +158,7 @@ void ClientProtocol::moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &w
 
 void ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed)
 {
-     uint8_t id_cliente = l->get_cliente_id();
+    uint8_t id_cliente = l->get_cliente_id();
     skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
 
     uint8_t code = l->return_code();
@@ -166,4 +168,18 @@ void ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &w
     uint8_t opcion = l->seleccionada;
     printf("enviar opcion: %u\n", opcion);
     skt.sendall(&opcion, sizeof(opcion), &was_closed);
+}
+
+void ClientProtocol::enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_closed)
+{
+    uint8_t id_cliente = b->get_cliente_id();
+    skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
+
+    uint8_t code = b->return_code();
+    // printf("enviar: %u\n", a);
+    skt.sendall(&code, sizeof(code), &was_closed);
+    
+    uint8_t angulo = b->get_angulo();
+    // printf("enviar: %u\n", a);
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
 }

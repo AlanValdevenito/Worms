@@ -38,7 +38,7 @@ public:
     void renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua);
     void renderizar_worms(SDL2pp::Renderer &renderer);
     // void renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
-    // void renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
+    // void renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
 
     void actualizar(int it);
 

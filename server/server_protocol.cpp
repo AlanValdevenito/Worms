@@ -53,19 +53,21 @@ void ServerProtocol::sendAllWorms(std::shared_ptr<Gusanos> gs, bool &was_closed)
     uint8_t cant = gs->cantidad();
     skt.sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
 
-    printf("cantidad de gusanos a enviar %u\n", cant);
+    // printf("cantidad de gusanos a enviar %u\n", cant);
     for (int i = 0; i < cant; i++)
     {
         std::shared_ptr<Gusano> g = gs->popGusano(i);
         uint8_t id = g->get_id();
         uint16_t x = htons(g->x_pos());
         uint16_t y = htons(g->y_pos());
+        uint8_t vida = g->get_vida();
 
         printf("gusano %d)  id:%u  x:%u  y:%u \n", i, g->get_id(), g->x_pos(), g->y_pos());
 
         skt.sendall(&(id), sizeof(id), &was_closed);
         skt.sendall(&(x), sizeof(x), &was_closed);
         skt.sendall(&(y), sizeof(y), &was_closed);
+        skt.sendall(&(vida), sizeof(vida), &was_closed); // notifico que envio un gusano
 
         // delete g; // Liberar memoria
     }
@@ -80,12 +82,14 @@ void ServerProtocol::sendWorms(std::shared_ptr<Gusano> g, bool &was_closed)
     uint8_t id = g->get_id();
     uint16_t x = htons(g->x_pos());
     uint16_t y = htons(g->y_pos());
+    uint8_t vida = g->get_vida();
 
-    printf("id:%u  x:%u  y:%u \n", g->get_id(), g->x_pos(), g->y_pos());
+    printf("id:%u  x:%u  y:%u vida:%u \n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida());
 
     skt.sendall(&(id), sizeof(id), &was_closed);
     skt.sendall(&(x), sizeof(x), &was_closed);
     skt.sendall(&(y), sizeof(y), &was_closed);
+    skt.sendall(&(vida), sizeof(vida), &was_closed); // notifico que envio un gusano
 }
 
 void ServerProtocol::sendPartidas(std::shared_ptr<ListaDePartidas> l, bool &was_closed)
@@ -120,10 +124,19 @@ std::shared_ptr<Dto> ServerProtocol::recvPartidaSeleccionada(uint8_t id, bool &w
     return std::make_shared<ListaDePartidas>(id,op);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recvAtaqueConBate(uint8_t id, bool &was_closed)
+{
+    
+    uint8_t angulo;
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    printf("angulo recibido: %u\n", angulo);
+    return std::make_shared<Batear>(id,angulo);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recv(bool &was_closed)
 {
     uint8_t id;
-    skt.recvall(&id, sizeof(id), &was_closed);
+    skt.recvall(&id, sizeof(id), &was_closed); 
 
     printf("cliente id: %u\n", id);
 
@@ -136,6 +149,8 @@ std::shared_ptr<Dto> ServerProtocol::recv(bool &was_closed)
         return std::make_shared<MoverADerecha>(id);
     else if (code == MOVER_A_IZQUERDA_CODE)
         return std::make_shared<MoverAIzquierda>(id);
+    else if (code == BATEAR_CODE)
+        return recvAtaqueConBate(id,was_closed);
 
     return std::make_shared<Dto>(code); // DEBERIA SER UN DEAD DTO
 }

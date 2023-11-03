@@ -160,7 +160,7 @@ void Partida::guardar_worms(SDL2pp::Texture &sprites, SDL2pp::Texture &potencia)
         float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(sprites, potencia, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY);
+        this->worms[gusano->get_id()] = new Worm(sprites, potencia, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
     }
 
     // delete dto;
@@ -216,28 +216,18 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
                 // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-
                 cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 break;
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
                 // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-
                 cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 break;
 
             // Si se presiona la flecha hacia ariba el gusano direcciona su arma
             case SDLK_UP:
-
-                if (this->worms[1]->get_mira()) {
-                    // Enviar mensaje al cliente para disparar
-                    this->worms[1]->desactivar_mira();
-                
-                } else {
-                   this->worms[1]->activar_mira();
-                }
-
+                // ...
                 break;
 
             // Si se presiona la flecha hacia abajo el gusano direcciona su arma
@@ -252,7 +242,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
 
             // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
             case SDLK_SPACE:
-                //sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+                // Actualizamos la animacion para tener el sprite del ataque
+                // sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
                 this->worms[1]->aumentar_potencia();
                 break;
 
@@ -264,6 +255,20 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_0:
                 // ...
+                break;
+
+            // Si se presiona la tecla de F7 el worm se equipa un arma
+            case SDLK_F7:
+                // Actualizamos la animacion para tener el sprite del arma
+                // sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+
+                if (this->worms[1]->get_mira()) {
+                    this->worms[1]->desactivar_mira();
+                
+                } else {
+                   this->worms[1]->activar_mira();
+                }
+
                 break;
             }
 
@@ -300,10 +305,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
 
             // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
-                // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+                cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, 0));
+                // this->worms[1]->get_potencia();
                 this->worms[1]->reiniciar_potencia();
-                this->worms[1]->get_potencia();
-                // Enviar potencia al servidor
                 break;
 
             // Si se suelta la tecla de retroceso...
@@ -331,7 +335,7 @@ void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2
     renderizar_worms(renderer);
 
     // renderizar_nombre(renderer, font, animacion);
-    // renderizar_vida(renderer, font, animacion);
+    // renderizar_vida(renderer, font);
 
     renderer.Present();
 }
@@ -409,7 +413,7 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     renderer.Copy(texture, NullOpt, nombre);
 }*/
 
-/*void Partida::renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion) {
+/*void Partida::renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font) {
     int vcenter = renderer.GetOutputHeight() / 2;
 
     Rect borde((int)animacion.gusano.x + 16, vcenter - 52, 29, 21);
@@ -422,7 +426,7 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     renderer.SetDrawColor(negro);
     renderer.FillRect(contenedor);
 
-    Surface surface = font.RenderText_Solid(std::to_string(animacion.gusano.vida), blanco);
+    Surface surface = font.RenderText_Solid("100", blanco);
     Texture texture(renderer, surface);
 
     Rect vida((int)animacion.gusano.x + 18, vcenter - 50, surface.GetWidth(), surface.GetHeight());
@@ -431,13 +435,17 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
 
 void Partida::actualizar(int it)
 {
-    std::shared_ptr<Dto> gusano;
+    std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
 
-    if (cliente.recv_queue.try_pop(gusano))
+    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
+    // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
+    int cantidad = dto->cantidad();
+    for (int i = 0; i < cantidad; i++)
     {
+        std::shared_ptr<Gusano> gusano = dto->popGusano(i);
+
         float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[std::dynamic_pointer_cast<Gusano>(gusano)->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY);
-        // delete gusano;
+        this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
 }
 

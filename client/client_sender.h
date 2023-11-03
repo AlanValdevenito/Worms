@@ -19,6 +19,7 @@
 #include "constantes.h"
 #include "dto.h"
 #include "mover.h"
+#include "batear.h"
 
 struct SenderTH : public Thread
 {

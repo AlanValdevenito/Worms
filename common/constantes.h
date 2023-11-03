@@ -9,5 +9,6 @@ const uint8_t MOVER_A_IZQUERDA_CODE = 4;
 const uint8_t LISTA_DE_PARTIDAS_CODE = 5;
 const uint8_t GUSANOS_CODE = 6;
 const uint8_t INICIAR_PARIDA = 7;
+const uint8_t BATEAR_CODE = 8;
 
 #endif

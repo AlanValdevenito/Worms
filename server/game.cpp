@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 
-#define TURN_DURATION 10
+#define TURN_DURATION 60
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
@@ -14,8 +14,8 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 
     world.addBeam(3, 9, 0, LONG);  // Ocupa del 1 al 6
     world.addBeam(9, 9, 0, LONG);  // Ocupa del 7 al 12
-    //world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
-    //world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
+    world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
+    world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
 
     /* AGUA */
 
@@ -25,8 +25,8 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 
     /* WORMS */
 
-    world.addWorm(3, 10);
-    world.addWorm(6, 10);
+    world.addWorm(2, 12);
+    world.addWorm(4, 12);
     createPlayers();
 }
 
@@ -56,7 +56,7 @@ void Game::run()
             executeCommand(dto);
         }
         update();
-        std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        std::this_thread::sleep_for(std::chrono::milliseconds(32));
     
         // broadcast();
     }
@@ -81,7 +81,7 @@ void Game::update()
 {
     world.step();
     passTurn();
-    //sendWorms();
+    sendWorms();
     /*for (Worm worm : world.getWorms()) {
         if (worm.isRunning) {
             uint16_t x = worm.getXCoordinate() * 100;
@@ -103,11 +103,12 @@ void Game::sendWorms()
 {
 
     std::vector<std::shared_ptr<Gusano>> vectorGusanos;
-    for (Worm w : world.getWorms())
+    for (Worm *w : world.getWorms())
     {
-        std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w.getId()),
-                                                             (int)(w.getXCoordinate() * 100),
-                                                             (int)(w.getYCoordinate() * 100));
+        std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
+                                                             (int)(w->getXCoordinate() * 100),
+                                                             (int)(w->getYCoordinate() * 100),
+                                                             w->getHp());
         vectorGusanos.push_back(g);
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(vectorGusanos);
@@ -176,9 +177,9 @@ void Game::moveWormRight(uint8_t id)
 
     int idActualWorm = players[idTurn - 1].getActualWormId();
     //std::cout << "actual worm = " << idActualWorm << "\n";
-    for (Worm worm : world.getWorms()) {
-        if (worm.getId() == idActualWorm) {
-            worm.moveRight();
+    for (Worm *worm : world.getWorms()) {
+        if (worm->getId() == idActualWorm) {
+            worm->moveRight();
         }
     }
     // std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
@@ -190,10 +191,18 @@ void Game::moveWormLeft(uint8_t id)
     // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
 
     int idActualWorm = players[idTurn - 1].getActualWormId();
-    //std::cout << "actual worm = " << idActualWorm << "\n";
-    for (Worm worm : world.getWorms()) {
-        if (worm.getId() == idActualWorm) {
-            worm.moveLeft();
+    for (Worm *worm : world.getWorms()) {
+        if (worm->getId() == idActualWorm) {
+            worm->moveLeft();
+        }
+    }
+}
+
+void Game::batWorm(uint8_t id) {
+    int idActualWorm = players[idTurn - 1].getActualWormId();
+    for (Worm *worm : world.getWorms()) {
+        if (worm->getId() == idActualWorm) {
+            worm->bat(world.getWorms());
         }
     }
 }
@@ -216,17 +225,32 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     {
         moveWormLeft(clientId); // SI ES SU TURNO, LE PASAMOS EL ID
     }
+    else if (code == BATEAR_CODE) {
+        batWorm(clientId);
+        /*for (Worm *worm : world.getWorms()) {
 
-    int idActualWorm = players[idTurn - 1].getActualWormId();
-    for (Worm worm : world.getWorms()) {
-        if (worm.getId() == idActualWorm) {
-            uint16_t x = worm.getXCoordinate() * 100;
-            uint16_t y = worm.getYCoordinate() * 100;
-            uint8_t id = worm.getId();
-            std::shared_ptr<Gusano> g = std::make_shared<Gusano>(id, x, y);
+            uint16_t x = worm->getXCoordinate() * 100;
+            uint16_t y = worm->getYCoordinate() * 100;
+            uint8_t id = worm->getId();
+            uint8_t hp = worm->getHp();
+            std::cout << "gusano id " << (int)id << " vida = " << (int)hp << "\n";
+            std::shared_ptr<Gusano> g = std::make_shared<Gusano>(id, x, y, hp);
+            broadcaster.AddGusanoToQueues(g);
+        
+        }*/
+    }
+
+    /*int idActualWorm = players[idTurn - 1].getActualWormId();
+    for (Worm *worm : world.getWorms()) {
+        if (worm->getId() == idActualWorm) {
+            uint16_t x = worm->getXCoordinate() * 100;
+            uint16_t y = worm->getYCoordinate() * 100;
+            uint8_t id = worm->getId();
+            uint8_t hp = worm->getHp();
+            std::shared_ptr<Gusano> g = std::make_shared<Gusano>(id, x, y, hp);
             broadcaster.AddGusanoToQueues(g);
         }
-    }
+    }*/
     // delete dto;
 }
 
