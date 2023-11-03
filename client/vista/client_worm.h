@@ -4,6 +4,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "client_animacion.h"
 #include "client_mira.h"
+#include "client_potencia.h"
 
 class Worm
 {
@@ -14,6 +15,7 @@ private:
     Animation animacion;
 
     Mira mira;
+    Potencia potencia;
 
     // Booleano que indica si el jugador activo la mira.
     bool miraActivada;
@@ -25,7 +27,7 @@ private:
 
 public:
 
-    Worm(SDL2pp::Texture &texture, float x, float y);
+    Worm(SDL2pp::Texture &texture, SDL2pp::Texture &potencia, float x, float y);
 
     // Actualiza el Worm en funcion del tiempo transcurrido.
     void update(int it, float nuevoX, float nuevoY);
@@ -35,7 +37,10 @@ public:
     void activar_mira();
     void desactivar_mira();
     bool get_mira();
-    
+
+    void aumentar_potencia();
+    void reiniciar_potencia();
+    int get_potencia();
 };
 
 #endif // __WORM_H_

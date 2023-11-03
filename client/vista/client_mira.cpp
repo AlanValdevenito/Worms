@@ -2,12 +2,13 @@
 
 #include <cmath>
 
-#define ANCHO_SPRITE 32
-#define ALTO_SPRITE 32
+#define ANCHO_SPRITE 31
+#define ALTO_SPRITE 31
 
-#define OFFSET_MIRA 50
+#define X_OFFSET_MIRA 176
+#define Y_OFFSET_MIRA 15
 
-Mira::Mira(): angulo(45) {
+Mira::Mira(): angulo(0) {
 }
 
 float Mira::calcular_angulo(float adyadente) {
@@ -18,15 +19,15 @@ void Mira::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzqu
     SDL2pp::Texture texture(renderer, SDL2pp::Surface(DATA_PATH "/mira.png").SetColorKey(true, 0));
     texture.SetBlendMode(SDL_BLENDMODE_BLEND);
 
-    int offset = OFFSET_MIRA;
+    int offset = X_OFFSET_MIRA;
 
     if (mirandoIzquierda) {
-        offset = -OFFSET_MIRA;
+        offset = -X_OFFSET_MIRA;
     } 
 
     renderer.Copy(
             texture,
             SDL2pp::NullOpt,
-            SDL2pp::Rect(x + offset, y - calcular_angulo(OFFSET_MIRA), 50, 50)
+            SDL2pp::Rect(x + offset, y - calcular_angulo(X_OFFSET_MIRA) + Y_OFFSET_MIRA, ANCHO_SPRITE, ALTO_SPRITE)
         );
 }

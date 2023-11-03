@@ -13,7 +13,9 @@ int Partida::iniciar()
 
     SDLTTF ttf;
 
-    Window window("Worms 2D",
+    std::string titulo = "Worms 2D - [" + std::to_string(cliente.id) + "]";
+
+    Window window(titulo,
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                   ANCHO_VENTANA, ALTO_VENTANA,
                   SDL_WINDOW_RESIZABLE);
@@ -26,6 +28,11 @@ int Partida::iniciar()
     Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
 
     sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
+
+    // Cargamos la imagen para un worm
+    Texture potencia(renderer, Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0));
+
+    potencia.SetBlendMode(SDL_BLENDMODE_BLEND);
 
     // Cargamos la imagen para una viga
     Texture viga(renderer, Surface(DATA_PATH "/viga_larga.png")
@@ -51,7 +58,7 @@ int Partida::iniciar()
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
     guardar_vigas();
-    guardar_worms(sprites);
+    guardar_worms(sprites, potencia);
 
     /******************** GAME LOOP ********************/
 
@@ -139,7 +146,7 @@ void Partida::guardar_vigas()
     // delete dto;
 }
 
-void Partida::guardar_worms(SDL2pp::Texture &sprites)
+void Partida::guardar_worms(SDL2pp::Texture &sprites, SDL2pp::Texture &potencia)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
 
@@ -153,7 +160,7 @@ void Partida::guardar_worms(SDL2pp::Texture &sprites)
         float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY);
+        this->worms[gusano->get_id()] = new Worm(sprites, potencia, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY);
     }
 
     // delete dto;
@@ -222,7 +229,15 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
 
             // Si se presiona la flecha hacia ariba el gusano direcciona su arma
             case SDLK_UP:
-                // ...
+
+                if (this->worms[1]->get_mira()) {
+                    // Enviar mensaje al cliente para disparar
+                    this->worms[1]->desactivar_mira();
+                
+                } else {
+                   this->worms[1]->activar_mira();
+                }
+
                 break;
 
             // Si se presiona la flecha hacia abajo el gusano direcciona su arma
@@ -238,15 +253,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
             // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
             case SDLK_SPACE:
                 //sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
-                
-                if (this->worms[1]->get_mira()) {
-                    // Enviar mensaje al cliente para disparar
-                    this->worms[1]->desactivar_mira();
-                
-                } else {
-                   this->worms[1]->activar_mira();
-                }
-
+                this->worms[1]->aumentar_potencia();
                 break;
 
             // Si se presiona la tecla de retroceso el gusano cambia su direccion (se da la vuelta)
@@ -294,6 +301,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
             // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
                 // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+                this->worms[1]->reiniciar_potencia();
+                this->worms[1]->get_potencia();
+                // Enviar potencia al servidor
                 break;
 
             // Si se suelta la tecla de retroceso...
@@ -359,12 +369,14 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 
 void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante)
 {
-    Rect borde(5, 438, 65, 36);
+    int altura = renderer.GetOutputHeight(); // 480
+
+    Rect borde(5, altura - 42, 65, 36);
     Color blanco(255, 255, 255, 255);
     renderer.SetDrawColor(blanco);
     renderer.FillRect(borde);
 
-    Rect contenedor(7, 440, 61, 32);
+    Rect contenedor(7, altura - 40, 61, 32);
     Color negro(0, 0, 0, 255);
     renderer.SetDrawColor(negro);
     renderer.FillRect(contenedor);
@@ -373,7 +385,7 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     Surface surface = font.RenderText_Solid(std::to_string(tiempo), blanco);
     Texture texture(renderer, surface);
 
-    Rect nombre(24, 446, surface.GetWidth() + 5, surface.GetHeight() + 5);
+    Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
     renderer.Copy(texture, NullOpt, nombre);
 }
 

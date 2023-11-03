@@ -6,7 +6,9 @@
 #define OFFSET_X -30
 #define OFFSET_Y -55
 
-Worm::Worm(SDL2pp::Texture &texture, float x, float y) : animacion(texture), mira(Mira()), miraActivada(false), mirandoIzquierda(true), x(x), y(y) {}
+Worm::Worm(SDL2pp::Texture &texture, SDL2pp::Texture &potencia, float x, float y) : animacion(texture), mira(Mira()), potencia(potencia), miraActivada(false), mirandoIzquierda(true), x(x), y(y) {
+    
+}
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos. Esto les va a resultar muy util.
 
@@ -49,4 +51,28 @@ void Worm::render(SDL2pp::Renderer &renderer)
         this->mira.render(renderer, x + OFFSET_X, y + OFFSET_Y, this->mirandoIzquierda);
     } 
 
+    if (this->miraActivada) {
+        this->potencia.render(renderer, x + OFFSET_X, y + OFFSET_Y, this->mirandoIzquierda);
+    } 
+
+}
+
+void Worm::aumentar_potencia() {
+    if (this->miraActivada) {
+        this->potencia.update();
+    }
+}
+
+void Worm::reiniciar_potencia() {
+    if (this->miraActivada) {
+        this->potencia.reiniciar();
+    }
+}
+
+int Worm::get_potencia() {
+    if (this->miraActivada) {
+        return this->potencia.get_current_frame();
+    } 
+
+    return 0;
 }

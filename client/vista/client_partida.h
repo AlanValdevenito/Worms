@@ -29,7 +29,7 @@ public:
 
     int iniciar();
     void guardar_vigas();
-    void guardar_worms(SDL2pp::Texture &sprites);
+    void guardar_worms(SDL2pp::Texture &sprites, SDL2pp::Texture &potencia);
 
     bool handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites);
 

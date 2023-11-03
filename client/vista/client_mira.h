@@ -2,7 +2,6 @@
 #define MIRA_H
 
 #include <SDL2pp/SDL2pp.hh>
-#include "client_mira.h"
 
 class Mira
 {
