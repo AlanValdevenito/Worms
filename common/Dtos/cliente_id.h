@@ -12,6 +12,7 @@ class ClienteId : public Dto
 {
 private:
     uint8_t id;
+
 public:
     ClienteId(uint8_t id);
     ~ClienteId();

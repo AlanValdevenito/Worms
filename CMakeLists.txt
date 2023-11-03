@@ -39,9 +39,10 @@ endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -pedantic -pedantic-errors -O0 -ggdb -DDEBUG -fno-inline -std=${CSTD} -D _POSIX_C_SOURCE=200809L")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic -pedantic-errors -O0 -ggdb -DDEBUG -fno-inline -std=${CXXSTD} -D _POSIX_C_SOURCE=200809L")
 
+
 # Agrega directorios a la lista de directorios en los que el compilador buscará archivos de encabezado. 
-include_directories(common)
 include_directories(common/Dtos)
+include_directories(common)
 include_directories(client)
 include_directories(client/vista)
 include_directories(client/vista/data)

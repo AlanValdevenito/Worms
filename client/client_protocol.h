@@ -13,6 +13,7 @@
 #include <netinet/in.h>
 
 #include "socket.h"
+#include "socket_mock.h"
 #include "constantes.h"
 #include "dto.h"
 #include "dead.h"
@@ -32,6 +33,9 @@ public:
     void moverADerecha(std::shared_ptr<MoverADerecha> m, bool &was_closed);
     void moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &was_closed);
     void enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed);
+
+    void sendPruebita(uint8_t a);
+    void recvPruebita();
 
 private:
     Socket &skt;

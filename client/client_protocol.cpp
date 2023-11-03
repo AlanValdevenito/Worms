@@ -156,7 +156,7 @@ void ClientProtocol::moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &w
 
 void ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed)
 {
-     uint8_t id_cliente = l->get_cliente_id();
+    uint8_t id_cliente = l->get_cliente_id();
     skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
 
     uint8_t code = l->return_code();
@@ -166,4 +166,16 @@ void ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &w
     uint8_t opcion = l->seleccionada;
     printf("enviar opcion: %u\n", opcion);
     skt.sendall(&opcion, sizeof(opcion), &was_closed);
+}
+
+void ClientProtocol::sendPruebita(uint8_t a)
+{
+    bool was_closed = false;
+    skt.sendall(&a, sizeof(a), &was_closed);
+}
+void ClientProtocol::recvPruebita()
+{
+    bool was_closed = false;
+    uint8_t b;
+    skt.recvall(&b, sizeof(b), &was_closed);
 }

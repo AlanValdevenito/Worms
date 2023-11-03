@@ -1,18 +1,20 @@
 #include <gtest/gtest.h>
-#include "socket.h"
-#include "client.h"
-#include "client_protocol.h"
-#include "server_protocol.h"
+// #include "socket.h"
+// #include "socket_mock.h"
+// #include "client.h"
+// #include "client_protocol.h"
+// #include "server_protocol.h"
 
 TEST(MyTest, PassingTest)
 {
 
-    // Socket aceptador("8080");
-    // Socket client_socket("127.0.0.1", "8080");
-    // Socket peer = aceptador.accept();
+    // SocketMock skt;
+    // // Socket skt("127.0.0.1", "8080");
+    // ClientProtocol cp(std::ref(skt));
 
-    // ClientProtocol cp(std::ref(client_socket));
-    // ServerProtocol sp(std::ref(peer));
+    // uint8_t a = 8;
+    // cp.sendPruebita(a);
+    // cp.recvPruebita();
 
     ASSERT_TRUE(true); // Esta aserción siempre será verdadera
 }

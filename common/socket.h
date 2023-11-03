@@ -137,8 +137,8 @@ public:
      * para envio/recibo, lease `sz`.
      *
      * */
-    int sendall(const void *data, unsigned int sz, bool *was_closed);
-    int recvall(void *data, unsigned int sz, bool *was_closed);
+    virtual int sendall(const void *data, unsigned int sz, bool *was_closed);
+    virtual int recvall(void *data, unsigned int sz, bool *was_closed);
 
     /*
      * Acepta una conexión entrante y retorna un nuevo socket
