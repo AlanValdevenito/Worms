@@ -7,11 +7,13 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id),
 	bodyDef.position.Set(x, y);
 	body = b2world->CreateBody(&bodyDef);
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 0.1f);
+	dynamicBox.SetAsBox(1.0f, 1.0f);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
+	fixtureDef.density = 2.0f;
+	fixtureDef.filter.categoryBits = 0x02;
+    fixtureDef.filter.maskBits = 0xFD;
 
 	fixtureDef.friction = 0.3f;
 	body->CreateFixture(&fixtureDef);
@@ -34,13 +36,13 @@ uint8_t Worm::getId()
 
 void Worm::moveLeft() {
 	isRunning = true;
-	body->SetLinearVelocity(b2Vec2(-0.6f, 0.0f));
+	body->SetLinearVelocity(b2Vec2(-0.8f, 0.0f));
 }
 
 void Worm::moveRight()
 {	
 	isRunning = true;
-    body->SetLinearVelocity(b2Vec2(0.6f, 0.0f));
+    body->SetLinearVelocity(b2Vec2(0.8f, 0.0f));
 }
 
 void Worm::bat(std::list<Worm*>& worms) {
@@ -49,8 +51,9 @@ void Worm::bat(std::list<Worm*>& worms) {
 	for (Worm *worm : worms) {
 		distance = x - worm->getXCoordinate();
 		if (distance == 0) continue;
-		if (distance < 2.0f || distance > -2.0f) {
-			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(10.0f, 10.0f), true);
+		std::cout << "distance = " << distance << "\n";
+		if (distance < 2.0f && distance > -2.0f) {
+			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(2.0f, 2.0f), true);
 			worm->makeDamage(10);
 			std::cout << "vida del gusano golpeado : " << (int)worm->getHp() << "\n";
 		}
