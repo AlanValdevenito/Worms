@@ -4,7 +4,7 @@ void Receiver::run()
 {
     while (not was_closed)
     {
-        std::shared_ptr<Dto> dto = protocol.recv(was_closed);
+        std::shared_ptr<Dto> dto = protocol.recibirActividad(was_closed);
 
         if (dto->is_alive())
         {
