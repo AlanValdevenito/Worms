@@ -11,6 +11,7 @@ void Sender::run()
 
         if (dto->is_alive())
         {
+            // std::cout << "entro\n";
             se_envio = send(dto);
             if (not se_envio)
                 break;
@@ -18,6 +19,7 @@ void Sender::run()
         else
             was_closed = true;
     }
+    std::cout << "salio\n";
     // salgo ordenadamente
 }
 

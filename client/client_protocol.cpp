@@ -55,7 +55,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirPartidas(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("op1: %u    op2: %u \n", op1, op2);
+    printf("op1: %u    op2: %u \n", op1, op2);
 
     std::shared_ptr<ListaDePartidas> l = std::make_shared<ListaDePartidas>();
     l->addOption(op1);
@@ -133,7 +133,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirViga(bool &was_closed)
     ancho = ntohs(ancho);
     alto = ntohs(alto);
 
-    // printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
+    printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
 
     return std::make_shared<Viga>(x, y, ancho, alto);
 }
@@ -149,7 +149,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     {
         std::shared_ptr<Gusano> g = std::dynamic_pointer_cast<Gusano>(recibirGusano(was_closed));
 
-        // printf("gusano %d)  id:%u  x:%u  y:%u \n", i, g->get_id(), g->x_pos(), g->y_pos());
+        printf("gusano %d)  id:%u  x:%u  y:%u \n", i, g->get_id(), g->x_pos(), g->y_pos());
 
         lista.push_back(g);
     }
@@ -182,13 +182,14 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     x = ntohs(x);
     y = ntohs(y);
 
-    // printf("Cliente ---> id:%u  x:%u y:%u  vida:%u \n", id, x, y, vida);
+    printf("Cliente ---> id:%u  x:%u y:%u  vida:%u \n", id, x, y, vida);
 
     return std::make_shared<Gusano>(id, x, y, vida);
 }
 
 bool ClientProtocol::enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed)
-{ // printf("enviar: %u\n", a);
+{
+    // printf("enviar: %u\n", a);
 
     uint8_t id_cliente = dto->get_cliente_id();
     skt.sendall(&id_cliente, sizeof(id_cliente), &was_closed);
@@ -218,8 +219,8 @@ bool ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &w
     if (!se_envio)
         return se_envio;
 
-    // printf("enviar opcion: %u\n", opcion);
     uint8_t opcion = l->seleccionada;
+    printf("enviar opcion: %u\n", opcion);
     skt.sendall(&opcion, sizeof(opcion), &was_closed);
     if (!was_closed)
         return false;

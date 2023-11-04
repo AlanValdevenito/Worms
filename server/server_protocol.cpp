@@ -8,16 +8,20 @@ bool ServerProtocol::enviarCodigoDeElemento(std::shared_ptr<Dto> dto, bool &was_
 {
     uint8_t code = dto->return_code();
     skt.sendall(&(code), sizeof(code), &was_closed);
+
+    // printf("codigo : %u\n", code);
+    std::cout << "was_closed = " << (!was_closed) << std::endl;
+
     return !was_closed;
 }
 
 bool ServerProtocol::enviarId(std::shared_ptr<ClienteId> id, bool &was_closed)
 {
-    if (enviarCodigoDeElemento(id, was_closed))
+    if (not enviarCodigoDeElemento(id, was_closed))
         return false;
 
     uint8_t id_cliente = id->get_cliente_id();
-    // printf("id enviado: %u\n",id_cliente );
+    printf("id enviado: %u\n", id_cliente);
     skt.sendall(&(id_cliente), sizeof(id_cliente), &was_closed);
 
     return !was_closed;
@@ -25,7 +29,7 @@ bool ServerProtocol::enviarId(std::shared_ptr<ClienteId> id, bool &was_closed)
 
 bool ServerProtocol::enviarVigas(std::shared_ptr<Dto> vs, bool &was_closed)
 {
-    if (enviarCodigoDeElemento(vs, was_closed))
+    if (not enviarCodigoDeElemento(vs, was_closed))
         return false;
 
     uint8_t cant = vs->cantidad();
@@ -101,7 +105,7 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
 
 bool ServerProtocol::enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was_closed)
 {
-    if (enviarCodigoDeElemento(gs, was_closed))
+    if (not enviarCodigoDeElemento(gs, was_closed))
         return false;
 
     uint8_t cant = gs->cantidad();
@@ -121,7 +125,7 @@ bool ServerProtocol::enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was
 bool ServerProtocol::enviarGusano(std::shared_ptr<Gusano> g, bool &was_closed)
 {
 
-    if (enviarCodigoDeElemento(g, was_closed))
+    if (not enviarCodigoDeElemento(g, was_closed))
         return false;
 
     return enviarDatosDelGusano(g, was_closed);
@@ -129,7 +133,7 @@ bool ServerProtocol::enviarGusano(std::shared_ptr<Gusano> g, bool &was_closed)
 
 bool ServerProtocol::enviarListaDePartidas(std::shared_ptr<ListaDePartidas> l, bool &was_closed)
 {
-    if (enviarCodigoDeElemento(l, was_closed))
+    if (not enviarCodigoDeElemento(l, was_closed))
         return false;
 
     std::list<uint8_t> lista = l->return_list();
@@ -139,7 +143,7 @@ bool ServerProtocol::enviarListaDePartidas(std::shared_ptr<ListaDePartidas> l, b
 
     for (uint8_t o : lista)
     {
-        // printf("opcion: %u\n", o);
+        printf("opcion: %u\n", o);
         skt.sendall(&(o), sizeof(o), &was_closed);
         if (was_closed)
             return false;
@@ -159,7 +163,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirPartidaSeleccionada(uint8_t id, bool
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("opcion recibida: %u\n", op);
+    printf("opcion recibida: %u\n", op);
     return std::make_shared<ListaDePartidas>(id, op);
 }
 
@@ -170,7 +174,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBate(uint8_t id, bool &was_
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("angulo recibido: %u\n", angulo);
+    printf("angulo recibido: %u\n", angulo);
     return std::make_shared<Batear>(id, angulo);
 }
 
@@ -183,7 +187,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("cliente id: %u\n", id);
+    printf("cliente id: %u\n", id);
 
     skt.recvall(&code, sizeof(code), &was_closed);
     if (was_closed)
