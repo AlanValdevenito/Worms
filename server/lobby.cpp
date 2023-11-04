@@ -5,7 +5,7 @@ Lobby::Lobby() : mapId(0), id_cliente(0)
 // Lobby::Lobby() : mapId(0), partida(std::ref(common_queue), 1, 2), id_cliente(0)
 {
     Partida *p1 = new Partida(std::ref(common_queue), 1, 2);
-    Partida *p2 = new Partida(std::ref(common_queue), 2, 2);
+    Partida *p2 = new Partida(std::ref(common_queue), 2, 1);
     partidas.push_back(p1);
     partidas.push_back(p2);
 }
@@ -21,7 +21,7 @@ void Lobby::sendMatchList(ServerClient *c)
     //     p.start(c);
     //     partidas.push_back(p);
     // }
-    
+
     Partida *p1 = partidas.front();
     Partida *p2 = partidas.back();
     // partidas.push_back(p1);

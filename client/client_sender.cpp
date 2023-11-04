@@ -12,7 +12,7 @@ void SenderTH::run()
         if (dto->is_alive())
         {
             se_envia = send(dto);
-            if (!se_envia) // si la informacion no se envio correctamente sale del bucle
+            if (not se_envia) // si la informacion no se envio correctamente sale del bucle
                 break;
         }
         else
