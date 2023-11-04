@@ -3,8 +3,8 @@
 #define ANCHO_SPRITE 60
 #define ALTO_SPRITE 60
 
-#define OFFSET_X -30
-#define OFFSET_Y -55
+#define OFFSET 8 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
+                 // tienen el (0,0) de los cuerpos en el centro
 
 Worm::Worm(SDL2pp::Texture &texture, SDL2pp::Texture &potencia, float x, float y, int vida) : animacion(texture), mira(Mira()), potencia(potencia), miraActivada(false), mirandoIzquierda(true), x(x), y(y), vida(vida) {
     
@@ -49,44 +49,38 @@ bool Worm::get_mira() {
 void Worm::render(SDL2pp::Renderer &renderer)
 {
     SDL_RendererFlip flip = this->mirandoIzquierda ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-    this->animacion.render(renderer, SDL2pp::Rect(x + OFFSET_X, y + OFFSET_Y, ANCHO_SPRITE, ALTO_SPRITE), flip);
+    this->animacion.render(renderer, SDL2pp::Rect(x - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
 
     this->render_vida(renderer);
  
     if (this->miraActivada) {
-        this->mira.render(renderer, x + OFFSET_X, y + OFFSET_Y, this->mirandoIzquierda);
+        this->mira.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda);
     } 
 
     if (this->miraActivada) {
-        this->potencia.render(renderer, x + OFFSET_X, y + OFFSET_Y, this->mirandoIzquierda);
+        this->potencia.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda);
     } 
 
 }
 
 void Worm::render_vida(SDL2pp::Renderer &renderer) {
-	// SDL2pp::Texture etiqueta(renderer, Surface(DATA_PATH "/boton.png").SetColorKey(true, 0));
-	// etiqueta.SetBlendMode(SDL_BLENDMODE_BLEND);
+	SDL2pp::Texture etiqueta(renderer, SDL2pp::Surface(DATA_PATH "/boton.png").SetColorKey(true, 0));
+	etiqueta.SetBlendMode(SDL_BLENDMODE_BLEND);
 
     // Cargamos la fuente de la letra
-    SDL2pp::Font font(DATA_PATH "/Vera.ttf", 12);
+    SDL2pp::Font font(DATA_PATH "/Vera.ttf", 15);
 
-    int altura = renderer.GetOutputHeight();
+    // int altura = renderer.GetOutputHeight();
 
-    SDL2pp::Rect borde(this->x + 13, altura - 330, 29, 21);
-    SDL2pp::Color blanco(255, 255, 255, 255);
-    renderer.SetDrawColor(blanco);
-    renderer.FillRect(borde);
+    SDL2pp::Rect posicionEtiqueta(this->x + 5, this->y - 15, 28, 18);
+	renderer.Copy(etiqueta, SDL2pp::NullOpt, posicionEtiqueta);
 
-    SDL2pp::Rect contenedor(this->x + 15, altura - 329, 25, 17);
-    SDL2pp::Color negro(0,0,0,255);
-    renderer.SetDrawColor(negro);
-    renderer.FillRect(contenedor);
+	SDL2pp::Color negro(0,0,0,255);
+	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), negro);
+	SDL2pp::Texture texture(renderer, surface);
 
-    SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), blanco);
-    SDL2pp::Texture texture(renderer, surface);
-
-    SDL2pp::Rect vida(this->x + 15, altura - 329, surface.GetWidth(), surface.GetHeight());
-    renderer.Copy(texture, SDL2pp::NullOpt, vida);
+	SDL2pp::Rect mensaje(this->x + 4, this->y - 15, surface.GetWidth(), surface.GetHeight());
+	renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
 }
 
 void Worm::aumentar_potencia() {

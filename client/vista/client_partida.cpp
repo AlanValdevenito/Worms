@@ -58,7 +58,7 @@ int Partida::iniciar()
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
     guardar_vigas();
-    guardar_worms(sprites, potencia);
+    guardar_worms(renderer, sprites, potencia);
 
     /******************** GAME LOOP ********************/
 
@@ -88,7 +88,7 @@ int Partida::iniciar()
             return 0;
         }
 
-        actualizar(it);
+        actualizar(renderer, it);
         renderizar(renderer, viga, background, agua, font, tiempoRestante);
 
         /* IF BEHIND, KEEP WORKING */
@@ -146,9 +146,11 @@ void Partida::guardar_vigas()
     // delete dto;
 }
 
-void Partida::guardar_worms(SDL2pp::Texture &sprites, SDL2pp::Texture &potencia)
+void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &potencia)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
+
+    float altura = renderer.GetOutputHeight();
 
     // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
     // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
@@ -157,7 +159,7 @@ void Partida::guardar_worms(SDL2pp::Texture &sprites, SDL2pp::Texture &potencia)
     {
         std::shared_ptr<Gusano> gusano = dto->popGusano(i);
 
-        float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
         this->worms[gusano->get_id()] = new Worm(sprites, potencia, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
@@ -260,13 +262,15 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
             // Si se presiona la tecla de F7 el worm se equipa un arma
             case SDLK_F7:
                 // Actualizamos la animacion para tener el sprite del arma
-                // sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
 
                 if (this->worms[1]->get_mira()) {
+                    // Cargamos la imagen para un worm
+                    // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
                     this->worms[1]->desactivar_mira();
                 
                 } else {
-                   this->worms[1]->activar_mira();
+                    // sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+                    this->worms[1]->activar_mira();
                 }
 
                 break;
@@ -305,7 +309,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
 
             // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
-                cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, 0));
+
+                if (this->worms[1]->get_mira()) {
+                    cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, 0));
+                }
+                
                 // this->worms[1]->get_potencia();
                 this->worms[1]->reiniciar_potencia();
                 break;
@@ -346,10 +354,13 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga,
     renderer.Copy(background, NullOpt, NullOpt);
     renderer.Copy(agua, NullOpt, NullOpt);
 
+    float altura = renderer.GetOutputHeight();
+
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
-        // Debemos hacer un corrimiento en 'x' ya que las fisicas modeladas con Box2D
-        // tienen el (0,0) de los cuerpos en el centro
+        // Debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
+        // tienen el (0,0) de los cuerpos en el centro y ademas el (0,0) del mapa se ubica 
+        // en la esquina inferior izquierda y no en la esquina superior izquierda como ocurre en SDL
         float x = this->vigas[i]->x_pos() - (this->vigas[i]->return_ancho() / 2);
         float y = this->vigas[i]->y_pos();
         float ancho = this->vigas[i]->return_ancho();
@@ -358,7 +369,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga,
         renderer.Copy(
             viga,
             Rect(0, 0, 50, 50),
-            Rect(metros_a_pixeles(centimetros_a_metros(x)), metros_a_pixeles(centimetros_a_metros(y)),
+            Rect(metros_a_pixeles(centimetros_a_metros(x)), altura - metros_a_pixeles(centimetros_a_metros(y)),
                  metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))));
     }
 }
@@ -413,29 +424,11 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     renderer.Copy(texture, NullOpt, nombre);
 }*/
 
-/*void Partida::renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font) {
-    int vcenter = renderer.GetOutputHeight() / 2;
-
-    Rect borde((int)animacion.gusano.x + 16, vcenter - 52, 29, 21);
-    Color blanco(255, 255, 255, 255);
-    renderer.SetDrawColor(blanco);
-    renderer.FillRect(borde);
-
-    Rect contenedor((int)animacion.gusano.x + 18, vcenter - 50, 25, 17);
-    Color negro(0,0,0,255);
-    renderer.SetDrawColor(negro);
-    renderer.FillRect(contenedor);
-
-    Surface surface = font.RenderText_Solid("100", blanco);
-    Texture texture(renderer, surface);
-
-    Rect vida((int)animacion.gusano.x + 18, vcenter - 50, surface.GetWidth(), surface.GetHeight());
-    renderer.Copy(texture, NullOpt, vida);
-}*/
-
-void Partida::actualizar(int it)
+void Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
+
+    float altura = renderer.GetOutputHeight();
 
     // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
     // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
@@ -444,7 +437,7 @@ void Partida::actualizar(int it)
     {
         std::shared_ptr<Gusano> gusano = dto->popGusano(i);
 
-        float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
 }

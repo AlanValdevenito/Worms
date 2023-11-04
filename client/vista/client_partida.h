@@ -29,7 +29,7 @@ public:
 
     int iniciar();
     void guardar_vigas();
-    void guardar_worms(SDL2pp::Texture &sprites, SDL2pp::Texture &potencia);
+    void guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &potencia);
 
     bool handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites);
 
@@ -38,9 +38,8 @@ public:
     void renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua);
     void renderizar_worms(SDL2pp::Renderer &renderer);
     // void renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
-    // void renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
 
-    void actualizar(int it);
+    void actualizar(SDL2pp::Renderer &renderer, int it);
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);
