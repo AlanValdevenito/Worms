@@ -32,7 +32,7 @@ public:
 
     SenderTH(ClientProtocol &p, Queue<std::shared_ptr<Dto>> &q);
     void run() override;
-    void send(std::shared_ptr<Dto> d);
+    bool send(std::shared_ptr<Dto> d);
 };
 
 #endif
