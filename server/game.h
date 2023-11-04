@@ -50,5 +50,6 @@ public:
     void broadcast();
     void createPlayers();
     void passTurn();
+    ~Game();
 };
 #endif

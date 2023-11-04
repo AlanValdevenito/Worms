@@ -56,30 +56,30 @@ void Lobby::newClient(Socket &&s)
 {
     id_cliente++;
 
-    // agregar lobby queue
-    ServerClient *c = new ServerClient(std::move(s), std::ref(lobby_queue), std::ref(common_queue), id_cliente); // no necesita el broadcaster
+    ServerClient *c = new ServerClient(std::move(s), std::ref(lobby_queue), std::ref(common_queue), id_cliente); 
     c->start();
 
     reap_dead();
 
     clients.push_back(c);
     sendMatchList(c);
+}
 
-    // me parece que va a ser de cada partida
-    // broadcaster.addQueueToList(c->sender_queue); // agrego la cola send al broadcaster
-
-    // aca se deberia pedir la partida
-    // send y recv lista de partidas
-    // enviar_lista_de_partidas(c->sender_queue);
-
-    // send y recv lista de mapas ----------------> SOLO PARA PARTIDAS NUEVAS????
-    // Partida p(std::ref(common_queue));
-    // partida.sendMapTo(c);
-    // partida.start();
+void Lobby::removerPartidasMuertas(){
+    partidas.remove_if([&](Partida *p)
+                      {
+            if (p->is_dead()) {
+                p->join();
+                delete p;
+                return true;
+            }
+            return false; });
 }
 
 void Lobby::reap_dead()
 {
+
+    removerPartidasMuertas();
     bool was_removed = false;
     std::list<Queue<std::shared_ptr<Dto>> *> client_queues;
 
@@ -89,7 +89,7 @@ void Lobby::reap_dead()
                 c->join();
                 was_removed = true;
                 client_queues.push_back(&c->sender_queue);  // obtengo el puntero de la queue para eliminarlo despues
-                // delete c;//creo que va
+                delete c;
                 return true;
             }
             return false; });
@@ -107,16 +107,14 @@ void Lobby::kill()
     {
         c->kill();
         c->join();
-        // delete c; // creo que va
+        delete c; 
     }
     // broadcaster.deleteAllQueues();
     clients.clear();
 
-    // game.game_finished = true;
     for (Partida *p : partidas)
     {
         p->finish();
         delete p;
     }
-    // partida.finish();
 }

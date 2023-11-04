@@ -14,8 +14,42 @@ void Client::start()
     // delete d;
 }
 
+void Client::kill()
+{
+    recv_th.was_closed = true;
+    
+    std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE, id);
+    send_queue.push(fin);
+
+    std::shared_ptr<DeadDto> dead = std::make_shared<DeadDto>();
+    send_queue.push(dead);
+
+    while(not send_th.was_closed){
+        std::cout<< "esperando a que cierre\n";
+    }
+    
+    skt.shutdown(2);
+    skt.close();
+}
+
+void Client::elOtroSeFue()
+{
+    recv_th.was_closed = true;
+
+    std::shared_ptr<DeadDto> dead = std::make_shared<DeadDto>();
+    send_queue.push(dead);
+
+    while(not send_th.was_closed){
+        std::cout<< "esperando a que cierre\n";
+    }
+    
+    skt.shutdown(2);
+    skt.close();
+}
+
 void Client::join()
 {
     recv_th.join();
     send_th.join();
+    return;
 }

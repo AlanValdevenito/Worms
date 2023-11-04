@@ -11,7 +11,6 @@ void Sender::run()
 
         if (dto->is_alive())
         {
-            // std::cout << "entro\n";
             se_envio = send(dto);
             if (not se_envio)
                 break;
@@ -19,7 +18,7 @@ void Sender::run()
         else
             was_closed = true;
     }
-    std::cout << "salio\n";
+    std::cout<<"SALE DEL SENDER\n";
     // salgo ordenadamente
 }
 
@@ -37,6 +36,8 @@ bool Sender::send(std::shared_ptr<Dto> d)
         return protocol.enviarListaDePartidas(std::dynamic_pointer_cast<ListaDePartidas>(d), was_closed);
     else if (d->return_code() == INICIAR_PARIDA)
         return protocol.enviarIniciarPartida(d, was_closed);
+    else if (d->return_code() == FINALIZAR_CODE)
+        return protocol.enviarFinalizarPartida(d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

@@ -76,9 +76,13 @@ void World::addWorm(float x, float y)
 
 void World::step()
 {
-    float timeStep = 1.0f / 30.0f;
     world.Step(timeStep, 10, 10);
     //std::cout << "coordenada x = " << worms.front().getXCoordinate() << "\ncoordenada y = " << worms.front().getYCoordinate() << "\n";
 }
 
-World::~World() {}
+World::~World() {
+    for (Worm *worm : worms) {
+        delete worm;
+    }
+    //delete world;
+}

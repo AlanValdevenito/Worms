@@ -43,6 +43,7 @@ public:
     void aumentar_potencia();
     void reiniciar_potencia();
     int get_potencia();
+    int get_vida();
 };
 
 #endif // __WORM_H_

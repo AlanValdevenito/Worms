@@ -1,7 +1,7 @@
 #include "worm.h"
 #include <iostream>
 
-Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id), hp(100), isRunning(false) {
+Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id), hp(100), is_alive(true), isRunning(false) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -51,26 +51,38 @@ void Worm::bat(std::list<Worm*>& worms) {
 	for (Worm *worm : worms) {
 		distance = x - worm->getXCoordinate();
 		if (distance == 0) continue;
-		std::cout << "distance = " << distance << "\n";
 		if (distance < 2.0f && distance > -2.0f) {
 			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(30.0f, 20.0f), true);
-			worm->makeDamage(10);
-			std::cout << "vida del gusano golpeado : " << (int)worm->getHp() << "\n";
+			worm->makeDamage(100); // Sacarle la vida cuando se deje de mover
 		}
 	}
 }
 
 void Worm::makeDamage(uint8_t damage) {
-	this->hp = this->hp - damage;
+	if (hp <= damage) {
+		hp = 0;
+		is_alive = false;
+	} else {
+		hp -= damage;
+	}
+	
 }
 
 uint8_t Worm::getHp() {
 	return hp;
 }
 
+bool Worm::isAlive() {
+	return is_alive;
+}
+
 b2Body* Worm::getBody() {
 	return body;
 }
 
+bool Worm::isMoving() {
+	b2Vec2 wormVelocity = body->GetLinearVelocity();
+	return wormVelocity.x != 0.0f || wormVelocity.y != 0.0f;
+}
 
 Worm::~Worm() {}

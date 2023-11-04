@@ -24,6 +24,8 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
         return recibirId(was_closed);
     else if (code == INICIAR_PARIDA)
         return std::make_shared<Dto>(INICIAR_PARIDA);
+    else if (code == FINALIZAR_CODE)
+        return std::make_shared<DeadDto>();
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
@@ -230,6 +232,9 @@ bool ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &w
     return true;
 }
 
+bool ClientProtocol::enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed){
+    return enviarIdDelClienteYCodigoDeAccion(dto, was_closed);
+}
 bool ClientProtocol::enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_closed)
 {
     bool se_envio = enviarIdDelClienteYCodigoDeAccion(b, was_closed);

@@ -154,6 +154,11 @@ bool ServerProtocol::enviarIniciarPartida(std::shared_ptr<Dto> dto, bool &was_cl
     return enviarCodigoDeElemento(dto, was_closed);
 }
 
+bool ServerProtocol::enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_closed)
+{
+    return enviarCodigoDeElemento(dto, was_closed);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirPartidaSeleccionada(uint8_t id, bool &was_closed)
 {
     uint8_t op;
@@ -200,6 +205,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return std::make_shared<MoverAIzquierda>(id);
     else if (code == BATEAR_CODE)
         return recibirAtaqueConBate(id, was_closed);
+    else if (code == FINALIZAR_CODE)
+        return std::make_shared<Dto>(FINALIZAR_CODE,id);
 
     return std::make_shared<DeadDto>();
 }

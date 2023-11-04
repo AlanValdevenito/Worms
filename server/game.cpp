@@ -17,12 +17,6 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
     world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
     world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
 
-    /* AGUA */
-
-    // world.addBeam(0, 0, 0, LONG);
-    // world.addBeam(6, 0, 0, LONG);
-    // world.addBeam(12, 0, 0, LONG);
-
     /* WORMS */
 
     world.addWorm(2, 12);
@@ -52,7 +46,19 @@ void Game::run()
     {
         std::shared_ptr<Dto> dto;
         if (common_queue.try_pop(dto))
-        {
+        {   
+
+            if (dto->is_alive() && dto->return_code() == FINALIZAR_CODE) {
+                broadcaster.removeQueueWithId(dto->get_cliente_id()); // elimino la queue del cliente que murio
+                broadcaster.notificarCierre(dto);
+                broadcaster.deleteAllQueues(); // aviso a los demas que cierren
+                stop();
+                break;
+            }
+            // if (not dto->is_alive()) {
+            //     stop();
+            //     broadcaster.deleteAllQueues();
+            // }
             executeCommand(dto);
         }
         update();
@@ -104,12 +110,17 @@ void Game::sendWorms()
 
     std::vector<std::shared_ptr<Gusano>> vectorGusanos;
     for (Worm *w : world.getWorms())
-    {
-        std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
-                                                             (int)(w->getXCoordinate() * 100),
-                                                             (int)(w->getYCoordinate() * 100),
-                                                             w->getHp());
-        vectorGusanos.push_back(g);
+    {   
+        if (w->isAlive() || w->isMoving()) {
+            std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
+                                                        (int)(w->getXCoordinate() * 100),
+                                                        (int)(w->getYCoordinate() * 100),
+                                                        w->getHp());
+            vectorGusanos.push_back(g);
+        }
+
+        // IF NO ESTA VIVO Y ESTA QUIETO O COLISIONANDO CONTRA LA VIGA -> LO ELIMINAS
+
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(vectorGusanos);
     broadcaster.AddGusanosToQueues(gusanos);
@@ -253,6 +264,8 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     }*/
     // delete dto;
 }
+
+Game::~Game() {}
 
 void Game::broadcast()
 {

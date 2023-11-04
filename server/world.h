@@ -16,7 +16,8 @@ private:
     std::list<Beam> beams;
     std::list<Worm*> worms;
     int idWorms = 0;
-
+    float timeStep = 1.0f / 30.0f;
+    
 public:
     // crea un mundo
     World();

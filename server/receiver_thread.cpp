@@ -16,9 +16,10 @@ void Receiver::run()
         else
         {
             was_closed = true;
-            // delete dto;
+            // queue.push(dto); // le informo que el cliente se desconecto
         }
     }
+    std::cout << "sale del recv del server\n";
 }
 
 Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &lq) : protocol(p), queue(q), lobby_queue(lq), was_closed(false) {}

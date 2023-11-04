@@ -20,6 +20,7 @@ void SenderTH::run()
             was_closed = true;
         }
     }
+    std::cout << "sale del sender del cliente\n";
     // salgo ordenadamente
 }
 
@@ -33,6 +34,8 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
         return protocol.enviarSeleccion(std::dynamic_pointer_cast<ListaDePartidas>(d), was_closed);
     else if (d->return_code() == BATEAR_CODE)
         return protocol.enviarAtaqueConBate(std::dynamic_pointer_cast<Batear>(d), was_closed);
+    else if (d->return_code() == FINALIZAR_CODE)
+        return protocol.enviarFinDePartida(d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

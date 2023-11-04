@@ -33,6 +33,8 @@ public:
     void sendMapTo(ServerClient *c);
     void finish();
     uint8_t getId();
+    bool is_dead();
+    void join();
 
 private:
     Queue<std::shared_ptr<Dto>> &common_queue;

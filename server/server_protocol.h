@@ -34,6 +34,7 @@ public:
     bool enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was_closed);
     bool enviarListaDePartidas(std::shared_ptr<ListaDePartidas> l, bool &was_closed);
     bool enviarIniciarPartida(std::shared_ptr<Dto> dto, bool &was_closed);
+    bool enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_closed);
 
 private:
     Socket &skt;

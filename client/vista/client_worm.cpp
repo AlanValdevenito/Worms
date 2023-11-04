@@ -102,3 +102,7 @@ int Worm::get_potencia() {
 
     return 0;
 }
+
+int Worm::get_vida() {
+    return this->vida;
+}

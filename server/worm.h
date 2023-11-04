@@ -9,6 +9,7 @@ private:
     float y;
     uint8_t id;
     uint8_t hp;
+    bool is_alive;
 
 public:
     bool isRunning;
@@ -22,5 +23,7 @@ public:
     void bat(std::list<Worm*>& worms);
     void makeDamage(uint8_t damage);
     uint8_t getHp();
+    bool isAlive(); // Delete
+    bool isMoving();
     ~Worm();
 };

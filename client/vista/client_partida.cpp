@@ -88,7 +88,14 @@ int Partida::iniciar()
             return 0;
         }
 
-        actualizar(renderer, it);
+        if (not actualizar(renderer, it)) {
+            std::cout << "Se fue" << std::endl;
+            cliente.elOtroSeFue();
+            liberar_memoria();
+            return 0;
+        }
+
+        // actualizar(renderer, it);
         renderizar(renderer, viga, background, agua, font, tiempoRestante);
 
         /* IF BEHIND, KEEP WORKING */
@@ -180,6 +187,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
         // Si la ventana se cierra terminamos la ejecucion
         if (event.type == SDL_QUIT)
         {
+            cliente.kill();
+            liberar_memoria();
             return true;
 
             // Si se hace click ...
@@ -212,6 +221,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
             // Si se presiona la tecla "Q" o "ESC" terminamos la ejecucion
             case SDLK_ESCAPE:
             case SDLK_q:
+                cliente.kill();
                 liberar_memoria();
                 return true;
 
@@ -424,9 +434,16 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     renderer.Copy(texture, NullOpt, nombre);
 }*/
 
-void Partida::actualizar(SDL2pp::Renderer &renderer, int it)
+bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 {
-    std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
+    // std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
+
+    std::shared_ptr<Dto> dead = cliente.recv_queue.pop();
+    
+    if(not dead->is_alive())
+        return false;
+
+    std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
 
     float altura = renderer.GetOutputHeight();
 
@@ -437,9 +454,20 @@ void Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     {
         std::shared_ptr<Gusano> gusano = dto->popGusano(i);
 
+        // Necesito un booleano que me indique que el Worm dejo de moverse luego de que su vida llego a 0.
+        // Esto porque no necesariamente que un gusano tenga vida igual a 0 implica que haya que dejar de renderizarlo.
+        // Desde la vista se debe renderizar y mostrar toda la animacion aun cuando el Worm tenga vida igual a 0.
+        // Luego de que termino la animacion del Worm es cuando se deja de renderizar. Esto implica que se elimina del diccionario.
+        /*if (gusano->delete()) {
+            this->worms.erase(gusano->get_id());
+            continue;
+        }*/
+
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
+
+    return true;
 }
 
 float Partida::metros_a_pixeles(float metros)
