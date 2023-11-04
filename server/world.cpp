@@ -10,7 +10,12 @@ b2Body *World::createStaticBody(float x, float y, float width, float height)
     b2Body *body = world.CreateBody(&bodyDef);
     b2PolygonShape bodyShape;
     bodyShape.SetAsBox(width / 2, height / 2);
-    body->CreateFixture(&bodyShape, 0.0f);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &bodyShape;
+    fixtureDef.friction = 0.7f;
+    body->CreateFixture(&fixtureDef);
+    
     return body;
 }
 
