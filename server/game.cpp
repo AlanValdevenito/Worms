@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 
-#define TURN_DURATION 60
+#define TURN_DURATION 10
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
@@ -17,6 +17,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
     world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
     world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
 
+    world.addBeam(6, 6, 0, LONG);
     /* WORMS */
 
     world.addWorm(2, 12);
@@ -87,22 +88,20 @@ void Game::update()
 {
     world.step();
     passTurn();
-    sendWorms();
-    /*for (Worm worm : world.getWorms()) {
-        if (worm.isRunning) {
-            uint16_t x = worm.getXCoordinate() * 100;
-            uint16_t y = worm.getYCoordinate() * 100;
-            uint8_t id = worm.getId();
-            std::shared_ptr<Gusano> g = std::make_shared<Gusano>(id, x, y);
-            broadcaster.AddGusanoToQueues(g);
+    
+    for (Worm *worm : world.getWorms()) {
+        if (not worm->isMoving() && worm->getHp() == 0) {
+            worm->is_alive = false;
+            
+            broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE,1));
+            broadcaster.deleteAllQueues(); // aviso a los demas que cierren
+            stop();
+            return;
         }
-    }*/
-    /*Worm *worm = world.getWorms().front();
-    uint16_t x = worm->getXCoordinate() * 100;
-    uint16_t y = worm->getYCoordinate() * 100;
-    uint8_t id = worm->getId();
-    Gusano *g = new Gusano(id, x, y);
-    broadcaster.AddGusanoToQueues(g);*/
+        worm->makeDamage();
+    }
+    
+    sendWorms();
 }
 
 void Game::sendWorms()
@@ -112,6 +111,9 @@ void Game::sendWorms()
     for (Worm *w : world.getWorms())
     {   
         if (w->isAlive() || w->isMoving()) {
+            if ((int)w->getHp() < 100) {
+                //std::cout << "hp = " << (int)w->getHp() << "\n";
+            }
             std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
                                                         (int)(w->getXCoordinate() * 100),
                                                         (int)(w->getYCoordinate() * 100),
@@ -263,6 +265,15 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
         }
     }*/
     // delete dto;
+}
+
+bool Game::anyWormMoving() {
+    for (Worm *worm : world.getWorms()) {
+        if (worm->isMoving()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 Game::~Game() {}

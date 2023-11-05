@@ -53,18 +53,20 @@ void Worm::bat(std::list<Worm*>& worms) {
 		if (distance == 0) continue;
 		if (distance < 2.0f && distance > -2.0f) {
 			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(30.0f, 20.0f), true);
-			worm->makeDamage(100); // Sacarle la vida cuando se deje de mover
+			worm->takeDamage(100); // Sacarle la vida cuando se deje de mover
 		}
 	}
 }
 
-void Worm::makeDamage(uint8_t damage) {
-	if (hp <= damage) {
+void Worm::makeDamage() {
+	//std::cout << "make damage, damage taken = " << (int)damageTaken << "\n"; 
+	if (hp <= damageTaken) {
 		hp = 0;
-		is_alive = false;
+		//is_alive = false;
 	} else {
-		hp -= damage;
+		hp -= damageTaken;
 	}
+	damageTaken = 0;
 	
 }
 
@@ -83,6 +85,10 @@ b2Body* Worm::getBody() {
 bool Worm::isMoving() {
 	b2Vec2 wormVelocity = body->GetLinearVelocity();
 	return wormVelocity.x != 0.0f || wormVelocity.y != 0.0f;
+}
+
+void Worm::takeDamage(uint8_t damage) {
+	damageTaken += damage;
 }
 
 Worm::~Worm() {}
