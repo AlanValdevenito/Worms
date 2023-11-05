@@ -8,6 +8,7 @@
 #include "box2d/box2d.h"
 #include "beam.h"
 #include "worm.h"
+#include <map>
 
 class World
 {
@@ -15,6 +16,7 @@ private:
     b2World world;
     std::list<Beam> beams;
     std::list<Worm*> worms;
+    std::map<uint8_t, Worm*> wormsById;
     int idWorms = 0;
     float timeStep = 1.0f / 30.0f;
     
@@ -31,6 +33,8 @@ public:
     std::list<Beam> &getBeams();
 
     std::list<Worm*> &getWorms();
+
+    std::map<uint8_t, Worm*> &getWormsById();
 
     b2Body *createStaticBody(float x, float y, float width, float height);
 

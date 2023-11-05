@@ -76,6 +76,7 @@ void World::addWorm(float x, float y)
     idWorms = idWorms + 1;
     Worm *worm = new Worm(&world, x, y, idWorms);
     worms.push_back(worm);
+    wormsById[idWorms] = worm;
 
 }
 
@@ -83,6 +84,10 @@ void World::step()
 {
     world.Step(timeStep, 10, 10);
     //std::cout << "coordenada x = " << worms.front().getXCoordinate() << "\ncoordenada y = " << worms.front().getYCoordinate() << "\n";
+}
+
+std::map<uint8_t, Worm*>& World::getWormsById() {
+    return wormsById;
 }
 
 World::~World() {

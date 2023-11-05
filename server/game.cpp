@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 
-#define TURN_DURATION 10
+#define TURN_DURATION 30
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
@@ -189,12 +189,7 @@ void Game::moveWormRight(uint8_t id)
     // lista de gusano = diccionario [ID];
 
     int idActualWorm = players[idTurn - 1].getActualWormId();
-    //std::cout << "actual worm = " << idActualWorm << "\n";
-    for (Worm *worm : world.getWorms()) {
-        if (worm->getId() == idActualWorm) {
-            worm->moveRight();
-        }
-    }
+    world.getWormsById()[idActualWorm]->moveRight();
     // std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
 }
 
@@ -204,20 +199,12 @@ void Game::moveWormLeft(uint8_t id)
     // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
 
     int idActualWorm = players[idTurn - 1].getActualWormId();
-    for (Worm *worm : world.getWorms()) {
-        if (worm->getId() == idActualWorm) {
-            worm->moveLeft();
-        }
-    }
+    world.getWormsById()[idActualWorm]->moveLeft();
 }
 
 void Game::batWorm(uint8_t id) {
     int idActualWorm = players[idTurn - 1].getActualWormId();
-    for (Worm *worm : world.getWorms()) {
-        if (worm->getId() == idActualWorm) {
-            worm->bat(world.getWorms());
-        }
-    }
+    world.getWormsById()[idActualWorm]->bat(world.getWorms());
 }
 
 void Game::stop()
