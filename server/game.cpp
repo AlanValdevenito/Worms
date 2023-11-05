@@ -22,6 +22,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 
     world.addWorm(2, 12);
     world.addWorm(4, 12);
+    
     createPlayers();
 }
 
@@ -33,6 +34,7 @@ void Game::createPlayers() {
         std::vector<int> wormIds;
         for (int j = 0; j < numberOfWorms / numberOfPlayers; j++) {
             wormIds.push_back(wormId);
+            world.getWormsById()[wormId]->setPlayerId(playerId);
             wormId++;
         }
         players.push_back(Player(playerId, wormIds));
@@ -89,18 +91,24 @@ void Game::update()
     world.step();
     passTurn();
     
+    // actualizo los gusanos
     for (Worm *worm : world.getWorms()) {
         if (not worm->isMoving() && worm->getHp() == 0) {
             worm->is_alive = false;
-            
+            players[worm->playerId - 1].numberOfAliveWorms--;
+        }
+        worm->makeDamage();
+    }
+
+    // actualizo los players
+    for (int i = 0; i < numberOfPlayers; i++) {
+        if (players[i].numberOfAliveWorms == 0) {
             broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE,1));
             broadcaster.deleteAllQueues(); // aviso a los demas que cierren
             stop();
             return;
         }
-        worm->makeDamage();
     }
-    
     sendWorms();
 }
 
