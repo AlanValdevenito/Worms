@@ -91,4 +91,9 @@ void Worm::takeDamage(uint8_t damage) {
 	damageTaken += damage;
 }
 
+void Worm::setPlayerId(uint8_t id) {
+	playerId = id;
+}
+
+
 Worm::~Worm() {}

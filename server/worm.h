@@ -15,6 +15,7 @@ public:
     bool is_alive;
     uint8_t damageTaken;
     bool isRunning;
+    uint8_t playerId = -1;
     Worm(b2World *b2world, float x, float y, uint8_t id);
     float getXCoordinate();
     float getYCoordinate();
@@ -28,5 +29,6 @@ public:
     bool isAlive(); // Delete
     bool isMoving();
     void takeDamage(uint8_t damage);
+    void setPlayerId(uint8_t id);
     ~Worm();
 };
