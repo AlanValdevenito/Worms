@@ -14,7 +14,7 @@ uint16_t Viga::return_alto() { return alto; }
 
 Vigas::Vigas() : Dto(VIGA_CODE) {}
 Vigas::Vigas(std::vector<std::shared_ptr<Viga>> vs) : Dto(VIGA_CODE), vigas(vs) {}
-Vigas::~Vigas() {}
+Vigas::~Vigas() {} /// VACIAR LA LISTAAA
 
 bool Vigas::is_alive() { return true; }
 

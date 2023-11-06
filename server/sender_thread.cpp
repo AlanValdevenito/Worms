@@ -4,33 +4,41 @@ Sender::Sender(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q) : protocol(p),
 
 void Sender::run()
 {
+    bool se_envio;
     while (not was_closed)
     {
         std::shared_ptr<Dto> dto = queue.pop();
 
         if (dto->is_alive())
-            send(dto);
+        {
+            se_envio = send(dto);
+            if (not se_envio)
+                break;
+        }
         else
             was_closed = true;
-
-        // delete dto;
     }
+    // std::cout<<"SALE DEL SENDER\n";
+    // salgo ordenadamente
 }
 
-void Sender::send(std::shared_ptr<Dto> d)
+bool Sender::send(std::shared_ptr<Dto> d)
 {
     if (d->return_code() == CLIENTE_ID_CODE)
-        protocol.sendId(std::dynamic_pointer_cast<ClienteId>(d), was_closed);
+        return protocol.enviarId(std::dynamic_pointer_cast<ClienteId>(d), was_closed);
     else if (d->return_code() == VIGA_CODE)
-        protocol.sendVigas(d, was_closed);
+        return protocol.enviarVigas(d, was_closed);
     else if (d->return_code() == GUSANO_CODE)
-        protocol.sendWorms(std::dynamic_pointer_cast<Gusano>(d), was_closed);
+        return protocol.enviarGusano(std::dynamic_pointer_cast<Gusano>(d), was_closed);
     else if (d->return_code() == GUSANOS_CODE)
-        protocol.sendAllWorms(std::dynamic_pointer_cast<Gusanos>(d), was_closed);
+        return protocol.enviarListaDeGusanos(std::dynamic_pointer_cast<Gusanos>(d), was_closed);
     else if (d->return_code() == LISTA_DE_PARTIDAS_CODE)
-        protocol.sendPartidas(std::dynamic_pointer_cast<ListaDePartidas>(d), was_closed);
+        return protocol.enviarListaDePartidas(std::dynamic_pointer_cast<ListaDePartidas>(d), was_closed);
     else if (d->return_code() == INICIAR_PARIDA)
-        protocol.sendIniciarPartida(d, was_closed);
+        return protocol.enviarIniciarPartida(d, was_closed);
+    else if (d->return_code() == FINALIZAR_CODE)
+        return protocol.enviarFinalizarPartida(d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
+    return false;
 }

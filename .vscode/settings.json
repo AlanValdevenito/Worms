@@ -74,5 +74,6 @@
         "iomanip": "cpp",
         "span": "cpp",
         "variant": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }

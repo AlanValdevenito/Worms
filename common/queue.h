@@ -133,8 +133,7 @@ public:
         return val;
     }
 
-    // void close(bool drain = false)
-    void close()
+    void close(bool drain = false)
     {
         std::unique_lock<std::mutex> lck(mtx);
 
@@ -146,13 +145,11 @@ public:
         closed = true;
         is_not_empty.notify_all();
 
-        // if (drain)
-        // {
-        //     while (!q.empty())
-        //     {
-        //         q.pop();
-        //     }
-        // }
+        if (drain) {
+            while (!q.empty()) {
+                 q.pop();
+            }
+        }
     }
 
 private:
@@ -268,7 +265,7 @@ public:
         return val;
     }
 
-    void close()
+    void close(bool drain = false)
     {
         std::unique_lock<std::mutex> lck(mtx);
 
@@ -279,6 +276,12 @@ public:
 
         closed = true;
         is_not_empty.notify_all();
+
+        if (drain) {
+            while (!q.empty()) {
+                 q.pop();
+            }
+        }
     }
 
 private:
@@ -300,7 +303,7 @@ public:
 
     T *pop() { return (T *)Queue<void *>::pop(); }
 
-    void close() { return Queue<void *>::close(); }
+    void close(bool drain = false) { return Queue<void *>::close(drain); }
 
 private:
     Queue(const Queue &) = delete;

@@ -20,6 +20,7 @@ void Animation::update(int it) {
 }
 
 void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
+
     renderer.Copy(
             texture,
             SDL2pp::Rect(0, (this->size) * this->currentFrame, this->size, this->size),

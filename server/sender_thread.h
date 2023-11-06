@@ -25,7 +25,7 @@ class Sender : public Thread
 private:
     ServerProtocol &protocol;
     Queue<std::shared_ptr<Dto>> &queue;
-    void send(std::shared_ptr<Dto> d);
+    bool send(std::shared_ptr<Dto> d);
 
 public:
     bool was_closed;

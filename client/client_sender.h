@@ -18,6 +18,7 @@
 #include "constantes.h"
 #include "dto.h"
 #include "mover.h"
+#include "batear.h"
 
 struct SenderTH : public Thread
 {
@@ -30,7 +31,7 @@ public:
 
     SenderTH(ClientProtocol &p, Queue<std::shared_ptr<Dto>> &q);
     void run() override;
-    void send(std::shared_ptr<Dto> d);
+    bool send(std::shared_ptr<Dto> d);
 };
 
 #endif

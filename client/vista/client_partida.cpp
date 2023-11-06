@@ -13,7 +13,9 @@ int Partida::iniciar()
 
     SDLTTF ttf;
 
-    Window window("Worms 2D",
+    std::string titulo = "Worms 2D - [" + std::to_string(cliente.id) + "]";
+
+    Window window(titulo,
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                   ANCHO_VENTANA, ALTO_VENTANA,
                   SDL_WINDOW_RESIZABLE);
@@ -23,10 +25,19 @@ int Partida::iniciar()
     /******************** TEXTURAS ********************/
 
     // Cargamos la imagen para un worm
-    Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png")
-                                  .SetColorKey(true, 0));
+    Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
 
     sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
+
+    // Cargamos la imagen para un arma
+    Texture arma(renderer, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+
+    arma.SetBlendMode(SDL_BLENDMODE_BLEND);
+
+    // Cargamos la imagen para un worm
+    Texture potencia(renderer, Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0));
+
+    potencia.SetBlendMode(SDL_BLENDMODE_BLEND);
 
     // Cargamos la imagen para una viga
     Texture viga(renderer, Surface(DATA_PATH "/viga_larga.png")
@@ -52,7 +63,7 @@ int Partida::iniciar()
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
     guardar_vigas();
-    guardar_worms(sprites);
+    guardar_worms(renderer, sprites, arma, potencia);
 
     /******************** GAME LOOP ********************/
 
@@ -77,12 +88,21 @@ int Partida::iniciar()
             tiempoInicial = tiempoActual;
         }
 
-        if (handleEvents())
+        if (handleEvents(renderer, arma))
         {
+            cliente.kill();
+            liberar_memoria();
             return 0;
         }
 
-        actualizar(it);
+        if (not actualizar(renderer, it)) {
+            std::cout << "Se fue" << std::endl;
+            cliente.elOtroSeFue();
+            liberar_memoria();
+            return 0;
+        }
+
+        // actualizar(renderer, it);
         renderizar(renderer, viga, background, agua, font, tiempoRestante);
 
         /* IF BEHIND, KEEP WORKING */
@@ -140,9 +160,12 @@ void Partida::guardar_vigas()
     // delete dto;
 }
 
-void Partida::guardar_worms(SDL2pp::Texture &sprites)
+void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
+    this->id_gusano_actual = dto->get_gusano_de_turno();
+
+    float altura = renderer.GetOutputHeight();
 
     // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
     // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
@@ -151,16 +174,16 @@ void Partida::guardar_worms(SDL2pp::Texture &sprites)
     {
         std::shared_ptr<Gusano> gusano = dto->popGusano(i);
 
-        float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(sprites, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY);
+        this->worms[gusano->get_id()] = new Worm(sprites, arma, potencia, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
     }
 
     // delete dto;
 }
 
-bool Partida::handleEvents()
+bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
 {
     // Procesamiento de evento
     SDL_Event event;
@@ -190,8 +213,6 @@ bool Partida::handleEvents()
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
                 std::cout << "Click izquierdo" << std::endl;
-                // std::cout << event.button.x << std::endl;
-                // std::cout << event.button.y << std::endl;
                 break;
             }
 
@@ -206,17 +227,26 @@ bool Partida::handleEvents()
             // Si se presiona la tecla "Q" o "ESC" terminamos la ejecucion
             case SDLK_ESCAPE:
             case SDLK_q:
-                liberar_memoria();
                 return true;
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
-                cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
+                this->worms[this->id_gusano_actual]->mirar_derecha();
+
+                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
+                } 
+
                 break;
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
-                cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
+                this->worms[this->id_gusano_actual]->mirar_izquierda();
+
+                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
+                } 
+
                 break;
 
             // Si se presiona la flecha hacia ariba el gusano direcciona su arma
@@ -236,7 +266,11 @@ bool Partida::handleEvents()
 
             // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
             case SDLK_SPACE:
-                // ...
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->aumentar_potencia();
+                }
+
                 break;
 
             // Si se presiona la tecla de retroceso el gusano cambia su direccion (se da la vuelta)
@@ -247,6 +281,19 @@ bool Partida::handleEvents()
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_0:
                 // ...
+                break;
+
+            // Si se presiona la tecla de F7 el worm se equipa un arma
+            case SDLK_F7:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                
+                } else {
+                    arma.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+                    this->worms[this->id_gusano_actual]->equipar_arma();
+                }
+
                 break;
             }
 
@@ -283,7 +330,13 @@ bool Partida::handleEvents()
 
             // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
-                // ...
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    arma.Update(NullOpt, Surface(DATA_PATH "/wbsbbk2.png").SetColorKey(true, 0));
+                    cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, 0));
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                }
+                
                 break;
 
             // Si se suelta la tecla de retroceso...
@@ -311,7 +364,6 @@ void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2
     renderizar_worms(renderer);
 
     // renderizar_nombre(renderer, font, animacion);
-    // renderizar_vida(renderer, font, animacion);
 
     renderer.Present();
 }
@@ -322,10 +374,13 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga,
     renderer.Copy(background, NullOpt, NullOpt);
     renderer.Copy(agua, NullOpt, NullOpt);
 
+    float altura = renderer.GetOutputHeight();
+
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
-        // Debemos hacer un corrimiento en 'x' ya que las fisicas modeladas con Box2D
-        // tienen el (0,0) de los cuerpos en el centro
+        // Debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
+        // tienen el (0,0) de los cuerpos en el centro y ademas el (0,0) del mapa se ubica 
+        // en la esquina inferior izquierda y no en la esquina superior izquierda como ocurre en SDL
         float x = this->vigas[i]->x_pos() - (this->vigas[i]->return_ancho() / 2);
         float y = this->vigas[i]->y_pos();
         float ancho = this->vigas[i]->return_ancho();
@@ -334,7 +389,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga,
         renderer.Copy(
             viga,
             Rect(0, 0, 50, 50),
-            Rect(metros_a_pixeles(centimetros_a_metros(x)), metros_a_pixeles(centimetros_a_metros(y)),
+            Rect(metros_a_pixeles(centimetros_a_metros(x)), altura - metros_a_pixeles(centimetros_a_metros(y)),
                  metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))));
     }
 }
@@ -349,12 +404,14 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 
 void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante)
 {
-    Rect borde(5, 438, 65, 36);
+    int altura = renderer.GetOutputHeight(); // 480
+
+    Rect borde(5, altura - 42, 65, 36);
     Color blanco(255, 255, 255, 255);
     renderer.SetDrawColor(blanco);
     renderer.FillRect(borde);
 
-    Rect contenedor(7, 440, 61, 32);
+    Rect contenedor(7, altura - 40, 61, 32);
     Color negro(0, 0, 0, 255);
     renderer.SetDrawColor(negro);
     renderer.FillRect(contenedor);
@@ -363,7 +420,7 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     Surface surface = font.RenderText_Solid(std::to_string(tiempo), blanco);
     Texture texture(renderer, surface);
 
-    Rect nombre(24, 446, surface.GetWidth() + 5, surface.GetHeight() + 5);
+    Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
     renderer.Copy(texture, NullOpt, nombre);
 }
 
@@ -387,36 +444,41 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     renderer.Copy(texture, NullOpt, nombre);
 }*/
 
-/*void Partida::renderizar_vida(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion) {
-    int vcenter = renderer.GetOutputHeight() / 2;
-
-    Rect borde((int)animacion.gusano.x + 16, vcenter - 52, 29, 21);
-    Color blanco(255, 255, 255, 255);
-    renderer.SetDrawColor(blanco);
-    renderer.FillRect(borde);
-
-    Rect contenedor((int)animacion.gusano.x + 18, vcenter - 50, 25, 17);
-    Color negro(0,0,0,255);
-    renderer.SetDrawColor(negro);
-    renderer.FillRect(contenedor);
-
-    Surface surface = font.RenderText_Solid(std::to_string(animacion.gusano.vida), blanco);
-    Texture texture(renderer, surface);
-
-    Rect vida((int)animacion.gusano.x + 18, vcenter - 50, surface.GetWidth(), surface.GetHeight());
-    renderer.Copy(texture, NullOpt, vida);
-}*/
-
-void Partida::actualizar(int it)
+bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 {
-    std::shared_ptr<Dto> gusano;
+    // std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
 
-    if (cliente.recv_queue.try_pop(gusano))
+    std::shared_ptr<Dto> dead = cliente.recv_queue.pop();
+    
+    if(not dead->is_alive())
+        return false;
+
+    std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
+    this->id_gusano_actual = dto->get_gusano_de_turno();
+
+    float altura = renderer.GetOutputHeight();
+
+    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
+    // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
+    int cantidad = dto->cantidad();
+    for (int i = 0; i < cantidad; i++)
     {
-        float nuevoY = ALTO_VENTANA - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[std::dynamic_pointer_cast<Gusano>(gusano)->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY);
-        // delete gusano;
+        std::shared_ptr<Gusano> gusano = dto->popGusano(i);
+
+        // Necesito un booleano que me indique que el Worm dejo de moverse luego de que su vida llego a 0.
+        // Esto porque no necesariamente que un gusano tenga vida igual a 0 implica que haya que dejar de renderizarlo.
+        // Desde la vista se debe renderizar y mostrar toda la animacion aun cuando el Worm tenga vida igual a 0.
+        // Luego de que termino la animacion del Worm es cuando se deja de renderizar. Esto implica que se elimina del diccionario.
+        /*if (gusano->delete()) {
+            this->worms.erase(gusano->get_id());
+            continue;
+        }*/
+
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+        this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
+
+    return true;
 }
 
 float Partida::metros_a_pixeles(float metros)

@@ -5,7 +5,8 @@ Player::Player(int playerId, std::vector<int> wormIds) :
     playerId(playerId),
     actualWormId(wormIds[0]),
     wormIds(wormIds),
-    indexOfActualWorm(0) {}
+    indexOfActualWorm(0),
+    numberOfAliveWorms((int)wormIds.size()) {}
 
 
 int Player::getId() {

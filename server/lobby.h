@@ -42,9 +42,9 @@ private:
     uint8_t mapId;
     std::list<Partida *> partidas;
     Broadcaster broadcaster;
-    // Partida partida;
     uint8_t id_cliente;
 
     void sendMatchList(ServerClient *c);
+    void removerPartidasMuertas();
 };
 #endif

@@ -26,8 +26,10 @@ public:
     void AddGusanosToQueues(std::shared_ptr<Gusanos> gs);
     void AddGusanoToQueues(std::shared_ptr<Gusano> g);
     void AddVigasToQueues(std::shared_ptr<Vigas> vs);
-    void addQueueToList(Queue<std::shared_ptr<Dto>> &q);
+    void addQueueToList(Queue<std::shared_ptr<Dto>> &q, uint8_t id);
     void removeQueueFromList(Queue<std::shared_ptr<Dto>> *q);
+    void removeQueueWithId(uint8_t id);
     void deleteAllQueues();
+    void notificarCierre(std::shared_ptr<Dto> dto);
 };
 #endif

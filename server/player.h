@@ -16,6 +16,7 @@ public:
     int actualWormId;
     std::vector<int> wormIds;
     int indexOfActualWorm;
+    int numberOfAliveWorms;
 
     Player(int playerId, std::vector<int> wormIds);
     int getId();

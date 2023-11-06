@@ -4,32 +4,39 @@ SenderTH::SenderTH(ClientProtocol &p, Queue<std::shared_ptr<Dto>> &q) : protocol
 
 void SenderTH::run()
 {
-    std::string data;
+    bool se_envia;
     while (not was_closed)
     {
         std::shared_ptr<Dto> dto = queue.pop();
-        // std::cout << "send: " << dto->is_alive() << std::endl;
 
         if (dto->is_alive())
         {
-            send(dto);
-            protocol.send(was_closed);
-        } // se lo mando al protocolo
+            se_envia = send(dto);
+            if (not se_envia) // si la informacion no se envio correctamente sale del bucle
+                break;
+        }
         else
+        {
             was_closed = true;
-
-        // delete dto;
+        }
     }
+    std::cout << "sale del sender del cliente\n";
+    // salgo ordenadamente
 }
 
-void SenderTH::send(std::shared_ptr<Dto> d)
+bool SenderTH::send(std::shared_ptr<Dto> d)
 {
     if (d->return_code() == MOVER_A_DERECHA_CODE)
-        protocol.moverADerecha(std::dynamic_pointer_cast<MoverADerecha>(d), was_closed);
+        return protocol.moverADerecha(std::dynamic_pointer_cast<MoverADerecha>(d), was_closed);
     else if (d->return_code() == MOVER_A_IZQUERDA_CODE)
-        protocol.moverAIzquierda(std::dynamic_pointer_cast<MoverAIzquierda>(d), was_closed);
+        return protocol.moverAIzquierda(std::dynamic_pointer_cast<MoverAIzquierda>(d), was_closed);
     else if (d->return_code() == LISTA_DE_PARTIDAS_CODE)
-        protocol.enviarSeleccion(std::dynamic_pointer_cast<ListaDePartidas>(d), was_closed);
+        return protocol.enviarSeleccion(std::dynamic_pointer_cast<ListaDePartidas>(d), was_closed);
+    else if (d->return_code() == BATEAR_CODE)
+        return protocol.enviarAtaqueConBate(std::dynamic_pointer_cast<Batear>(d), was_closed);
+    else if (d->return_code() == FINALIZAR_CODE)
+        return protocol.enviarFinDePartida(d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
+    return false;
 }

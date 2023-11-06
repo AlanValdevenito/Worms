@@ -10,7 +10,12 @@ b2Body *World::createStaticBody(float x, float y, float width, float height)
     b2Body *body = world.CreateBody(&bodyDef);
     b2PolygonShape bodyShape;
     bodyShape.SetAsBox(width / 2, height / 2);
-    body->CreateFixture(&bodyShape, 0.0f);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &bodyShape;
+    fixtureDef.friction = 0.7f;
+    body->CreateFixture(&fixtureDef);
+    
     return body;
 }
 
@@ -61,7 +66,7 @@ std::list<Beam> &World::getBeams()
     return beams;
 }
 
-std::list<Worm> &World::getWorms()
+std::list<Worm*> &World::getWorms()
 {
     return worms;
 }
@@ -69,16 +74,25 @@ std::list<Worm> &World::getWorms()
 void World::addWorm(float x, float y)
 {   
     idWorms = idWorms + 1;
-    Worm worm(&world, x, y, idWorms);
+    Worm *worm = new Worm(&world, x, y, idWorms);
     worms.push_back(worm);
-    
+    wormsById[idWorms] = worm;
+
 }
 
 void World::step()
 {
-    float timeStep = 1.0f / 30.0f;
     world.Step(timeStep, 10, 10);
     //std::cout << "coordenada x = " << worms.front().getXCoordinate() << "\ncoordenada y = " << worms.front().getYCoordinate() << "\n";
 }
 
-World::~World() {}
+std::map<uint8_t, Worm*>& World::getWormsById() {
+    return wormsById;
+}
+
+World::~World() {
+    for (Worm *worm : worms) {
+        delete worm;
+    }
+    //delete world;
+}

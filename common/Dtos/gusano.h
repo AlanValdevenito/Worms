@@ -16,21 +16,23 @@ private:
     uint8_t id;
     uint16_t x;
     uint16_t y;
+    uint8_t vida;
 
 public:
-    Gusano(uint8_t id, uint16_t x, uint16_t y);
+    Gusano(uint8_t id, uint16_t x, uint16_t y, uint8_t vida);
     ~Gusano();
     bool is_alive() override;
     uint16_t x_pos() override;
     uint16_t y_pos() override;
     uint8_t get_id();
+    uint8_t get_vida();
 };
 
 class Gusanos : public Dto
 {
 private:
-    // std::list<std::shared_ptr<Gusano>> gusanos;
     std::vector<std::shared_ptr<Gusano>> gusanos;
+    uint8_t id_turno;
 
 public:
     Gusanos();
@@ -40,6 +42,8 @@ public:
     std::shared_ptr<Gusano> popGusano(int i);
     std::vector<std::shared_ptr<Gusano>> return_gusanos_list();
     uint8_t cantidad() override;
+    uint8_t get_gusano_de_turno();
+    void set_gusano_de_turno(uint8_t id);
 };
 
 #endif

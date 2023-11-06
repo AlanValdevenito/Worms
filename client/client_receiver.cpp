@@ -15,8 +15,8 @@ void ReceiverTH::run()
         }
         else
         {
+            queue.push(dto);
             was_closed = true;
-            // delete dto;
         }
     }
 }
