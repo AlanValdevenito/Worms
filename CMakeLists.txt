@@ -47,6 +47,10 @@ include_directories(client)
 include_directories(client/vista)
 include_directories(client/vista/data)
 include_directories(server)
+include_directories(gtest)
+
+# ...
+add_subdirectory(gtest)
 
 # Se busca y se incluye la biblioteca SDL2pp.
 # ESta biblioteca es un conjunto de encabezados C++ para SDL2 que facilita su uso.
@@ -92,7 +96,7 @@ file(GLOB CLIENT_HEADERS_VISTA client/vista/*.h)
 file(GLOB SERVER_SOURCES server/*.cpp *.$(extension))
 file(GLOB SERVER_HEADERS server/*.h)
 
-#  Define los ejecutables que se compilarán. 
+# Define los ejecutables que se compilarán. 
 # Se utilizan las variables que contienen las listas de archivos .cpp y .h en los directorios common, client y server para definir los objetivos.
 add_executable(client ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} )
 add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${SERVER_SOURCES})

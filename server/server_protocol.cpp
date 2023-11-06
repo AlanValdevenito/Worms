@@ -75,7 +75,7 @@ bool ServerProtocol::enviarViga(std::shared_ptr<Dto> dto, bool &was_closed)
     if (was_closed)
         return false;
 
-    printf("Server ---> x:%u  y:%u ancho:%u  alto:%u  angulo:%u  \n", x, y, ancho, alto, angulo);
+    // printf("Server ---> x:%u  y:%u ancho:%u  alto:%u  angulo:%u  \n", x, y, ancho, alto, angulo);
 
     return true;
 }

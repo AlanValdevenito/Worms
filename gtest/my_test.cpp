@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
 // #include "socket.h"
-// #include "socket_mock.h"
-// #include "client.h"
-// #include "client_protocol.h"
+#include "socket_mock.h"
+//#include "client.h"
+//#include "client_protocol.h"
 // #include "server_protocol.h"
 
 TEST(MyTest, PassingTest)
 {
 
-    // SocketMock skt;
+    SocketMock skt;
     // // Socket skt("127.0.0.1", "8080");
     // ClientProtocol cp(std::ref(skt));
 
