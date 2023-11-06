@@ -111,6 +111,11 @@ bool ServerProtocol::enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was
     if (was_closed)
         return false;
 
+    uint8_t turno = gs->get_gusano_de_turno();
+    skt.sendall(&(turno), sizeof(turno), &was_closed); // especifico la cantidad que llegara
+    if (was_closed)
+        return false;
+
     for (int i = 0; i < cant; i++)
     {
         std::shared_ptr<Gusano> g = gs->popGusano(i);

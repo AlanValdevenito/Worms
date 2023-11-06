@@ -32,6 +32,7 @@ class Gusanos : public Dto
 {
 private:
     std::vector<std::shared_ptr<Gusano>> gusanos;
+    uint8_t id_turno;
 
 public:
     Gusanos();
@@ -41,6 +42,8 @@ public:
     std::shared_ptr<Gusano> popGusano(int i);
     std::vector<std::shared_ptr<Gusano>> return_gusanos_list();
     uint8_t cantidad() override;
+    uint8_t get_gusano_de_turno();
+    void set_gusano_de_turno(uint8_t id);
 };
 
 #endif

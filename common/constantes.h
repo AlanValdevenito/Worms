@@ -11,5 +11,6 @@ const uint8_t GUSANOS_CODE = 6;
 const uint8_t INICIAR_PARIDA = 7;
 const uint8_t BATEAR_CODE = 8;
 const uint8_t FINALIZAR_CODE = 9;
+const uint8_t TURNO_CODE = 10;
 
 #endif

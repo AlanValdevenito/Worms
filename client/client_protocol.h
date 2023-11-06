@@ -43,6 +43,7 @@ private:
     std::shared_ptr<Dto> recibirGusanos(bool &was_closed);
     std::shared_ptr<Dto> recibirPartidas(bool &was_closed);
     std::shared_ptr<Dto> recibirId(bool &was_closed);
+    std::shared_ptr<Dto> recibirTurnoDeGusano(bool &was_closed);
     bool enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed);
     bool recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed);
     uint8_t cantidadARecibir(bool &was_closed);

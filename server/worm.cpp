@@ -1,7 +1,7 @@
 #include "worm.h"
 #include <iostream>
 
-Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id), hp(100), is_alive(true), isRunning(false) {
+Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id), hp(100), facingRight(true), is_alive(true), isRunning(false) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -35,14 +35,16 @@ uint8_t Worm::getId()
 }
 
 void Worm::moveLeft() {
+	facingRight = false;
 	isRunning = true;
-	body->SetLinearVelocity(b2Vec2(-0.8f, 0.0f));
+	body->SetLinearVelocity(b2Vec2(-2.0f, 0.0f));
 }
 
 void Worm::moveRight()
 {	
+	facingRight = true;
 	isRunning = true;
-    body->SetLinearVelocity(b2Vec2(0.8f, 0.0f));
+    body->SetLinearVelocity(b2Vec2(2.0f, 0.0f));
 }
 
 void Worm::bat(std::list<Worm*>& worms) {
@@ -52,7 +54,11 @@ void Worm::bat(std::list<Worm*>& worms) {
 		distance = x - worm->getXCoordinate();
 		if (distance == 0) continue;
 		if (distance < 2.0f && distance > -2.0f) {
-			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(30.0f, 20.0f), true);
+			if (facingRight) {
+				worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(10.0f, 20.0f), true);
+			} else {
+				worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(-10.0f, 20.0f), true);
+			}
 			worm->takeDamage(10); // Sacarle la vida cuando se deje de mover
 		}
 	}

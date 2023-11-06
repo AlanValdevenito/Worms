@@ -9,9 +9,6 @@
 #include <QSizePolicy>
 #include <QPalette>
 
-#include <QDebug> // Borrar
-#include <iostream> // Borrar
-
 MainWindow::MainWindow(Client &cliente, QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow), cliente(cliente) {
 
     // Inicializamos la interfaz definida en el archivo .ui
@@ -19,12 +16,20 @@ MainWindow::MainWindow(Client &cliente, QWidget *parent): QMainWindow(parent), u
 
     addItems();
     connectEvents();
+
+    //ui->centralwidget->setLayout(ui->verticalLayout);
+    //ui->verticalLayout->addWidget(ui->background);
+    //ui->verticalLayout->addWidget(ui->logo);
+    //ui->verticalLayout->addWidget(ui->opcionesComboBox);
+    //ui->verticalLayout->addWidget(ui->elegirPartidaButton);
+    //ui->verticalLayout->addWidget(ui->nuevaPartidaButton);
 }
 
 void MainWindow::addItems() {
     std::shared_ptr<ListaDePartidas> l = std::dynamic_pointer_cast<ListaDePartidas>(cliente.recv_queue.pop());
 
     std::list<uint8_t> lista = l->return_list();
+
     for (uint8_t id : lista) {
         QString partida = QString::fromStdString("Partida " + std::to_string((int) id));
         ui->opcionesComboBox->addItem(partida);
@@ -51,9 +56,6 @@ uint8_t MainWindow::obtener_id(std::string &opcion) {
 }
 
 void MainWindow::elegirPartida() {
-    // QString partidaSeleccionada = ui->opcionesComboBox->currentText();
-    // qDebug() << partidaSeleccionada;
-
     std::string opcionSeleccionada = (ui->opcionesComboBox->currentText()).toStdString();
     uint8_t id = obtener_id(opcionSeleccionada);
 
@@ -61,9 +63,6 @@ void MainWindow::elegirPartida() {
 
         std::shared_ptr<ListaDePartidas> seleccion = std::make_shared<ListaDePartidas>(this->cliente.id, id);
     	cliente.send_queue.push(seleccion);
-
-		std::cout << "Te uniste a 'Partida " << int (id) << "'" << std::endl;
-
         qApp->quit();
     }
 }

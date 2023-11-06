@@ -23,6 +23,7 @@ private:
     Client &cliente;
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
+    int id_gusano_actual;
 
 public:
     Partida(Client &cliente);

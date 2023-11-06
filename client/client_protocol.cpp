@@ -40,7 +40,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirId(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("id recibido: %u\n", id);
+    // printf("id recibido: %u\n", id);
     return std::make_shared<ClienteId>(id);
 }
 
@@ -146,6 +146,11 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     if (cant < 0)
         return std::make_shared<DeadDto>();
 
+    uint8_t turno;
+    skt.recvall(&turno, sizeof(turno), &was_closed);
+    if(was_closed)
+        return std::make_shared<DeadDto>();
+
     std::vector<std::shared_ptr<Gusano>> lista;
     for (int i = 0; i < cant; i++)
     {
@@ -155,7 +160,9 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
 
         lista.push_back(g);
     }
-    return std::make_shared<Gusanos>(lista);
+    std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(lista);
+    gusanos->set_gusano_de_turno(turno);
+    return gusanos; 
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)

@@ -12,6 +12,7 @@ private:
     
 
 public:
+    bool facingRight;
     bool is_alive;
     uint8_t damageTaken;
     bool isRunning;

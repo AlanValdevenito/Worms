@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 
-#define TURN_DURATION 30
+#define TURN_DURATION 60
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
@@ -16,8 +16,12 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
     world.addBeam(9, 9, 0, LONG);  // Ocupa del 7 al 12
     world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
     world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
+    world.addBeam(27, 9, 0, LONG);
+    world.addBeam(33, 9, 0, LONG);
+    world.addBeam(39, 9, 0, LONG);
+    world.addBeam(45, 9, 0, LONG);
+    world.addBeam(51, 9, 0, LONG);
 
-    world.addBeam(6, 6, 0, LONG);
     /* WORMS */
 
     world.addWorm(2, 12);
@@ -65,7 +69,7 @@ void Game::run()
             executeCommand(dto);
         }
         update();
-        std::this_thread::sleep_for(std::chrono::milliseconds(32));
+        std::this_thread::sleep_for(std::chrono::milliseconds(33));
     
         // broadcast();
     }
@@ -76,6 +80,7 @@ void Game::passTurn() {
     end = std::chrono::steady_clock::now();
     if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION) {
         std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
+        std::cout << "turno actual = " << idTurn << "\n";
         begin = std::chrono::steady_clock::now();
         if (idTurn == 1) {
             idTurn = 2;
@@ -95,7 +100,22 @@ void Game::update()
     for (Worm *worm : world.getWorms()) {
         if (not worm->isMoving() && worm->getHp() == 0) {
             worm->is_alive = false;
+            // saco el gusano del juego
+            
             players[worm->playerId - 1].numberOfAliveWorms--;
+            /*int idWorm = worm->getId();
+            world.getWorms().remove(worm);
+            world.getWormsById().erase(idWorm);
+            int indexOfWormToRemove = 0;
+            // busco el indice del gusano dentro del vector de ids de gusanos del player
+            for (int i = 0; i < (int)players[worm->playerId - 1].size(); i++) {
+                if (players[worm->playerId - 1].wormIds[i] == idWorm) {
+                    indexOfWormToRemove = i;
+                    break;
+                }
+            }
+            players[worm->playerId - 1].wormIds.erase(indexOfWormToRemove);
+            */
         }
         worm->makeDamage();
     }
@@ -113,7 +133,7 @@ void Game::update()
 }
 
 void Game::sendWorms()
-{
+{   
 
     std::vector<std::shared_ptr<Gusano>> vectorGusanos;
     for (Worm *w : world.getWorms())
@@ -133,6 +153,10 @@ void Game::sendWorms()
 
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(vectorGusanos);
+
+    int id = players[idTurn - 1].getActualWormId(); // obtengo el id del gusano actual
+    gusanos->set_gusano_de_turno(id);
+
     broadcaster.AddGusanosToQueues(gusanos);
 }
 
@@ -213,6 +237,13 @@ void Game::moveWormLeft(uint8_t id)
 void Game::batWorm(uint8_t id) {
     int idActualWorm = players[idTurn - 1].getActualWormId();
     world.getWormsById()[idActualWorm]->bat(world.getWorms());
+    begin = std::chrono::steady_clock::now();
+    if (idTurn == 1) {
+        idTurn = 2;
+    } else  if (idTurn == 2) {
+        idTurn = 1;
+    }
+    players[idTurn - 1].changeActualWorm();
 }
 
 void Game::stop()

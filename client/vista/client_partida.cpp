@@ -163,6 +163,7 @@ void Partida::guardar_vigas()
 void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
+    this->id_gusano_actual = dto->get_gusano_de_turno();
 
     float altura = renderer.GetOutputHeight();
 
@@ -230,9 +231,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
-                this->worms[1]->mirar_derecha();
+                this->worms[this->id_gusano_actual]->mirar_derecha();
 
-                if (not this->worms[1]->arma_equipada()) {
+                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
                     cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 } 
 
@@ -240,9 +241,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
-                this->worms[1]->mirar_izquierda();
+                this->worms[this->id_gusano_actual]->mirar_izquierda();
 
-                if (not this->worms[1]->arma_equipada()) {
+                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
                     cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 } 
 
@@ -266,8 +267,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
             // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
             case SDLK_SPACE:
 
-                if (this->worms[1]->arma_equipada()) {
-                    this->worms[1]->aumentar_potencia();
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->aumentar_potencia();
                 }
 
                 break;
@@ -285,12 +286,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
             // Si se presiona la tecla de F7 el worm se equipa un arma
             case SDLK_F7:
 
-                if (this->worms[1]->arma_equipada()) {
-                    this->worms[1]->desequipar_arma();
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
                     arma.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
-                    this->worms[1]->equipar_arma();
+                    this->worms[this->id_gusano_actual]->equipar_arma();
                 }
 
                 break;
@@ -330,10 +331,10 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
             // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
 
-                if (this->worms[1]->arma_equipada()) {
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     arma.Update(NullOpt, Surface(DATA_PATH "/wbsbbk2.png").SetColorKey(true, 0));
                     cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, 0));
-                    this->worms[1]->desequipar_arma();
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
                 }
                 
                 break;
@@ -453,6 +454,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         return false;
 
     std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
+    this->id_gusano_actual = dto->get_gusano_de_turno();
 
     float altura = renderer.GetOutputHeight();
 

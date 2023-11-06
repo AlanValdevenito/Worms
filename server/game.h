@@ -31,6 +31,8 @@ private:
     std::chrono::steady_clock::time_point end;
     int numberOfPlayers = 2;
     int numberOfWormsMoving = 0;
+    //std::chrono::steady_clock::time_point t1;
+    //std::chrono::steady_clock::time_point t2;
     // std::map<int, LISTA DE WORMS>;
 
 public:

@@ -22,14 +22,14 @@ bool Gusanos::is_alive() { return true; }
 
 std::shared_ptr<Gusano> Gusanos::popGusano(int i)
 {
-    // std::shared_ptr<Gusano> g = gusanos.front();
-    // gusanos.pop_front();
-    // return g;
-
     return this->gusanos[i];
 }
 
 std::vector<std::shared_ptr<Gusano>> Gusanos::return_gusanos_list() { return gusanos; }
+
+void Gusanos::set_gusano_de_turno(uint8_t id){ id_turno = id;}
+
+uint8_t Gusanos::get_gusano_de_turno(){ return id_turno;}
 
 uint8_t Gusanos::cantidad()
 {

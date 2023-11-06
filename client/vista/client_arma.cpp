@@ -30,7 +30,7 @@ bool Arma::get_animacion_completa() {
 
 void Arma::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
 
-    std::cout << this->currentFrame << std::endl;
+    // std::cout << this->currentFrame << std::endl;
 
     renderer.Copy(
         texture,

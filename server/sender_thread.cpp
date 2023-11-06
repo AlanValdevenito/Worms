@@ -18,7 +18,7 @@ void Sender::run()
         else
             was_closed = true;
     }
-    std::cout<<"SALE DEL SENDER\n";
+    // std::cout<<"SALE DEL SENDER\n";
     // salgo ordenadamente
 }
 

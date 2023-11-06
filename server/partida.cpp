@@ -27,7 +27,11 @@ void Partida::sendMapTo(ServerClient *c)
     broadcaster.addQueueToList(c->sender_queue, c->id); // agrego la cola send al broadcaster
 }
 
-void Partida::finish() { game.stop(); }
+void Partida::finish() 
+{ 
+    game.stop(); 
+    broadcaster.deleteAllQueues();
+}
 
 bool Partida::is_dead() { return game.game_finished; }
 
