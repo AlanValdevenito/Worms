@@ -24,6 +24,7 @@ void Partida::sendMapTo(ServerClient *c)
         return;
 
     conectados++;
+    // clients.push_back(c);
     broadcaster.addQueueToList(c->sender_queue, c->id); // agrego la cola send al broadcaster
 }
 

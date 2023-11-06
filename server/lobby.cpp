@@ -61,7 +61,7 @@ void Lobby::newClient(Socket &&s)
 
     reap_dead();
 
-    clients.push_back(c);
+    // clients.push_back(c);
     sendMatchList(c);
 }
 
@@ -80,19 +80,19 @@ void Lobby::reap_dead()
 {
 
     removerPartidasMuertas();
-    bool was_removed = false;
-    std::list<Queue<std::shared_ptr<Dto>> *> client_queues;
+    // bool was_removed = false;
+    // std::list<Queue<std::shared_ptr<Dto>> *> client_queues;
 
-    clients.remove_if([&](ServerClient *c)
-                      {
-            if (c->is_dead()) {
-                c->join();
-                was_removed = true;
-                client_queues.push_back(&c->sender_queue);  // obtengo el puntero de la queue para eliminarlo despues
-                delete c;
-                return true;
-            }
-            return false; });
+    // clients.remove_if([&](ServerClient *c)
+    //                   {
+    //         if (c->is_dead()) {
+    //             c->join();
+    //             was_removed = true;
+    //             client_queues.push_back(&c->sender_queue);  // obtengo el puntero de la queue para eliminarlo despues
+    //             delete c;
+    //             return true;
+    //         }
+    //         return false; });
 
     // if (was_removed)
     // {
@@ -103,14 +103,14 @@ void Lobby::reap_dead()
 
 void Lobby::kill()
 {
-    for (auto &c : clients)
-    {
-        c->kill();
-        c->join();
-        delete c; 
-    }
-    // broadcaster.deleteAllQueues();
-    clients.clear();
+    // for (auto &c : clients)
+    // {
+    //     c->kill();
+    //     c->join();
+    //     delete c; 
+    // }
+    // // broadcaster.deleteAllQueues();
+    // clients.clear();
 
     for (Partida *p : partidas)
     {
