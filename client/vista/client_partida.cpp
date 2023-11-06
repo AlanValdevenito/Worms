@@ -29,6 +29,11 @@ int Partida::iniciar()
 
     sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
 
+    // Cargamos la imagen para un arma
+    Texture arma(renderer, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+
+    arma.SetBlendMode(SDL_BLENDMODE_BLEND);
+
     // Cargamos la imagen para un worm
     Texture potencia(renderer, Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0));
 
@@ -58,7 +63,7 @@ int Partida::iniciar()
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
     guardar_vigas();
-    guardar_worms(renderer, sprites, potencia);
+    guardar_worms(renderer, sprites, arma, potencia);
 
     /******************** GAME LOOP ********************/
 
@@ -83,8 +88,10 @@ int Partida::iniciar()
             tiempoInicial = tiempoActual;
         }
 
-        if (handleEvents(renderer, sprites))
+        if (handleEvents(renderer, arma))
         {
+            cliente.kill();
+            liberar_memoria();
             return 0;
         }
 
@@ -153,7 +160,7 @@ void Partida::guardar_vigas()
     // delete dto;
 }
 
-void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &potencia)
+void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
 
@@ -169,13 +176,13 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(sprites, potencia, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
+        this->worms[gusano->get_id()] = new Worm(sprites, arma, potencia, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
     }
 
     // delete dto;
 }
 
-bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
+bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
 {
     // Procesamiento de evento
     SDL_Event event;
@@ -187,8 +194,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
         // Si la ventana se cierra terminamos la ejecucion
         if (event.type == SDL_QUIT)
         {
-            cliente.kill();
-            liberar_memoria();
             return true;
 
             // Si se hace click ...
@@ -221,20 +226,26 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
             // Si se presiona la tecla "Q" o "ESC" terminamos la ejecucion
             case SDLK_ESCAPE:
             case SDLK_q:
-                cliente.kill();
-                liberar_memoria();
                 return true;
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
-                // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-                cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
+                this->worms[1]->mirar_derecha();
+
+                if (not this->worms[1]->arma_equipada()) {
+                    cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
+                } 
+
                 break;
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
-                // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-                cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
+                this->worms[1]->mirar_izquierda();
+
+                if (not this->worms[1]->arma_equipada()) {
+                    cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
+                } 
+
                 break;
 
             // Si se presiona la flecha hacia ariba el gusano direcciona su arma
@@ -254,9 +265,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
 
             // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
             case SDLK_SPACE:
-                // Actualizamos la animacion para tener el sprite del ataque
-                // sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
-                this->worms[1]->aumentar_potencia();
+
+                if (this->worms[1]->arma_equipada()) {
+                    this->worms[1]->aumentar_potencia();
+                }
+
                 break;
 
             // Si se presiona la tecla de retroceso el gusano cambia su direccion (se da la vuelta)
@@ -271,16 +284,13 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
 
             // Si se presiona la tecla de F7 el worm se equipa un arma
             case SDLK_F7:
-                // Actualizamos la animacion para tener el sprite del arma
 
-                if (this->worms[1]->get_mira()) {
-                    // Cargamos la imagen para un worm
-                    // sprites.Update(NullOpt, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-                    this->worms[1]->desactivar_mira();
+                if (this->worms[1]->arma_equipada()) {
+                    this->worms[1]->desequipar_arma();
                 
                 } else {
-                    // sprites.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
-                    this->worms[1]->activar_mira();
+                    arma.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+                    this->worms[1]->equipar_arma();
                 }
 
                 break;
@@ -320,12 +330,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites)
             // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
 
-                if (this->worms[1]->get_mira()) {
+                if (this->worms[1]->arma_equipada()) {
+                    arma.Update(NullOpt, Surface(DATA_PATH "/wbsbbk2.png").SetColorKey(true, 0));
                     cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, 0));
+                    this->worms[1]->desequipar_arma();
                 }
                 
-                // this->worms[1]->get_potencia();
-                this->worms[1]->reiniciar_potencia();
                 break;
 
             // Si se suelta la tecla de retroceso...
@@ -353,7 +363,6 @@ void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2
     renderizar_worms(renderer);
 
     // renderizar_nombre(renderer, font, animacion);
-    // renderizar_vida(renderer, font);
 
     renderer.Present();
 }

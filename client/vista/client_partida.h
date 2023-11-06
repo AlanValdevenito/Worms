@@ -29,15 +29,14 @@ public:
 
     int iniciar();
     void guardar_vigas();
-    void guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &potencia);
+    void guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia);
 
-    bool handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites);
+    bool handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma);
 
     void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, unsigned int tiempoRestante);
     void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante);
     void renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua);
     void renderizar_worms(SDL2pp::Renderer &renderer);
-    // void renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion);
 
     bool actualizar(SDL2pp::Renderer &renderer, int it);
 

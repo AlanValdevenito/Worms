@@ -3,6 +3,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include "client_animacion.h"
+#include "client_arma.h"
 #include "client_mira.h"
 #include "client_potencia.h"
 
@@ -14,9 +15,11 @@ private:
     // Se usa para almacenar y gestionar la animacion del Worm.
     Animation animacion;
 
+    Arma arma;
     Mira mira;
     Potencia potencia;
 
+    bool armaEquipada;
     // Booleano que indica si el jugador activo la mira.
     bool miraActivada;
     // Booleano que indica si el jugador esta mirando hacia la izquierda.
@@ -28,7 +31,7 @@ private:
 
 public:
 
-    Worm(SDL2pp::Texture &texture, SDL2pp::Texture &potencia, float x, float y, int vida);
+    Worm(SDL2pp::Texture &texture, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, float x, float y, int vida);
 
     // Actualiza el Worm en funcion del tiempo transcurrido.
     void update(int it, float nuevoX, float nuevoY, int vida);
@@ -36,12 +39,14 @@ public:
     void render(SDL2pp::Renderer &renderer);
     void render_vida(SDL2pp::Renderer &renderer);
 
-    void activar_mira();
-    void desactivar_mira();
-    bool get_mira();
+    void mirar_derecha();
+    void mirar_izquierda();
+
+    void equipar_arma();
+    void desequipar_arma();
+    bool arma_equipada();
 
     void aumentar_potencia();
-    void reiniciar_potencia();
     int get_potencia();
     int get_vida();
 };

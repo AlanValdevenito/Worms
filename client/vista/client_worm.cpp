@@ -6,7 +6,7 @@
 #define OFFSET 8 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                  // tienen el (0,0) de los cuerpos en el centro
 
-Worm::Worm(SDL2pp::Texture &texture, SDL2pp::Texture &potencia, float x, float y, int vida) : animacion(texture), mira(Mira()), potencia(potencia), miraActivada(false), mirandoIzquierda(true), x(x), y(y), vida(vida) {
+Worm::Worm(SDL2pp::Texture &texture, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, float x, float y, int vida) : animacion(texture), arma(arma), mira(Mira()), potencia(potencia), armaEquipada(false), miraActivada(false), mirandoIzquierda(true), x(x), y(y), vida(vida) {
     
 }
 
@@ -15,8 +15,12 @@ Worm::Worm(SDL2pp::Texture &texture, SDL2pp::Texture &potencia, float x, float y
 void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
 {
 
+    if (this->armaEquipada) {
+        this->arma.update();
+    }
+
     if ((nuevoX != this->x) || (nuevoY != this->y)) {
-    
+
         this->animacion.update(it);
 
         if (nuevoX < this->x)
@@ -34,30 +38,45 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
     }
 }
 
-void Worm::activar_mira() {
+void Worm::mirar_derecha() {
+    this->mirandoIzquierda = false;
+}
+
+void Worm::mirar_izquierda() {
+    this->mirandoIzquierda = true;
+}
+
+
+void Worm::equipar_arma() {
+    this->armaEquipada = true;
     this->miraActivada = true;
 }
-
-void Worm::desactivar_mira() {
+void Worm::desequipar_arma() {
+    this->armaEquipada = false;
     this->miraActivada = false;
+    this->arma.reiniciar();
+    this->potencia.reiniciar();
 }
 
-bool Worm::get_mira() {
-    return this->miraActivada;
+bool Worm::arma_equipada() {
+    return this->armaEquipada;
 }
 
 void Worm::render(SDL2pp::Renderer &renderer)
 {
     SDL_RendererFlip flip = this->mirandoIzquierda ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-    this->animacion.render(renderer, SDL2pp::Rect(x - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
 
+    if (armaEquipada) {
+        this->arma.render(renderer, SDL2pp::Rect(x - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
+    
+    } else {
+        this->animacion.render(renderer, SDL2pp::Rect(x - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
+    }
+    
     this->render_vida(renderer);
  
     if (this->miraActivada) {
         this->mira.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda);
-    } 
-
-    if (this->miraActivada) {
         this->potencia.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda);
     } 
 
@@ -69,8 +88,6 @@ void Worm::render_vida(SDL2pp::Renderer &renderer) {
 
     // Cargamos la fuente de la letra
     SDL2pp::Font font(DATA_PATH "/Vera.ttf", 15);
-
-    // int altura = renderer.GetOutputHeight();
 
     SDL2pp::Rect posicionEtiqueta(this->x + 5, this->y - 15, 28, 18);
 	renderer.Copy(etiqueta, SDL2pp::NullOpt, posicionEtiqueta);
@@ -86,12 +103,6 @@ void Worm::render_vida(SDL2pp::Renderer &renderer) {
 void Worm::aumentar_potencia() {
     if (this->miraActivada) {
         this->potencia.update();
-    }
-}
-
-void Worm::reiniciar_potencia() {
-    if (this->miraActivada) {
-        this->potencia.reiniciar();
     }
 }
 
