@@ -50,8 +50,22 @@ include_directories(server)
 # Se busca y se incluye la biblioteca SDL2pp.
 # ESta biblioteca es un conjunto de encabezados C++ para SDL2 que facilita su uso.
 # La opcion "REQUIRED" indica que es necesario encontrar la biblioteca; de lo contrario, se generara un error si no se encuentra.
+find_package(Qt5Widgets REQUIRED)
 find_package(SDL2pp REQUIRED)
 find_package(box2d REQUIRED)
+
+# Esta macro toma cada uno los parámetros y ejecuta *uic* sobre ellos
+# La aplicacion uic genera headers con la definición de los widgets
+# a partir de un archivo .ui
+# Los nombres de los headers generados se guardan en la variable pasada
+# como primer parámetro.
+# No, no los genera con la carpeta como prefijo.
+qt5_wrap_ui(UIS_HEADERS client/vista/mainwindow.ui) # Generamos encabezados de UI a partir del archivo de diseño de la interfaz grafica (.ui).
+
+# Habilito el automoc para poder hacer autoconnect de señales
+set(CMAKE_AUTOMOC on)
+# Habilito autorcc para manejar automaticamente los QResources
+set(CMAKE_AUTORCC ON)
 
 # Agregamos una definicion de preprocesador al proyecto. DEfinimos la macro llamada "DATA_PATH" que apunta
 # al directorio "data" en el directorio fuente del proyecto.
@@ -59,6 +73,7 @@ add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/client/vista/data")
 # Incluimos los directorios de encabezado necesarios.
 # EN este caso, incluimos los directorios de encabezado de SDL2pp, que se definen en "SDL2PP_INCLUDE_DIRS"
 include_directories(${SDL2PP_INCLUDE_DIRS})
+include_directories(${PROJECT_BINARY_DIR}) # Para Qt
 
 # Se utilizan para buscar archivos y almacenarlos en variables. 
 # Se buscan archivos con extensiones .cpp y .h en los directorios common, client y server, y se almacenan en las variables correspondientes.
@@ -78,9 +93,9 @@ file(GLOB SERVER_HEADERS server/*.h)
 
 #  Define los ejecutables que se compilarán. 
 # Se utilizan las variables que contienen las listas de archivos .cpp y .h en los directorios common, client y server para definir los objetivos.
-add_executable(client ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES})
+add_executable(client ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} )
 add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${SERVER_SOURCES})
 
 # Enlaza las bibliotecas a los ejecutables. En este caso, se enlazan las bibliotecas definidas en LINK_LIBS.
-target_link_libraries(client ${LINK_LIBS} SDL2pp::SDL2pp)
+target_link_libraries(client ${LINK_LIBS} SDL2pp::SDL2pp Qt5::Widgets Qt5::Core)
 target_link_libraries(server ${LINK_LIBS} box2d)

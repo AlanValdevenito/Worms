@@ -15,7 +15,7 @@ private:
 public:
     Vista(Client &cliente);
 
-    int iniciar();
+    int iniciar(int argc, char* argv[]);
 };
 
 #endif

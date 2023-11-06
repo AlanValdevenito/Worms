@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         client.start();
         // elegirPartida(std::ref(client));
 
-        vista.iniciar();
+        vista.iniciar(argc, argv);
 
         // Dto* d = new MoverADerecha();
         // client.send_queue.push(d);

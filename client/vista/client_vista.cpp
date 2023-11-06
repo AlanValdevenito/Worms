@@ -2,12 +2,12 @@
 
 Vista::Vista(Client &cliente) : cliente(cliente), menu(cliente), partida(cliente) {}
 
-int Vista::iniciar()
+int Vista::iniciar(int argc, char* argv[])
 {
 
     /******************** MENU DE PARTIDAS ********************/
 
-    menu.iniciar();
+    menu.iniciar(argc, argv);
 
     /******************** PARTIDA BLOQUEADA HASTA QUE SE CONECTEN TODOS LOS CLIENTES ********************/
 
