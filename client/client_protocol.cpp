@@ -113,6 +113,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirViga(bool &was_closed)
     uint16_t y;
     uint16_t ancho;
     uint16_t alto;
+    uint16_t angulo;
 
     skt.recvall(&x, sizeof(x), &was_closed);
     if (was_closed)
@@ -130,14 +131,19 @@ std::shared_ptr<Dto> ClientProtocol::recibirViga(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
     x = ntohs(x);
     y = ntohs(y);
     ancho = ntohs(ancho);
     alto = ntohs(alto);
+    angulo = ntohs(angulo);
 
-    // printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  \n", x, y, ancho, alto);
+    printf("Cliente ---> x:%u  y:%u ancho:%u  alto:%u  angulo:%u  \n", x, y, ancho, alto, angulo);
 
-    return std::make_shared<Viga>(x, y, ancho, alto);
+    return std::make_shared<Viga>(x, y, ancho, alto, angulo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)

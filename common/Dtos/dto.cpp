@@ -20,6 +20,7 @@ uint16_t Dto::x_pos() { return 0; }
 uint16_t Dto::y_pos() { return 0; }
 uint16_t Dto::return_alto() { return 0; }
 uint16_t Dto::return_ancho() { return 0; }
+uint16_t Dto::return_angulo() { return 0; }
 
 // void *Dto::popViga() { return nullptr; }
 

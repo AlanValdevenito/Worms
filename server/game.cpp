@@ -14,13 +14,14 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 
     world.addBeam(3, 9, 0, LONG);  // Ocupa del 1 al 6
     world.addBeam(9, 9, 0, LONG);  // Ocupa del 7 al 12
-    world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
-    world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
-    world.addBeam(27, 9, 0, LONG);
-    world.addBeam(33, 9, 0, LONG);
-    world.addBeam(39, 9, 0, LONG);
-    world.addBeam(45, 9, 0, LONG);
-    world.addBeam(51, 9, 0, LONG);
+    world.addBeam(15, 9, 45, LONG); // Borrar
+    //world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
+    //world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
+    //world.addBeam(27, 9, 0, LONG);
+    //world.addBeam(33, 9, 0, LONG);
+    //world.addBeam(39, 9, 0, LONG);
+    //world.addBeam(45, 9, 0, LONG);
+    //world.addBeam(51, 9, 0, LONG);
 
     /* WORMS */
 
@@ -160,22 +161,6 @@ void Game::sendWorms()
     broadcaster.AddGusanosToQueues(gusanos);
 }
 
-// void Game::sendWorms()
-// {
-
-//     std::list<Gusano *> listaGusanos;
-//     for (Worm w : world.getWorms())
-//     {
-//         Gusano *g = new Gusano((w.getId()),
-//                                (int)(w.getXCoordinate() * 100),
-//                                (int)(w.getYCoordinate() * 100));
-
-//         listaGusanos.push_back(g);
-
-//     }
-//     Gusanos *gusanos = new Gusanos(listaGusanos);
-//     broadcaster.AddGusanosToQueues(gusanos);
-// }
 
 void Game::sendMap()
 {
@@ -187,31 +172,15 @@ void Game::sendMap()
         std::shared_ptr<Viga> viga = std::make_shared<Viga>((int)(beam.getXCoordinate() * 100),
                                                             (int)(beam.getYCoordinate() * 100),
                                                             (int)(beam.getWidth() * 100),
-                                                            (int)(beam.getHeight() * 100));
+                                                            (int)(beam.getHeight() * 100),
+                                                            (int)(beam.getAngle()));
+        
         vs.push_back(viga);
     }
     std::shared_ptr<Vigas> vigas = std::make_shared<Vigas>(vs);
     broadcaster.AddVigasToQueues(vigas);
 }
 
-// void Game::sendMap()
-// {
-//     std::list<Viga *> vs;
-//     // por cada viga manda un Dto Viga a los senders
-//     for (auto &beam : world.getBeams())
-//     {
-//         // cambiar los parametros a float
-//         Viga *viga = new Viga((int)(beam.getXCoordinate() * 100),
-//                               (int)(beam.getYCoordinate() * 100),
-//                               (int)(beam.getWidth() * 100),
-//                               (int)(beam.getHeight() * 100));
-
-//         vs.push_back(viga);
-//     }
-//     Vigas *vigas = new Vigas(vs);
-//     // q.push(vigas); // agrego a la cola una lista de viga
-//     broadcaster.AddVigasToQueues(vigas);
-// }
 
 void Game::moveWormRight(uint8_t id)
 {

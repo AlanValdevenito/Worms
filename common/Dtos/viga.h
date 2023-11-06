@@ -17,21 +17,21 @@ private:
     uint16_t y;
     uint16_t ancho;
     uint16_t alto;
+    uint16_t angulo;
 
 public:
-    Viga(uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto);
+    Viga(uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto, uint16_t angulo);
     ~Viga();
     bool is_alive() override;
     uint16_t x_pos() override;
     uint16_t y_pos() override;
     uint16_t return_ancho() override;
     uint16_t return_alto() override;
+    uint16_t return_angulo() override;
 };
 
-class Vigas : public Dto
-{
-private:
-    // std::list<std::shared_ptr<Viga>> vigas;
+class Vigas : public Dto {
+    // std::list<std::shared_ptr<Viga> vigas;
     std::vector<std::shared_ptr<Viga>> vigas;
 
 public:

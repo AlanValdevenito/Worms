@@ -40,7 +40,7 @@ int Partida::iniciar()
     potencia.SetBlendMode(SDL_BLENDMODE_BLEND);
 
     // Cargamos la imagen para una viga
-    Texture viga(renderer, Surface(DATA_PATH "/viga_larga.png")
+    Texture viga(renderer, Surface(DATA_PATH "/grdl4.png")
                                .SetColorKey(true, 0xff));
 
     viga.SetBlendMode(SDL_BLENDMODE_BLEND);
@@ -156,8 +156,6 @@ void Partida::guardar_vigas()
         // std::cout << "Agregando viga" << std::endl;
         this->vigas.push_back(viga);
     }
-
-    // delete dto;
 }
 
 void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia)
@@ -385,12 +383,13 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga,
         float y = this->vigas[i]->y_pos();
         float ancho = this->vigas[i]->return_ancho();
         float alto = this->vigas[i]->return_alto();
+        float angulo = -(this->vigas[i]->return_angulo());
 
         renderer.Copy(
             viga,
             Rect(0, 0, 50, 50),
             Rect(metros_a_pixeles(centimetros_a_metros(x)), altura - metros_a_pixeles(centimetros_a_metros(y)),
-                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))));
+                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
     }
 }
 

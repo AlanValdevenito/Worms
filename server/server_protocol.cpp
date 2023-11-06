@@ -51,8 +51,9 @@ bool ServerProtocol::enviarViga(std::shared_ptr<Dto> dto, bool &was_closed)
     uint16_t y = htons(dto->y_pos());
     uint16_t ancho = htons(dto->return_ancho());
     uint16_t alto = htons(dto->return_alto());
+    uint16_t angulo = htons(dto->return_angulo());
 
-    // printf("x:%u  y:%u ancho:%u  alto:%u \n", x, y, ancho, alto);
+    // printf("x:%u  y:%u ancho:%u  alto:%u angulo:%u\n", x, y, ancho, alto, angulo);
 
     skt.sendall(&(x), sizeof(x), &was_closed);
     if (was_closed)
@@ -69,6 +70,12 @@ bool ServerProtocol::enviarViga(std::shared_ptr<Dto> dto, bool &was_closed)
     skt.sendall(&(alto), sizeof(alto), &was_closed);
     if (was_closed)
         return false;
+
+    skt.sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    printf("Server ---> x:%u  y:%u ancho:%u  alto:%u  angulo:%u  \n", x, y, ancho, alto, angulo);
 
     return true;
 }
