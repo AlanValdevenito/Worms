@@ -47,7 +47,6 @@ include_directories(client)
 include_directories(client/vista)
 include_directories(client/vista/data)
 include_directories(server)
-include_directories(gtest)
 
 # ...
 add_subdirectory(gtest)

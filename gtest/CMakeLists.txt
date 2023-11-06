@@ -25,9 +25,20 @@ endif()
 
 file(GLOB TEST *.cpp *.$(extension))
 
+file(GLOB COMMON_SOURCES ../common/*.cpp *.$(extension))
+file(GLOB COMMON_HEADERS ../common/*.h)
+
+file(GLOB DTO_SOURCES ../common/Dtos/*.cpp *.$(extension))
+file(GLOB DTO_HEADERS ../common/Dtos/*.h)
+
+file(GLOB CLIENT_SOURCES ../client/client_protocol.cpp *.$(extension))
+file(GLOB CLIENT_HEADERS ../client/Client_protocol.h)
+
+list(APPEND TEST ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES})
+
 # Agrega el nuevo archivo de prueba
 # add_executable(my_test my_test.cpp)
-add_executable(my_test ${TEST} ${COMMON_HEADERS} ${COMMON_SOURCES} ${DTO_HEADERS} ${DTO_SOURCES})
+add_executable(my_test ${TEST})
 
 # Enlaza el nuevo archivo de prueba con Google Test
 target_link_libraries(my_test gtest_main)
