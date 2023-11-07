@@ -24,7 +24,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 
     world.addBeam(3, 16, 0, LONG); // Ocupa del 1 al 6
     world.addBeam(11, 16, 0, LONG); // Ocupa del 1 al 6
-
+    
     /* WORMS */
 
     world.addWorm(2, 18);

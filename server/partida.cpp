@@ -23,6 +23,7 @@ void Partida::sendMapTo(ServerClient *c)
         return;
 
     conectados++;
+    std::cout<<"cambio queue de entrada\n";
     c->changeReceiverQueue(&common_queue);
 
     // clients.push_back(c);

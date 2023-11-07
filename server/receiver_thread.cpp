@@ -26,4 +26,7 @@ void Receiver::run()
 // Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &lq) : protocol(p), queue(q), lobby_queue(lq), was_closed(false) {}
 Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> *q) : protocol(p), queue(q), was_closed(false) {}
 
-void Receiver::changeReceiverQueue(Queue<std::shared_ptr<Dto>> *q) { queue = q; }
+void Receiver::changeReceiverQueue(Queue<std::shared_ptr<Dto>> *q) { 
+    std::cout<<"queue antes: " << queue<< std::endl;
+    queue = q; 
+    std::cout<<"queue despues: " << queue<< std::endl;}

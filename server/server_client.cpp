@@ -17,7 +17,9 @@ ServerClient::~ServerClient() {}
 // cambio la queue que tenia del lobby por la de la partida seleccionada
 void ServerClient::changeReceiverQueue(Queue<std::shared_ptr<Dto>> *q)
 {
+    std::cout<<"queue antes: " << receiver_queue<< std::endl;
     receiver_queue = q;
+    std::cout<<"queue despues: " << receiver_queue<< std::endl;
     recv_th.changeReceiverQueue(q);
 }
 
