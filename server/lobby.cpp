@@ -4,8 +4,10 @@
 Lobby::Lobby() : mapId(0), id_cliente(0)
 // Lobby::Lobby() : mapId(0), partida(std::ref(common_queue), 1, 2), id_cliente(0)
 {
-    Partida *p1 = new Partida(std::ref(common_queue), 1, 2);
-    Partida *p2 = new Partida(std::ref(common_queue), 2, 1);
+    Partida *p1 = new Partida(1, 2);
+    Partida *p2 = new Partida(2, 1);
+    // Partida *p1 = new Partida(std::ref(common_queue), 1, 2);
+    // Partida *p2 = new Partida(std::ref(common_queue), 2, 1);
     partidas.push_back(p1);
     partidas.push_back(p2);
 }
@@ -24,8 +26,6 @@ void Lobby::sendMatchList(ServerClient *c)
 
     Partida *p1 = partidas.front();
     Partida *p2 = partidas.back();
-    // partidas.push_back(p1);
-    // partidas.push_back(p2);
 
     std::shared_ptr<ListaDePartidas> l = std::make_shared<ListaDePartidas>();
     l->addOption(p1->getId());
@@ -56,7 +56,8 @@ void Lobby::newClient(Socket &&s)
 {
     id_cliente++;
 
-    ServerClient *c = new ServerClient(std::move(s), std::ref(lobby_queue), std::ref(common_queue), id_cliente); 
+    // ServerClient *c = new ServerClient(std::move(s), std::ref(lobby_queue), std::ref(common_queue), id_cliente);
+    ServerClient *c = new ServerClient(std::move(s), &lobby_queue, id_cliente);
     c->start();
 
     reap_dead();
@@ -65,9 +66,10 @@ void Lobby::newClient(Socket &&s)
     sendMatchList(c);
 }
 
-void Lobby::removerPartidasMuertas(){
+void Lobby::removerPartidasMuertas()
+{
     partidas.remove_if([&](Partida *p)
-                      {
+                       {
             if (p->is_dead()) {
                 p->join();
                 delete p;
@@ -107,7 +109,7 @@ void Lobby::kill()
     // {
     //     c->kill();
     //     c->join();
-    //     delete c; 
+    //     delete c;
     // }
     // // broadcaster.deleteAllQueues();
     // clients.clear();

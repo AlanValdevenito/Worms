@@ -8,10 +8,11 @@ void Receiver::run()
 
         if (dto->is_alive())
         {
-            if (dto->return_code() == LISTA_DE_PARTIDAS_CODE)
-                lobby_queue.push(dto);
-            else
-                queue.push(dto);
+            queue->push(dto);
+            // if (dto->return_code() == LISTA_DE_PARTIDAS_CODE)
+            //     lobby_queue.push(dto);
+            // else
+            //     queue.push(dto);
         }
         else
         {
@@ -19,7 +20,10 @@ void Receiver::run()
             // queue.push(dto); // le informo que el cliente se desconecto
         }
     }
-    std::cout << "sale del recv del server\n";
+    // std::cout << "sale del recv del server\n";
 }
 
-Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &lq) : protocol(p), queue(q), lobby_queue(lq), was_closed(false) {}
+// Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &lq) : protocol(p), queue(q), lobby_queue(lq), was_closed(false) {}
+Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> *q) : protocol(p), queue(q), was_closed(false) {}
+
+void Receiver::changeReceiverQueue(Queue<std::shared_ptr<Dto>> *q) { queue = q; }

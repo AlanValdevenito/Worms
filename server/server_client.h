@@ -26,23 +26,25 @@
 class ServerClient
 {
 public:
-    ServerClient(Socket &&socket, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &common_queue, uint8_t id);
+    // ServerClient(Socket &&socket, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &common_queue, uint8_t id);
+    ServerClient(Socket &&socket, Queue<std::shared_ptr<Dto>> *q, uint8_t id);
     ~ServerClient();
     bool is_dead();
     void join();
     void kill();
     void start();
-    void addMapToQueue();
+    void changeReceiverQueue(Queue<std::shared_ptr<Dto>> *q);
 
     uint8_t id;
-    Queue<std::shared_ptr<Dto>> &common_queue;
+    // Queue<std::shared_ptr<Dto>> &common_queue;
+    Queue<std::shared_ptr<Dto>> *receiver_queue;
     Queue<std::shared_ptr<Dto>> sender_queue;
     std::atomic<bool> keep_talking;
     std::atomic<bool> is_alive;
 
 private:
     Socket skt;
-    Queue<std::shared_ptr<Dto>> &lobby_queue;
+    // Queue<std::shared_ptr<Dto>> &lobby_queue;
     ServerProtocol serverproto;
     Receiver recv_th;
     Sender send_th;
