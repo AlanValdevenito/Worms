@@ -60,12 +60,20 @@ int Partida::iniciar()
     // Cargamos la fuente de la letra
     Font font(DATA_PATH "/Vera.ttf", 12);
 
+    /******************** COLORES ********************/
+
+    std::map<int, SDL2pp::Color> colores;
+
+    colores[0] = SDL2pp::Color(255,0,0); // Rojo
+    colores[1] = SDL2pp::Color(0,0,255); // Azul
+    colores[2] = SDL2pp::Color(0,255,0); // Verde
+    colores[3] = SDL2pp::Color(255,255,255); // Blanco
+    colores[4] = SDL2pp::Color(0,0,0); // Negro
+
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
-    std::cout << "Antes de guardar vigas\n";
+
     guardar_vigas();
-     std::cout << "Antes de guardar worms\n";
-    guardar_worms(renderer, sprites, arma, potencia);
-     std::cout << "Despues de guardar\n";
+    guardar_worms(renderer, sprites, arma, potencia, colores);
 
     /******************** GAME LOOP ********************/
 
@@ -160,7 +168,7 @@ void Partida::guardar_vigas()
     }
 }
 
-void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia)
+void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, std::map<int, SDL2pp::Color> &colores)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
     this->id_gusano_actual = dto->get_gusano_de_turno();
@@ -177,7 +185,7 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(sprites, arma, potencia, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
+        this->worms[gusano->get_id()] = new Worm(sprites, arma, potencia, colores, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_color());
     }
 
     // delete dto;

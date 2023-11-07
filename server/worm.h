@@ -10,6 +10,7 @@ private:
     float x;
     float y;
     uint8_t id;
+    uint8_t teamNumber;
     uint8_t hp;
     
 
@@ -35,6 +36,8 @@ public:
     bool isMoving();
     void takeDamage(uint8_t damage);
     void setPlayerId(uint8_t id);
+    void setTeamNumber(uint8_t number);
+    uint8_t getTeamNumber();
     void jump();
     void startContact() override;
     void endContact() override;

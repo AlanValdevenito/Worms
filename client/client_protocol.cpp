@@ -179,6 +179,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     uint16_t x;
     uint16_t y;
     uint8_t vida;
+    uint8_t color;
 
     skt.recvall(&id, sizeof(id), &was_closed);
     if (was_closed)
@@ -196,12 +197,16 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    skt.recvall(&color, sizeof(color), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
     x = ntohs(x);
     y = ntohs(y);
 
-    // printf("Cliente ---> id:%u  x:%u y:%u  vida:%u \n", id, x, y, vida);
+    printf("Cliente ---> id:%u  x:%u y:%u  vida:%u color:%u\n", id, x, y, vida, color);
 
-    return std::make_shared<Gusano>(id, x, y, vida);
+    return std::make_shared<Gusano>(id, x, y, vida, color);
 }
 
 bool ClientProtocol::enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed)

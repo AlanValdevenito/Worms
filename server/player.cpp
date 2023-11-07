@@ -1,8 +1,9 @@
 #include "player.h"
 
 
-Player::Player(int playerId, std::vector<int> wormIds) : 
+Player::Player(int playerId, int teamNumber, std::vector<int> wormIds) : 
     playerId(playerId),
+    teamNumber(teamNumber),
     actualWormId(wormIds[0]),
     wormIds(wormIds),
     indexOfActualWorm(0),
@@ -24,4 +25,8 @@ void Player::changeActualWorm() {
         indexOfActualWorm++;
     }
     actualWormId = wormIds[indexOfActualWorm];
+}
+
+int Player::getTeamNumber() {
+    return teamNumber;
 }

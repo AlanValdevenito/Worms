@@ -6,6 +6,7 @@
 #include "client_arma.h"
 #include "client_mira.h"
 #include "client_potencia.h"
+#include <map>
 
 class Worm
 {
@@ -18,6 +19,7 @@ private:
     Arma arma;
     Mira mira;
     Potencia potencia;
+    std::map<int, SDL2pp::Color> &colores;
 
     bool armaEquipada;
     // Booleano que indica si el jugador activo la mira.
@@ -28,10 +30,11 @@ private:
     float x;
     float y;
     int vida;
+    int color;
 
 public:
 
-    Worm(SDL2pp::Texture &texture, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, float x, float y, int vida);
+    Worm(SDL2pp::Texture &texture, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, std::map<int, SDL2pp::Color> &colores, float x, float y, int vida, int color);
 
     // Actualiza el Worm en funcion del tiempo transcurrido.
     void update(int it, float nuevoX, float nuevoY, int vida);

@@ -85,6 +85,7 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint16_t x = htons(g->x_pos());
     uint16_t y = htons(g->y_pos());
     uint8_t vida = g->get_vida();
+    uint8_t color = g->get_color();
 
 
     skt.sendall(&(id), sizeof(id), &was_closed);
@@ -103,7 +104,11 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     if (was_closed)
         return false;
 
-    printf("id:%u  x:%u  y:%u vida:%u \n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida());
+    skt.sendall(&(color), sizeof(color), &was_closed);
+    if (was_closed)
+        return false;
+
+    printf("id:%u  x:%u  y:%u vida:%u color:%u\n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida(), g->get_color());
     return true;
 }
 

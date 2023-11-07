@@ -57,25 +57,23 @@ void Game::mapa_jaula() {
 }
 
 void Game::createPlayers() {
-    for (int playerId=0; playerId< numberOfPlayers;playerId++) {
-        std::cout<<"id createPlayers: "<<idPlayers[playerId]<<std::endl;
-    }
-
-
     int numberOfWorms = (int)world.getWorms().size();
     int wormId = 1;
+    int teamNumber = 0;
     numberOfPlayers = (int)idPlayers.size();
     idTurn = idPlayers[indexOfActualPlayer];
     // for (int playerId : idPlayers) {
 
-    for (int playerId=0; playerId< numberOfPlayers;playerId++) {
+    for (int playerId : idPlayers) {
         std::vector<int> wormIds;
         for (int i = 0; i < numberOfWorms / numberOfPlayers; i++) {
             wormIds.push_back(wormId);
-            world.getWormsById()[wormId]->setPlayerId(idPlayers[playerId]);
+            world.getWormsById()[wormId]->setPlayerId(playerId);
+            world.getWormsById()[wormId]->setTeamNumber(teamNumber);
             wormId++;
         }
-        players.push_back(Player(idPlayers[playerId], wormIds));
+        players.push_back(Player(playerId, teamNumber, wormIds));
+        teamNumber++;
     }
 
     actualWormId = players[indexOfActualPlayer].actualWormId;
@@ -187,7 +185,8 @@ void Game::sendWorms()
             std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
                                                         (int)(w->getXCoordinate() * 100),
                                                         (int)(w->getYCoordinate() * 100),
-                                                        w->getHp());
+                                                        w->getHp(),
+                                                        w->getTeamNumber());
             vectorGusanos.push_back(g);
         }
 

@@ -30,7 +30,7 @@ public:
 
     int iniciar();
     void guardar_vigas();
-    void guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia);
+    void guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, std::map<int, SDL2pp::Color> &colores);
 
     bool handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma);
 

@@ -121,6 +121,13 @@ void Worm::setPlayerId(uint8_t id) {
 	playerId = id;
 }
 
+void Worm::setTeamNumber(uint8_t number) {
+	teamNumber = number;
+}
+
+uint8_t Worm::getTeamNumber() {
+	return teamNumber;
+}
 
 void Worm::startContact() {
 	numberOfContacts++;
