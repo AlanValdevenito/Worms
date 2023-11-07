@@ -13,14 +13,9 @@ private:
 public:
     Mira();
 
-    // Renderiza la mira.
     void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda);
-
     void aumentar_angulo();
     void decrementar_angulo();
-
-    float calcular_opuesto(float adyacente);
-    float calcular_adyacente(float opuesto);
 };
 
 #endif // MIRA_H
