@@ -1,12 +1,16 @@
 #include "partida.h"
+#include<unistd.h>
 
-Partida::Partida(uint8_t id, int cant) : game(common_queue, broadcaster), id(id), jugadores(cant), conectados(0) {}
+Partida::Partida(uint8_t id, int cant) : game(common_queue, broadcaster), id(id), jugadores(cant), conectados(0), partida_empezada(false) {}
 Partida::~Partida() {}
 
 void Partida::start()
 {
     if (jugadores > conectados)
         return;
+
+    //emepzo la partida
+    partida_empezada = true;    
 
     for(ServerClient* c : clients)
         game.addPlayerId(c->id);
@@ -17,7 +21,6 @@ void Partida::start()
 
     game.sendMap(); // le mando el mapa a la cola sender
     game.sendWorms();
-
 
     game.start();
 }
@@ -36,12 +39,18 @@ void Partida::sendMapTo(ServerClient *c)
 
 void Partida::forceFinish(){
 
-    game.stop();    
-    
-    std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
-    broadcaster.notificarCierre(fin);
+    if(partida_empezada){
+        game.stop();    
+        game.join();    
+        
+        std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
+        broadcaster.notificarCierre(fin);
 
-    broadcaster.deleteAllQueues();
+        sleep(5); // Consultar si esta bien
+        
+        broadcaster.deleteAllQueues();
+    }
+
     for (auto &c : clients)
     {
         c->kill();

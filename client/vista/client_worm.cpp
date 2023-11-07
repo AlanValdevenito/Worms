@@ -55,6 +55,7 @@ void Worm::desequipar_arma() {
     this->armaEquipada = false;
     this->miraActivada = false;
     this->arma.reiniciar();
+    this->mira.reiniciar();
     this->potencia.reiniciar();
 }
 
@@ -85,7 +86,7 @@ void Worm::render(SDL2pp::Renderer &renderer)
  
     if (this->miraActivada) {
         this->mira.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda);
-        this->potencia.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda);
+        this->potencia.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda, this->mira.get_angulo());
     } 
 
 }

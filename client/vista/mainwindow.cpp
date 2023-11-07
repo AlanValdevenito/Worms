@@ -16,13 +16,6 @@ MainWindow::MainWindow(Client &cliente, QWidget *parent): QMainWindow(parent), u
 
     addItems();
     connectEvents();
-
-    //ui->centralwidget->setLayout(ui->verticalLayout);
-    //ui->verticalLayout->addWidget(ui->background);
-    //ui->verticalLayout->addWidget(ui->logo);
-    //ui->verticalLayout->addWidget(ui->opcionesComboBox);
-    //ui->verticalLayout->addWidget(ui->elegirPartidaButton);
-    //ui->verticalLayout->addWidget(ui->nuevaPartidaButton);
 }
 
 void MainWindow::addItems() {
@@ -32,17 +25,18 @@ void MainWindow::addItems() {
 
     for (uint8_t id : lista) {
         QString partida = QString::fromStdString("Partida " + std::to_string((int) id));
-        ui->opcionesComboBox->addItem(partida);
+        ui->partidasComboBox->addItem(partida);
     }
 }
 
 void MainWindow::connectEvents() {
+    // connect(Puntero al boton, Señal que se conectara, Objeto actual, Ranura que se conectara)
+
     connect(ui->elegirPartidaButton, &QPushButton::clicked, this, &MainWindow::elegirPartida);
     connect(ui->nuevaPartidaButton, &QPushButton::clicked, this, &MainWindow::nuevaPartida);
 
     // Utilizamos la funcion connect() de Qt para establecer una conexion entre una señal y una ranura.
-    // Cuando el boton elegirPartida es clickeado se emite la señal "clicked" y se llama a la ranura MainWIndow::elegir.
-    // connect(Puntero al boton, Señal que se conectara, Objeto actual, Ranura que se conectara)
+    // Cuando el boton elegirPartida es clickeado se emite la señal "clicked" y se llama a la ranura MainWIndow::elegirPartida.
 }
 
 uint8_t MainWindow::obtener_id(std::string &opcion) {
@@ -56,13 +50,14 @@ uint8_t MainWindow::obtener_id(std::string &opcion) {
 }
 
 void MainWindow::elegirPartida() {
-    std::string opcionSeleccionada = (ui->opcionesComboBox->currentText()).toStdString();
-    uint8_t id = obtener_id(opcionSeleccionada);
+    std::string opcionSeleccionada = (ui->partidasComboBox->currentText()).toStdString();
 
-    if (id) {
+    if (opcionSeleccionada != "Partidas") {
+        uint8_t id = obtener_id(opcionSeleccionada);
 
         std::shared_ptr<ListaDePartidas> seleccion = std::make_shared<ListaDePartidas>(this->cliente.id, id);
     	cliente.send_queue.push(seleccion);
+        
         qApp->quit();
     }
 }

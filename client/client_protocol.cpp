@@ -12,8 +12,6 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("codigo: %u\n",code);
-
     if (code == VIGA_CODE)
         return recibirVigas(was_closed);
     else if (code == GUSANO_CODE)
@@ -26,14 +24,11 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
         return recibirId(was_closed);
     else if (code == INICIAR_PARIDA)
         return std::make_shared<Dto>(INICIAR_PARIDA);
-    else if (code == FINALIZAR_CODE){
-        std::cout<<"recibi que tengo que cerrar\n";
+    else if (code == FINALIZAR_CODE)
         return std::make_shared<DeadDto>();
-    }
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
-    std::cout<<"hola\n";
     return std::make_shared<DeadDto>();
 }
 

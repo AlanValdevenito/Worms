@@ -17,17 +17,15 @@ private:
     int numFrames;
     // Entero que almacena el tamaño de cada frame (altura y acho).
     int size;
-    int angulo;
 
 public:
     Potencia(SDL2pp::Texture &potencia);
 
     // Renderiza la potencia.
-    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda);
+    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda, int angulo);
     // Actualiza la animacion. 
     void update();
     void reiniciar();
-    float calcular_angulo(float adyacente);
     int get_current_frame();
 };
 

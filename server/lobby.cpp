@@ -56,8 +56,8 @@ void Lobby::newClient(Socket &&s)
     ServerClient *c = new ServerClient(std::move(s), &lobby_queue, id_cliente);
     c->start();
 
-    reap_dead();
-
+    // reap_dead();
+    
     sendMatchList(c);
 }
 
@@ -78,15 +78,13 @@ void Lobby::reap_dead() {removerPartidasMuertas();}
 
 void Lobby::kill()
 {
-    // std::cout << "LOBBY entra kill\n";
-    // for (Partida *p : partidas)
-    // {
-    //     p->forceFinish();
-    //     delete p;
-    // }
-    // std::cout << "LOBBY sale kill\n";
-    // partidas.clear();
+    for (Partida *p : partidas)
+    {
+        p->forceFinish();
+        std::cout << "sale del force\n";
+        delete p;
+        std::cout << "delete\n";
+    }
 
-    partidas.back()->forceFinish();
-
+    partidas.clear();
 }

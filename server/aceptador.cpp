@@ -34,9 +34,7 @@ public:
 
     void kill_all()
     {
-        std::cout << "aceptador entra kill\n";
         lobby.kill();
-        std::cout << "aceptador sale kill\n";
     }
 
     void stop_running() { _keep_running = false; }

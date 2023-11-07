@@ -44,6 +44,7 @@ private:
     uint8_t id;
     int jugadores;
     int conectados;
+    bool partida_empezada;
     std::list<ServerClient *> clients;
 };
 #endif

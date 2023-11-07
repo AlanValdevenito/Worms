@@ -84,10 +84,6 @@ void Broadcaster::deleteAllQueues()
     // notificarCierre(fin);
     
 
-    int i = 0;
-
-    while(i <1000){i++;}
-
     std::shared_ptr<DeadDto> dto = std::make_shared<DeadDto>();
     for (Queue<std::shared_ptr<Dto>> *queue : queues.listado())// le envio al sender que murio 
         queue->push(dto);

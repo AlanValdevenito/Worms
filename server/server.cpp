@@ -15,9 +15,6 @@ void Server::main()
 
     accept_th.kill_all();
 
-
-    std::cout << "llego antes de lo esperado\n";
-
     aceptador.shutdown(2);
     aceptador.close();
     accept_th.join();

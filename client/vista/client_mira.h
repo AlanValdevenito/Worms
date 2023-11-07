@@ -18,6 +18,7 @@ public:
     void decrementar_angulo();
 
     int get_angulo();
+    void reiniciar();
 };
 
 #endif // MIRA_H

@@ -5,6 +5,8 @@
 #define ANCHO_SPRITE 31
 #define ALTO_SPRITE 31
 
+#define OFFSET 16
+
 #define RADIO 176
 
 Mira::Mira(): angulo(0) {
@@ -18,7 +20,7 @@ void Mira::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzqu
         texture,
         SDL2pp::NullOpt,
         SDL2pp::Rect(x + ((mirandoIzquierda ? -RADIO : RADIO) * cos(this->angulo * (M_PI / 180))), 
-                        y - (RADIO * sin(this->angulo * (M_PI / 180))), ANCHO_SPRITE, ALTO_SPRITE)
+                        y + OFFSET - (RADIO * sin(this->angulo * (M_PI / 180))), ANCHO_SPRITE, ALTO_SPRITE)
     );
 }
 
@@ -36,4 +38,8 @@ void Mira::decrementar_angulo() {
 
 int Mira::get_angulo() {
     return this->angulo;
+}
+
+void Mira::reiniciar() {
+    this->angulo = 0;
 }
