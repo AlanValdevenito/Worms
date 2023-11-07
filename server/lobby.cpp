@@ -2,12 +2,9 @@
 
 // crear una nueva instancia de game cuando creo una partida y pasarselo a la partida
 Lobby::Lobby() : mapId(0), id_cliente(0)
-// Lobby::Lobby() : mapId(0), partida(std::ref(common_queue), 1, 2), id_cliente(0)
 {
     Partida *p1 = new Partida(1, 2);
     Partida *p2 = new Partida(2, 1);
-    // Partida *p1 = new Partida(std::ref(common_queue), 1, 2);
-    // Partida *p2 = new Partida(std::ref(common_queue), 2, 1);
     partidas.push_back(p1);
     partidas.push_back(p2);
 }
@@ -56,13 +53,11 @@ void Lobby::newClient(Socket &&s)
 {
     id_cliente++;
 
-    // ServerClient *c = new ServerClient(std::move(s), std::ref(lobby_queue), std::ref(common_queue), id_cliente);
     ServerClient *c = new ServerClient(std::move(s), &lobby_queue, id_cliente);
     c->start();
 
     reap_dead();
 
-    // clients.push_back(c);
     sendMatchList(c);
 }
 
@@ -71,6 +66,7 @@ void Lobby::removerPartidasMuertas()
     partidas.remove_if([&](Partida *p)
                        {
             if (p->is_dead()) {
+                p->finish(); // hace falta?
                 p->join();
                 delete p;
                 return true;
@@ -78,45 +74,19 @@ void Lobby::removerPartidasMuertas()
             return false; });
 }
 
-void Lobby::reap_dead()
-{
-
-    removerPartidasMuertas();
-    // bool was_removed = false;
-    // std::list<Queue<std::shared_ptr<Dto>> *> client_queues;
-
-    // clients.remove_if([&](ServerClient *c)
-    //                   {
-    //         if (c->is_dead()) {
-    //             c->join();
-    //             was_removed = true;
-    //             client_queues.push_back(&c->sender_queue);  // obtengo el puntero de la queue para eliminarlo despues
-    //             delete c;
-    //             return true;
-    //         }
-    //         return false; });
-
-    // if (was_removed)
-    // {
-    //     for (Queue<Dto *> *q : client_queues)
-    //         broadcaster.removeQueueFromList(q);
-    // }
-}
+void Lobby::reap_dead() {removerPartidasMuertas();}
 
 void Lobby::kill()
 {
-    // for (auto &c : clients)
+    // std::cout << "LOBBY entra kill\n";
+    // for (Partida *p : partidas)
     // {
-    //     c->kill();
-    //     c->join();
-    //     delete c;
+    //     p->forceFinish();
+    //     delete p;
     // }
-    // // broadcaster.deleteAllQueues();
-    // clients.clear();
+    // std::cout << "LOBBY sale kill\n";
+    // partidas.clear();
 
-    for (Partida *p : partidas)
-    {
-        p->finish();
-        delete p;
-    }
+    partidas.back()->forceFinish();
+
 }

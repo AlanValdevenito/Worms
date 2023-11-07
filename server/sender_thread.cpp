@@ -15,8 +15,10 @@ void Sender::run()
             if (not se_envio)
                 break;
         }
-        else
+        else{
+            // protocolo.enviarFinalizarPartida(d, was_closed);
             was_closed = true;
+        }
     }
     // std::cout<<"SALE DEL SENDER\n";
     // salgo ordenadamente

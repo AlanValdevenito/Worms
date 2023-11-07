@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 
-#define TURN_DURATION 60
+#define TURN_DURATION 10
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
@@ -29,29 +29,36 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 
     world.addWorm(2, 18);
     world.addWorm(4, 12);
-    
-    createPlayers();
 }
 
 void Game::createPlayers() {
+    for (int playerId=0; playerId< numberOfPlayers;playerId++) {
+        std::cout<<"id createPlayers: "<<idPlayers[playerId]<<std::endl;
+    }
+
+
     int numberOfWorms = (int)world.getWorms().size();
     int wormId = 1;
-    int playerId = 1;
-    for (int i = 0; i < numberOfPlayers; i++) {
+    numberOfPlayers = (int)idPlayers.size();
+    idTurn = idPlayers[indexOfActualPlayer];
+    // for (int playerId : idPlayers) {
+
+    for (int playerId=0; playerId< numberOfPlayers;playerId++) {
         std::vector<int> wormIds;
-        for (int j = 0; j < numberOfWorms / numberOfPlayers; j++) {
+        for (int i = 0; i < numberOfWorms / numberOfPlayers; i++) {
             wormIds.push_back(wormId);
-            world.getWormsById()[wormId]->setPlayerId(playerId);
+            world.getWormsById()[wormId]->setPlayerId(idPlayers[playerId]);
             wormId++;
         }
-        players.push_back(Player(playerId, wormIds));
-        playerId++;
+        players.push_back(Player(idPlayers[playerId], wormIds));
     }
-    actualWormId = players[0].actualWormId;
+
+    actualWormId = players[indexOfActualPlayer].actualWormId;
 }
 
 void Game::run()
 {   
+    // createPlayers();
     begin = std::chrono::steady_clock::now();
     while (not game_finished)
     {
@@ -79,6 +86,10 @@ void Game::run()
     }
 }
 
+void Game::addPlayerId(uint8_t id) {
+    idPlayers.push_back(id);
+}
+
 void Game::passTurn() {
     // cambio de turno 
     end = std::chrono::steady_clock::now();
@@ -86,13 +97,14 @@ void Game::passTurn() {
         std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
         std::cout << "turno actual = " << idTurn << "\n";
         begin = std::chrono::steady_clock::now();
-        if (idTurn == 1) {
-            idTurn = 2;
-        } else  if (idTurn == 2) {
-            idTurn = 1;
+        if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
+            indexOfActualPlayer = 0;
+        } else {
+            indexOfActualPlayer++;
         }
-        players[idTurn - 1].changeActualWorm();
-        actualWormId = players[idTurn - 1].actualWormId;
+        idTurn = idPlayers[indexOfActualPlayer];
+        players[indexOfActualPlayer].changeActualWorm();
+        actualWormId = players[indexOfActualPlayer].actualWormId;
     }
 }
 
@@ -159,7 +171,8 @@ void Game::sendWorms()
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(vectorGusanos);
 
-    int id = players[idTurn - 1].getActualWormId(); // obtengo el id del gusano actual
+    int id = players[indexOfActualPlayer].getActualWormId(); // obtengo el id del gusano actual
+    //int id = 1;
     gusanos->set_gusano_de_turno(id);
 
     broadcaster.AddGusanosToQueues(gusanos);
@@ -193,7 +206,7 @@ void Game::moveWormRight(uint8_t id)
 
     // lista de gusano = diccionario [ID];
 
-    int idActualWorm = players[idTurn - 1].getActualWormId();
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->moveRight();
     // std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
 }
@@ -203,31 +216,35 @@ void Game::moveWormLeft(uint8_t id)
 
     // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
 
-    int idActualWorm = players[idTurn - 1].getActualWormId();
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->moveLeft();
 }
 
 void Game::jumpWorm(uint8_t id) {
-    int idActualWorm = players[idTurn - 1].getActualWormId();
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->jump();
 }
 
 void Game::batWorm(uint8_t id, int angle) {
-    int idActualWorm = players[idTurn - 1].getActualWormId();
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->bat(world.getWorms(), angle);
+
+   
     begin = std::chrono::steady_clock::now();
-    if (idTurn == 1) {
-        idTurn = 2;
-    } else  if (idTurn == 2) {
-        idTurn = 1;
+    if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
+        indexOfActualPlayer = 0;
+    } else {
+        indexOfActualPlayer++;
     }
-    players[idTurn - 1].changeActualWorm();
-    actualWormId = players[idTurn - 1].actualWormId;
+    idTurn = idPlayers[indexOfActualPlayer];
+    players[indexOfActualPlayer].changeActualWorm();
+    actualWormId = players[indexOfActualPlayer].actualWormId;
 }
 
 void Game::stop()
 {
     game_finished = true;
+    // liberar memoria
 }
 
 void Game::executeCommand(std::shared_ptr<Dto> dto)

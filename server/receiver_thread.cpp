@@ -9,10 +9,6 @@ void Receiver::run()
         if (dto->is_alive())
         {
             queue->push(dto);
-            // if (dto->return_code() == LISTA_DE_PARTIDAS_CODE)
-            //     lobby_queue.push(dto);
-            // else
-            //     queue.push(dto);
         }
         else
         {
@@ -23,10 +19,6 @@ void Receiver::run()
     // std::cout << "sale del recv del server\n";
 }
 
-// Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q, Queue<std::shared_ptr<Dto>> &lq) : protocol(p), queue(q), lobby_queue(lq), was_closed(false) {}
 Receiver::Receiver(ServerProtocol &p, Queue<std::shared_ptr<Dto>> *q) : protocol(p), queue(q), was_closed(false) {}
 
-void Receiver::changeReceiverQueue(Queue<std::shared_ptr<Dto>> *q) { 
-    std::cout<<"queue antes: " << queue<< std::endl;
-    queue = q; 
-    std::cout<<"queue despues: " << queue<< std::endl;}
+void Receiver::changeReceiverQueue(Queue<std::shared_ptr<Dto>> *q) { queue = q; }

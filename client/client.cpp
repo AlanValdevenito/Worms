@@ -25,7 +25,7 @@ void Client::kill()
     send_queue.push(dead);
 
     while(not send_th.was_closed){
-        std::cout<< "esperando a que cierre\n";
+        // std::cout<< "esperando a que cierre\n";
     }
     
     skt.shutdown(2);
@@ -40,7 +40,7 @@ void Client::elOtroSeFue()
     send_queue.push(dead);
 
     while(not send_th.was_closed){
-        std::cout<< "esperando a que cierre\n";
+        // std::cout<< "esperando a que cierre\n";
     }
     
     skt.shutdown(2);

@@ -27,19 +27,18 @@
 class Partida
 {
 public:
-    // Partida(Queue<std::shared_ptr<Dto>> &cq, uint8_t id, int cant);
     Partida(uint8_t id, int cant);
     ~Partida();
     void start();
     void sendMapTo(ServerClient *c);
     void finish();
+    void forceFinish();
     uint8_t getId();
     bool is_dead();
     void join();
 
 private:
     Queue<std::shared_ptr<Dto>> common_queue;
-    // Queue<std::shared_ptr<Dto>> &common_queue;
     Broadcaster broadcaster;
     Game game;
     uint8_t id;

@@ -168,6 +168,7 @@ bool ServerProtocol::enviarIniciarPartida(std::shared_ptr<Dto> dto, bool &was_cl
 
 bool ServerProtocol::enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_closed)
 {
+    std::cout<<"mando que tengo que cerrar\n";
     return enviarCodigoDeElemento(dto, was_closed);
 }
 

@@ -80,10 +80,18 @@ void Broadcaster::removeQueueWithId(uint8_t id)
  */
 void Broadcaster::deleteAllQueues()
 {
+    // std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
+    // notificarCierre(fin);
+    
+
+    int i = 0;
+
+    while(i <1000){i++;}
+
     std::shared_ptr<DeadDto> dto = std::make_shared<DeadDto>();
-    for (Queue<std::shared_ptr<Dto>> *queue : queues.listado()){ // le envio al sender que murio 
+    for (Queue<std::shared_ptr<Dto>> *queue : queues.listado())// le envio al sender que murio 
         queue->push(dto);
-    }    
+    
 
     queues.removeAllQueues();  
 }
