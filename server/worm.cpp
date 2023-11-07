@@ -5,6 +5,7 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id),
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
+	bodyDef.userData.pointer = (uintptr_t)this;
 	body = b2world->CreateBody(&bodyDef);
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(0.5f, 0.5f);
@@ -35,6 +36,7 @@ uint8_t Worm::getId()
 }
 
 void Worm::moveLeft() {
+	if (numberOfContacts == 0) return;
 	facingRight = false;
 	isRunning = true;
 	body->SetLinearVelocity(b2Vec2(-2.0f, 0.0f));
@@ -42,19 +44,21 @@ void Worm::moveLeft() {
 
 void Worm::moveRight()
 {	
+	if (numberOfContacts == 0) return;
 	facingRight = true;
 	isRunning = true;
     body->SetLinearVelocity(b2Vec2(2.0f, 0.0f));
 }
 
 void Worm::jump() {
+	if (numberOfContacts == 0) return;
 	float xComponent; float yComponent;
 	if (facingRight) {
-		xComponent = 10.0f;
+		xComponent = 2.0f;
 	} else {
-		xComponent = -10.0f;
+		xComponent = -2.0f;
 	}
-	yComponent = 20.0f;
+	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 }
 
@@ -117,5 +121,13 @@ void Worm::setPlayerId(uint8_t id) {
 	playerId = id;
 }
 
+
+void Worm::startContact() {
+	numberOfContacts++;
+}
+
+void Worm::endContact() {
+	numberOfContacts--;
+}
 
 Worm::~Worm() {}

@@ -8,11 +8,13 @@
 #include "box2d/box2d.h"
 #include "beam.h"
 #include "worm.h"
+#include "contact_listener.h"
 #include <map>
 
 class World
 {
 private:
+    ContactListener contactListener;
     b2World world;
     std::list<Beam> beams;
     std::list<Worm*> worms;

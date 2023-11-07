@@ -1,6 +1,8 @@
 #include "world.h"
 
-World::World() : world(b2Vec2(0, -10)) {}
+World::World() : world(b2Vec2(0, -10)) {
+    world.SetContactListener(&contactListener);
+}
 
 b2Body *World::createStaticBody(float x, float y, float width, float height)
 {
@@ -38,25 +40,7 @@ b2Body *World::createDynamicBody(float x, float y)
 
 void World::addBeam(float x, float y, float angle, BeamType type)
 {
-
-    float width;
-    float height = 0.8;
-    if (type == SHORT)
-    {
-        width = 3;
-    }
-    else if (type == LONG)
-    {
-        width = 6;
-    }
-    else
-    {
-        throw std::runtime_error("Invalid BeamType");
-    }
-    // creo el cuerpo de la viga
-    b2Body *beamBody = createStaticBody(x, y, width, height);
-    // creo la viga pasandole el cuerpo
-    Beam beam(beamBody, x, y, angle, type);
+    Beam beam(&world, x, y, angle, type);
     // agrego la viga a la lista de vigas
     beams.push_back(beam);
 }

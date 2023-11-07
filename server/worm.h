@@ -1,11 +1,12 @@
 #include "box2d/box2d.h"
 #include <list>
 #include <cmath>
+#include "entity.h"
 
-class Worm
-{
+class Worm : public Entity {
 private:
     b2Body *body;
+    
     float x;
     float y;
     uint8_t id;
@@ -18,6 +19,8 @@ public:
     uint8_t damageTaken;
     bool isRunning;
     uint8_t playerId = -1;
+    EntityType entityType = WORM;
+    int numberOfContacts = 0;
     Worm(b2World *b2world, float x, float y, uint8_t id);
     float getXCoordinate();
     float getYCoordinate();
@@ -33,5 +36,7 @@ public:
     void takeDamage(uint8_t damage);
     void setPlayerId(uint8_t id);
     void jump();
-    ~Worm();
+    void startContact() override;
+    void endContact() override;
+    ~Worm() override;
 };
