@@ -2,33 +2,58 @@
 #include <chrono>
 #include <thread>
 
-#define TURN_DURATION 10
+#define TURN_DURATION 60
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
                                                                            world(World()),
                                                                            game_finished(false)
 {
+    mapa_rampa();
+    // mapa_jaula();
+}
 
-    /* VIGAS */
+void Game::mapa_rampa() {
+    world.addBeam(26, 7.5, 90, SHORT);
+    world.addBeam(26, 12, 90, LONG); 
+    world.addBeam(26, 18, 90, LONG);
 
-    world.addBeam(3, 9, 0, LONG);  // Ocupa del 1 al 6
-    world.addBeam(9, 9, 0, LONG);  // Ocupa del 7 al 12
-    world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
-    world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
-    world.addBeam(27, 9, 0, LONG);
-    world.addBeam(33, 9, 0, LONG);
-    world.addBeam(39, 9, 0, LONG);
-    world.addBeam(45, 9, 0, LONG);
-    world.addBeam(51, 9, 0, LONG);
-
-    world.addBeam(3, 16, 0, LONG); // Ocupa del 1 al 6
-    world.addBeam(11, 16, 0, LONG); // Ocupa del 1 al 6
+    world.addBeam(0.5, 12, 90, LONG);
+    world.addBeam(2.5, 7, 130, LONG);
+    world.addBeam(5, 5, 0, SHORT);
+    world.addBeam(7.5, 5.5, 30, SHORT);
+    world.addBeam(11.5, 6.2, 0, LONG);
+    world.addBeam(16, 6.2, 0, LONG);
+    world.addBeam(19.5, 6.7, 30, SHORT);
+    world.addBeam(23.5, 7.4, 0, LONG);
     
-    /* WORMS */
+    world.addBeam(10, 9, 0, LONG);
+    world.addBeam(5.5, 9.75, 150, SHORT);
 
-    world.addWorm(2, 18);
-    world.addWorm(4, 12);
+    world.addWorm(10, 14);
+    world.addWorm(12, 14);
+}
+
+void Game::mapa_jaula() {
+    world.addBeam(5, 5, 0, LONG);
+    world.addBeam(11, 5, 0, LONG);
+    world.addBeam(17, 5, 0, LONG);
+    world.addBeam(23, 5, 0, LONG);
+
+    // Techo
+    world.addBeam(5, 17, 0, LONG);
+    world.addBeam(11, 17, 0, LONG);
+    world.addBeam(17, 17, 0, LONG);
+    world.addBeam(23, 17, 0, LONG);
+
+    // Paredes
+    world.addBeam(2.5f, 8, 90, LONG);
+    world.addBeam(2.5f, 14, 90, LONG);
+    world.addBeam(25.5f, 8, 90, LONG);
+    world.addBeam(25.5f, 14, 90, LONG);
+
+    world.addWorm(4, 10);
+    world.addWorm(8, 10);
 }
 
 void Game::createPlayers() {
