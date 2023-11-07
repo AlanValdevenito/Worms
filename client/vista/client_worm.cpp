@@ -92,20 +92,24 @@ void Worm::render(SDL2pp::Renderer &renderer)
 }
 
 void Worm::render_vida(SDL2pp::Renderer &renderer) {
-	SDL2pp::Texture etiqueta(renderer, SDL2pp::Surface(DATA_PATH "/boton.png").SetColorKey(true, 0));
-	etiqueta.SetBlendMode(SDL_BLENDMODE_BLEND);
-
     // Cargamos la fuente de la letra
-    SDL2pp::Font font(DATA_PATH "/Vera.ttf", 15);
+    SDL2pp::Font font(DATA_PATH "/Vera.ttf", 14);
 
-    SDL2pp::Rect posicionEtiqueta(this->x + 5, this->y - 15, 28, 18);
-	renderer.Copy(etiqueta, SDL2pp::NullOpt, posicionEtiqueta);
+	SDL2pp::Rect borde(this->x - 5, this->y - 30, 32, 22);
+	SDL2pp::Color blanco(255, 255, 255, 255); 
+	renderer.SetDrawColor(blanco);
+	renderer.FillRect(borde);
 
-	SDL2pp::Color negro(0,0,0,255);
-	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), negro);
+	SDL2pp::Rect contenedor(this->x - 3, this->y - 28, 28, 18);
+	//SDL2pp::Color negro(0,0,0,255);
+    SDL2pp::Color verde(20,100,75,100);
+	renderer.SetDrawColor(verde); 
+	renderer.FillRect(contenedor);
+
+	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), blanco);
 	SDL2pp::Texture texture(renderer, surface);
 
-	SDL2pp::Rect mensaje(this->x + 4, this->y - 15, surface.GetWidth(), surface.GetHeight());
+	SDL2pp::Rect mensaje(this->x - 2, this->y - 28, surface.GetWidth(), surface.GetHeight());
 	renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
 }
 
