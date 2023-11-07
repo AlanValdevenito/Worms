@@ -22,6 +22,7 @@
 #include "mover.h"
 #include "batear.h"
 #include "partidas_lista.h"
+#include "nueva_partida.h"
 #include "cliente_id.h"
 
 class ClientProtocol
@@ -36,6 +37,7 @@ public:
     bool enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_closed);
     bool enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed);
     bool saltar(std::shared_ptr<Dto> s, bool &was_closed);
+    bool enviarNuevaPartida(std::shared_ptr<NuevaPartida> n, bool &was_closed);
 
     void sendPruebita(uint8_t a);
     void recvPruebita();

@@ -61,9 +61,11 @@ int Partida::iniciar()
     Font font(DATA_PATH "/Vera.ttf", 12);
 
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
-
+    std::cout << "Antes de guardar vigas\n";
     guardar_vigas();
+     std::cout << "Antes de guardar worms\n";
     guardar_worms(renderer, sprites, arma, potencia);
+     std::cout << "Despues de guardar\n";
 
     /******************** GAME LOOP ********************/
 

@@ -11,42 +11,45 @@ Lobby::Lobby() : mapId(0), id_cliente(0)
 
 Lobby::~Lobby() {}
 
+void Lobby::agregarClienteAPartida(ServerClient *c, std::shared_ptr<ListaDePartidas> partida){
+
+    for(Partida* p: partidas){
+        if(p->getId() == partida->seleccionada){
+            printf("Entro a la partida: %u\n",p->getId());
+            p->sendMapTo(c);
+            p->start();
+        }
+    }
+}
+
 void Lobby::sendMatchList(ServerClient *c)
 {
 
-    // if (partidas.size() == 0)
-    // {
-    //     Partida p(std::ref(common_queue));
-    //     p.start(c);
-    //     partidas.push_back(p);
-    // }
-
-    Partida *p1 = partidas.front();
-    Partida *p2 = partidas.back();
-
-    std::shared_ptr<ListaDePartidas> l = std::make_shared<ListaDePartidas>();
-    l->addOption(p1->getId());
-    l->addOption(p2->getId());
-
-    c->sender_queue.push(l); // le envio la lista al cliente
-
-    std::shared_ptr<ListaDePartidas> partida = std::dynamic_pointer_cast<ListaDePartidas>(lobby_queue.pop()); // recibo la rta
-
-    if (partida->seleccionada == 1)
-    {
-        std::cout << "Entro a la partida 1\n";
-        p1->sendMapTo(c);
-        p1->start();
+    std::shared_ptr<ListaDePartidas> partidas_disponibles = std::make_shared<ListaDePartidas>();
+    for(Partida* p: partidas){
+        printf("id partida: %u\n",p->getId());
+        partidas_disponibles->addOption(p->getId());
     }
-    else if (partida->seleccionada == 2)
-    {
+    
 
-        std::cout << "Entro a la partida 2\n";
-        p2->sendMapTo(c);
-        p2->start();
+    c->sender_queue.push(partidas_disponibles); // le envio la lista al cliente
+
+    std::shared_ptr<Dto> respuesta = lobby_queue.pop(); // recibo la rta
+
+    if(respuesta->return_code() == LISTA_DE_PARTIDAS_CODE){
+        std::shared_ptr<ListaDePartidas> partida = std::dynamic_pointer_cast<ListaDePartidas>(respuesta); 
+        printf("select: %u\n",partida->seleccionada);
+        agregarClienteAPartida(c,partida);
     }
-    else
-        std::cout << "ninguna partida seleccionada\n";
+    else {
+        std::shared_ptr<NuevaPartida> nueva_partida = std::dynamic_pointer_cast<NuevaPartida>(respuesta); 
+        printf("Nueva Partida con cant de jugadores: %u\n",nueva_partida->get_cantidad_de_jugadores());
+        Partida *p = new Partida(3, nueva_partida->get_cantidad_de_jugadores());
+        partidas.push_back(p);
+        p->sendMapTo(c);
+        p->start();
+    }   
+
 }
 
 void Lobby::newClient(Socket &&s)

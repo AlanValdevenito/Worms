@@ -65,13 +65,16 @@ void MainWindow::elegirPartida() {
 void MainWindow::nuevaPartida() {
     std::cout << "Nueva partida" << std::endl;
 
-    // qApp->quit(); // Metodo para cerrar toda la aplicacion de Qt.
-                  // Cierra todas las ventanas, dialogos y componentes de la aplicacion.
-                  // Es util cuando se desea cerrar completamente la aplicacion.
+    std::string cantidadSeleccionada = (ui->jugadoresComboBox->currentText()).toStdString();
+    std::string mapaSeleccionado = (ui->mapaComboBox->currentText()).toStdString();
 
-    // close(); // Cierra la ventana actual.
-                // Si se tiene una aplicacion con multiples ventanas o dialogos, usar close() cerrara solo la ventana actual sin cerrar la aplicacion por completo.
-                // Es util cuando se desea cerrar una ventana especifica y mantener abierta la aplicacion para realizar otras tareas.
+    if ((cantidadSeleccionada != "Cantidad de jugadores") && (mapaSeleccionado != "Mapa")) {
+
+        std::shared_ptr<NuevaPartida> partida = std::make_shared<NuevaPartida>(std::stoi(cantidadSeleccionada));
+        cliente.send_queue.push(partida);
+
+        qApp->quit();
+    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
@@ -79,7 +82,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         qApp->quit();
 
-        // close();
+        // qApp->quit(); // Metodo para cerrar toda la aplicacion de Qt.
+                         // Cierra todas las ventanas, dialogos y componentes de la aplicacion.
+                         // Es util cuando se desea cerrar completamente la aplicacion.
+
+        // close(); // Cierra la ventana actual.
+                    // Si se tiene una aplicacion con multiples ventanas o dialogos, usar close() cerrara solo la ventana actual sin cerrar la aplicacion por completo.
+                    // Es util cuando se desea cerrar una ventana especifica y mantener abierta la aplicacion para realizar otras tareas.
 
         // Diseñar la nueva ventana en Qt Designer:
         // Abre Qt Designer y crea un nuevo archivo .ui para la segunda ventana si aún no lo has hecho.

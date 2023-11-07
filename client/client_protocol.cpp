@@ -12,6 +12,8 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    printf("codigo:%u\n",code);
+
     if (code == VIGA_CODE)
         return recibirVigas(was_closed);
     else if (code == GUSANO_CODE)
@@ -46,22 +48,22 @@ std::shared_ptr<Dto> ClientProtocol::recibirId(bool &was_closed)
 
 std::shared_ptr<Dto> ClientProtocol::recibirPartidas(bool &was_closed)
 {
-    uint8_t op1;
-    uint8_t op2;
 
-    skt.recvall(&op1, sizeof(op1), &was_closed);
+    uint8_t cant;
+    skt.recvall(&cant, sizeof(cant), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    skt.recvall(&op2, sizeof(op2), &was_closed);
-    if (was_closed)
-        return std::make_shared<DeadDto>();
-
-    // printf("op1: %u    op2: %u \n", op1, op2);
-
+    uint8_t op;
     std::shared_ptr<ListaDePartidas> l = std::make_shared<ListaDePartidas>();
-    l->addOption(op1);
-    l->addOption(op2);
+
+    for( int i = 0; i < cant; i++){
+        skt.recvall(&op, sizeof(op), &was_closed);
+        if (was_closed)
+            return std::make_shared<DeadDto>();
+        l->addOption(op);
+    }
+    
     return l;
 }
 
@@ -232,6 +234,22 @@ bool ClientProtocol::moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &w
 bool ClientProtocol::saltar(std::shared_ptr<Dto> s, bool &was_closed)
 {
     return enviarIdDelClienteYCodigoDeAccion(s, was_closed);
+}
+
+bool ClientProtocol::enviarNuevaPartida(std::shared_ptr<NuevaPartida> n, bool &was_closed)
+{
+    bool se_envio = enviarIdDelClienteYCodigoDeAccion(n, was_closed);
+    if (!se_envio)
+        return se_envio;
+
+    uint8_t cantidad_de_jugadores = n->get_cantidad_de_jugadores();
+    // printf("jugadores: %u\n", cantidad_de_jugadores);
+    skt.sendall(&cantidad_de_jugadores, sizeof(cantidad_de_jugadores), &was_closed);
+
+    if (was_closed)
+        return false;
+
+    return true;
 }
 
 bool ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed)

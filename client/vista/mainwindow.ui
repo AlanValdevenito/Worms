@@ -342,6 +342,85 @@ QComboBox::item:hover {
          <string>Cantidad de jugadores</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>3</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QComboBox" name="mapaComboBox">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>150</y>
+         <width>65</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+	background-color: white;
+	border-style: outset;
+	border-width: 2px;
+	border-radius: 10px;
+	font: bold 14px;
+}
+
+QComboBox QAbstractItemView {
+	background: white;
+	background-color: darkgray;
+	border-style: outset;
+	border-width: 2px;
+	border-color: grey;
+	font: bold 14px;
+	color: black;
+	border: 2px solid darkgray;
+}
+
+QComboBox::drop-down {
+	border-left-width: 1px;
+	border-left-color: darkgray;
+	border-left-style: solid;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+QComboBox::item:hover {
+	color: black;
+	background-color: gray;
+}</string>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentText">
+        <string>Mapa</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Mapa</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>3</string>
+        </property>
+       </item>
       </widget>
      </widget>
     </item>

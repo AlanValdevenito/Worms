@@ -12,5 +12,6 @@ const uint8_t INICIAR_PARIDA = 7;
 const uint8_t BATEAR_CODE = 8;
 const uint8_t FINALIZAR_CODE = 9;
 const uint8_t SALTAR_CODE = 10;
+const uint8_t NUEVA_PARTIDA_CODE = 11;
 
 #endif

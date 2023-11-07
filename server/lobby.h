@@ -23,6 +23,7 @@
 #include "server_client.h"
 #include "partida.h"
 #include "partidas_lista.h"
+#include "nueva_partida.h"
 #include "game.h"
 #include "dto.h"
 
@@ -45,6 +46,7 @@ private:
     uint8_t id_cliente;
 
     void sendMatchList(ServerClient *c);
+    void agregarClienteAPartida(ServerClient *c, std::shared_ptr<ListaDePartidas> partida);
     void removerPartidasMuertas();
 };
 #endif

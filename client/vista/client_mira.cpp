@@ -19,7 +19,7 @@ void Mira::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzqu
     renderer.Copy(
         texture,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(x + ((mirandoIzquierda ? -RADIO : RADIO) * cos(this->angulo * (M_PI / 180))), 
+        SDL2pp::Rect(x + OFFSET + ((mirandoIzquierda ? -RADIO : RADIO) * cos(this->angulo * (M_PI / 180))), 
                         y + OFFSET - (RADIO * sin(this->angulo * (M_PI / 180))), ANCHO_SPRITE, ALTO_SPRITE)
     );
 }

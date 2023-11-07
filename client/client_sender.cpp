@@ -38,6 +38,8 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
         return protocol.enviarFinDePartida(d, was_closed);
     else if (d->return_code() == SALTAR_CODE)
         return protocol.saltar(d, was_closed);
+    else if (d->return_code() == NUEVA_PARTIDA_CODE)
+        return protocol.enviarNuevaPartida(std::dynamic_pointer_cast<NuevaPartida>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

@@ -3,13 +3,16 @@
 #include <cmath>
 #include <iostream>
 
+#define POTENCIA_MAXIMA 16
+
 Potencia::Potencia(SDL2pp::Texture &potencia): texture(potencia), currentFrame(0), 
                                               numFrames(this->texture.GetHeight() / this->texture.GetWidth()), 
                                               size(this->texture.GetWidth()) {}
 
 void Potencia::update() {
-    this->currentFrame++;
-    this->currentFrame = this->currentFrame % this->numFrames; 
+    if ((this->currentFrame < POTENCIA_MAXIMA)) {
+        this->currentFrame++; 
+    }
 }
 
 void Potencia::reiniciar() {
