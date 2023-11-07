@@ -1,5 +1,6 @@
 #include "box2d/box2d.h"
 #include <list>
+#include <cmath>
 
 class Worm
 {
@@ -24,12 +25,13 @@ public:
     void moveLeft();
     void moveRight();
     b2Body* getBody();
-    void bat(std::list<Worm*>& worms);
+    void bat(std::list<Worm*>& worms, int angle);
     void makeDamage();
     uint8_t getHp();
     bool isAlive(); // Delete
     bool isMoving();
     void takeDamage(uint8_t damage);
     void setPlayerId(uint8_t id);
+    void jump();
     ~Worm();
 };

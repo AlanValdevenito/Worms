@@ -18,6 +18,7 @@
 #include "viga.h"
 #include "mover.h"
 #include "batear.h"
+#include "saltar.h"
 #include "partidas_lista.h"
 #include "cliente_id.h"
 #include "socket.h"

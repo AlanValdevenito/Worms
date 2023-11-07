@@ -219,6 +219,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return recibirAtaqueConBate(id, was_closed);
     else if (code == FINALIZAR_CODE)
         return std::make_shared<Dto>(FINALIZAR_CODE,id);
+    else if (code == SALTAR_CODE)
+        return std::make_shared<Saltar>(id);
 
     return std::make_shared<DeadDto>();
 }

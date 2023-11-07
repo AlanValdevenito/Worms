@@ -3,7 +3,7 @@
 #define ANCHO_SPRITE 60
 #define ALTO_SPRITE 60
 
-#define OFFSET 8 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
+#define OFFSET 16 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                  // tienen el (0,0) de los cuerpos en el centro
 
 Worm::Worm(SDL2pp::Texture &texture, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, float x, float y, int vida) : animacion(texture), arma(arma), mira(Mira()), potencia(potencia), armaEquipada(false), miraActivada(false), mirandoIzquierda(true), x(x), y(y), vida(vida) {
@@ -124,4 +124,8 @@ int Worm::get_potencia() {
 
 int Worm::get_vida() {
     return this->vida;
+}
+
+int Worm::get_angulo() {
+    return this->mira.get_angulo();
 }

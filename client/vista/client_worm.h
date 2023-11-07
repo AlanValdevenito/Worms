@@ -51,6 +51,7 @@ public:
     void aumentar_potencia();
     int get_potencia();
     int get_vida();
+    int get_angulo();
 };
 
 #endif // __WORM_H_

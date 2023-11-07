@@ -229,6 +229,11 @@ bool ClientProtocol::moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &w
     return enviarIdDelClienteYCodigoDeAccion(m, was_closed);
 }
 
+bool ClientProtocol::saltar(std::shared_ptr<Dto> s, bool &was_closed)
+{
+    return enviarIdDelClienteYCodigoDeAccion(s, was_closed);
+}
+
 bool ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed)
 {
 

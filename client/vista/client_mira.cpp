@@ -33,3 +33,7 @@ void Mira::decrementar_angulo() {
         this->angulo--;
     }
 }
+
+int Mira::get_angulo() {
+    return this->angulo;
+}

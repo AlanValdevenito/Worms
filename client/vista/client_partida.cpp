@@ -267,7 +267,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
 
             // Si se presiona la tecla de enter el gusano salta hacia adelante
             case SDLK_RETURN:
-                // ...
+                
+                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id));
+                } 
+                
                 break;
 
             // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
@@ -339,7 +343,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     arma.Update(NullOpt, Surface(DATA_PATH "/wbsbbk2.png").SetColorKey(true, 0));
-                    cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, 0));
+                    cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 }
                 

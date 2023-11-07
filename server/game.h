@@ -31,6 +31,7 @@ private:
     std::chrono::steady_clock::time_point end;
     int numberOfPlayers = 2;
     int numberOfWormsMoving = 0;
+    int actualWormId;
     //std::chrono::steady_clock::time_point t1;
     //std::chrono::steady_clock::time_point t2;
     // std::map<int, LISTA DE WORMS>;
@@ -47,7 +48,8 @@ public:
 
     void moveWormLeft(uint8_t id);
     void moveWormRight(uint8_t id);
-    void batWorm(uint8_t id);
+    void jumpWorm(uint8_t id);
+    void batWorm(uint8_t id, int angle);
     void executeCommand(std::shared_ptr<Dto> dto);
     void broadcast();
     void createPlayers();

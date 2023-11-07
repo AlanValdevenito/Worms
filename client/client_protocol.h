@@ -35,6 +35,7 @@ public:
     bool enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed);
     bool enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_closed);
     bool enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed);
+    bool saltar(std::shared_ptr<Dto> s, bool &was_closed);
 
     void sendPruebita(uint8_t a);
     void recvPruebita();

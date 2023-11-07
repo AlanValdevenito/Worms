@@ -7,7 +7,7 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id),
 	bodyDef.position.Set(x, y);
 	body = b2world->CreateBody(&bodyDef);
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);
+	dynamicBox.SetAsBox(0.5f, 0.5f);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
@@ -47,18 +47,34 @@ void Worm::moveRight()
     body->SetLinearVelocity(b2Vec2(2.0f, 0.0f));
 }
 
-void Worm::bat(std::list<Worm*>& worms) {
+void Worm::jump() {
+	float xComponent; float yComponent;
+	if (facingRight) {
+		xComponent = 10.0f;
+	} else {
+		xComponent = -10.0f;
+	}
+	yComponent = 20.0f;
+	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+}
+
+
+void Worm::bat(std::list<Worm*>& worms, int angle) {
 	float x = getXCoordinate();
 	float distance;
+	float xComponent; float yComponent;
 	for (Worm *worm : worms) {
 		distance = x - worm->getXCoordinate();
 		if (distance == 0) continue;
 		if (distance < 2.0f && distance > -2.0f) {
+			float angleInRadians = angle * 3.14f / 180.0f;
 			if (facingRight) {
-				worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(10.0f, 20.0f), true);
+				xComponent = 20.0f * cos(angleInRadians);
 			} else {
-				worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(-10.0f, 20.0f), true);
+				xComponent = -20.0f * cos(angleInRadians);
 			}
+			yComponent = 40.0f*sin(angleInRadians);
+			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 			worm->takeDamage(10); // Sacarle la vida cuando se deje de mover
 		}
 	}
