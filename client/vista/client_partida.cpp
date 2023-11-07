@@ -249,12 +249,20 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
 
             // Si se presiona la flecha hacia ariba el gusano direcciona su arma
             case SDLK_UP:
-                // ...
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->aumentar_angulo();
+                }
+
                 break;
 
             // Si se presiona la flecha hacia abajo el gusano direcciona su arma
             case SDLK_DOWN:
-                // ...
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->decrementar_angulo();
+                }
+
                 break;
 
             // Si se presiona la tecla de enter el gusano salta hacia adelante

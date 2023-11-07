@@ -62,6 +62,14 @@ bool Worm::arma_equipada() {
     return this->armaEquipada;
 }
 
+void Worm::aumentar_angulo() {
+    this->mira.aumentar_angulo();
+}
+
+void Worm::decrementar_angulo() {
+    this->mira.decrementar_angulo();
+}
+
 void Worm::render(SDL2pp::Renderer &renderer)
 {
     SDL_RendererFlip flip = this->mirandoIzquierda ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;

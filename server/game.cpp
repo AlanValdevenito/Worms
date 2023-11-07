@@ -14,14 +14,15 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 
     world.addBeam(3, 9, 0, LONG);  // Ocupa del 1 al 6
     world.addBeam(9, 9, 0, LONG);  // Ocupa del 7 al 12
-    world.addBeam(15, 9, 45, LONG); // Borrar
-    //world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
-    //world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
-    //world.addBeam(27, 9, 0, LONG);
-    //world.addBeam(33, 9, 0, LONG);
-    //world.addBeam(39, 9, 0, LONG);
-    //world.addBeam(45, 9, 0, LONG);
-    //world.addBeam(51, 9, 0, LONG);
+    world.addBeam(15, 9, 0, LONG); // Ocupa del 13 al 18
+    world.addBeam(21, 9, 0, LONG); // Ocupa del 19 al 24
+    world.addBeam(27, 9, 0, LONG);
+    world.addBeam(33, 9, 0, LONG);
+    world.addBeam(39, 9, 0, LONG);
+    world.addBeam(45, 9, 0, LONG);
+    world.addBeam(51, 9, 0, LONG);
+
+    world.addBeam(3, 16, 0, LONG); // Ocupa del 1 al 6
 
     /* WORMS */
 

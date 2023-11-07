@@ -45,6 +45,8 @@ public:
     void equipar_arma();
     void desequipar_arma();
     bool arma_equipada();
+    void aumentar_angulo();
+    void decrementar_angulo();
 
     void aumentar_potencia();
     int get_potencia();
