@@ -9,8 +9,8 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
                                                                            world(World()),
                                                                            game_finished(false)
 {
-    mapa_rampa();
-    // mapa_jaula();
+    // mapa_rampa();
+    mapa_jaula();
 }
 
 void Game::mapa_rampa() {
@@ -35,6 +35,7 @@ void Game::mapa_rampa() {
 }
 
 void Game::mapa_jaula() {
+    // Piso
     world.addBeam(5, 5, 0, LONG);
     world.addBeam(11, 5, 0, LONG);
     world.addBeam(17, 5, 0, LONG);

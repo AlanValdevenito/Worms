@@ -53,8 +53,13 @@ void Partida::forceFinish(){
 
     for (auto &c : clients)
     {
+        // Implementar metodos joinSender y joinReceiver 
+
+        // join sender ---> Con timeout
         c->kill();
-        c->join();
+        // join receiver
+        // join sender ---> Solo si el primero timeouteo
+        c->join(); // Este join() se borra
         delete c;
     }
     clients.clear();
