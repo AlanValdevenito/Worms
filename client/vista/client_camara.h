@@ -1,7 +1,5 @@
-#ifndef CAMARA_H
-#define CAMARA_H
-
-#include <SDL2pp/SDL2pp.hh>
+#ifndef _CAMARA_H
+#define _CAMARA_H
 
 #include "client_worm.h"
 
@@ -20,7 +18,10 @@ public:
     void seguirWorm(Worm &worm); // Actualiza la posicion de la camara para seguir al Worm
     bool comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto);
 
+    float getLimiteIzquierdo();
+    float get_centro_x();
+
     void update();
 };
 
-#endif // CAMARA_H
+#endif // _CAMARA_H

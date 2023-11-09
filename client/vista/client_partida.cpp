@@ -372,7 +372,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         // Debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
         // tienen el (0,0) de los cuerpos en el centro y ademas el (0,0) del mapa se ubica 
         // en la esquina inferior izquierda y no en la esquina superior izquierda como ocurre en SDL
-        float x = this->vigas[i]->x_pos() - (this->vigas[i]->return_ancho() / 2);
+        float x = this->vigas[i]->x_pos();
         float y = this->vigas[i]->y_pos();
         float ancho = this->vigas[i]->return_ancho();
         float alto = this->vigas[i]->return_alto();
@@ -382,7 +382,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
             renderer.Copy(
                 *this->texturas[2],
                 Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x)), altura - metros_a_pixeles(centimetros_a_metros(y)),
+                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y)),
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
         }
     }
@@ -428,7 +428,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
     std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
     this->id_gusano_actual = dto->get_gusano_de_turno();
-    camara.seguirWorm(*this->worms[this->id_gusano_actual]);
 
     float altura = renderer.GetOutputHeight();
 
@@ -451,6 +450,8 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
+
+    camara.seguirWorm(*this->worms[this->id_gusano_actual]);
 
     return true;
 }

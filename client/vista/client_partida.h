@@ -9,12 +9,12 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include "client_camara.h"
 #include "client_worm.h"
 #include "client.h"
 #include "viga.h"
 #include "mover.h"
 #include "dto.h"
-#include "client_camara.h"
 
 using namespace SDL2pp;
 

@@ -68,7 +68,7 @@ void Game::mapa_puente() {
     world.addBeam(27, 9, 0, LONG);
     world.addBeam(33, 9, 0, LONG);
 
-    world.addBeam(33, 12, 90, LONG);
+    world.addBeam(36, 12, 90, LONG);
 
     world.addWorm(15, 14);
 }
