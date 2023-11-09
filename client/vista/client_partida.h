@@ -25,6 +25,10 @@ private:
     std::map<int, Worm *> worms;
     int id_gusano_actual;
 
+    unsigned int tiempoInicial;
+    unsigned int tiempoActual;  
+    unsigned int tiempoRestante; 
+
 public:
     Partida(Client &cliente);
 
@@ -34,8 +38,8 @@ public:
 
     bool handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma);
 
-    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, unsigned int tiempoRestante);
-    void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante);
+    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font);
+    void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
     void renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua);
     void renderizar_worms(SDL2pp::Renderer &renderer);
 

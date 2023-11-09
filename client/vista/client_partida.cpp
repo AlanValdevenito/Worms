@@ -77,7 +77,7 @@ int Partida::iniciar()
 
     /******************** GAME LOOP ********************/
 
-    unsigned int tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
+    this->tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
     unsigned int cuentaRegresiva = 60000;        // 60 segundos en milisegundos
 
     auto t1 = SDL_GetTicks();
@@ -89,13 +89,13 @@ int Partida::iniciar()
     {
         t1 = SDL_GetTicks(); // Inicializamos 't1' con el tiempo actual en milisegundos
 
-        unsigned int tiempoActual = SDL_GetTicks();
-        unsigned int tiempoTranscurrido = tiempoActual - tiempoInicial;
-        unsigned int tiempoRestante = cuentaRegresiva - tiempoTranscurrido;
+        this->tiempoActual = SDL_GetTicks();
+        unsigned int tiempoTranscurrido = this->tiempoActual - this->tiempoInicial;
+        this->tiempoRestante = cuentaRegresiva - tiempoTranscurrido;
 
         if (tiempoTranscurrido > cuentaRegresiva)
         {
-            tiempoInicial = tiempoActual;
+            this->tiempoInicial = this->tiempoActual;
         }
 
         if (handleEvents(renderer, arma))
@@ -113,7 +113,7 @@ int Partida::iniciar()
         }
 
         // actualizar(renderer, it);
-        renderizar(renderer, viga, background, agua, font, tiempoRestante);
+        renderizar(renderer, viga, background, agua, font);
 
         /* IF BEHIND, KEEP WORKING */
         // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -355,6 +355,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
                     arma.Update(NullOpt, Surface(DATA_PATH "/wbsbbk2.png").SetColorKey(true, 0));
                     cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
                     this->worms[this->id_gusano_actual]->desequipar_arma();
+
+                    this->tiempoInicial = this->tiempoActual;
                 }
                 
                 break;
@@ -375,12 +377,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
     return false;
 }
 
-void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font, Uint32 tiempoRestante)
+void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font)
 {
     renderer.Clear();
 
     renderizar_mapa(renderer, viga, background, agua);
-    renderizar_temporizador(renderer, font, tiempoRestante);
+    renderizar_temporizador(renderer, font);
     renderizar_worms(renderer);
 
     // renderizar_nombre(renderer, font, animacion);
@@ -423,7 +425,7 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
     }
 }
 
-void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font, unsigned int tiempoRestante)
+void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font)
 {
     int altura = renderer.GetOutputHeight(); // 480
 
@@ -437,8 +439,7 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     renderer.SetDrawColor(negro);
     renderer.FillRect(contenedor);
 
-    int tiempo = tiempoRestante * 0.001;
-    Surface surface = font.RenderText_Solid(std::to_string(tiempo), blanco);
+    Surface surface = font.RenderText_Solid(std::to_string((int) (this->tiempoRestante * 0.001)), blanco);
     Texture texture(renderer, surface);
 
     Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
