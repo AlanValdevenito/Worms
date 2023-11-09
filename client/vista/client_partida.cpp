@@ -25,6 +25,7 @@ int Partida::iniciar()
 
     /******************** TEXTURAS ********************/
 
+    // Probar teniendo un std::map<int, SDL2pp::Texture> y usar el HEAP.
     this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
     this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
     this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
@@ -169,6 +170,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
     // Procesamiento de evento
     SDL_Event event;
 
+    std::string ruta;
+
     // Revisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
     while (SDL_PollEvent(&event))
     {
@@ -276,6 +279,20 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 // ...
                 break;
 
+            // Si se presiona la tecla de F2 el worm se equipa un arma
+            case SDLK_F2:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                
+                } else {
+                    this->armaEquipada = GRANADA_VERDE;
+                    ruta = "/wgrnlnk.png";
+                    this->worms[this->id_gusano_actual]->equipar_arma(ruta);
+                }
+
+                break;
+
             // Si se presiona la tecla de F7 el worm se equipa un arma
             case SDLK_F7:
 
@@ -283,7 +300,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->equipar_arma();
+                    // Podria incluir el numero de arma adentro de la clase Arma y pasarla como parametro
+                    // en el metodo equipar_arma().
+                    // Necesitaria un getter para usarlo en el metodo enviarAtaque().
+                    this->armaEquipada = BATE; 
+                    ruta = "/wbsblnk.png";
+                    this->worms[this->id_gusano_actual]->equipar_arma(ruta);
                 }
 
                 break;
@@ -324,9 +346,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_SPACE:
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
+                    // cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
+                    enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
-
                     this->tiempoInicial = this->tiempoActual;
                 }
                 
@@ -346,6 +368,17 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
     }
 
     return false;
+}
+
+void Partida::enviarAtaque(){
+
+    if(this->armaEquipada == BATE)
+        cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
+    else if (this->armaEquipada == GRANADA_VERDE)
+        cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo()));
+    else
+        std::cerr<<"El numero recibido no esta asociado a ningun arma\n";
 }
 
 void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Font &font)
@@ -443,6 +476,11 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
+
+    // if(dto->hay_proyectil()) {
+        // std::shared_ptr<Granadeverde> granada = std::dynamic_pointer_cast<GranadaVerde>(cliente.recv_queue.pop());
+        
+    // }
 
     // camara.seguirWorm(*this->worms[this->id_gusano_actual]);
 

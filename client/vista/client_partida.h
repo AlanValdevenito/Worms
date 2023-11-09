@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <memory>
+#include <string>
 
 #include <SDL2pp/SDL2pp.hh>
 
@@ -15,6 +16,9 @@
 #include "viga.h"
 #include "mover.h"
 #include "dto.h"
+
+const int BATE = 1;
+const int GRANADA_VERDE = 2;
 
 using namespace SDL2pp;
 
@@ -36,6 +40,8 @@ private:
     
     Camara camara;
 
+    int armaEquipada;
+
 public:
     Partida(Client &cliente);
 
@@ -56,6 +62,8 @@ public:
     float centimetros_a_metros(float centimetros);
 
     void liberar_memoria();
+
+    void enviarAtaque();
 };
 
 #endif

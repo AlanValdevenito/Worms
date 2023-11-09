@@ -22,6 +22,7 @@
 #include "partidas_lista.h"
 #include "cliente_id.h"
 #include "nueva_partida.h"
+#include "granada.h"
 #include "socket.h"
 
 class ServerProtocol
@@ -44,6 +45,7 @@ private:
     Socket *skt;
     std::shared_ptr<Dto> recibirPartidaSeleccionada(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBate(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirAtaqueConGranadaVerde(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);
     bool enviarViga(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_closed);

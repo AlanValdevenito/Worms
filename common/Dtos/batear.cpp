@@ -7,10 +7,3 @@ Batear::~Batear() {}
 bool Batear::is_alive() { return true; }
 
 uint8_t Batear::get_angulo() { return angulo; }
-
-
-// MoverAIzquierda::MoverAIzquierda(uint8_t id) : Dto(MOVER_A_IZQUIERDA_CODE, id) {}
-
-// MoverAIzquierda::~MoverAIzquierda() {}
-
-// bool MoverAIzquierda::is_alive() { return true; }

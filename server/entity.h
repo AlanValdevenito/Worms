@@ -2,7 +2,7 @@
 #define ENTITY_H
 
 
-enum EntityType {WORM, BEAM};
+enum EntityType {WORM, BEAM, GREEN_GRENADE};
 
 class Entity {
 public:

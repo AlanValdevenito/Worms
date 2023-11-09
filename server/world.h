@@ -15,7 +15,7 @@ class World
 {
 private:
     ContactListener contactListener;
-    b2World world;
+    
     std::list<Beam> beams;
     std::list<Worm*> worms;
     std::map<uint8_t, Worm*> wormsById;
@@ -23,6 +23,7 @@ private:
     float timeStep = 1.0f / 30.0f;
     
 public:
+    b2World world;
     // crea un mundo
     World();
 

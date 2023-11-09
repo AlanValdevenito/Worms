@@ -18,6 +18,7 @@
 #include "viga.h"
 #include "gusano.h"
 #include "player.h"
+#include "green_grenade.h"
 
 class Game : public Thread
 {
@@ -42,7 +43,7 @@ private:
     void mapa_puente();
 
 public:
-    //GreenGrenade *greenGrenade;
+    GreenGrenade *greenGrenade = NULL;
     int idTurn;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
@@ -52,13 +53,14 @@ public:
     void sendMap();
     void sendWorms();
 
-    void moveWormLeft(uint8_t id);
-    void moveWormRight(uint8_t id);
-    void jumpWorm(uint8_t id);
-    void batWorm(uint8_t id, int angle);
+    void moveWormLeft();
+    void moveWormRight();
+    void jumpWorm();
+    void batWorm(int angle);
     void executeCommand(std::shared_ptr<Dto> dto);
     void broadcast();
     void createPlayers();
+    void throwGreenGrenade(int angle, int power);
     void passTurn();
     void addPlayerId(uint8_t id);
     bool anyWormMoving();

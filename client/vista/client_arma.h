@@ -28,6 +28,8 @@ public:
     void reiniciar();
     bool get_animacion_completa();
 
+    void cambiar_arma(std::string &ruta);
+
     // Renderiza la arma.
     void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType);
 };

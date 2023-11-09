@@ -280,6 +280,7 @@ bool ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &w
 bool ClientProtocol::enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed){
     return enviarIdDelClienteYCodigoDeAccion(dto, was_closed);
 }
+
 bool ClientProtocol::enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_closed)
 {
     bool se_envio = enviarIdDelClienteYCodigoDeAccion(b, was_closed);
@@ -290,6 +291,25 @@ bool ClientProtocol::enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_cl
     uint8_t angulo = b->get_angulo();
     skt.sendall(&angulo, sizeof(angulo), &was_closed);
 
+    if (was_closed)
+        return false;
+
+    return true;
+}
+
+bool ClientProtocol::enviarAtaqueConGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed)
+{
+    bool se_envio = enviarIdDelClienteYCodigoDeAccion(g, was_closed);
+    if (!se_envio)
+        return se_envio;
+
+    uint8_t potencia = g->get_potencia();
+    skt.sendall(&potencia, sizeof(potencia), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t angulo = g->get_angulo();
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
     if (was_closed)
         return false;
 

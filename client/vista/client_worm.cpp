@@ -55,7 +55,9 @@ void Worm::mirar_izquierda() {
 }
 
 
-void Worm::equipar_arma() {
+void Worm::equipar_arma(std::string &ruta) {
+    this->arma.cambiar_arma(ruta);
+
     this->armaEquipada = true;
     this->miraActivada = true;
 }

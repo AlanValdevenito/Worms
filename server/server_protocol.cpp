@@ -197,6 +197,22 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBate(uint8_t id, bool &was_
     return std::make_shared<Batear>(id, angulo);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranadaVerde(uint8_t id, bool &was_closed)
+{
+    uint8_t potencia;
+    skt->recvall(&potencia, sizeof(potencia), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("angulo recibido: %u\n", angulo);
+    return std::make_shared<GranadaVerde>(id, potencia, angulo);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirParametrosDeLaPartida(bool &was_closed)
 {
     uint8_t cantidad_de_jugadores;
@@ -238,6 +254,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return std::make_shared<Saltar>(id);
     else if (code == NUEVA_PARTIDA_CODE)
         return recibirParametrosDeLaPartida(was_closed);
+    else if (code == GRANADA_VERDE_CODE)
+        return recibirAtaqueConGranadaVerde(id,was_closed);
 
     return std::make_shared<DeadDto>();
 }

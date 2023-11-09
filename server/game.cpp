@@ -195,7 +195,7 @@ void Game::update()
         }
     }
     */
-
+    
     sendWorms();
 }
 
@@ -226,7 +226,14 @@ void Game::sendWorms()
     //int id = 1;
     gusanos->set_gusano_de_turno(id);
 
+    // SI HAY GRANADA
+    // gusanos->set_flag_proyectil(id);
     broadcaster.AddGusanosToQueues(gusanos);
+    // crear granada
+    // broadcaster.AddGranadaToQueues(granada);
+
+
+
 }
 
 
@@ -250,7 +257,7 @@ void Game::sendMap()
 }
 
 
-void Game::moveWormRight(uint8_t id)
+void Game::moveWormRight()
 {
 
     // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
@@ -262,7 +269,7 @@ void Game::moveWormRight(uint8_t id)
     // std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
 }
 
-void Game::moveWormLeft(uint8_t id)
+void Game::moveWormLeft()
 {
 
     // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
@@ -271,12 +278,12 @@ void Game::moveWormLeft(uint8_t id)
     world.getWormsById()[idActualWorm]->moveLeft();
 }
 
-void Game::jumpWorm(uint8_t id) {
+void Game::jumpWorm() {
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->jump();
 }
 
-void Game::batWorm(uint8_t id, int angle) {
+void Game::batWorm(int angle) {
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->bat(world.getWorms(), angle);
 
@@ -298,15 +305,15 @@ void Game::stop()
     // liberar memoria
 }
 
-/*void Game::throwGreenGrenade(uint8_t id, int angle) {
+void Game::throwGreenGrenade(int angle, int power) {
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
-    greenGrenade = world.createGreenGrenade(actualWorm->x, actualWorm->y,
-                                            int angle, int direction,
-                                            int power, int timeToExplotion);
-    
+    greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
+                                    actualWorm->getXCoordinate(),
+                                    5);
+    greenGrenade->shoot(angle, power);
 
-}*/
+}
 
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
@@ -315,22 +322,24 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     uint8_t code = dto->return_code();
     if (code == MOVER_A_DERECHA_CODE)
     {
-        moveWormRight(clientId); // SI ES SU TURNO, LE PASAMOS EL ID
+        moveWormRight(); // SI ES SU TURNO, LE PASAMOS EL ID
     }
     else if (code == MOVER_A_IZQUIERDA_CODE)
     {
-        moveWormLeft(clientId); // SI ES SU TURNO, LE PASAMOS EL ID
+        moveWormLeft(); // SI ES SU TURNO, LE PASAMOS EL ID
     }
     else if (code == BATEAR_CODE) {
         std::shared_ptr<Batear> batear = std::dynamic_pointer_cast<Batear>(dto);
         int angle = batear->get_angulo();
-        batWorm(clientId, angle);
+        batWorm(angle);
     } else if (code == SALTAR_CODE) {
-        jumpWorm(clientId);
+        jumpWorm();
     }
-    /*else if (code == GRANADA_VERDE_CODE) {
-        throwGreenGrenade(clientId);
-    }*/
+    else if (code == GRANADA_VERDE_CODE) {
+        std::shared_ptr<GranadaVerde> grenade = std::dynamic_pointer_cast<GranadaVerde>(dto);
+        std::cout << "angulo = " << (int)grenade->get_angulo() << " potencia = " << (int)grenade->get_potencia() << "\n";
+        throwGreenGrenade(grenade->get_angulo(), grenade->get_potencia());
+    }
 }
 
 bool Game::anyWormMoving() {

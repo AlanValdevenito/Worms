@@ -20,6 +20,10 @@ void Arma::update() {
     }
 }
 
+void Arma::cambiar_arma(std::string &ruta) {
+    this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH + ruta).SetColorKey(true, 0));
+}
+
 void Arma::reiniciar() {
     this->animacionCompleta = false;
     this->currentFrame = 0;

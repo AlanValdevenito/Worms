@@ -45,7 +45,7 @@ public:
     void mirar_derecha();
     void mirar_izquierda();
 
-    void equipar_arma();
+    void equipar_arma(std::string &ruta);
     void desequipar_arma();
     bool arma_equipada();
     void aumentar_angulo();
