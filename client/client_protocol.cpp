@@ -1,6 +1,6 @@
 #include "client_protocol.h"
 
-ClientProtocol::ClientProtocol(Socket &skt) : skt(skt) {}
+ClientProtocol::ClientProtocol(SocketInterface &skt) : skt(skt) {}
 
 ClientProtocol::~ClientProtocol() {}
 
@@ -57,13 +57,14 @@ std::shared_ptr<Dto> ClientProtocol::recibirPartidas(bool &was_closed)
     uint8_t op;
     std::shared_ptr<ListaDePartidas> l = std::make_shared<ListaDePartidas>();
 
-    for( int i = 0; i < cant; i++){
+    for (int i = 0; i < cant; i++)
+    {
         skt.recvall(&op, sizeof(op), &was_closed);
         if (was_closed)
             return std::make_shared<DeadDto>();
         l->addOption(op);
     }
-    
+
     return l;
 }
 
@@ -157,7 +158,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
 
     uint8_t turno;
     skt.recvall(&turno, sizeof(turno), &was_closed);
-    if(was_closed)
+    if (was_closed)
         return std::make_shared<DeadDto>();
 
     // printf("cant: %u\n",cant);
@@ -174,7 +175,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(lista);
     gusanos->set_gusano_de_turno(turno);
-    return gusanos; 
+    return gusanos;
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
@@ -277,7 +278,8 @@ bool ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &w
     return true;
 }
 
-bool ClientProtocol::enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed){
+bool ClientProtocol::enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed)
+{
     return enviarIdDelClienteYCodigoDeAccion(dto, was_closed);
 }
 bool ClientProtocol::enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_closed)

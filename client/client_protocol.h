@@ -14,6 +14,7 @@
 
 #include "socket.h"
 #include "socket_mock.h"
+#include "socket_interface.h"
 #include "constantes.h"
 #include "dto.h"
 #include "dead.h"
@@ -28,7 +29,7 @@
 class ClientProtocol
 {
 public:
-    explicit ClientProtocol(Socket &skt);
+    explicit ClientProtocol(SocketInterface &skt);
     ~ClientProtocol();
     std::shared_ptr<Dto> receive(bool &was_closed);
     bool moverADerecha(std::shared_ptr<MoverADerecha> m, bool &was_closed);
@@ -43,7 +44,7 @@ public:
     void recvPruebita();
 
 private:
-    Socket &skt;
+    SocketInterface &skt;
     std::shared_ptr<Dto> recibirViga(bool &was_closed);
     std::shared_ptr<Dto> recibirVigas(bool &was_closed);
     std::shared_ptr<Dto> recibirGusano(bool &was_closed);
