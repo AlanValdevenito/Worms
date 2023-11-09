@@ -35,6 +35,7 @@ class Gusanos : public Dto
 private:
     std::vector<std::shared_ptr<Gusano>> gusanos;
     uint8_t id_turno;
+    bool envio_proyectil;
 
 public:
     Gusanos();
@@ -46,6 +47,8 @@ public:
     uint8_t cantidad() override;
     uint8_t get_gusano_de_turno();
     void set_gusano_de_turno(uint8_t id);
+    void set_flag_proyectil(bool estado);
+    bool get_flag_proyectil();
 };
 
 #endif

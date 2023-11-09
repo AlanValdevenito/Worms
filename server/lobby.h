@@ -34,7 +34,7 @@ public:
     ~Lobby();
     void kill();
     void reap_dead();
-    void newClient(Socket &&s);
+    void newClient(Socket *s);
 
 private:
     std::list<ServerClient *> clients;

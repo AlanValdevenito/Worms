@@ -28,6 +28,8 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
         return std::make_shared<Dto>(INICIAR_PARIDA);
     else if (code == FINALIZAR_CODE)
         return std::make_shared<DeadDto>();
+    else if (code == GRANADA_VERDE_CODE)
+        return recibirTrayectoriaGranadaVerde(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
@@ -57,13 +59,14 @@ std::shared_ptr<Dto> ClientProtocol::recibirPartidas(bool &was_closed)
     uint8_t op;
     std::shared_ptr<ListaDePartidas> l = std::make_shared<ListaDePartidas>();
 
-    for( int i = 0; i < cant; i++){
+    for (int i = 0; i < cant; i++)
+    {
         skt.recvall(&op, sizeof(op), &was_closed);
         if (was_closed)
             return std::make_shared<DeadDto>();
         l->addOption(op);
     }
-    
+
     return l;
 }
 
@@ -157,7 +160,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
 
     uint8_t turno;
     skt.recvall(&turno, sizeof(turno), &was_closed);
-    if(was_closed)
+    if (was_closed)
         return std::make_shared<DeadDto>();
 
     // printf("cant: %u\n",cant);
@@ -174,7 +177,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(lista);
     gusanos->set_gusano_de_turno(turno);
-    return gusanos; 
+    return gusanos;
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
@@ -212,6 +215,31 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
 
     return std::make_shared<Gusano>(id, x, y, vida, color);
 }
+
+std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_closed)
+{
+    uint16_t x;
+    uint16_t y;
+
+    skt.recvall(&x, sizeof(x), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&y, sizeof(y), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    x = ntohs(x);
+    y = ntohs(y);
+
+    // printf("Cliente ---> id:%u  x:%u y:%u  vida:%u color:%u\n", id, x, y, vida, color);
+
+    return std::make_shared<GranadaVerde>(x, y);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool ClientProtocol::enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed)
 {
@@ -277,7 +305,8 @@ bool ClientProtocol::enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &w
     return true;
 }
 
-bool ClientProtocol::enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed){
+bool ClientProtocol::enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed)
+{
     return enviarIdDelClienteYCodigoDeAccion(dto, was_closed);
 }
 

@@ -87,7 +87,6 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint8_t vida = g->get_vida();
     uint8_t color = g->get_color();
 
-
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
         return false;
@@ -175,6 +174,30 @@ bool ServerProtocol::enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_
     return enviarCodigoDeElemento(dto, was_closed);
 }
 
+bool ServerProtocol::enviarTrayectoriaDeGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(g, was_closed))
+        return false;
+
+    // envio coordenadas
+    uint16_t x = htons(g->x_pos());
+    uint16_t y = htons(g->y_pos());
+
+    skt->sendall(&(x), sizeof(x), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(y), sizeof(y), &was_closed);
+    if (was_closed)
+        return false;
+
+    return true;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 std::shared_ptr<Dto> ServerProtocol::recibirPartidaSeleccionada(uint8_t id, bool &was_closed)
 {
     uint8_t op;
@@ -255,7 +278,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
     else if (code == NUEVA_PARTIDA_CODE)
         return recibirParametrosDeLaPartida(was_closed);
     else if (code == GRANADA_VERDE_CODE)
-        return recibirAtaqueConGranadaVerde(id,was_closed);
+        return recibirAtaqueConGranadaVerde(id, was_closed);
 
     return std::make_shared<DeadDto>();
 }
