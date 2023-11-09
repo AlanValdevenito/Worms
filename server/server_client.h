@@ -26,7 +26,8 @@
 class ServerClient
 {
 public:
-    ServerClient(Socket &&socket, Queue<std::shared_ptr<Dto>> *q, uint8_t id);
+    // ServerClient(Socket &&socket, Queue<std::shared_ptr<Dto>> *q, uint8_t id);
+    ServerClient(Socket *socket, Queue<std::shared_ptr<Dto>> *q, uint8_t id);
     ~ServerClient();
     bool is_dead();
     void join();
@@ -41,7 +42,8 @@ public:
     std::atomic<bool> is_alive;
 
 private:
-    Socket skt;
+    // Socket skt;
+    Socket *skt;
     ServerProtocol serverproto;
     Receiver recv_th;
     Sender send_th;

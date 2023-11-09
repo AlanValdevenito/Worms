@@ -28,7 +28,7 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
 {
     if (d->return_code() == MOVER_A_DERECHA_CODE)
         return protocol.moverADerecha(std::dynamic_pointer_cast<MoverADerecha>(d), was_closed);
-    else if (d->return_code() == MOVER_A_IZQUERDA_CODE)
+    else if (d->return_code() == MOVER_A_IZQUIERDA_CODE)
         return protocol.moverAIzquierda(std::dynamic_pointer_cast<MoverAIzquierda>(d), was_closed);
     else if (d->return_code() == LISTA_DE_PARTIDAS_CODE)
         return protocol.enviarSeleccion(std::dynamic_pointer_cast<ListaDePartidas>(d), was_closed);

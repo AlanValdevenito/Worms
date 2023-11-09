@@ -13,20 +13,16 @@ void Camara::seguirWorm(Worm &worm) {
 }
 
 bool Camara::comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto) {
+
     // Calculamos los limites de la camara
-    float izquierda = this->x - ((this->ancho/2) / 24);
+    /*float izquierda = this->x - ((this->ancho/2) / 24);
     float derecha = this->x + ((this->ancho/2) / 24);
     float arriba = this->y - ((this->alto/2) / 24);
     float abajo = this->y + ((this->alto/2) / 24);
 
-    // std::cout << objetoX << " " << derecha << std::endl; // 28.3333
-    // std::cout << objetoX << " " << izquierda << std::endl; // 1.66667
-    // std::cout << objetoY << " " << abajo << std::endl;
-    // std::cout << objetoY << " " << arriba << std::endl;
+    return ((objetoX - objetoAncho <= derecha) && (objetoX + objetoAncho >= izquierda) && (objetoY - objetoAlto/2 <= abajo) && (objetoY + objetoAlto/2 >= arriba));*/
 
-    return ((objetoX - objetoAncho <= derecha) && (objetoX + objetoAncho >= izquierda) && (objetoY - objetoAlto/2 <= abajo) && (objetoY + objetoAlto/2 >= arriba));
-
-    // return true;
+    return true;
 }
 
 float Camara::getLimiteIzquierdo() {

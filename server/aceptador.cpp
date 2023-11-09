@@ -24,8 +24,9 @@ public:
         // crear juego
         while (_keep_running)
         {
-            Socket peer = skt.accept();
-            lobby.newClient(std::move(peer));
+            Socket *peer = (Socket *)skt.accept();
+            // lobby.newClient(std::move(peer));
+            lobby.newClient(peer);
 
             // mandar mapa a la sender_queue del nuevo cliente
         }

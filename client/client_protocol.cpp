@@ -124,6 +124,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirViga(bool &was_closed)
     skt.recvall(&y, sizeof(y), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
+    // recibirPosicion(x, y, was_closed);
 
     skt.recvall(&ancho, sizeof(ancho), &was_closed);
     if (was_closed)
@@ -158,6 +159,9 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     skt.recvall(&turno, sizeof(turno), &was_closed);
     if(was_closed)
         return std::make_shared<DeadDto>();
+
+    // printf("cant: %u\n",cant);
+    // printf("turno: %u\n",turno);
 
     std::vector<std::shared_ptr<Gusano>> lista;
     for (int i = 0; i < cant; i++)

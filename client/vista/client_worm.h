@@ -58,6 +58,8 @@ public:
 
     float get_x();
     float get_y();
+
+    void set_x(float nuevoX);
 };
 
 #endif // __WORM_H_

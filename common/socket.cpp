@@ -407,7 +407,7 @@ Socket::Socket(int skt)
     this->closed = false;
 }
 
-Socket Socket::accept()
+SocketInterface *Socket::accept()
 {
     chk_skt_or_fail();
     /*
@@ -433,7 +433,7 @@ Socket Socket::accept()
      *
      * Por eso creamos un `Socket` y lo pasamos por movimiento
      * */
-    return Socket(peer_skt);
+    return new Socket(peer_skt);
 }
 
 void Socket::shutdown(int how)

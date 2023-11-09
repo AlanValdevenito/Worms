@@ -378,13 +378,13 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-        if (camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), ancho, alto)) {
+        //if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), ancho, alto)) {
             renderer.Copy(
                 *this->texturas[2],
                 Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y)),
+                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) /*- this->camara.getLimiteIzquierdo()*/), altura - metros_a_pixeles(centimetros_a_metros(y)),
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
-        }
+        //}
     }
 }
 
@@ -392,7 +392,9 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
     for (const auto &elemento : this->worms)
     {
-        elemento.second->render(renderer);
+        //if (this->camara.comprobarRenderizado(elemento.second->get_x(), elemento.second->get_y(), 24, 24)) {
+            elemento.second->render(renderer);
+        //}
     }
 }
 
@@ -438,20 +440,11 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     {
         std::shared_ptr<Gusano> gusano = dto->popGusano(i);
 
-        // Necesito un booleano que me indique que el Worm dejo de moverse luego de que su vida llego a 0.
-        // Esto porque no necesariamente que un gusano tenga vida igual a 0 implica que haya que dejar de renderizarlo.
-        // Desde la vista se debe renderizar y mostrar toda la animacion aun cuando el Worm tenga vida igual a 0.
-        // Luego de que termino la animacion del Worm es cuando se deja de renderizar. Esto implica que se elimina del diccionario.
-        /*if (gusano->delete()) {
-            this->worms.erase(gusano->get_id());
-            continue;
-        }*/
-
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
 
-    camara.seguirWorm(*this->worms[this->id_gusano_actual]);
+    // camara.seguirWorm(*this->worms[this->id_gusano_actual]);
 
     return true;
 }

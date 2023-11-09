@@ -74,6 +74,23 @@ std::map<uint8_t, Worm*>& World::getWormsById() {
     return wormsById;
 }
 
+/*GreenGrenade* World::createGreenGrenade(float x, float y, int angle, int direction, int power, int timeToExplotion) {
+    GreenGrenade *grenade = new GreenGrenade(x, y, angle, timeToExplotion);
+    grenade->body->ApplyLinearImpulse(b2Vec2(power*cos(angle), power*sin(angle)), true);
+    return grenade;
+}*/
+
+
+/*void GreenGrenade::explode() {
+    b2Body *otherBody = body->getWorld()->getBodies;
+    for (bodies ...) {
+        if (otherBody esta dentro del epicentro && isDynamic) {
+            le aplico un impulso
+        }
+    }
+}*/
+
+
 World::~World() {
     for (Worm *worm : worms) {
         delete worm;

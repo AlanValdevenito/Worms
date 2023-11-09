@@ -87,7 +87,7 @@ void Worm::render(SDL2pp::Renderer &renderer)
         this->arma.render(renderer, SDL2pp::Rect(x - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
     
     } else {
-        this->animacion.render(renderer, SDL2pp::Rect(320 - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
+        this->animacion.render(renderer, SDL2pp::Rect(x - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
     }
     
     this->render_vida(renderer);
@@ -104,13 +104,13 @@ void Worm::render_vida(SDL2pp::Renderer &renderer) {
     SDL2pp::Font font(DATA_PATH "/Vera.ttf", 14);
     SDL2pp::Color blanco(255, 255, 255, 255); 
 
-	// SDL2pp::Rect borde(this->x - 5, this->y - 30, 32, 22);
-    SDL2pp::Rect borde(320 - 5, this->y - 30, 32, 22);
+	SDL2pp::Rect borde(this->x - 5, this->y - 30, 32, 22);
+    // SDL2pp::Rect borde(320 - 5, this->y - 30, 32, 22);
 	renderer.SetDrawColor(blanco);
 	renderer.FillRect(borde);
 
-	// SDL2pp::Rect contenedor(this->x - 3, this->y - 28, 28, 18);
-    SDL2pp::Rect contenedor(320 - 3, this->y - 28, 28, 18);
+	SDL2pp::Rect contenedor(this->x - 3, this->y - 28, 28, 18);
+    // SDL2pp::Rect contenedor(320 - 3, this->y - 28, 28, 18);
 	//SDL2pp::Color negro(0,0,0,255);
 	renderer.SetDrawColor(this->color); 
 	renderer.FillRect(contenedor);
@@ -118,8 +118,8 @@ void Worm::render_vida(SDL2pp::Renderer &renderer) {
 	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), blanco);
 	SDL2pp::Texture texture(renderer, surface);
 
-	// SDL2pp::Rect mensaje(this->x - 2, this->y - 28, surface.GetWidth(), surface.GetHeight());
-    SDL2pp::Rect mensaje(320 - 2, this->y - 28, surface.GetWidth(), surface.GetHeight());
+	SDL2pp::Rect mensaje(this->x - 2, this->y - 28, surface.GetWidth(), surface.GetHeight());
+    // SDL2pp::Rect mensaje(320 - 2, this->y - 28, surface.GetWidth(), surface.GetHeight());
 	renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
 }
 
@@ -151,4 +151,8 @@ float Worm::get_x() {
 
 float Worm::get_y() {
     return this->y;
+}
+
+void Worm::set_x(float nuevoX) {
+    this->x = nuevoX;
 }

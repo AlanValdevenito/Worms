@@ -42,6 +42,7 @@ private:
     void mapa_puente();
 
 public:
+    //GreenGrenade *greenGrenade;
     int idTurn;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);

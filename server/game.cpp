@@ -10,8 +10,8 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
                                                                            game_finished(false)
 {
     // mapa_rampa();
-    // mapa_jaula();
-    mapa_puente ();
+    mapa_jaula();
+    // mapa_puente();
 }
 
 void Game::mapa_rampa() {
@@ -71,6 +71,7 @@ void Game::mapa_puente() {
     world.addBeam(36, 12, 90, LONG);
 
     world.addWorm(15, 14);
+    // world.addWorm(3, 14);
 }
 
 void Game::createPlayers() {
@@ -98,7 +99,7 @@ void Game::createPlayers() {
 
 void Game::run()
 {   
-    // createPlayers();
+    //createPlayers();
     begin = std::chrono::steady_clock::now();
     while (not game_finished)
     {
@@ -186,6 +187,15 @@ void Game::update()
             return;
         }
     }
+
+    /*
+    if (not greenGrenade.exploded) {
+        if (pasaron los seg de la cuenta regresiva) {
+            greenGrenade.explode();
+        }
+    }
+    */
+
     sendWorms();
 }
 
@@ -288,6 +298,16 @@ void Game::stop()
     // liberar memoria
 }
 
+/*void Game::throwGreenGrenade(uint8_t id, int angle) {
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
+    Worm *actualWorm = world.getWormsById()[idActualWorm];
+    greenGrenade = world.createGreenGrenade(actualWorm->x, actualWorm->y,
+                                            int angle, int direction,
+                                            int power, int timeToExplotion);
+    
+
+}*/
+
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
     uint8_t clientId = dto->get_cliente_id();
@@ -297,7 +317,7 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     {
         moveWormRight(clientId); // SI ES SU TURNO, LE PASAMOS EL ID
     }
-    else if (code == MOVER_A_IZQUERDA_CODE)
+    else if (code == MOVER_A_IZQUIERDA_CODE)
     {
         moveWormLeft(clientId); // SI ES SU TURNO, LE PASAMOS EL ID
     }
@@ -308,6 +328,9 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     } else if (code == SALTAR_CODE) {
         jumpWorm(clientId);
     }
+    /*else if (code == GRANADA_VERDE_CODE) {
+        throwGreenGrenade(clientId);
+    }*/
 }
 
 bool Game::anyWormMoving() {

@@ -1,13 +1,19 @@
 #include "socket_mock.h"
 
-SocketMock::SocketMock() : Socket("127.0.0.1", "8080"), receivedSize(0), wasClosed(false) {}
-// SocketMock::SocketMock() : receivedData(nullptr), receivedSize(0), wasClosed(false) {}
+SocketMock::SocketMock() : receivedSize(0), wasClosed(false) {}
 
 SocketMock::~SocketMock() {}
+
+SocketInterface *SocketMock::accept() { return new SocketMock(); }
+void SocketMock::shutdown(int how) {}
+int SocketMock::close() { return 0; }
+int SocketMock::sendsome(const void *data, unsigned int sz, bool *was_closed) { return 0; }
+int SocketMock::recvsome(void *data, unsigned int sz, bool *was_closed) { return 0; }
 
 // int SocketMock::recvall(void *data, unsigned int sz, bool *was_closed)
 int SocketMock::sendall(const void *data, unsigned int sz, bool *was_closed)
 {
+
     // almaceno los bytes que llegan
     // std::vector<char> newData(static_cast<char *>(data), static_cast<char *>(data) + sz);
     std::vector<char> newData(static_cast<const char *>(data), static_cast<const char *>(data) + sz);
@@ -39,10 +45,11 @@ bool SocketMock::wasConnectionClosed() const
 // int SocketMock::sendall(const void *data, unsigned int sz, bool *was_closed)
 int SocketMock::recvall(void *data, unsigned int sz, bool *was_closed)
 {
-    *was_closed = false;
+    // *was_closed = false;
     // Verifica si se han recibido datos previamente en recvall
     if (receivedData.empty())
     {
+        *was_closed = true;
         return 0; // No hay datos para enviar
     }
 
@@ -56,13 +63,6 @@ int SocketMock::recvall(void *data, unsigned int sz, bool *was_closed)
     // Actualiza receivedData y receivedSize
     receivedData.erase(receivedData.begin(), receivedData.begin() + bytesToSend);
     receivedSize -= bytesToSend;
-
-    // Verifica si quedan datos por enviar
-    if (receivedData.empty())
-    {
-        // Se han enviado todos los datos almacenados
-        *was_closed = true;
-    }
 
     return bytesToSend;
 }

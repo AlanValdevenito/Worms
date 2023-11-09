@@ -1,13 +1,14 @@
 #include "server_protocol.h"
 
-ServerProtocol::ServerProtocol(Socket &skt) : skt(skt) {}
+// ServerProtocol::ServerProtocol(Socket &skt) : skt(skt) {}
+ServerProtocol::ServerProtocol(Socket *skt) : skt(skt) {}
 
 ServerProtocol::~ServerProtocol() {}
 
 bool ServerProtocol::enviarCodigoDeElemento(std::shared_ptr<Dto> dto, bool &was_closed)
 {
     uint8_t code = dto->return_code();
-    skt.sendall(&(code), sizeof(code), &was_closed);
+    skt->sendall(&(code), sizeof(code), &was_closed);
 
     // printf("codigo : %u\n", code);
     return !was_closed;
@@ -20,7 +21,7 @@ bool ServerProtocol::enviarId(std::shared_ptr<ClienteId> id, bool &was_closed)
 
     uint8_t id_cliente = id->get_cliente_id();
     // printf("id enviado: %u\n", id_cliente);
-    skt.sendall(&(id_cliente), sizeof(id_cliente), &was_closed);
+    skt->sendall(&(id_cliente), sizeof(id_cliente), &was_closed);
 
     return !was_closed;
 }
@@ -31,7 +32,7 @@ bool ServerProtocol::enviarVigas(std::shared_ptr<Dto> vs, bool &was_closed)
         return false;
 
     uint8_t cant = vs->cantidad();
-    skt.sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
+    skt->sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
     if (was_closed)
         return false;
 
@@ -53,24 +54,23 @@ bool ServerProtocol::enviarViga(std::shared_ptr<Dto> dto, bool &was_closed)
     uint16_t alto = htons(dto->return_alto());
     uint16_t angulo = htons(dto->return_angulo());
 
-
-    skt.sendall(&(x), sizeof(x), &was_closed);
+    skt->sendall(&(x), sizeof(x), &was_closed);
     if (was_closed)
         return false;
 
-    skt.sendall(&(y), sizeof(y), &was_closed);
+    skt->sendall(&(y), sizeof(y), &was_closed);
     if (was_closed)
         return false;
 
-    skt.sendall(&(ancho), sizeof(ancho), &was_closed);
+    skt->sendall(&(ancho), sizeof(ancho), &was_closed);
     if (was_closed)
         return false;
 
-    skt.sendall(&(alto), sizeof(alto), &was_closed);
+    skt->sendall(&(alto), sizeof(alto), &was_closed);
     if (was_closed)
         return false;
 
-    skt.sendall(&(angulo), sizeof(angulo), &was_closed);
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
     if (was_closed)
         return false;
 
@@ -88,23 +88,23 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint8_t color = g->get_color();
 
 
-    skt.sendall(&(id), sizeof(id), &was_closed);
+    skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
         return false;
 
-    skt.sendall(&(x), sizeof(x), &was_closed);
+    skt->sendall(&(x), sizeof(x), &was_closed);
     if (was_closed)
         return false;
 
-    skt.sendall(&(y), sizeof(y), &was_closed);
+    skt->sendall(&(y), sizeof(y), &was_closed);
     if (was_closed)
         return false;
 
-    skt.sendall(&(vida), sizeof(vida), &was_closed);
+    skt->sendall(&(vida), sizeof(vida), &was_closed);
     if (was_closed)
         return false;
 
-    skt.sendall(&(color), sizeof(color), &was_closed);
+    skt->sendall(&(color), sizeof(color), &was_closed);
     if (was_closed)
         return false;
 
@@ -118,12 +118,12 @@ bool ServerProtocol::enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was
         return false;
 
     uint8_t cant = gs->cantidad();
-    skt.sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
+    skt->sendall(&(cant), sizeof(cant), &was_closed); // especifico la cantidad que llegara
     if (was_closed)
         return false;
 
     uint8_t turno = gs->get_gusano_de_turno();
-    skt.sendall(&(turno), sizeof(turno), &was_closed); // especifico la cantidad que llegara
+    skt->sendall(&(turno), sizeof(turno), &was_closed); // especifico la cantidad que llegara
     if (was_closed)
         return false;
 
@@ -153,12 +153,12 @@ bool ServerProtocol::enviarListaDePartidas(std::shared_ptr<ListaDePartidas> l, b
     std::list<uint8_t> lista = l->return_list();
 
     uint8_t cant = lista.size();
-    skt.sendall(&(cant), sizeof(cant), &was_closed); // cuantas opciones envio
+    skt->sendall(&(cant), sizeof(cant), &was_closed); // cuantas opciones envio
 
     for (uint8_t o : lista)
     {
         // printf("opcion: %u\n", o);
-        skt.sendall(&(o), sizeof(o), &was_closed);
+        skt->sendall(&(o), sizeof(o), &was_closed);
         if (was_closed)
             return false;
     }
@@ -178,7 +178,7 @@ bool ServerProtocol::enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_
 std::shared_ptr<Dto> ServerProtocol::recibirPartidaSeleccionada(uint8_t id, bool &was_closed)
 {
     uint8_t op;
-    skt.recvall(&op, sizeof(op), &was_closed);
+    skt->recvall(&op, sizeof(op), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
 
@@ -189,7 +189,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirPartidaSeleccionada(uint8_t id, bool
 std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBate(uint8_t id, bool &was_closed)
 {
     uint8_t angulo;
-    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
 
@@ -197,15 +197,15 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBate(uint8_t id, bool &was_
     return std::make_shared<Batear>(id, angulo);
 }
 
-std::shared_ptr<Dto> ServerProtocol::recibirParametrosDeLaPartida(bool &was_closed){
+std::shared_ptr<Dto> ServerProtocol::recibirParametrosDeLaPartida(bool &was_closed)
+{
     uint8_t cantidad_de_jugadores;
-    skt.recvall(&cantidad_de_jugadores, sizeof(cantidad_de_jugadores), &was_closed);
+    skt->recvall(&cantidad_de_jugadores, sizeof(cantidad_de_jugadores), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
 
     // printf("jugadores recibido: %u\n", cantidad_de_jugadores);
     return std::make_shared<NuevaPartida>(cantidad_de_jugadores);
-
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
@@ -213,13 +213,13 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
     uint8_t id;
     uint8_t code;
 
-    skt.recvall(&id, sizeof(id), &was_closed);
+    skt->recvall(&id, sizeof(id), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
 
     // printf("cliente id: %u\n", id);
 
-    skt.recvall(&code, sizeof(code), &was_closed);
+    skt->recvall(&code, sizeof(code), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
     // printf("codigo: %u\n", code);
@@ -228,12 +228,12 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return recibirPartidaSeleccionada(id, was_closed);
     else if (code == MOVER_A_DERECHA_CODE)
         return std::make_shared<MoverADerecha>(id);
-    else if (code == MOVER_A_IZQUERDA_CODE)
+    else if (code == MOVER_A_IZQUIERDA_CODE)
         return std::make_shared<MoverAIzquierda>(id);
     else if (code == BATEAR_CODE)
         return recibirAtaqueConBate(id, was_closed);
     else if (code == FINALIZAR_CODE)
-        return std::make_shared<Dto>(FINALIZAR_CODE,id);
+        return std::make_shared<Dto>(FINALIZAR_CODE, id);
     else if (code == SALTAR_CODE)
         return std::make_shared<Saltar>(id);
     else if (code == NUEVA_PARTIDA_CODE)

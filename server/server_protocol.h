@@ -27,7 +27,8 @@
 class ServerProtocol
 {
 public:
-    explicit ServerProtocol(Socket &skt);
+    // explicit ServerProtocol(Socket &skt);
+    explicit ServerProtocol(Socket *skt);
     ~ServerProtocol();
     std::shared_ptr<Dto> recibirActividad(bool &was_closed);
     bool enviarId(std::shared_ptr<ClienteId> id, bool &was_closed);
@@ -39,7 +40,8 @@ public:
     bool enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_closed);
 
 private:
-    Socket &skt;
+    // Socket &skt;
+    Socket *skt;
     std::shared_ptr<Dto> recibirPartidaSeleccionada(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBate(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);

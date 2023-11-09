@@ -26,6 +26,7 @@ void Sender::run()
 
 bool Sender::send(std::shared_ptr<Dto> d)
 {
+
     if (d->return_code() == CLIENTE_ID_CODE)
         return protocol.enviarId(std::dynamic_pointer_cast<ClienteId>(d), was_closed);
     else if (d->return_code() == VIGA_CODE)
