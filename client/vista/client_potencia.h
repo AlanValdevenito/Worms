@@ -21,11 +21,14 @@ private:
 public:
     Potencia(SDL2pp::Renderer &renderer);
 
-    // Renderiza la potencia.
-    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda, int angulo);
     // Actualiza la animacion. 
     void update();
+
+    // Renderiza la potencia.
+    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda, int angulo);
+
     void reiniciar();
+    
     int get_current_frame();
 };
 

@@ -10,6 +10,8 @@ private:
     // Atributo que almacena la textura de la animacion
     // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
     SDL2pp::Texture texture;
+    // Entero que almacena el tipo de arma
+    int tipoDeArma;
     // Entero que almacena el indice del frame actual en la animacion.
     int currentFrame;
     // Entero que representa el numero todal de frames en la animacion.
@@ -25,13 +27,16 @@ public:
 
     // Actualiza la animacion. 
     void update();
-    void reiniciar();
-    bool get_animacion_completa();
 
-    void cambiar_arma(std::string &ruta);
-
-    // Renderiza la arma.
+     // Renderiza la arma.
     void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType);
+
+    void reiniciar();
+
+    void cambiar_arma(int tipo, std::string &ruta);
+    
+    bool get_animacion_completa();
+    int get_tipo();
 };
 
 #endif // ARMA_H

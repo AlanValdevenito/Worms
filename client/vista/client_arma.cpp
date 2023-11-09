@@ -20,8 +20,13 @@ void Arma::update() {
     }
 }
 
-void Arma::cambiar_arma(std::string &ruta) {
+void Arma::cambiar_arma(int tipo, std::string &ruta) {
+    this->tipoDeArma = tipo;
     this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH + ruta).SetColorKey(true, 0));
+}
+
+int Arma::get_tipo() {
+    return this->tipoDeArma;
 }
 
 void Arma::reiniciar() {

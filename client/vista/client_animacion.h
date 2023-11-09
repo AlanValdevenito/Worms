@@ -25,11 +25,11 @@ private:
     float elapsed;
 
 public:
-
     Animation(SDL2pp::Renderer &renderer);
 
     // Actualiza la animacion. 
     void update(int it);
+    
     // Renderiza la animacion en el area especificada. 
     // El ultimo parametro se utiliza para controlar el volteo de la imagen.
     void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType);

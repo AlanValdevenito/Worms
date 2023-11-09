@@ -11,6 +11,7 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "client_camara.h"
+#include "client_granada.h"
 #include "client_worm.h"
 #include "client.h"
 #include "viga.h"
@@ -29,7 +30,8 @@ private:
 
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
-
+    Granada *granada; // Si no es un puntero le molesta
+    
     int id_gusano_actual;
 
     unsigned int tiempoInicial;
@@ -40,8 +42,6 @@ private:
     
     Camara camara;
 
-    int armaEquipada;
-
 public:
     Partida(Client &cliente);
 
@@ -50,6 +50,7 @@ public:
     void guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Color> &colores);
 
     bool handleEvents(SDL2pp::Renderer &renderer);
+    void enviarAtaque();
 
     void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
     void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
@@ -62,8 +63,6 @@ public:
     float centimetros_a_metros(float centimetros);
 
     void liberar_memoria();
-
-    void enviarAtaque();
 };
 
 #endif
