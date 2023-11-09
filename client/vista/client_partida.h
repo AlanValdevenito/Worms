@@ -14,6 +14,7 @@
 #include "viga.h"
 #include "mover.h"
 #include "dto.h"
+#include "client_camara.h"
 
 using namespace SDL2pp;
 
@@ -21,8 +22,10 @@ class Partida
 {
 private:
     Client &cliente;
+
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
+
     int id_gusano_actual;
 
     unsigned int tiempoInicial;
@@ -30,13 +33,15 @@ private:
     unsigned int tiempoRestante; 
 
     std::map<int, SDL2pp::Texture *> texturas;
+    
+    Camara camara;
 
 public:
     Partida(Client &cliente);
 
     int iniciar();
     void guardar_vigas();
-    void guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, std::map<int, SDL2pp::Color> &colores);
+    void guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Color> &colores);
 
     bool handleEvents(SDL2pp::Renderer &renderer);
 

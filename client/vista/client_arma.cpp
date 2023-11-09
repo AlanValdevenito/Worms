@@ -4,6 +4,7 @@
 
 Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0))), 
                                         currentFrame(0), 
+                                        numFrames(this->texture.GetHeight() / this->texture.GetWidth()),
                                         size(this->texture.GetWidth()), 
                                         animacionCompleta(false) {}
 
@@ -14,7 +15,7 @@ void Arma::update() {
         this->currentFrame = this->currentFrame % 10;
     }
 
-    if (this->currentFrame == 9) {
+    if (this->currentFrame == this->numFrames - 1) {
         this->animacionCompleta = true;
     }
 }
@@ -29,8 +30,6 @@ bool Arma::get_animacion_completa() {
 }
 
 void Arma::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
-
-    // std::cout << this->currentFrame << std::endl;
 
     renderer.Copy(
         texture,

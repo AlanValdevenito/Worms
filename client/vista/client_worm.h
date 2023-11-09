@@ -20,6 +20,8 @@ private:
     Mira mira;
     Potencia potencia;
 
+    SDL2pp::Color &color;
+
     bool armaEquipada;
     // Booleano que indica si el jugador activo la mira.
     bool miraActivada;
@@ -29,11 +31,10 @@ private:
     float x;
     float y;
     int vida;
-    SDL2pp::Color &color;
 
 public:
 
-    Worm(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, SDL2pp::Color &color, float x, float y, int vida);
+    Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida);
 
     // Actualiza el Worm en funcion del tiempo transcurrido.
     void update(int it, float nuevoX, float nuevoY, int vida);
@@ -54,6 +55,9 @@ public:
     int get_potencia();
     int get_vida();
     int get_angulo();
+
+    float get_x();
+    float get_y();
 };
 
 #endif // __WORM_H_

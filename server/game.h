@@ -39,6 +39,7 @@ private:
     // std::map<int, LISTA DE WORMS>;
     void mapa_rampa();
     void mapa_jaula();
+    void mapa_puente();
 
 public:
     int idTurn;

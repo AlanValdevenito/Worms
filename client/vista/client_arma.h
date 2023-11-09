@@ -12,6 +12,9 @@ private:
     SDL2pp::Texture texture;
     // Entero que almacena el indice del frame actual en la animacion.
     int currentFrame;
+    // Entero que representa el numero todal de frames en la animacion.
+    // Se calcula dividiendo la altura de la textura por su ancho.
+    int numFrames;
     // Entero que almacena el tamaño de cada frame (altura y acho).
     int size;
     // Booleano que indica si la animacion se completo

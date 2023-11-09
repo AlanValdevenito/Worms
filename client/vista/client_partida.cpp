@@ -6,7 +6,7 @@
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
-Partida::Partida(Client &cliente) : cliente(cliente) {}
+Partida::Partida(Client &cliente) : cliente(cliente), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
 
 int Partida::iniciar()
 {
@@ -29,11 +29,6 @@ int Partida::iniciar()
     this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
     this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
 
-    // Cargamos la imagen para un worm
-    Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-
-    sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
-
     // Cargamos la fuente de la letra
     Font font(DATA_PATH "/Vera.ttf", 12);
 
@@ -50,7 +45,7 @@ int Partida::iniciar()
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
     guardar_vigas();
-    guardar_worms(renderer, sprites, colores);
+    guardar_worms(renderer, colores);
 
     /******************** GAME LOOP ********************/
 
@@ -144,7 +139,7 @@ void Partida::guardar_vigas()
     }
 }
 
-void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, std::map<int, SDL2pp::Color> &colores)
+void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Color> &colores)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
     this->id_gusano_actual = dto->get_gusano_de_turno();
@@ -161,8 +156,10 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(renderer, sprites, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
+        this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
     }
+
+    camara.seguirWorm(*this->worms[this->id_gusano_actual]);
 
     // delete dto;
 }
@@ -381,11 +378,13 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-        renderer.Copy(
-            *this->texturas[2],
-            Rect(0, 0, 50, 50),
-            Rect(metros_a_pixeles(centimetros_a_metros(x)), altura - metros_a_pixeles(centimetros_a_metros(y)),
-                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+        if (camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), ancho, alto)) {
+            renderer.Copy(
+                *this->texturas[2],
+                Rect(0, 0, 50, 50),
+                Rect(metros_a_pixeles(centimetros_a_metros(x)), altura - metros_a_pixeles(centimetros_a_metros(y)),
+                metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+        }
     }
 }
 
@@ -429,6 +428,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
     std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
     this->id_gusano_actual = dto->get_gusano_de_turno();
+    camara.seguirWorm(*this->worms[this->id_gusano_actual]);
 
     float altura = renderer.GetOutputHeight();
 

@@ -6,11 +6,17 @@
 #define OFFSET 16 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                  // tienen el (0,0) de los cuerpos en el centro
 
-Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, SDL2pp::Color &color, float x, 
-           float y, int vida) : animacion(texture), arma(renderer), mira(renderer), potencia(renderer), armaEquipada(false), 
-                                miraActivada(false), mirandoIzquierda(true), x(x), y(y), vida(vida), color(color) {
-    
-}
+Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida): animacion(renderer), 
+                                                                                          arma(renderer), 
+                                                                                          mira(renderer), 
+                                                                                          potencia(renderer), 
+                                                                                          color(color),
+                                                                                          armaEquipada(false), 
+                                                                                          miraActivada(false), 
+                                                                                          mirandoIzquierda(true), 
+                                                                                          x(x), 
+                                                                                          y(y), 
+                                                                                          vida(vida){}
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos. Esto les va a resultar muy util.
 
@@ -134,4 +140,12 @@ int Worm::get_vida() {
 
 int Worm::get_angulo() {
     return this->mira.get_angulo();
+}
+
+float Worm::get_x() {
+    return this->x;
+}
+
+float Worm::get_y() {
+    return this->y;
 }

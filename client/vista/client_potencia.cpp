@@ -5,9 +5,10 @@
 
 #define POTENCIA_MAXIMA 16
 
-Potencia::Potencia(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0))), currentFrame(0), 
-                                              numFrames(this->texture.GetHeight() / this->texture.GetWidth()), 
-                                              size(this->texture.GetWidth()) {}
+Potencia::Potencia(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0))), 
+                                                currentFrame(0), 
+                                                numFrames(this->texture.GetHeight() / this->texture.GetWidth()), 
+                                                size(this->texture.GetWidth()) {}
 
 void Potencia::update() {
     if ((this->currentFrame < POTENCIA_MAXIMA)) {
