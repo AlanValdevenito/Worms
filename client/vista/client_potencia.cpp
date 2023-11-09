@@ -5,7 +5,7 @@
 
 #define POTENCIA_MAXIMA 16
 
-Potencia::Potencia(SDL2pp::Texture &potencia): texture(potencia), currentFrame(0), 
+Potencia::Potencia(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0))), currentFrame(0), 
                                               numFrames(this->texture.GetHeight() / this->texture.GetWidth()), 
                                               size(this->texture.GetWidth()) {}
 
@@ -30,7 +30,7 @@ void Potencia::render(SDL2pp::Renderer &renderer, float x, float y, bool mirando
     for (int i = 0; i < this->currentFrame; i++) {
 
         renderer.Copy(
-            texture,
+            this->texture,
             SDL2pp::Rect(0, (this->size) * i, this->size, this->size),
             SDL2pp::Rect(x + ((mirandoIzquierda ? -radio : radio) * cos(angulo * (M_PI / 180))), 
                          y - (radio * sin(angulo * (M_PI / 180))), this->size, this->size)

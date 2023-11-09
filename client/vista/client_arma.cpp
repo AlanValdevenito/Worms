@@ -1,11 +1,11 @@
 #include "client_arma.h"
 
-#define ANCHO_SPRITE 60
-#define ALTO_SPRITE 60
-
 #include <cmath>
 
-Arma::Arma(SDL2pp::Texture &arma): texture(arma), currentFrame(0), animacionCompleta(false) {}
+Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0))), 
+                                        currentFrame(0), 
+                                        size(this->texture.GetWidth()), 
+                                        animacionCompleta(false) {}
 
 void Arma::update() {
 
@@ -34,7 +34,7 @@ void Arma::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_Render
 
     renderer.Copy(
         texture,
-        SDL2pp::Rect(0, (ANCHO_SPRITE) * this->currentFrame, ANCHO_SPRITE, ANCHO_SPRITE),
+        SDL2pp::Rect(0, (this->size) * this->currentFrame, this->size, this->size),
         dst,
         0.0,                // don't rotate
         SDL2pp::NullOpt,    // rotation center - not needed

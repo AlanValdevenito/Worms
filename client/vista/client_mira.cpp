@@ -2,25 +2,21 @@
 
 #include <cmath>
 
-#define ANCHO_SPRITE 31
-#define ALTO_SPRITE 31
-
 #define OFFSET 16
 
 #define RADIO 176
 
-Mira::Mira(): angulo(0) {
-}
+Mira::Mira(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/mira.png").SetColorKey(true, 0))),
+                                        size(this->texture.GetWidth()), 
+                                        angulo(0) {}
 
 void Mira::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda) {
-    SDL2pp::Texture texture(renderer, SDL2pp::Surface(DATA_PATH "/mira.png").SetColorKey(true, 0));
-    texture.SetBlendMode(SDL_BLENDMODE_BLEND);
 
     renderer.Copy(
         texture,
         SDL2pp::NullOpt,
         SDL2pp::Rect(x + OFFSET + ((mirandoIzquierda ? -RADIO : RADIO) * cos(this->angulo * (M_PI / 180))), 
-                        y + OFFSET - (RADIO * sin(this->angulo * (M_PI / 180))), ANCHO_SPRITE, ALTO_SPRITE)
+                        y + OFFSET - (RADIO * sin(this->angulo * (M_PI / 180))), this->size, this->size)
     );
 }
 

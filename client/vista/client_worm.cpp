@@ -6,8 +6,8 @@
 #define OFFSET 16 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                  // tienen el (0,0) de los cuerpos en el centro
 
-Worm::Worm(SDL2pp::Texture &texture, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, std::map<int, SDL2pp::Color> &colores, float x, 
-           float y, int vida, int color) : animacion(texture), arma(arma), mira(Mira()), potencia(potencia), colores(colores), armaEquipada(false), 
+Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture, SDL2pp::Color &color, float x, 
+           float y, int vida) : animacion(texture), arma(renderer), mira(renderer), potencia(renderer), armaEquipada(false), 
                                 miraActivada(false), mirandoIzquierda(true), x(x), y(y), vida(vida), color(color) {
     
 }
@@ -96,18 +96,18 @@ void Worm::render(SDL2pp::Renderer &renderer)
 void Worm::render_vida(SDL2pp::Renderer &renderer) {
     // Cargamos la fuente de la letra
     SDL2pp::Font font(DATA_PATH "/Vera.ttf", 14);
+    SDL2pp::Color blanco(255, 255, 255, 255); 
 
 	SDL2pp::Rect borde(this->x - 5, this->y - 30, 32, 22);
-	// SDL2pp::Color blanco(255, 255, 255, 255); 
-	renderer.SetDrawColor(this->colores[3]);
+	renderer.SetDrawColor(blanco);
 	renderer.FillRect(borde);
 
 	SDL2pp::Rect contenedor(this->x - 3, this->y - 28, 28, 18);
 	//SDL2pp::Color negro(0,0,0,255);
-	renderer.SetDrawColor(this->colores[this->color]); 
+	renderer.SetDrawColor(this->color); 
 	renderer.FillRect(contenedor);
 
-	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), this->colores[3]);
+	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), blanco);
 	SDL2pp::Texture texture(renderer, surface);
 
 	SDL2pp::Rect mensaje(this->x - 2, this->y - 28, surface.GetWidth(), surface.GetHeight());

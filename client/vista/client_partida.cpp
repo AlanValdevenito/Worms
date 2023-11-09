@@ -1,5 +1,8 @@
 #include "client_partida.h"
 #include <unistd.h>
+
+#define TITULO "Worms 2D"
+
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
@@ -13,9 +16,7 @@ int Partida::iniciar()
 
     SDLTTF ttf;
 
-    std::string titulo = "Worms 2D - [" + std::to_string(cliente.id) + "]";
-
-    Window window(titulo,
+    Window window(TITULO,
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                   ANCHO_VENTANA, ALTO_VENTANA,
                   SDL_WINDOW_RESIZABLE);
@@ -24,45 +25,21 @@ int Partida::iniciar()
 
     /******************** TEXTURAS ********************/
 
+    this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
+    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
+    this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
+
     // Cargamos la imagen para un worm
     Texture sprites(renderer, Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
 
     sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
-
-    // Cargamos la imagen para un arma
-    Texture arma(renderer, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
-
-    arma.SetBlendMode(SDL_BLENDMODE_BLEND);
-
-    // Cargamos la imagen para un worm
-    Texture potencia(renderer, Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0));
-
-    potencia.SetBlendMode(SDL_BLENDMODE_BLEND);
-
-    // Cargamos la imagen para una viga
-    Texture viga(renderer, Surface(DATA_PATH "/grdl4.png")
-                               .SetColorKey(true, 0xff));
-
-    viga.SetBlendMode(SDL_BLENDMODE_BLEND);
-
-    // Cargamos la imagen para el fondo
-    Texture background(renderer, Surface(DATA_PATH "/background.png")
-                                     .SetColorKey(true, 0xff));
-
-    background.SetBlendMode(SDL_BLENDMODE_BLEND);
-
-    // Cargamos la imagen para el agua
-    Texture agua(renderer, Surface(DATA_PATH "/agua.png")
-                               .SetColorKey(true, 0xff));
-
-    agua.SetBlendMode(SDL_BLENDMODE_BLEND);
 
     // Cargamos la fuente de la letra
     Font font(DATA_PATH "/Vera.ttf", 12);
 
     /******************** COLORES ********************/
 
-    std::map<int, SDL2pp::Color> colores;
+    std::map<int, Color> colores;
 
     colores[0] = SDL2pp::Color(255,0,0); // Rojo
     colores[1] = SDL2pp::Color(0,0,255); // Azul
@@ -73,12 +50,12 @@ int Partida::iniciar()
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
     guardar_vigas();
-    guardar_worms(renderer, sprites, arma, potencia, colores);
+    guardar_worms(renderer, sprites, colores);
 
     /******************** GAME LOOP ********************/
 
     this->tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
-    unsigned int cuentaRegresiva = 60000;        // 60 segundos en milisegundos
+    unsigned int cuentaRegresiva = 61000;        // 60 segundos en milisegundos
 
     auto t1 = SDL_GetTicks();
     int it = 0;            // Registro del numero de iteraciones
@@ -98,7 +75,7 @@ int Partida::iniciar()
             this->tiempoInicial = this->tiempoActual;
         }
 
-        if (handleEvents(renderer, arma))
+        if (handleEvents(renderer))
         {
             cliente.kill();
             liberar_memoria();
@@ -112,8 +89,7 @@ int Partida::iniciar()
             return 0;
         }
 
-        // actualizar(renderer, it);
-        renderizar(renderer, viga, background, agua, font);
+        renderizar(renderer, font);
 
         /* IF BEHIND, KEEP WORKING */
         // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -168,7 +144,7 @@ void Partida::guardar_vigas()
     }
 }
 
-void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, std::map<int, SDL2pp::Color> &colores)
+void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, std::map<int, SDL2pp::Color> &colores)
 {
     std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
     this->id_gusano_actual = dto->get_gusano_de_turno();
@@ -185,13 +161,13 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(sprites, arma, potencia, colores, metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_color());
+        this->worms[gusano->get_id()] = new Worm(renderer, sprites, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
     }
 
     // delete dto;
 }
 
-bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
+bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 {
     // Procesamiento de evento
     SDL_Event event;
@@ -310,7 +286,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    arma.Update(NullOpt, Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
                     this->worms[this->id_gusano_actual]->equipar_arma();
                 }
 
@@ -352,7 +327,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
             case SDLK_SPACE:
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    arma.Update(NullOpt, Surface(DATA_PATH "/wbsbbk2.png").SetColorKey(true, 0));
                     cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
                     this->worms[this->id_gusano_actual]->desequipar_arma();
 
@@ -377,24 +351,22 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma)
     return false;
 }
 
-void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font)
+void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Font &font)
 {
     renderer.Clear();
 
-    renderizar_mapa(renderer, viga, background, agua);
+    renderizar_mapa(renderer);
     renderizar_temporizador(renderer, font);
     renderizar_worms(renderer);
-
-    // renderizar_nombre(renderer, font, animacion);
 
     renderer.Present();
 }
 
-void Partida::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua)
+void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 {
 
-    renderer.Copy(background, NullOpt, NullOpt);
-    renderer.Copy(agua, NullOpt, NullOpt);
+    renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
+    renderer.Copy(*this->texturas[1], NullOpt, NullOpt);
 
     float altura = renderer.GetOutputHeight();
 
@@ -410,7 +382,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga,
         float angulo = -(this->vigas[i]->return_angulo());
 
         renderer.Copy(
-            viga,
+            *this->texturas[2],
             Rect(0, 0, 50, 50),
             Rect(metros_a_pixeles(centimetros_a_metros(x)), altura - metros_a_pixeles(centimetros_a_metros(y)),
                  metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
@@ -445,26 +417,6 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
     renderer.Copy(texture, NullOpt, nombre);
 }
-
-/*void Partida::renderizar_nombre(SDL2pp::Renderer &renderer, SDL2pp::Font &font, Animacion &animacion) {
-    int vcenter = renderer.GetOutputHeight() / 2;
-
-    Rect borde((int)animacion.gusano.x + 6, vcenter - 77, 50, 21);
-    Color blanco(255, 255, 255, 255);
-    renderer.SetDrawColor(blanco);
-    renderer.FillRect(borde);
-
-    Rect contenedor((int)animacion.gusano.x + 8, vcenter - 75, 46, 17);
-    Color negro(0,0,0,255);
-    renderer.SetDrawColor(negro);
-    renderer.FillRect(contenedor);
-
-    Surface surface = font.RenderText_Solid(animacion.gusano.nombre, blanco);
-    Texture texture(renderer, surface);
-
-    Rect nombre((int)animacion.gusano.x + 18, vcenter - 75, surface.GetWidth(), surface.GetHeight());
-    renderer.Copy(texture, NullOpt, nombre);
-}*/
 
 bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 {

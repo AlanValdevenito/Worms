@@ -74,7 +74,7 @@ bool ServerProtocol::enviarViga(std::shared_ptr<Dto> dto, bool &was_closed)
     if (was_closed)
         return false;
 
-    printf("Server ---> x:%u  y:%u ancho:%u  alto:%u  angulo:%u  \n", dto->x_pos(), dto->y_pos(), dto->return_ancho(), dto->return_alto(), dto->return_angulo());
+    // printf("Server ---> x:%u  y:%u ancho:%u  alto:%u  angulo:%u  \n", dto->x_pos(), dto->y_pos(), dto->return_ancho(), dto->return_alto(), dto->return_angulo());
 
     return true;
 }
@@ -108,7 +108,7 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     if (was_closed)
         return false;
 
-    printf("id:%u  x:%u  y:%u vida:%u color:%u\n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida(), g->get_color());
+    // printf("id:%u  x:%u  y:%u vida:%u color:%u\n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida(), g->get_color());
     return true;
 }
 

@@ -7,13 +7,18 @@ class Arma
 {
 
 private:
-     SDL2pp::Texture &texture;
+    // Atributo que almacena la textura de la animacion
+    // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
+    SDL2pp::Texture texture;
     // Entero que almacena el indice del frame actual en la animacion.
     int currentFrame;
+    // Entero que almacena el tamaño de cada frame (altura y acho).
+    int size;
+    // Booleano que indica si la animacion se completo
     bool animacionCompleta;
 
 public:
-    Arma(SDL2pp::Texture &texture);
+    Arma(SDL2pp::Renderer &renderer);
 
     // Actualiza la animacion. 
     void update();

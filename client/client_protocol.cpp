@@ -12,7 +12,7 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("codigo:%u\n",code);
+    // printf("codigo:%u\n",code);
 
     if (code == VIGA_CODE)
         return recibirVigas(was_closed);
@@ -204,7 +204,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     x = ntohs(x);
     y = ntohs(y);
 
-    printf("Cliente ---> id:%u  x:%u y:%u  vida:%u color:%u\n", id, x, y, vida, color);
+    // printf("Cliente ---> id:%u  x:%u y:%u  vida:%u color:%u\n", id, x, y, vida, color);
 
     return std::make_shared<Gusano>(id, x, y, vida, color);
 }

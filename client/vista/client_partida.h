@@ -29,18 +29,20 @@ private:
     unsigned int tiempoActual;  
     unsigned int tiempoRestante; 
 
+    std::map<int, SDL2pp::Texture *> texturas;
+
 public:
     Partida(Client &cliente);
 
     int iniciar();
     void guardar_vigas();
-    void guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, SDL2pp::Texture &arma, SDL2pp::Texture &potencia, std::map<int, SDL2pp::Color> &colores);
+    void guardar_worms(SDL2pp::Renderer &renderer, SDL2pp::Texture &sprites, std::map<int, SDL2pp::Color> &colores);
 
-    bool handleEvents(SDL2pp::Renderer &renderer, SDL2pp::Texture &arma);
+    bool handleEvents(SDL2pp::Renderer &renderer);
 
-    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua, SDL2pp::Font &font);
+    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
     void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
-    void renderizar_mapa(SDL2pp::Renderer &renderer, SDL2pp::Texture &viga, SDL2pp::Texture &background, SDL2pp::Texture &agua);
+    void renderizar_mapa(SDL2pp::Renderer &renderer);
     void renderizar_worms(SDL2pp::Renderer &renderer);
 
     bool actualizar(SDL2pp::Renderer &renderer, int it);
