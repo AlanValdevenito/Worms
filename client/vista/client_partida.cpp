@@ -48,6 +48,8 @@ int Partida::iniciar()
     guardar_vigas();
     guardar_worms(renderer, colores);
 
+    this->granada = new Granada(renderer, metros_a_pixeles(15), metros_a_pixeles(8));
+
     /******************** GAME LOOP ********************/
 
     this->tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
@@ -286,9 +288,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    this->armaEquipada = GRANADA_VERDE;
                     ruta = "/wgrnlnk.png";
-                    this->worms[this->id_gusano_actual]->equipar_arma(ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE, ruta);
                 }
 
                 break;
@@ -300,12 +301,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    // Podria incluir el numero de arma adentro de la clase Arma y pasarla como parametro
-                    // en el metodo equipar_arma().
-                    // Necesitaria un getter para usarlo en el metodo enviarAtaque().
-                    this->armaEquipada = BATE; 
                     ruta = "/wbsblnk.png";
-                    this->worms[this->id_gusano_actual]->equipar_arma(ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta);
                 }
 
                 break;
@@ -346,7 +343,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_SPACE:
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    // cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
                     enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                     this->tiempoInicial = this->tiempoActual;
@@ -370,15 +366,19 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
     return false;
 }
 
-void Partida::enviarAtaque(){
+void Partida::enviarAtaque() {
+    int armaEquipada = this->worms[this->id_gusano_actual]->get_tipo_de_arma();
 
-    if(this->armaEquipada == BATE)
+    if(armaEquipada == BATE) {
         cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
-    else if (this->armaEquipada == GRANADA_VERDE)
+    
+    } else if (armaEquipada == GRANADA_VERDE) {
         cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo()));
-    else
-        std::cerr<<"El numero recibido no esta asociado a ningun arma\n";
+    
+    } else {
+        std::cerr << "El numero recibido no esta asociado a ningun arma\n";
+    }
 }
 
 void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Font &font)
@@ -419,6 +419,8 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
         //}
     }
+
+    this->granada->render(renderer);
 }
 
 void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
@@ -479,7 +481,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
     // if(dto->hay_proyectil()) {
         // std::shared_ptr<Granadeverde> granada = std::dynamic_pointer_cast<GranadaVerde>(cliente.recv_queue.pop());
-        
     // }
 
     // camara.seguirWorm(*this->worms[this->id_gusano_actual]);

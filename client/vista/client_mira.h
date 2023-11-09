@@ -19,10 +19,11 @@ public:
     Mira(SDL2pp::Renderer &renderer);
 
     void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda);
+
     void aumentar_angulo();
     void decrementar_angulo();
-
     int get_angulo();
+    
     void reiniciar();
 };
 
