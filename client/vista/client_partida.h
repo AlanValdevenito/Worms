@@ -26,11 +26,13 @@ using namespace SDL2pp;
 class Partida
 {
 private:
+    SDLTTF ttf;
+
     Client &cliente;
 
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
-    Granada *granada; // Si no es un puntero le molesta
+    Granada *granada; // Si no es un puntero le molesta ya que no lo inicializo
     
     int id_gusano_actual;
 
@@ -39,6 +41,8 @@ private:
     unsigned int tiempoRestante; 
 
     std::map<int, SDL2pp::Texture *> texturas;
+    std::map<int, SDL2pp::Color> colores;
+    Font fuente;
     
     Camara camara;
 
@@ -46,18 +50,22 @@ public:
     Partida(Client &cliente);
 
     int iniciar();
+
+    void inicializar_texturas(SDL2pp::Renderer &renderer);
+    void inicializar_colores();
+
     void guardar_vigas();
     void guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Color> &colores);
 
     bool handleEvents(SDL2pp::Renderer &renderer);
     void enviarAtaque();
 
-    void renderizar(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
-    void renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font);
+    bool actualizar(SDL2pp::Renderer &renderer, int it);
+
+    void renderizar(SDL2pp::Renderer &renderer);
+    void renderizar_temporizador(SDL2pp::Renderer &renderer);
     void renderizar_mapa(SDL2pp::Renderer &renderer);
     void renderizar_worms(SDL2pp::Renderer &renderer);
-
-    bool actualizar(SDL2pp::Renderer &renderer, int it);
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);

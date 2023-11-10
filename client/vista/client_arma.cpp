@@ -10,6 +10,9 @@ Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp
                                         size(this->texture.GetWidth()), 
                                         animacionCompleta(false) {}
 
+
+/******************** ACTUALIZACION Y RENDERIZADO ********************/
+
 void Arma::update() {
 
     if (not this->animacionCompleta) {
@@ -20,27 +23,6 @@ void Arma::update() {
     if (this->currentFrame == this->numFrames - 1) {
         this->animacionCompleta = true;
     }
-}
-
-void Arma::equipar_arma(int tipo, std::string &ruta) {
-    this->tipoDeArma = tipo;
-    this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH + ruta).SetColorKey(true, 0));
-}
-
-int Arma::get_tipo() {
-    return this->tipoDeArma;
-}
-
-void Arma::reiniciar() {
-    this->animacionCompleta = false;
-    this->currentFrame = 0;
-
-    this->mira.reiniciar();
-    this->potencia.reiniciar();
-}
-
-bool Arma::get_animacion_completa() {
-    return this->animacionCompleta;
 }
 
 void Arma::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda) {
@@ -60,6 +42,19 @@ void Arma::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzqu
     this->potencia.render(renderer, x, y, mirandoIzquierda, this->mira.get_angulo());
 }
 
+/******************** ARMA ********************/
+
+void Arma::equipar_arma(int tipo, std::string &ruta) {
+    this->tipoDeArma = tipo;
+    this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH + ruta).SetColorKey(true, 0));
+}
+
+int Arma::get_tipo() {
+    return this->tipoDeArma;
+}
+
+/******************** ANGULO ********************/
+
 void Arma::aumentar_angulo() {
     this->mira.aumentar_angulo();
 }
@@ -67,6 +62,12 @@ void Arma::aumentar_angulo() {
 void Arma::decrementar_angulo() {
     this->mira.decrementar_angulo();
 }
+
+int Arma::get_angulo() {
+    return this->mira.get_angulo();
+}
+
+/******************** POTENCIA ********************/
 
 void Arma::aumentar_potencia() {
     this->potencia.update();
@@ -76,6 +77,16 @@ int Arma::get_potencia() {
     return this->potencia.get_current_frame();
 }
 
-int Arma::get_angulo() {
-    return this->mira.get_angulo();
+/******************** REINICIO DE LAS ANIMACIONES ********************/
+
+void Arma::reiniciar() {
+    this->animacionCompleta = false;
+    this->currentFrame = 0;
+
+    this->mira.reiniciar();
+    this->potencia.reiniciar();
+}
+
+bool Arma::get_animacion_completa() {
+    return this->animacionCompleta;
 }

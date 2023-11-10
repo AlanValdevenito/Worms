@@ -7,20 +7,16 @@ class Granada
 {
 
 private:
-    // Atributo que almacena la textura de la animacion
-    // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
-    SDL2pp::Texture texture;
-    // Entero que almacena el tamaño de cada frame (altura y acho).
-    int size;
+    SDL2pp::Texture texture; // Atributo que almacena la textura de la animacion
 
-    // Enteros que indican la posicion del Worm en pixeles.
+    int size; // Entero que almacena el tamaño de cada frame (altura y ancho).
+
     float x;
     float y;
 
 public:
     Granada(SDL2pp::Renderer &renderer, float x, float y);
 
-    // Renderiza la potencia.
     void render(SDL2pp::Renderer &renderer);
     void update(float nuevoX, float nuevoY);
 };

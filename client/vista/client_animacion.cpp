@@ -10,7 +10,7 @@
 Animation::Animation(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
                                                currentFrame(0),
                                                numFrames(this->texture.GetHeight() / this->texture.GetWidth()),
-                                               size(this->texture.GetWidth()), elapsed(0.0f) {
+                                               size(this->texture.GetWidth()) {
     assert(this->numFrames > 0);
     assert(this->size > 0);
 }

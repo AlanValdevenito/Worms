@@ -6,15 +6,13 @@
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
-Partida::Partida(Client &cliente) : cliente(cliente), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
+Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 12), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
 
 int Partida::iniciar()
 {
     /******************** INICIAR SDL ********************/
 
     SDL sdl(SDL_INIT_VIDEO);
-
-    SDLTTF ttf;
 
     Window window(TITULO,
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -23,25 +21,10 @@ int Partida::iniciar()
 
     Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    /******************** TEXTURAS ********************/
+    /******************** TEXTURAS Y COLORES ********************/
 
-    // Probar teniendo un std::map<int, SDL2pp::Texture> y usar el HEAP.
-    this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
-    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
-    this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
-
-    // Cargamos la fuente de la letra
-    Font font(DATA_PATH "/Vera.ttf", 12);
-
-    /******************** COLORES ********************/
-
-    std::map<int, Color> colores;
-
-    colores[0] = SDL2pp::Color(255,0,0); // Rojo
-    colores[1] = SDL2pp::Color(0,0,255); // Azul
-    colores[2] = SDL2pp::Color(0,255,0); // Verde
-    colores[3] = SDL2pp::Color(255,255,255); // Blanco
-    colores[4] = SDL2pp::Color(0,0,0); // Negro
+    inicializar_texturas(renderer);
+    inicializar_colores();
 
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
@@ -87,7 +70,7 @@ int Partida::iniciar()
             return 0;
         }
 
-        renderizar(renderer, font);
+        renderizar(renderer);
 
         /* IF BEHIND, KEEP WORKING */
         // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -125,6 +108,22 @@ int Partida::iniciar()
     }
 
     return 0;
+}
+
+/******************** ALMACENAMIENTO DEL ESTADO INICIAL DEL JUEGO ********************/
+
+void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
+    this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
+    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
+    this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
+}
+
+void Partida::inicializar_colores() {
+    this->colores[0] = SDL2pp::Color(255,0,0); // Rojo
+    this->colores[1] = SDL2pp::Color(0,0,255); // Azul
+    this->colores[2] = SDL2pp::Color(0,255,0); // Verde
+    this->colores[3] = SDL2pp::Color(255,255,255); // Blanco
+    this->colores[4] = SDL2pp::Color(0,0,0); // Negro
 }
 
 void Partida::guardar_vigas()
@@ -166,6 +165,8 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
     // delete dto;
 }
+
+/******************** HANDLER DE EVENTOS ********************/
 
 bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 {
@@ -381,12 +382,48 @@ void Partida::enviarAtaque() {
     }
 }
 
-void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Font &font)
+/******************** ACTUALIZACION Y RENDERIZADO ********************/
+
+bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
+{
+    // std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
+
+    std::shared_ptr<Dto> dead = cliente.recv_queue.pop();
+    
+    if(not dead->is_alive())
+        return false;
+
+    std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
+    this->id_gusano_actual = dto->get_gusano_de_turno();
+
+    float altura = renderer.GetOutputHeight();
+
+    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
+    // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
+    int cantidad = dto->cantidad();
+    for (int i = 0; i < cantidad; i++)
+    {
+        std::shared_ptr<Gusano> gusano = dto->popGusano(i);
+
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+        this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
+    }
+
+    // if(dto->hay_proyectil()) {
+        // std::shared_ptr<Granadeverde> granada = std::dynamic_pointer_cast<GranadaVerde>(cliente.recv_queue.pop());
+    // }
+
+    // camara.seguirWorm(*this->worms[this->id_gusano_actual]);
+
+    return true;
+}
+
+void Partida::renderizar(SDL2pp::Renderer &renderer)
 {
     renderer.Clear();
 
     renderizar_mapa(renderer);
-    renderizar_temporizador(renderer, font);
+    renderizar_temporizador(renderer);
     renderizar_worms(renderer);
 
     renderer.Present();
@@ -433,7 +470,7 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
     }
 }
 
-void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font)
+void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
 {
     int altura = renderer.GetOutputHeight(); // 480
 
@@ -447,46 +484,14 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     renderer.SetDrawColor(negro);
     renderer.FillRect(contenedor);
 
-    Surface surface = font.RenderText_Solid(std::to_string((int) (this->tiempoRestante * 0.001)), blanco);
+    Surface surface = this->fuente.RenderText_Solid(std::to_string((int) (this->tiempoRestante * 0.001)), blanco);
     Texture texture(renderer, surface);
 
     Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
     renderer.Copy(texture, NullOpt, nombre);
 }
 
-bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
-{
-    // std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
-
-    std::shared_ptr<Dto> dead = cliente.recv_queue.pop();
-    
-    if(not dead->is_alive())
-        return false;
-
-    std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
-    this->id_gusano_actual = dto->get_gusano_de_turno();
-
-    float altura = renderer.GetOutputHeight();
-
-    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
-    // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
-    int cantidad = dto->cantidad();
-    for (int i = 0; i < cantidad; i++)
-    {
-        std::shared_ptr<Gusano> gusano = dto->popGusano(i);
-
-        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
-    }
-
-    // if(dto->hay_proyectil()) {
-        // std::shared_ptr<Granadeverde> granada = std::dynamic_pointer_cast<GranadaVerde>(cliente.recv_queue.pop());
-    // }
-
-    // camara.seguirWorm(*this->worms[this->id_gusano_actual]);
-
-    return true;
-}
+/******************** CONVERSIONES ********************/
 
 float Partida::metros_a_pixeles(float metros)
 {
@@ -497,6 +502,8 @@ float Partida::centimetros_a_metros(float centimetros)
 {
     return centimetros / 100;
 }
+
+/******************** MEMORIA ********************/
 
 void Partida::liberar_memoria()
 {

@@ -7,12 +7,8 @@ class Mira
 {
 
 private:
-    // Atributo que almacena la textura de la animacion
-    // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
-    SDL2pp::Texture texture;
-    // Entero que almacena el tamaño de cada frame (altura y acho).
-    int size;
-    // Angulo
+    SDL2pp::Texture texture; // Atributo que almacena la textura de la animacion
+    int size; // Entero que almacena el tamaño de cada frame (altura y ancho).
     int angulo;
 
 public:
@@ -23,7 +19,7 @@ public:
     void aumentar_angulo();
     void decrementar_angulo();
     int get_angulo();
-    
+
     void reiniciar();
 };
 

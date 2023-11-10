@@ -10,41 +10,37 @@ class Arma
 {
 
 private:
-    // Atributo que almacena la textura de la animacion
-    // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
-    SDL2pp::Texture texture;
+    SDL2pp::Texture texture; // Atributo que almacena la textura de la animacion
 
     Mira mira;
     Potencia potencia;
 
     int tipoDeArma;
+
     int currentFrame;
     int numFrames;
-    int size;
+    int size; // Entero que almacena el tamaño de cada frame (altura y ancho).
+
     bool animacionCompleta;
 
 public:
     Arma(SDL2pp::Renderer &renderer);
 
-    // Actualiza la animacion. 
-    void update();
-
-     // Renderiza la arma.
-    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda);
-
-    void reiniciar();
+    void update(); // Actualiza la animacion. 
+    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda); // Renderiza el arma.
 
     void equipar_arma(int tipo, std::string &ruta);
-
-    bool get_animacion_completa();
     int get_tipo();
 
     void aumentar_angulo();
     void decrementar_angulo();
+    int get_angulo();
 
     void aumentar_potencia();
     int get_potencia();
-    int get_angulo();
+
+    void reiniciar();
+    bool get_animacion_completa();
 };
 
 #endif // ARMA_H

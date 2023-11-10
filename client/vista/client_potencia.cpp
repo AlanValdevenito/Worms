@@ -16,14 +16,6 @@ void Potencia::update() {
     }
 }
 
-void Potencia::reiniciar() {
-    this->currentFrame = 0;
-}
-
-int Potencia::get_current_frame() {
-    return this->currentFrame;
-}
-
 void Potencia::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda, int angulo) {
     
     int radio = 15;
@@ -39,4 +31,12 @@ void Potencia::render(SDL2pp::Renderer &renderer, float x, float y, bool mirando
 
         radio += 8;
     }
+}
+
+int Potencia::get_current_frame() {
+    return this->currentFrame;
+}
+
+void Potencia::reiniciar() {
+    this->currentFrame = 0;
 }

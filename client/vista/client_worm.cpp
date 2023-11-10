@@ -17,6 +17,8 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, i
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos. Esto les va a resultar muy util.
 
+/******************** ACTUALIZACION Y RENDERIZADO ********************/
+
 void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
 {
 
@@ -32,40 +34,6 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
         this->y = nuevoY;
         this->vida = nuevaVida;
     }
-}
-
-void Worm::mirar_derecha() {
-    this->mirandoIzquierda = false;
-}
-
-void Worm::mirar_izquierda() {
-    this->mirandoIzquierda = true;
-}
-
-void Worm::equipar_arma(int tipo, std::string &ruta) {
-    this->arma.equipar_arma(tipo, ruta);
-    this->armaEquipada = true;
-}
-
-int Worm::get_tipo_de_arma() {
-    return this->arma.get_tipo();
-}
-
-void Worm::desequipar_arma() {
-    this->armaEquipada = false;
-    this->arma.reiniciar();
-}
-
-bool Worm::arma_equipada() {
-    return this->armaEquipada;
-}
-
-void Worm::aumentar_angulo() {
-    this->arma.aumentar_angulo();
-}
-
-void Worm::decrementar_angulo() {
-    this->arma.decrementar_angulo();
 }
 
 void Worm::render(SDL2pp::Renderer &renderer)
@@ -106,6 +74,52 @@ void Worm::render_vida(SDL2pp::Renderer &renderer) {
 	renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
 }
 
+/******************** DIRECCION ********************/
+
+void Worm::mirar_derecha() {
+    this->mirandoIzquierda = false;
+}
+
+void Worm::mirar_izquierda() {
+    this->mirandoIzquierda = true;
+}
+
+/******************** ARMA ********************/
+
+void Worm::equipar_arma(int tipo, std::string &ruta) {
+    this->arma.equipar_arma(tipo, ruta);
+    this->armaEquipada = true;
+}
+
+void Worm::desequipar_arma() {
+    this->armaEquipada = false;
+    this->arma.reiniciar();
+}
+
+int Worm::get_tipo_de_arma() {
+    return this->arma.get_tipo();
+}
+
+bool Worm::arma_equipada() {
+    return this->armaEquipada;
+}
+
+/******************** ANGULO ********************/
+
+void Worm::aumentar_angulo() {
+    this->arma.aumentar_angulo();
+}
+
+void Worm::decrementar_angulo() {
+    this->arma.decrementar_angulo();
+}
+
+int Worm::get_angulo() {
+    return this->arma.get_angulo();
+}
+
+/******************** POTENCIA ********************/
+
 void Worm::aumentar_potencia() {
     if (this->armaEquipada) {
         this->arma.aumentar_potencia();
@@ -120,12 +134,10 @@ int Worm::get_potencia() {
     return 0;
 }
 
+/******************** GETTERS GENERALES ********************/
+
 int Worm::get_vida() {
     return this->vida;
-}
-
-int Worm::get_angulo() {
-    return this->arma.get_angulo();
 }
 
 float Worm::get_x() {
@@ -135,6 +147,8 @@ float Worm::get_x() {
 float Worm::get_y() {
     return this->y;
 }
+
+/******************** SETTERS GENERALES ********************/
 
 void Worm::set_x(float nuevoX) {
     this->x = nuevoX;
