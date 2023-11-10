@@ -32,5 +32,3 @@ float Camara::getLimiteIzquierdo() {
 float Camara::get_centro_x() {
     return this->ancho/2;
 }
-
-void Camara::update() {}

@@ -32,6 +32,7 @@ private:
 
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
+    // std::vector<Granada> granadas;
     Granada *granada; // Si no es un puntero le molesta ya que no lo inicializo
     
     int id_gusano_actual;

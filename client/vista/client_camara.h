@@ -21,7 +21,6 @@ public:
     float getLimiteIzquierdo();
     float get_centro_x();
 
-    void update();
 };
 
 #endif // _CAMARA_H

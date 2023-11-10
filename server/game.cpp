@@ -11,7 +11,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 {
     // mapa_rampa();
     mapa_jaula();
-    // mapa_puente();
+    //mapa_puente();
 }
 
 void Game::mapa_rampa() {
@@ -195,6 +195,17 @@ void Game::update()
         }
     }
     */
+
+    if (greenGrenade != NULL) {
+
+        std::chrono::steady_clock::time_point now;
+        now = std::chrono::steady_clock::now();
+        if (std::chrono::duration_cast<std::chrono::seconds> (now - greenGrenade->spawnTime).count() >= greenGrenade->timeToExplotion) {
+            std::cout << "granada explota\n";
+            greenGrenade = NULL;
+        }
+    }
+
     
     sendWorms();
 }
@@ -227,13 +238,17 @@ void Game::sendWorms()
     gusanos->set_gusano_de_turno(id);
 
     // SI HAY GRANADA
-    // gusanos->set_flag_proyectil(id);
-    broadcaster.AddGusanosToQueues(gusanos);
+    if (greenGrenade != NULL) {
+        gusanos->set_flag_proyectil(true);
+    }
+    
+    broadcaster.AddDtoToQueues(gusanos);
     // crear granada
-    // broadcaster.AddGranadaToQueues(granada);
+    if (greenGrenade != NULL) {
+        std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)greenGrenade->getXCoordinate() * 100, (uint16_t)greenGrenade->getYCoordinate() * 100);
 
-
-
+        broadcaster.AddDtoToQueues(granada);
+    }
 }
 
 
@@ -253,7 +268,7 @@ void Game::sendMap()
         vs.push_back(viga);
     }
     std::shared_ptr<Vigas> vigas = std::make_shared<Vigas>(vs);
-    broadcaster.AddVigasToQueues(vigas);
+    broadcaster.AddDtoToQueues(vigas);
 }
 
 

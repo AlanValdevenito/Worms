@@ -14,11 +14,18 @@ private:
     float x;
     float y;
 
+    int exploto;
+
 public:
-    Granada(SDL2pp::Renderer &renderer, float x, float y);
+    Granada(SDL2pp::Renderer &renderer);
 
     void render(SDL2pp::Renderer &renderer);
     void update(float nuevoX, float nuevoY);
+
+    void explotar(SDL2pp::Renderer &renderer);
+
+    void set_flag(int flag);
+    int get_flag();
 };
 
 #endif // _GRANADA_H

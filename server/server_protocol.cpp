@@ -126,6 +126,11 @@ bool ServerProtocol::enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was
     if (was_closed)
         return false;
 
+    uint8_t flag = gs->get_flag_proyectil();
+    skt->sendall(&(flag), sizeof(flag), &was_closed); // especifico la cantidad que llegara
+    if (was_closed)
+        return false;
+
     for (int i = 0; i < cant; i++)
     {
         std::shared_ptr<Gusano> g = gs->popGusano(i);
@@ -190,6 +195,8 @@ bool ServerProtocol::enviarTrayectoriaDeGranadaVerde(std::shared_ptr<GranadaVerd
     skt->sendall(&(y), sizeof(y), &was_closed);
     if (was_closed)
         return false;
+
+    printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
 
     return true;
 }

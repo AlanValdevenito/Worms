@@ -30,8 +30,7 @@ int Partida::iniciar()
 
     guardar_vigas();
     guardar_worms(renderer, colores);
-
-    this->granada = new Granada(renderer, metros_a_pixeles(15), metros_a_pixeles(8));
+    this->granada = new Granada(renderer);
 
     /******************** GAME LOOP ********************/
 
@@ -347,6 +346,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                     this->tiempoInicial = this->tiempoActual;
+
+                    this->granada->update(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
                 }
                 
                 break;
@@ -409,9 +410,13 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
 
-    // if(dto->hay_proyectil()) {
-        // std::shared_ptr<Granadeverde> granada = std::dynamic_pointer_cast<GranadaVerde>(cliente.recv_queue.pop());
-    // }
+    this->granada->set_flag((int) dto->get_flag_proyectil());
+    if(this->granada->get_flag()) {
+        std::shared_ptr<GranadaVerde> granada = std::dynamic_pointer_cast<GranadaVerde>(cliente.recv_queue.pop());
+        
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)granada->y_pos()));
+        this->granada->update(metros_a_pixeles(centimetros_a_metros((int)granada->x_pos())), nuevoY);
+    }
 
     // camara.seguirWorm(*this->worms[this->id_gusano_actual]);
 
@@ -448,16 +453,20 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-        //if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), ancho, alto)) {
+        if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), ancho, alto)) {
             renderer.Copy(
                 *this->texturas[2],
                 Rect(0, 0, 50, 50),
                 Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) /*- this->camara.getLimiteIzquierdo()*/), altura - metros_a_pixeles(centimetros_a_metros(y)),
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
-        //}
+        }
     }
 
-    this->granada->render(renderer);
+    if (this->granada->get_flag() == 1) {
+        this->granada->render(renderer);
+    } else if (this->granada->get_flag() == 0) {
+        this->granada->explotar(renderer);
+    }
 }
 
 void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
