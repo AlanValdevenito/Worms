@@ -4,7 +4,8 @@ Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, 
                                                                           size(this->texture.GetWidth()),
                                                                           x(0),
                                                                           y(0),
-                                                                          exploto(1) {}
+                                                                          exploto(1),
+                                                                          currentFrame(0) {}
 
 // En Box2D la granada es una caja de 5m x 5m
  
@@ -25,23 +26,27 @@ void Granada::update(float nuevoX, float nuevoY) {
 }
 
 void Granada::explotar(SDL2pp::Renderer &renderer) {
-    //this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
     SDL2pp::Texture explosion(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
 
     int tamaño = 60;
-    int numFrames = 12;
 
-    for (int i = 0; i < numFrames; i++) {
+    if (this->currentFrame < 12) {
         renderer.Copy(
             explosion,
-            SDL2pp::Rect(0, (tamaño) * i, tamaño, tamaño),
-            SDL2pp::Rect(this->x - 3, this->y + 8, tamaño, tamaño)
+            SDL2pp::Rect(0, (tamaño) * currentFrame, tamaño, tamaño),
+            SDL2pp::Rect(this->x - 16, this->y - 16, tamaño, tamaño)
         );
     }
+
+    this->currentFrame++;
 }
 
 void Granada::set_flag(int flag) {
     this->exploto = flag;
+
+    if (flag == 1) {
+        this->currentFrame = 0;
+    }
 }
 
 int Granada::get_flag() {

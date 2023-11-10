@@ -15,6 +15,7 @@ private:
     float y;
 
     int exploto;
+    int currentFrame;
 
 public:
     Granada(SDL2pp::Renderer &renderer);

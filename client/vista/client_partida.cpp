@@ -464,9 +464,9 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 
     if (this->granada->get_flag() == 1) {
         this->granada->render(renderer);
-    } /*else if (this->granada->get_flag() == 0) {
+    } else if (this->granada->get_flag() == 0) {
         this->granada->explotar(renderer);
-    }*/
+    }
 }
 
 void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
