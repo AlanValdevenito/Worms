@@ -457,16 +457,16 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
             renderer.Copy(
                 *this->texturas[2],
                 Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) /*- this->camara.getLimiteIzquierdo()*/), altura - metros_a_pixeles(centimetros_a_metros(y)),
+                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) /*- this->camara.getLimiteIzquierdo()*/), altura - metros_a_pixeles(centimetros_a_metros(y - alto/2)),
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
         }
     }
 
     if (this->granada->get_flag() == 1) {
         this->granada->render(renderer);
-    } else if (this->granada->get_flag() == 0) {
+    } /*else if (this->granada->get_flag() == 0) {
         this->granada->explotar(renderer);
-    }
+    }*/
 }
 
 void Partida::renderizar_worms(SDL2pp::Renderer &renderer)

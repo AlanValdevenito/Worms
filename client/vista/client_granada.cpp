@@ -6,6 +6,8 @@ Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, 
                                                                           y(0),
                                                                           exploto(1) {}
 
+// En Box2D la granada es una caja de 5m x 5m
+ 
 void Granada::render(SDL2pp::Renderer &renderer) {
     this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH "/grenade.1.png").SetColorKey(true, 0));
     this->size = this->texture.GetWidth();
@@ -13,7 +15,7 @@ void Granada::render(SDL2pp::Renderer &renderer) {
     renderer.Copy(
         texture,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(this->x, this->y , this->size, this->size)
+        SDL2pp::Rect(this->x - 8, this->y - 8, this->size, this->size)
     );
 }
 
@@ -23,20 +25,19 @@ void Granada::update(float nuevoX, float nuevoY) {
 }
 
 void Granada::explotar(SDL2pp::Renderer &renderer) {
-    /*this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
-    this->size = this->texture.GetWidth();;
+    //this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
+    SDL2pp::Texture explosion(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
 
-    int currentFrame = 12;
-    for (int i = 0; i < 11; i++) {
-        std::cout << currentFrame << std::endl;
+    int tamaño = 60;
+    int numFrames = 12;
+
+    for (int i = 0; i < numFrames; i++) {
         renderer.Copy(
-            texture,
-            SDL2pp::Rect(0, (this->size) * currentFrame, this->size, this->size),
-            SDL2pp::Rect(this->x, this->y , this->size, this->size)
+            explosion,
+            SDL2pp::Rect(0, (tamaño) * i, tamaño, tamaño),
+            SDL2pp::Rect(this->x - 3, this->y + 8, tamaño, tamaño)
         );
-    
-        currentFrame--;
-    }*/
+    }
 }
 
 void Granada::set_flag(int flag) {
