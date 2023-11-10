@@ -3,6 +3,9 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include "client_mira.h"
+#include "client_potencia.h"
+
 class Arma
 {
 
@@ -10,16 +13,14 @@ private:
     // Atributo que almacena la textura de la animacion
     // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
     SDL2pp::Texture texture;
-    // Entero que almacena el tipo de arma
+
+    Mira mira;
+    Potencia potencia;
+
     int tipoDeArma;
-    // Entero que almacena el indice del frame actual en la animacion.
     int currentFrame;
-    // Entero que representa el numero todal de frames en la animacion.
-    // Se calcula dividiendo la altura de la textura por su ancho.
     int numFrames;
-    // Entero que almacena el tamaño de cada frame (altura y acho).
     int size;
-    // Booleano que indica si la animacion se completo
     bool animacionCompleta;
 
 public:
@@ -29,14 +30,21 @@ public:
     void update();
 
      // Renderiza la arma.
-    void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType);
+    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda);
 
     void reiniciar();
 
-    void cambiar_arma(int tipo, std::string &ruta);
-    
+    void equipar_arma(int tipo, std::string &ruta);
+
     bool get_animacion_completa();
     int get_tipo();
+
+    void aumentar_angulo();
+    void decrementar_angulo();
+
+    void aumentar_potencia();
+    int get_potencia();
+    int get_angulo();
 };
 
 #endif // ARMA_H

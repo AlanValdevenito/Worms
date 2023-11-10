@@ -4,42 +4,30 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "client_animacion.h"
 #include "client_arma.h"
-#include "client_mira.h"
-#include "client_potencia.h"
 #include <map>
 
 class Worm
 {
 
 private:
-    // Objeto del tipo Animacion.
-    // Se usa para almacenar y gestionar la animacion del Worm.
     Animation animacion;
-
     Arma arma;
-    Mira mira;
-    Potencia potencia;
-
-    SDL2pp::Color &color;
 
     bool armaEquipada;
-    // Booleano que indica si el jugador activo la mira.
-    bool miraActivada;
-    // Booleano que indica si el jugador esta mirando hacia la izquierda.
     bool mirandoIzquierda;
-    // Enteros que indican la posicion del Worm en pixeles.
+
     float x;
     float y;
     int vida;
 
+    SDL2pp::Color &color;
+
 public:
     Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida);
 
-    // Actualiza el Worm en funcion del tiempo transcurrido.
-    void update(int it, float nuevoX, float nuevoY, int vida);
+    void update(int it, float nuevoX, float nuevoY, int vida); // Actualiza el Worm en funcion del tiempo transcurrido.
 
-    // Renderiza el Worm.
-    void render(SDL2pp::Renderer &renderer);
+    void render(SDL2pp::Renderer &renderer); // Renderiza el Worm.
     void render_vida(SDL2pp::Renderer &renderer);
 
     void mirar_derecha();
@@ -60,7 +48,6 @@ public:
     float get_x();
     float get_y();
     int get_vida();
-    int get_angulo();
 
     void set_x(float nuevoX);
 };

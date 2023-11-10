@@ -8,15 +8,12 @@
 
 Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida): animacion(renderer), 
                                                                                           arma(renderer), 
-                                                                                          mira(renderer), 
-                                                                                          potencia(renderer), 
-                                                                                          color(color),
                                                                                           armaEquipada(false), 
-                                                                                          miraActivada(false), 
                                                                                           mirandoIzquierda(true), 
                                                                                           x(x), 
                                                                                           y(y), 
-                                                                                          vida(vida){}
+                                                                                          vida(vida),
+                                                                                          color(color) {}
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos. Esto les va a resultar muy util.
 
@@ -30,15 +27,6 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
     if ((nuevoX != this->x) || (nuevoY != this->y)) {
 
         this->animacion.update(it);
-
-        if (nuevoX < this->x)
-        {
-            this->mirandoIzquierda = true;
-        
-        } else if (nuevoX > this->x)
-        {
-            this->mirandoIzquierda = false;
-        }
 
         this->x = nuevoX;
         this->y = nuevoY;
@@ -54,12 +42,9 @@ void Worm::mirar_izquierda() {
     this->mirandoIzquierda = true;
 }
 
-
 void Worm::equipar_arma(int tipo, std::string &ruta) {
-    this->arma.cambiar_arma(tipo, ruta);
-
+    this->arma.equipar_arma(tipo, ruta);
     this->armaEquipada = true;
-    this->miraActivada = true;
 }
 
 int Worm::get_tipo_de_arma() {
@@ -68,10 +53,7 @@ int Worm::get_tipo_de_arma() {
 
 void Worm::desequipar_arma() {
     this->armaEquipada = false;
-    this->miraActivada = false;
     this->arma.reiniciar();
-    this->mira.reiniciar();
-    this->potencia.reiniciar();
 }
 
 bool Worm::arma_equipada() {
@@ -79,31 +61,25 @@ bool Worm::arma_equipada() {
 }
 
 void Worm::aumentar_angulo() {
-    this->mira.aumentar_angulo();
+    this->arma.aumentar_angulo();
 }
 
 void Worm::decrementar_angulo() {
-    this->mira.decrementar_angulo();
+    this->arma.decrementar_angulo();
 }
 
 void Worm::render(SDL2pp::Renderer &renderer)
 {
     SDL_RendererFlip flip = this->mirandoIzquierda ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
-    if (armaEquipada) {
-        this->arma.render(renderer, SDL2pp::Rect(x - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
+    if (this->armaEquipada) {
+        this->arma.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda);
     
     } else {
         this->animacion.render(renderer, SDL2pp::Rect(x - OFFSET, y - OFFSET, ANCHO_SPRITE, ALTO_SPRITE), flip);
     }
     
     this->render_vida(renderer);
- 
-    if (this->miraActivada) {
-        this->mira.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda);
-        this->potencia.render(renderer, x - OFFSET, y - OFFSET, this->mirandoIzquierda, this->mira.get_angulo());
-    } 
-
 }
 
 void Worm::render_vida(SDL2pp::Renderer &renderer) {
@@ -131,14 +107,14 @@ void Worm::render_vida(SDL2pp::Renderer &renderer) {
 }
 
 void Worm::aumentar_potencia() {
-    if (this->miraActivada) {
-        this->potencia.update();
+    if (this->armaEquipada) {
+        this->arma.aumentar_potencia();
     }
 }
 
 int Worm::get_potencia() {
-    if (this->miraActivada) {
-        return this->potencia.get_current_frame();
+    if (this->armaEquipada) {
+        return this->arma.get_potencia();
     } 
 
     return 0;
@@ -149,7 +125,7 @@ int Worm::get_vida() {
 }
 
 int Worm::get_angulo() {
-    return this->mira.get_angulo();
+    return this->arma.get_angulo();
 }
 
 float Worm::get_x() {
