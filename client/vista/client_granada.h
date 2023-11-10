@@ -14,6 +14,7 @@ private:
     float x;
     float y;
 
+    bool seLanzo;
     int exploto;
     int currentFrame;
 
@@ -24,6 +25,9 @@ public:
     void update(float nuevoX, float nuevoY);
 
     void explotar(SDL2pp::Renderer &renderer);
+
+    void lanzarGranada();
+    bool seLanzoGranada();
 
     void set_flag(int flag);
     int get_flag();
