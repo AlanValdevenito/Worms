@@ -1,6 +1,8 @@
 #include "green_grenade.h"
 #include <iostream>
 
+
+
 GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -43,8 +45,15 @@ float GreenGrenade::getYCoordinate() {
     return body->GetPosition().y;
 }
 
-void GreenGrenade::shoot(float angle, int power) {
-    body->ApplyLinearImpulseToCenter(b2Vec2(1.5 * cos(angle), 1.5 * sin(angle)), true);
+void GreenGrenade::shoot(Direction direction, float angle, int power) {
+    if (direction == LEFT) {
+        body->ApplyLinearImpulseToCenter(b2Vec2(-1.5 * cos(angle), 1.5 * sin(angle)), true);
+    } else if (direction == RIGHT) {
+        body->ApplyLinearImpulseToCenter(b2Vec2(1.5 * cos(angle), 1.5 * sin(angle)), true);
+    } else {
+        throw std::runtime_error("Invalid direction");
+    }
+    
 }
 
 void GreenGrenade::startContact() {}

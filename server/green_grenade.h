@@ -4,7 +4,7 @@
 #include <chrono>
 #include "entity.h"
 
-
+enum Direction {LEFT, RIGHT};
 
 class GreenGrenade : public Entity {
 public:
@@ -15,7 +15,7 @@ public:
     GreenGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds);
     float getXCoordinate();
     float getYCoordinate();
-    void shoot(float angle, int power); 
+    void shoot(Direction direction, float angle, int power); 
     void startContact() override;
     void endContact() override;
     ~GreenGrenade();

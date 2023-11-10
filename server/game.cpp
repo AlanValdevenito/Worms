@@ -325,8 +325,10 @@ void Game::throwGreenGrenade(float angle, int power) {
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
-                                    5);
-    greenGrenade->shoot(angle, power);
+                                    2);
+    Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
+    greenGrenade->shoot(direction, angle, power);
+    
 
 }
 
