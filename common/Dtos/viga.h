@@ -30,8 +30,8 @@ public:
     uint16_t return_angulo() override;
 };
 
-class Vigas : public Dto {
-    // std::list<std::shared_ptr<Viga> vigas;
+class Vigas : public Dto
+{
     std::vector<std::shared_ptr<Viga>> vigas;
 
 public:

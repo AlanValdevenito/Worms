@@ -17,7 +17,7 @@ uint8_t Gusano::get_vida() { return vida; }
 uint8_t Gusano::get_color() { return color; }
 
 Gusanos::Gusanos() : Dto(GUSANOS_CODE) {}
-Gusanos::Gusanos(std::vector<std::shared_ptr<Gusano>> gs) : Dto(GUSANOS_CODE), gusanos(gs) {}
+Gusanos::Gusanos(std::vector<std::shared_ptr<Gusano>> gs) : Dto(GUSANOS_CODE), gusanos(gs), id_turno(1) {}
 Gusanos::~Gusanos() {} // VACIAR LA LISTAAA
 
 bool Gusanos::is_alive() { return true; }
@@ -29,9 +29,9 @@ std::shared_ptr<Gusano> Gusanos::popGusano(int i)
 
 std::vector<std::shared_ptr<Gusano>> Gusanos::return_gusanos_list() { return gusanos; }
 
-void Gusanos::set_gusano_de_turno(uint8_t id){ id_turno = id;}
+void Gusanos::set_gusano_de_turno(uint8_t id) { id_turno = id; }
 
-uint8_t Gusanos::get_gusano_de_turno(){ return id_turno;}
+uint8_t Gusanos::get_gusano_de_turno() { return id_turno; }
 
 uint8_t Gusanos::cantidad()
 {

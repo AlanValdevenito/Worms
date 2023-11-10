@@ -226,7 +226,7 @@ TEST(Test10, Recibir_lista_de_partidas)
     ASSERT_TRUE(sz == cant && o1 == opcion1 && o2 == opcion2 && o3 == opcion3);
 }
 
-void enviar_viga_con_parametros(SocketMock &skt, ClientProtocol &cp, uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto, uint16_t angulo)
+void enviar_viga_con_parametros(SocketMock &skt, uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto, uint16_t angulo)
 {
     bool was_closed = false;
 
@@ -259,7 +259,7 @@ TEST(Test11, Recibir_una_viga)
     uint8_t cant = 1; // hago como que le envie una lista con una sola viga
     skt.sendall(&cant, sizeof(cant), &was_closed);
 
-    enviar_viga_con_parametros(std::ref(skt), std::ref(cp), x, y, ancho, alto, angulo);
+    enviar_viga_con_parametros(std::ref(skt), x, y, ancho, alto, angulo);
 
     std::shared_ptr<Vigas> rta = std::dynamic_pointer_cast<Vigas>(cp.receive(was_closed));
     std::shared_ptr<Viga> viga = rta->popViga(0); // tomo la unica viga que inserte
@@ -282,19 +282,19 @@ TEST(Test12, Recibir_varias_vigas)
     uint16_t ancho_1 = 10;
     uint16_t alto_1 = 10;
     uint16_t angulo_1 = 45;
-    enviar_viga_con_parametros(std::ref(skt), std::ref(cp), x_1, y_1, ancho_1, alto_1, angulo_1);
+    enviar_viga_con_parametros(std::ref(skt), x_1, y_1, ancho_1, alto_1, angulo_1);
     uint16_t x_2 = 65;
     uint16_t y_2 = 56;
     uint16_t ancho_2 = 96;
     uint16_t alto_2 = 76;
     uint16_t angulo_2 = 20;
-    enviar_viga_con_parametros(std::ref(skt), std::ref(cp), x_2, y_2, ancho_2, alto_2, angulo_2);
+    enviar_viga_con_parametros(std::ref(skt), x_2, y_2, ancho_2, alto_2, angulo_2);
     uint16_t x_3 = 26;
     uint16_t y_3 = 16;
     uint16_t ancho_3 = 16;
     uint16_t alto_3 = 16;
     uint16_t angulo_3 = 46;
-    enviar_viga_con_parametros(std::ref(skt), std::ref(cp), x_3, y_3, ancho_3, alto_3, angulo_3);
+    enviar_viga_con_parametros(std::ref(skt), x_3, y_3, ancho_3, alto_3, angulo_3);
 
     std::shared_ptr<Vigas> rta = std::dynamic_pointer_cast<Vigas>(cp.receive(was_closed));
     std::shared_ptr<Viga> viga1 = rta->popViga(0);
@@ -308,7 +308,7 @@ TEST(Test12, Recibir_varias_vigas)
     ASSERT_TRUE(viga3->x_pos() == x_3 && viga3->y_pos() == y_3 && viga3->return_ancho() == ancho_3 && viga3->return_alto() == alto_3 && viga3->return_angulo() == angulo_3);
 }
 
-void enviar_gusano_con_parametros(SocketMock &skt, ClientProtocol &cp, uint8_t id, uint16_t x, uint16_t y, uint8_t vida)
+void enviar_gusano_con_parametros(SocketMock &skt, uint8_t id, uint16_t x, uint16_t y, uint8_t vida, uint8_t color)
 {
     bool was_closed = false;
 
@@ -316,13 +316,13 @@ void enviar_gusano_con_parametros(SocketMock &skt, ClientProtocol &cp, uint8_t i
     uint16_t y_a_enviar = htons(y);
     uint8_t id_a_enviar = id;
     uint8_t vida_a_enviar = vida;
-    uint8_t color = 1;
+    uint8_t color_a_enviar = color;
 
     skt.sendall(&id_a_enviar, sizeof(id_a_enviar), &was_closed);
     skt.sendall(&x_a_enviar, sizeof(x_a_enviar), &was_closed);
     skt.sendall(&y_a_enviar, sizeof(y_a_enviar), &was_closed);
     skt.sendall(&vida_a_enviar, sizeof(vida_a_enviar), &was_closed);
-    skt.sendall(&color, sizeof(color), &was_closed);
+    skt.sendall(&color_a_enviar, sizeof(color_a_enviar), &was_closed);
 }
 
 TEST(Test13, Recibir_un_solo_gusano)
@@ -335,9 +335,10 @@ TEST(Test13, Recibir_un_solo_gusano)
     uint16_t x = 20;
     uint16_t y = 10;
     uint8_t vida = 80;
+    uint8_t color = 1;
 
     skt.sendall(&GUSANO_CODE, sizeof(GUSANO_CODE), &was_closed);
-    enviar_gusano_con_parametros(std::ref(skt), std::ref(cp), id, x, y, vida);
+    enviar_gusano_con_parametros(std::ref(skt), id, x, y, vida, color);
 
     std::shared_ptr<Gusano> rta = std::dynamic_pointer_cast<Gusano>(cp.receive(was_closed));
 
@@ -346,6 +347,7 @@ TEST(Test13, Recibir_un_solo_gusano)
     ASSERT_TRUE(rta->y_pos() == y);
     ASSERT_TRUE(rta->get_id() == id);
     ASSERT_TRUE(rta->get_vida() == vida);
+    ASSERT_TRUE(rta->get_color() == color);
 }
 
 TEST(Test13, Recibir_un_varios_gusanos)
@@ -365,31 +367,31 @@ TEST(Test13, Recibir_un_varios_gusanos)
     uint16_t x_1 = 20;
     uint16_t y_1 = 10;
     uint8_t vida_1 = 80;
-    // uint8_t color_1 = 1;
-    enviar_gusano_con_parametros(std::ref(skt), std::ref(cp), id_1, x_1, y_1, vida_1);
+    uint8_t color_1 = 1;
+    enviar_gusano_con_parametros(std::ref(skt), id_1, x_1, y_1, vida_1, color_1);
 
     uint8_t id_2 = 8;
     uint16_t x_2 = 20;
     uint16_t y_2 = 10;
     uint8_t vida_2 = 80;
-    // uint8_t color_2 = 2;
-    enviar_gusano_con_parametros(std::ref(skt), std::ref(cp), id_2, x_2, y_2, vida_2);
+    uint8_t color_2 = 2;
+    enviar_gusano_con_parametros(std::ref(skt), id_2, x_2, y_2, vida_2, color_2);
 
     uint8_t id_3 = 8;
     uint16_t x_3 = 20;
     uint16_t y_3 = 10;
     uint8_t vida_3 = 80;
-    // uint8_t color_3 = 3;
-    enviar_gusano_con_parametros(std::ref(skt), std::ref(cp), id_3, x_3, y_3, vida_3);
+    uint8_t color_3 = 3;
+    enviar_gusano_con_parametros(std::ref(skt), id_3, x_3, y_3, vida_3, color_3);
 
     std::shared_ptr<Gusanos> rta = std::dynamic_pointer_cast<Gusanos>(cp.receive(was_closed));
     std::shared_ptr<Gusano> g1 = rta->popGusano(0);
     std::shared_ptr<Gusano> g2 = rta->popGusano(1);
     std::shared_ptr<Gusano> g3 = rta->popGusano(2);
 
-    ASSERT_TRUE(g1->x_pos() == x_1 && g1->y_pos() == y_1 && g1->get_id() == id_1 && g1->get_vida() == vida_1);
-    ASSERT_TRUE(g2->x_pos() == x_2 && g2->y_pos() == y_2 && g2->get_id() == id_2 && g2->get_vida() == vida_2);
-    ASSERT_TRUE(g3->x_pos() == x_3 && g3->y_pos() == y_3 && g3->get_id() == id_3 && g3->get_vida() == vida_3);
+    ASSERT_TRUE(g1->x_pos() == x_1 && g1->y_pos() == y_1 && g1->get_id() == id_1 && g1->get_vida() == vida_1 && g1->get_color() == color_1);
+    ASSERT_TRUE(g2->x_pos() == x_2 && g2->y_pos() == y_2 && g2->get_id() == id_2 && g2->get_vida() == vida_2 && g2->get_color() == color_2);
+    ASSERT_TRUE(g3->x_pos() == x_3 && g3->y_pos() == y_3 && g3->get_id() == id_3 && g3->get_vida() == vida_3 && g3->get_color() == color_3);
     // ASSERT_TRUE(rta->x_pos() == x);
     // ASSERT_TRUE(rta->y_pos() == y);
     // ASSERT_TRUE(rta->get_id() == id);
@@ -403,7 +405,7 @@ TEST(A, a)
     std::cout << "**********************************************************************************************************************\n";
 }
 
-TEST(Test14, algo)
+TEST(Test14, EnviarIdDelCliente)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
@@ -419,7 +421,298 @@ TEST(Test14, algo)
     skt->recvall(&id_recibido, sizeof(id_recibido), &was_closed);
 
     delete skt;
-    ASSERT_TRUE(id_recibido == 5);
+    ASSERT_TRUE(code == CLIENTE_ID_CODE && id_recibido == 5);
+}
+
+TEST(Test15, EnviarIdFinDePartida)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    std::shared_ptr<Dto> dto = std::make_shared<Dto>(FINALIZAR_CODE);
+    sp.enviarFinalizarPartida(dto, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    delete skt;
+    ASSERT_TRUE(code == FINALIZAR_CODE);
+}
+
+TEST(Test16, Enviar_inicio_de_partida)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    std::shared_ptr<Dto> dto = std::make_shared<Dto>(INICIAR_PARIDA);
+    sp.enviarIniciarPartida(dto, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    delete skt;
+    ASSERT_TRUE(code == INICIAR_PARIDA);
+}
+
+TEST(Test17, Enviar_lista_de_partidas)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+    uint8_t cant_enviada = 2;
+    uint8_t op1 = 20;
+    uint8_t op2 = 11;
+
+    std::shared_ptr<ListaDePartidas> lista_de_partidas = std::make_shared<ListaDePartidas>();
+    lista_de_partidas->addOption(op1);
+    lista_de_partidas->addOption(op2);
+
+    sp.enviarListaDePartidas(lista_de_partidas, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint8_t cant;
+    skt->recvall(&cant, sizeof(cant), &was_closed);
+
+    uint8_t op1_recibida;
+    skt->recvall(&op1_recibida, sizeof(op1_recibida), &was_closed);
+
+    uint8_t op2_recibida;
+    skt->recvall(&op2_recibida, sizeof(op2_recibida), &was_closed);
+
+    delete skt;
+    ASSERT_TRUE(code == LISTA_DE_PARTIDAS_CODE);
+    ASSERT_TRUE(cant == cant_enviada);
+    ASSERT_TRUE(op1_recibida == op1);
+    ASSERT_TRUE(op2_recibida == op2);
+}
+
+void recibir_parametros_del_gusano(SocketMock *skt, uint8_t &id, uint16_t &x, uint16_t &y, uint8_t &vida, uint8_t &color)
+{
+    bool was_closed = false;
+
+    uint16_t x_recibido;
+    uint16_t y_recibido;
+    uint8_t id_recibido;
+    uint8_t vida_recibido;
+    uint8_t color_recibido;
+
+    skt->recvall(&id_recibido, sizeof(id_recibido), &was_closed);
+    skt->recvall(&x_recibido, sizeof(x_recibido), &was_closed);
+    skt->recvall(&y_recibido, sizeof(y_recibido), &was_closed);
+    skt->recvall(&vida_recibido, sizeof(vida_recibido), &was_closed);
+    skt->recvall(&color_recibido, sizeof(color_recibido), &was_closed);
+
+    id = id_recibido;
+    x = ntohs(x_recibido);
+    y = ntohs(y_recibido);
+    vida = vida_recibido;
+    color = color_recibido;
+    // printf("%u %u %u %u %u\n", id, x, y, vida, color);
+}
+
+TEST(Test17, Enviar_un_solo_gusano)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 2;
+    uint16_t x = 20;
+    uint16_t y = 11;
+    uint8_t vida = 85;
+    uint8_t color = 3;
+
+    std::shared_ptr<Gusano> gusano = std::make_shared<Gusano>(id, x, y, vida, color);
+
+    sp.enviarGusano(gusano, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint8_t id_recibido;
+    uint16_t x_recibido;
+    uint16_t y_recibido;
+    uint8_t vida_recibida;
+    uint8_t color_recibido;
+
+    recibir_parametros_del_gusano(skt, id_recibido, x_recibido, y_recibido, vida_recibida, color_recibido);
+
+    delete skt;
+    ASSERT_TRUE(code == GUSANO_CODE);
+    ASSERT_TRUE(id_recibido == id);
+    ASSERT_TRUE(x_recibido == x);
+    ASSERT_TRUE(y_recibido == y);
+    ASSERT_TRUE(vida_recibida == vida);
+    ASSERT_TRUE(color_recibido == color);
+}
+
+TEST(Test18, Enviar_una_lista_de_gusanos)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id_enviada1 = 2;
+    uint16_t x_enviada1 = 20;
+    uint16_t y_enviada1 = 11;
+    uint8_t vida_enviada1 = 85;
+    uint8_t color_enviada1 = 3;
+    std::shared_ptr<Gusano> gusano1 = std::make_shared<Gusano>(id_enviada1, x_enviada1, y_enviada1, vida_enviada1, color_enviada1);
+
+    uint8_t id_enviada2 = 3;
+    uint16_t x_enviada2 = 24;
+    uint16_t y_enviada2 = 15;
+    uint8_t vida_enviada2 = 86;
+    uint8_t color_enviada2 = 10;
+    std::shared_ptr<Gusano> gusano2 = std::make_shared<Gusano>(id_enviada2, x_enviada2, y_enviada2, vida_enviada2, color_enviada2);
+
+    uint8_t id_enviada3 = 6;
+    uint16_t x_enviada3 = 54;
+    uint16_t y_enviada3 = 75;
+    uint8_t vida_enviada3 = 16;
+    uint8_t color_enviada3 = 11;
+    std::shared_ptr<Gusano> gusano3 = std::make_shared<Gusano>(id_enviada3, x_enviada3, y_enviada3, vida_enviada3, color_enviada3);
+
+    std::vector<std::shared_ptr<Gusano>> lista;
+    lista.push_back(gusano1);
+    lista.push_back(gusano2);
+    lista.push_back(gusano3);
+    std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(lista);
+
+    sp.enviarListaDeGusanos(gusanos, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint8_t cant;
+    skt->recvall(&cant, sizeof(cant), &was_closed);
+
+    uint8_t turno;
+    skt->recvall(&turno, sizeof(turno), &was_closed);
+
+    uint8_t id_1;
+    uint16_t x_1;
+    uint16_t y_1;
+    uint8_t vida_1;
+    uint8_t color_1;
+    recibir_parametros_del_gusano(std::ref(skt), id_1, x_1, y_1, vida_1, color_1);
+
+    uint8_t id_2;
+    uint16_t x_2;
+    uint16_t y_2;
+    uint8_t vida_2;
+    uint8_t color_2;
+    recibir_parametros_del_gusano(std::ref(skt), id_2, x_2, y_2, vida_2, color_2);
+
+    uint8_t id_3;
+    uint16_t x_3;
+    uint16_t y_3;
+    uint8_t vida_3;
+    uint8_t color_3;
+    recibir_parametros_del_gusano(std::ref(skt), id_3, x_3, y_3, vida_3, color_3);
+
+    delete skt;
+    ASSERT_TRUE(code == GUSANOS_CODE && cant == 3 && turno == 1);
+    ASSERT_TRUE(id_1 == id_enviada1 && x_1 == x_enviada1 && y_1 == y_enviada1 && vida_1 == vida_enviada1 && color_1 == color_enviada1);
+    ASSERT_TRUE(id_2 == id_enviada2 && x_2 == x_enviada2 && y_2 == y_enviada2 && vida_2 == vida_enviada2 && color_2 == color_enviada2);
+    ASSERT_TRUE(id_3 == id_enviada3 && x_3 == x_enviada3 && y_3 == y_enviada3 && vida_3 == vida_enviada3 && color_3 == color_enviada3);
+}
+
+void recibir_parametros_de_la_viga(SocketMock *skt, uint16_t &x, uint16_t &y, uint16_t &ancho, uint16_t &alto, uint16_t &angulo)
+{
+    bool was_closed = false;
+
+    uint16_t x_recibido;
+    uint16_t y_recibido;
+    uint16_t ancho_recibido;
+    uint16_t alto_recibido;
+    uint16_t angulo_recibido;
+
+    skt->recvall(&x_recibido, sizeof(x_recibido), &was_closed);
+    skt->recvall(&y_recibido, sizeof(y_recibido), &was_closed);
+    skt->recvall(&ancho_recibido, sizeof(ancho_recibido), &was_closed);
+    skt->recvall(&alto_recibido, sizeof(alto_recibido), &was_closed);
+    skt->recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
+
+    x = ntohs(x_recibido);
+    y = ntohs(y_recibido);
+    ancho = ntohs(ancho_recibido);
+    alto = ntohs(alto_recibido);
+    angulo = ntohs(angulo_recibido);
+    // printf("%u %u %u %u %u\n", id, x, y, vida, color);
+}
+
+TEST(Test19, Enviar_una_lista_de_vigas)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint16_t x_enviada1 = 20;
+    uint16_t y_enviada1 = 11;
+    uint16_t ancho_enviada1 = 2;
+    uint16_t alto_enviada1 = 85;
+    uint16_t angulo_enviada1 = 3;
+    std::shared_ptr<Viga> viga1 = std::make_shared<Viga>(x_enviada1, y_enviada1, ancho_enviada1, alto_enviada1, angulo_enviada1);
+
+    uint16_t ancho_enviada2 = 3;
+    uint16_t x_enviada2 = 24;
+    uint16_t y_enviada2 = 15;
+    uint16_t alto_enviada2 = 86;
+    uint16_t angulo_enviada2 = 10;
+    std::shared_ptr<Viga> viga2 = std::make_shared<Viga>(x_enviada2, y_enviada2, ancho_enviada2, alto_enviada2, angulo_enviada2);
+
+    uint16_t ancho_enviada3 = 6;
+    uint16_t x_enviada3 = 54;
+    uint16_t y_enviada3 = 75;
+    uint16_t alto_enviada3 = 16;
+    uint16_t angulo_enviada3 = 11;
+    std::shared_ptr<Viga> viga3 = std::make_shared<Viga>(x_enviada3, y_enviada3, ancho_enviada3, alto_enviada3, angulo_enviada3);
+
+    std::vector<std::shared_ptr<Viga>> lista;
+    lista.push_back(viga1);
+    lista.push_back(viga2);
+    lista.push_back(viga3);
+    std::shared_ptr<Vigas> vigas = std::make_shared<Vigas>(lista);
+
+    sp.enviarVigas(vigas, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint8_t cant;
+    skt->recvall(&cant, sizeof(cant), &was_closed);
+
+    uint16_t x_1;
+    uint16_t y_1;
+    uint16_t ancho_1;
+    uint16_t alto_1;
+    uint16_t angulo_1;
+    recibir_parametros_de_la_viga(std::ref(skt), x_1, y_1, ancho_1, alto_1, angulo_1);
+
+    uint16_t x_2;
+    uint16_t y_2;
+    uint16_t ancho_2;
+    uint16_t alto_2;
+    uint16_t angulo_2;
+    recibir_parametros_de_la_viga(std::ref(skt), x_2, y_2, ancho_2, alto_2, angulo_2);
+
+    uint16_t x_3;
+    uint16_t y_3;
+    uint16_t ancho_3;
+    uint16_t alto_3;
+    uint16_t angulo_3;
+    recibir_parametros_de_la_viga(std::ref(skt), x_3, y_3, ancho_3, alto_3, angulo_3);
+
+    delete skt;
+    ASSERT_TRUE(code == VIGA_CODE && cant == 3);
+    ASSERT_TRUE(x_1 == x_enviada1 && y_1 == y_enviada1 && ancho_1 == ancho_enviada1 && alto_1 == alto_enviada1 && angulo_1 == angulo_enviada1);
+    ASSERT_TRUE(x_2 == x_enviada2 && y_2 == y_enviada2 && ancho_2 == ancho_enviada2 && alto_2 == alto_enviada2 && angulo_2 == angulo_enviada2);
+    ASSERT_TRUE(x_3 == x_enviada3 && y_3 == y_enviada3 && ancho_3 == ancho_enviada3 && alto_3 == alto_enviada3 && angulo_3 == angulo_enviada3);
 }
 
 int main(int argc, char **argv)
