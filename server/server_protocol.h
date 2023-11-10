@@ -23,12 +23,14 @@
 #include "cliente_id.h"
 #include "nueva_partida.h"
 #include "socket.h"
+#include "socket_interface.h"
+#include "socket_mock.h"
 
 class ServerProtocol
 {
 public:
     // explicit ServerProtocol(Socket &skt);
-    explicit ServerProtocol(Socket *skt);
+    explicit ServerProtocol(SocketInterface *skt);
     ~ServerProtocol();
     std::shared_ptr<Dto> recibirActividad(bool &was_closed);
     bool enviarId(std::shared_ptr<ClienteId> id, bool &was_closed);
@@ -41,7 +43,7 @@ public:
 
 private:
     // Socket &skt;
-    Socket *skt;
+    SocketInterface *skt;
     std::shared_ptr<Dto> recibirPartidaSeleccionada(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBate(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);

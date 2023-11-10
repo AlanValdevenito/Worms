@@ -1,7 +1,7 @@
 #include "server_protocol.h"
 
 // ServerProtocol::ServerProtocol(Socket &skt) : skt(skt) {}
-ServerProtocol::ServerProtocol(Socket *skt) : skt(skt) {}
+ServerProtocol::ServerProtocol(SocketInterface *skt) : skt(skt) {}
 
 ServerProtocol::~ServerProtocol() {}
 
@@ -86,7 +86,6 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint16_t y = htons(g->y_pos());
     uint8_t vida = g->get_vida();
     uint8_t color = g->get_color();
-
 
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)

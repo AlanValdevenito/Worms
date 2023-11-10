@@ -396,6 +396,32 @@ TEST(Test13, Recibir_un_varios_gusanos)
     // ASSERT_TRUE(rta->get_vida() == vida);
 }
 
+TEST(A, a)
+{
+    std::cout << "**********************************************************************************************************************\n";
+    std::cout << "*                                   PRUEBAS PROTOCOLO SERVIDOR                                                       *\n";
+    std::cout << "**********************************************************************************************************************\n";
+}
+
+TEST(Test14, algo)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    std::shared_ptr<ClienteId> cliente = std::make_shared<ClienteId>(5);
+    sp.enviarId(cliente, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint8_t id_recibido;
+    skt->recvall(&id_recibido, sizeof(id_recibido), &was_closed);
+
+    delete skt;
+    ASSERT_TRUE(id_recibido == 5);
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

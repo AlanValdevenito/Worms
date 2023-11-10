@@ -34,7 +34,10 @@ file(GLOB DTO_HEADERS ../common/Dtos/*.h)
 file(GLOB CLIENT_SOURCES ../client/client_protocol.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS ../client/Client_protocol.h)
 
-list(APPEND TEST ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES})
+file(GLOB SERVER_SOURCES ../server/server_protocol.cpp *.$(extension))
+file(GLOB SERVER_HEADERS ../server/server_protocol.h)
+
+list(APPEND TEST ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${SERVER_SOURCES} ${SERVER_SOURCES})
 
 # Agrega el nuevo archivo de prueba
 # add_executable(my_test my_test.cpp)
