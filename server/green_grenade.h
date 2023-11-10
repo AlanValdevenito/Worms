@@ -15,7 +15,7 @@ public:
     GreenGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds);
     float getXCoordinate();
     float getYCoordinate();
-    void shoot(int angle, int power); 
+    void shoot(float angle, int power); 
     void startContact() override;
     void endContact() override;
     ~GreenGrenade();

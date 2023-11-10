@@ -245,7 +245,7 @@ void Game::sendWorms()
     broadcaster.AddDtoToQueues(gusanos);
     // crear granada
     if (greenGrenade != NULL) {
-        std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)greenGrenade->getXCoordinate() * 100, (uint16_t)greenGrenade->getYCoordinate() * 100);
+        std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100));
 
         broadcaster.AddDtoToQueues(granada);
     }
@@ -320,11 +320,11 @@ void Game::stop()
     // liberar memoria
 }
 
-void Game::throwGreenGrenade(int angle, int power) {
+void Game::throwGreenGrenade(float angle, int power) {
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
-                                    actualWorm->getXCoordinate(),
+                                    actualWorm->getYCoordinate(),
                                     5);
     greenGrenade->shoot(angle, power);
 
@@ -353,7 +353,7 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     else if (code == GRANADA_VERDE_CODE) {
         std::shared_ptr<GranadaVerde> grenade = std::dynamic_pointer_cast<GranadaVerde>(dto);
         std::cout << "angulo = " << (int)grenade->get_angulo() << " potencia = " << (int)grenade->get_potencia() << "\n";
-        throwGreenGrenade(grenade->get_angulo(), grenade->get_potencia());
+        throwGreenGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia());
     }
 }
 

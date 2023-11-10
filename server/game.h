@@ -60,7 +60,7 @@ public:
     void executeCommand(std::shared_ptr<Dto> dto);
     void broadcast();
     void createPlayers();
-    void throwGreenGrenade(int angle, int power);
+    void throwGreenGrenade(float angle, int power);
     void passTurn();
     void addPlayerId(uint8_t id);
     bool anyWormMoving();

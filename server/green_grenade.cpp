@@ -1,4 +1,5 @@
 #include "green_grenade.h"
+#include <iostream>
 
 GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds) {
     b2BodyDef bodyDef;
@@ -20,10 +21,11 @@ GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotion
     
 
     b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(0.05f, 0.05f);
+	dynamicBox.SetAsBox(0.025f, 0.025f);
     b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
+	fixtureDef.density = 1.5f;
+    fixtureDef.restitution = 0.4f;
 	fixtureDef.filter.categoryBits = 0x02;
     fixtureDef.filter.maskBits = 0xFD;
 
@@ -31,7 +33,7 @@ GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotion
 	body->CreateFixture(&fixtureDef);
     timeToExplotion = timeToExplotionInSeconds;
     spawnTime = std::chrono::steady_clock::now();
-}
+ }
 
 float GreenGrenade::getXCoordinate() {
     return body->GetPosition().x;
@@ -41,7 +43,7 @@ float GreenGrenade::getYCoordinate() {
     return body->GetPosition().y;
 }
 
-void GreenGrenade::shoot(int angle, int power) {
+void GreenGrenade::shoot(float angle, int power) {
     body->ApplyLinearImpulseToCenter(b2Vec2(1.5 * cos(angle), 1.5 * sin(angle)), true);
 }
 
