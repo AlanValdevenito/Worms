@@ -560,10 +560,10 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
     {
 
         if (elemento.first == this->id_gusano_actual) {
-            elemento.second->render(renderer);
+            elemento.second->render(renderer, this->camara.getLimiteIzquierdo() * 24);
         
         } else if (this->camara.comprobarRenderizado(elemento.second->get_x() / 24, elemento.second->get_y() / 24, 1, 1)) {
-            elemento.second->render_camara(renderer, this->camara.getLimiteIzquierdo() * 24);
+            elemento.second->render(renderer, this->camara.getLimiteIzquierdo() * 24);
         }
     }
 }
