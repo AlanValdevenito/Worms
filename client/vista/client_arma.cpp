@@ -13,10 +13,10 @@ Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
-void Arma::update() {
+void Arma::update(int it) {
 
     if (not this->animacionCompleta) {
-        this->currentFrame++;
+        this->currentFrame = it;
         this->currentFrame = this->currentFrame % 10;
     }
 

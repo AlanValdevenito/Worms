@@ -26,7 +26,7 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
 {
 
     if (this->armaEquipada) {
-        this->arma.update();
+        this->arma.update(it);
     }
 
     if ((nuevoX != this->x) || (nuevoY != this->y)) {

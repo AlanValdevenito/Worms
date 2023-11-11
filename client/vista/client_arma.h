@@ -26,7 +26,7 @@ private:
 public:
     Arma(SDL2pp::Renderer &renderer);
 
-    void update(); // Actualiza la animacion. 
+    void update(int it); // Actualiza la animacion. 
     void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda); // Renderiza el arma.
 
     void equipar_arma(int tipo, std::string &ruta);

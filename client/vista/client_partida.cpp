@@ -476,7 +476,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
     }
 
     if((this->camara.comprobarRenderizado(this->granada->get_x() / 24, this->granada->get_y() / 24, 1, 1)) && (this->granada->seLanzoGranada())) {
-        std::cout << "AAAAAAAAAAAAAAAAAAAAAA\n";
+        
         if (this->granada->get_flag() == 1) {
             this->granada->render(renderer, this->camara.getLimiteIzquierdo() * 24);
 
