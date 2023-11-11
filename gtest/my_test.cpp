@@ -6,9 +6,16 @@
 #include "constantes.h"
 #include "mover.h"
 
-TEST(Test1, Envio_Mover_a_Derecha)
+void printCliente()
 {
+    std::cout << "**********************************************************************************************************************\n";
+    std::cout << "*                                   PRUEBAS PROTOCOLO CLIENTE                                                        *\n";
+    std::cout << "**********************************************************************************************************************\n";
+}
 
+TEST(PROTOCOLOCLIENTE__ENVIO, __Mover_a_Derecha)
+{
+    // printCliente();
     SocketMock skt;
     ClientProtocol cp(std::ref(skt));
 
@@ -28,7 +35,7 @@ TEST(Test1, Envio_Mover_a_Derecha)
     ASSERT_TRUE(id_recibido == id && codigo_recibido == MOVER_A_DERECHA_CODE);
 }
 
-TEST(Test2, Envio_Mover_a_Izquierda)
+TEST(PROTOCOLOCLIENTE__ENVIO, __Mover_a_Izquierda)
 {
 
     SocketMock skt;
@@ -50,7 +57,7 @@ TEST(Test2, Envio_Mover_a_Izquierda)
     ASSERT_TRUE(id_recibido == id && codigo_recibido == MOVER_A_IZQUIERDA_CODE);
 }
 
-TEST(Test3, Envio_de_seleccion_de_partida)
+TEST(PROTOCOLOCLIENTE__ENVIO, __Seleccion_de_partida)
 {
 
     SocketMock skt;
@@ -75,7 +82,7 @@ TEST(Test3, Envio_de_seleccion_de_partida)
     ASSERT_TRUE(id_recibido == id && codigo_recibido == LISTA_DE_PARTIDAS_CODE && seleccion_recibida == seleccion);
 }
 
-TEST(Test4, Envio_ataque_con_bate)
+TEST(PROTOCOLOCLIENTE__ENVIO, __Ataque_con_bate)
 {
 
     SocketMock skt;
@@ -100,7 +107,7 @@ TEST(Test4, Envio_ataque_con_bate)
     ASSERT_TRUE(id_recibido == id && codigo_recibido == BATEAR_CODE && angulo_recibido == angulo);
 }
 
-TEST(Test5, Envio_de_aviso_de_fin_de_partida)
+TEST(PROTOCOLOCLIENTE__ENVIO, __Fin_de_partida)
 {
 
     SocketMock skt;
@@ -122,7 +129,7 @@ TEST(Test5, Envio_de_aviso_de_fin_de_partida)
     ASSERT_TRUE(id_recibido == id && codigo_recibido == FINALIZAR_CODE);
 }
 
-TEST(Test6, Envio_de_salto)
+TEST(PROTOCOLOCLIENTE__ENVIO, __Salto)
 {
 
     SocketMock skt;
@@ -144,7 +151,7 @@ TEST(Test6, Envio_de_salto)
     ASSERT_TRUE(id_recibido == id && codigo_recibido == SALTAR_CODE);
 }
 
-TEST(Test7, Envio_de_peticion_de_nueva_partida)
+TEST(PROTOCOLOCLIENTE__ENVIO, __Peticion_de_nueva_partida)
 {
 
     SocketMock skt;
@@ -167,8 +174,11 @@ TEST(Test7, Envio_de_peticion_de_nueva_partida)
 
     ASSERT_TRUE(id_recibido == 0 && codigo_recibido == NUEVA_PARTIDA_CODE && cantidad_recibida == cantidad_de_jugadores);
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-TEST(Test9, Recibir_id_de_cliente)
+TEST(PROTOCOLOCLIENTE__RECIBIR, __ID_de_cliente)
 {
     SocketMock skt;
     ClientProtocol cp(std::ref(skt));
@@ -186,7 +196,7 @@ TEST(Test9, Recibir_id_de_cliente)
     ASSERT_TRUE(rta->get_cliente_id() == id);
 }
 
-TEST(Test10, Recibir_lista_de_partidas)
+TEST(PROTOCOLOCLIENTE__RECIBIR, __Lista_de_Partidas)
 {
     SocketMock skt;
     ClientProtocol cp(std::ref(skt));
@@ -243,7 +253,7 @@ void enviar_viga_con_parametros(SocketMock &skt, uint16_t x, uint16_t y, uint16_
     skt.sendall(&angulo_a_enviar, sizeof(angulo_a_enviar), &was_closed);
 }
 
-TEST(Test11, Recibir_una_viga)
+TEST(PROTOCOLOCLIENTE__RECIBIR, __Viga)
 {
     SocketMock skt;
     ClientProtocol cp(std::ref(skt));
@@ -267,7 +277,7 @@ TEST(Test11, Recibir_una_viga)
     ASSERT_TRUE(viga->x_pos() == x && viga->y_pos() == y && viga->return_ancho() == ancho && viga->return_alto() == alto && viga->return_angulo() == angulo);
 }
 
-TEST(Test12, Recibir_varias_vigas)
+TEST(PROTOCOLOCLIENTE__RECIBIR, __Multiples_vigas)
 {
     SocketMock skt;
     ClientProtocol cp(std::ref(skt));
@@ -325,7 +335,7 @@ void enviar_gusano_con_parametros(SocketMock &skt, uint8_t id, uint16_t x, uint1
     skt.sendall(&color_a_enviar, sizeof(color_a_enviar), &was_closed);
 }
 
-TEST(Test13, Recibir_un_solo_gusano)
+TEST(PROTOCOLOCLIENTE__RECIBIR, __Gusano)
 {
     SocketMock skt;
     ClientProtocol cp(std::ref(skt));
@@ -350,7 +360,7 @@ TEST(Test13, Recibir_un_solo_gusano)
     ASSERT_TRUE(rta->get_color() == color);
 }
 
-TEST(Test13, Recibir_un_varios_gusanos)
+TEST(PROTOCOLOCLIENTE__RECIBIR, varios_gusanos)
 {
     SocketMock skt;
     ClientProtocol cp(std::ref(skt));
@@ -362,6 +372,8 @@ TEST(Test13, Recibir_un_varios_gusanos)
     skt.sendall(&cant, sizeof(cant), &was_closed);
     uint8_t turno = 3;
     skt.sendall(&turno, sizeof(turno), &was_closed);
+    uint8_t flag = 1;
+    skt.sendall(&flag, sizeof(flag), &was_closed);
 
     uint8_t id_1 = 8;
     uint16_t x_1 = 20;
@@ -384,28 +396,28 @@ TEST(Test13, Recibir_un_varios_gusanos)
     uint8_t color_3 = 3;
     enviar_gusano_con_parametros(std::ref(skt), id_3, x_3, y_3, vida_3, color_3);
 
-    std::shared_ptr<Gusanos> rta = std::dynamic_pointer_cast<Gusanos>(cp.receive(was_closed));
+    std::shared_ptr<Gusanos> rta = std::dynamic_pointer_cast<Gusanos>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Gusano> g1 = rta->popGusano(0);
     std::shared_ptr<Gusano> g2 = rta->popGusano(1);
     std::shared_ptr<Gusano> g3 = rta->popGusano(2);
 
+    ASSERT_TRUE(rta->get_flag_proyectil() == true && rta->cantidad() == 3);
     ASSERT_TRUE(g1->x_pos() == x_1 && g1->y_pos() == y_1 && g1->get_id() == id_1 && g1->get_vida() == vida_1 && g1->get_color() == color_1);
     ASSERT_TRUE(g2->x_pos() == x_2 && g2->y_pos() == y_2 && g2->get_id() == id_2 && g2->get_vida() == vida_2 && g2->get_color() == color_2);
     ASSERT_TRUE(g3->x_pos() == x_3 && g3->y_pos() == y_3 && g3->get_id() == id_3 && g3->get_vida() == vida_3 && g3->get_color() == color_3);
-    // ASSERT_TRUE(rta->x_pos() == x);
     // ASSERT_TRUE(rta->y_pos() == y);
     // ASSERT_TRUE(rta->get_id() == id);
     // ASSERT_TRUE(rta->get_vida() == vida);
 }
 
-TEST(A, a)
+void printServidor()
 {
     std::cout << "**********************************************************************************************************************\n";
     std::cout << "*                                   PRUEBAS PROTOCOLO SERVIDOR                                                       *\n";
     std::cout << "**********************************************************************************************************************\n";
 }
 
-TEST(Test14, EnviarIdDelCliente)
+TEST(PROTOCOLOSERVIDOR__ENVIAR, __IdDelCliente)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
@@ -424,7 +436,7 @@ TEST(Test14, EnviarIdDelCliente)
     ASSERT_TRUE(code == CLIENTE_ID_CODE && id_recibido == 5);
 }
 
-TEST(Test15, EnviarIdFinDePartida)
+TEST(PROTOCOLOSERVIDOR__ENVIAR, __IdFinDePartida)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
@@ -440,7 +452,7 @@ TEST(Test15, EnviarIdFinDePartida)
     ASSERT_TRUE(code == FINALIZAR_CODE);
 }
 
-TEST(Test16, Enviar_inicio_de_partida)
+TEST(PROTOCOLOSERVIDOR__ENVIAR, ___IniciodePartida)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
@@ -456,7 +468,7 @@ TEST(Test16, Enviar_inicio_de_partida)
     ASSERT_TRUE(code == INICIAR_PARIDA);
 }
 
-TEST(Test17, Enviar_lista_de_partidas)
+TEST(PROTOCOLOSERVIDOR__ENVIAR, __ListadePartidas)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
@@ -514,7 +526,7 @@ void recibir_parametros_del_gusano(SocketMock *skt, uint8_t &id, uint16_t &x, ui
     // printf("%u %u %u %u %u\n", id, x, y, vida, color);
 }
 
-TEST(Test17, Enviar_un_solo_gusano)
+TEST(PROTOCOLOSERVIDOR__ENVIAR, __Gusano)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
@@ -550,7 +562,7 @@ TEST(Test17, Enviar_un_solo_gusano)
     ASSERT_TRUE(color_recibido == color);
 }
 
-TEST(Test18, Enviar_una_lista_de_gusanos)
+TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
@@ -594,6 +606,9 @@ TEST(Test18, Enviar_una_lista_de_gusanos)
     uint8_t turno;
     skt->recvall(&turno, sizeof(turno), &was_closed);
 
+    uint8_t flag;
+    skt->recvall(&flag, sizeof(flag), &was_closed);
+
     uint8_t id_1;
     uint16_t x_1;
     uint16_t y_1;
@@ -616,7 +631,7 @@ TEST(Test18, Enviar_una_lista_de_gusanos)
     recibir_parametros_del_gusano(std::ref(skt), id_3, x_3, y_3, vida_3, color_3);
 
     delete skt;
-    ASSERT_TRUE(code == GUSANOS_CODE && cant == 3 && turno == 1);
+    ASSERT_TRUE(code == GUSANOS_CODE && cant == 3 && turno == 1 && flag == 0);
     ASSERT_TRUE(id_1 == id_enviada1 && x_1 == x_enviada1 && y_1 == y_enviada1 && vida_1 == vida_enviada1 && color_1 == color_enviada1);
     ASSERT_TRUE(id_2 == id_enviada2 && x_2 == x_enviada2 && y_2 == y_enviada2 && vida_2 == vida_enviada2 && color_2 == color_enviada2);
     ASSERT_TRUE(id_3 == id_enviada3 && x_3 == x_enviada3 && y_3 == y_enviada3 && vida_3 == vida_enviada3 && color_3 == color_enviada3);
@@ -646,7 +661,7 @@ void recibir_parametros_de_la_viga(SocketMock *skt, uint16_t &x, uint16_t &y, ui
     // printf("%u %u %u %u %u\n", id, x, y, vida, color);
 }
 
-TEST(Test19, Enviar_una_lista_de_vigas)
+TEST(PROTOCOLOSERVIDOR__ENVIAR, ListadeVigas)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
@@ -713,6 +728,271 @@ TEST(Test19, Enviar_una_lista_de_vigas)
     ASSERT_TRUE(x_1 == x_enviada1 && y_1 == y_enviada1 && ancho_1 == ancho_enviada1 && alto_1 == alto_enviada1 && angulo_1 == angulo_enviada1);
     ASSERT_TRUE(x_2 == x_enviada2 && y_2 == y_enviada2 && ancho_2 == ancho_enviada2 && alto_2 == alto_enviada2 && angulo_2 == angulo_enviada2);
     ASSERT_TRUE(x_3 == x_enviada3 && y_3 == y_enviada3 && ancho_3 == ancho_enviada3 && alto_3 == alto_enviada3 && angulo_3 == angulo_enviada3);
+}
+
+TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaVerde)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint16_t x_enviada = 20;
+    uint16_t y_enviada = 11;
+    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(x_enviada, y_enviada);
+
+    sp.enviarTrayectoriaDeGranadaVerde(g, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint16_t x;
+    skt->recvall(&x, sizeof(x), &was_closed);
+    x = ntohs(x);
+
+    uint16_t y;
+    skt->recvall(&y, sizeof(y), &was_closed);
+    y = ntohs(y);
+
+    delete skt;
+    ASSERT_TRUE(code == GRANADA_VERDE_CODE);
+    ASSERT_TRUE(x == x_enviada);
+    ASSERT_TRUE(y == y_enviada);
+}
+
+TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaBazooka)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint16_t x_enviada = 20;
+    uint16_t y_enviada = 11;
+    uint16_t angulo_enviado = 75;
+    std::shared_ptr<Bazuka> g = std::make_shared<Bazuka>(x_enviada, y_enviada, angulo_enviado);
+
+    sp.enviarTrayectoriaDeBazuka(g, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint16_t x;
+    skt->recvall(&x, sizeof(x), &was_closed);
+    x = ntohs(x);
+
+    uint16_t y;
+    skt->recvall(&y, sizeof(y), &was_closed);
+    y = ntohs(y);
+
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+
+    delete skt;
+    ASSERT_TRUE(code == BAZUKA_CODE);
+    ASSERT_TRUE(x == x_enviada);
+    ASSERT_TRUE(y == y_enviada);
+    ASSERT_TRUE(angulo == angulo_enviado);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __PartidaSeleccionada)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 4;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = LISTA_DE_PARTIDAS_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    uint8_t op = 6;
+    skt->sendall(&op, sizeof(op), &was_closed);
+
+    std::shared_ptr<ListaDePartidas> selec = std::dynamic_pointer_cast<ListaDePartidas>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(op == selec->seleccionada);
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __MoveraDerecha)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 4;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = MOVER_A_DERECHA_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    std::shared_ptr<MoverADerecha> rta = std::dynamic_pointer_cast<MoverADerecha>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(id == rta->get_cliente_id());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __MoveraIzquierda)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 25;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = MOVER_A_IZQUIERDA_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    std::shared_ptr<MoverAIzquierda> rta = std::dynamic_pointer_cast<MoverAIzquierda>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(id == rta->get_cliente_id());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __FindePartida)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 25;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = FINALIZAR_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    std::shared_ptr<Dto> rta = std::dynamic_pointer_cast<Dto>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(id == rta->get_cliente_id());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __NuevaPartida)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 60;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = NUEVA_PARTIDA_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    uint8_t jugadores = 4;
+    skt->sendall(&jugadores, sizeof(jugadores), &was_closed);
+
+    std::shared_ptr<NuevaPartida> rta = std::dynamic_pointer_cast<NuevaPartida>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(jugadores == rta->get_cantidad_de_jugadores());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __Salto)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 60;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = SALTAR_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    std::shared_ptr<Saltar> rta = std::dynamic_pointer_cast<Saltar>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(id == rta->get_cliente_id());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __AtaqueconBate)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 2;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = BATEAR_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    uint8_t angulo = 25;
+    skt->sendall(&angulo, sizeof(angulo), &was_closed);
+
+    std::shared_ptr<Batear> rta = std::dynamic_pointer_cast<Batear>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(id == rta->get_cliente_id());
+    ASSERT_TRUE(angulo == rta->get_angulo());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __AtaqueconGranadaVerde)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 2;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = GRANADA_VERDE_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    uint8_t potencia = 25;
+    skt->sendall(&potencia, sizeof(potencia), &was_closed);
+
+    uint8_t angulo = 25;
+    skt->sendall(&angulo, sizeof(angulo), &was_closed);
+
+    uint8_t tiempo = 5;
+    skt->sendall(&tiempo, sizeof(tiempo), &was_closed);
+
+    std::shared_ptr<GranadaVerde> rta = std::dynamic_pointer_cast<GranadaVerde>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(id == rta->get_cliente_id());
+    ASSERT_TRUE(potencia == rta->get_potencia());
+    ASSERT_TRUE(angulo == rta->get_angulo());
+    ASSERT_TRUE(tiempo == rta->get_tiempo());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __AtaqueconBazooka)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 2;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = BAZUKA_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    uint8_t potencia = 25;
+    skt->sendall(&potencia, sizeof(potencia), &was_closed);
+
+    uint8_t angulo = 25;
+    skt->sendall(&angulo, sizeof(angulo), &was_closed);
+
+    std::shared_ptr<Bazuka> rta = std::dynamic_pointer_cast<Bazuka>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(id == rta->get_cliente_id());
+    ASSERT_TRUE(potencia == rta->get_potencia());
+    ASSERT_TRUE(angulo == rta->get_angulo());
 }
 
 int main(int argc, char **argv)

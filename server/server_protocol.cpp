@@ -287,8 +287,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBazuka(uint8_t id, bool &wa
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-
-    printf("%u %u \n",potencia, angulo);
+    // printf("%u %u \n",potencia, angulo);
     return std::make_shared<Bazuka>(id, potencia, angulo);
 }
 
