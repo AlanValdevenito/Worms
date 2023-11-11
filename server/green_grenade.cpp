@@ -1,4 +1,5 @@
 #include "green_grenade.h"
+#include "worm.h"
 #include <iostream>
 
 
@@ -27,7 +28,7 @@ GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotion
     b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.5f;
-    fixtureDef.restitution = 0.4f;
+    fixtureDef.restitution = 0.2f;
 	fixtureDef.filter.categoryBits = 0x02;
     fixtureDef.filter.maskBits = 0xFD;
 
@@ -54,6 +55,27 @@ void GreenGrenade::shoot(Direction direction, float angle, int power) {
         throw std::runtime_error("Invalid direction");
     }
     
+}
+
+void GreenGrenade::explode() {
+    float xComponent; float yComponent;
+    for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
+    {   
+        float distance = (body->GetPosition().x - b->GetPosition().x);
+        if (b->GetType() == b2_dynamicBody && distance > -4.0f && distance < 4.0f && distance != 0.0f) {
+            Entity *entity = (Entity*)b->GetUserData().pointer;
+	  
+            if (entity != NULL) {
+                if ((entity->entityType == WORM)) {;
+                    Worm *worm = (Worm*)entity;
+                    worm->takeDamage(30);
+                }
+            } 
+            xComponent = 5*(b->GetPosition().x - body->GetPosition().x);
+            yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
+            b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+        }
+    }
 }
 
 void GreenGrenade::startContact() {}

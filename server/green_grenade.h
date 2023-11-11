@@ -16,6 +16,7 @@ public:
     float getXCoordinate();
     float getYCoordinate();
     void shoot(Direction direction, float angle, int power); 
+    void explode();
     void startContact() override;
     void endContact() override;
     ~GreenGrenade();

@@ -188,13 +188,6 @@ void Game::update()
         }
     }
 
-    /*
-    if (not greenGrenade.exploded) {
-        if (pasaron los seg de la cuenta regresiva) {
-            greenGrenade.explode();
-        }
-    }
-    */
 
     if (greenGrenade != NULL) {
 
@@ -202,6 +195,7 @@ void Game::update()
         now = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::seconds> (now - greenGrenade->spawnTime).count() >= greenGrenade->timeToExplotion) {
             std::cout << "granada explota\n";
+            greenGrenade->explode();
             greenGrenade = NULL;
         }
     }
@@ -325,11 +319,9 @@ void Game::throwGreenGrenade(float angle, int power) {
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
-                                    2);
+                                    5);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     greenGrenade->shoot(direction, angle, power);
-    
-
 }
 
 void Game::executeCommand(std::shared_ptr<Dto> dto)
