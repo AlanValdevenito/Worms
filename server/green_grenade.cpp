@@ -61,12 +61,17 @@ void GreenGrenade::shoot(Direction direction, float angle, int power) {
     
 }
 
+float getDistance(float x1, float y1, float x2, float y2) {
+    return sqrt(pow((x2-x1),2)+pow((y2-y1),2));
+}
+
 void GreenGrenade::explode() {
     float xComponent; float yComponent;
     for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
     {   
-        float distance = (body->GetPosition().x - b->GetPosition().x);
-        if (b->GetType() == b2_dynamicBody && distance > -4.0f && distance < 4.0f && distance != 0.0f) {
+        float distance = getDistance(body->GetPosition().x, body->GetPosition().y,
+                                     b->GetPosition().x, b->GetPosition().y);
+        if (b->GetType() == b2_dynamicBody && distance < 4.0f && distance != 0.0f) {
             Entity *entity = (Entity*)b->GetUserData().pointer;
 	  
             if (entity != NULL) {
@@ -75,7 +80,7 @@ void GreenGrenade::explode() {
                     worm->takeDamage(30);
                 }
             } 
-            xComponent = 5*(b->GetPosition().x - body->GetPosition().x);
+            xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
             yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
             b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
         }
