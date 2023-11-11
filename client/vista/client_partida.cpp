@@ -174,7 +174,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
     SDL_Event event;
 
     std::string ruta;
-    std::string arma = "/bazooka.1.png";
+    std::string arma;
 
     // Revisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
     while (SDL_PollEvent(&event))
@@ -268,7 +268,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_SPACE:
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->cambiar(arma);
                     this->worms[this->id_gusano_actual]->aumentar_potencia();
                 }
 
@@ -324,6 +323,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wbazlnk.png";
                     arma = "/bazooka.1.png";
+                    this->granada->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(BAZOOKA, ruta);
                 }
 
@@ -338,6 +338,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wgrnlnk.png";
                     arma = "/grenade.1.png";
+                    this->granada->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE, ruta);
                 }
 
@@ -352,6 +353,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wbsblnk.png";
                     arma = "/baseball.1.png";
+                    this->granada->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta);
                 }
 

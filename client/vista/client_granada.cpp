@@ -25,8 +25,10 @@ void Granada::update(float nuevoX, float nuevoY) {
 }
 
 void Granada::cambiar(std::string &ruta) {
-    this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH + ruta).SetColorKey(true, 0));
-    this->size = this->texture.GetWidth();
+    SDL2pp::Surface surface(DATA_PATH + ruta);
+
+    this->size = surface.GetWidth();
+    this->texture.Update(SDL2pp::NullOpt, surface.SetColorKey(true, 0));
 }
 
 void Granada::explotar(SDL2pp::Renderer &renderer, float camara) {

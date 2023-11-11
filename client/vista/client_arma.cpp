@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0))), 
+Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
                                         mira(renderer),
                                         potencia(renderer),
                                         currentFrame(0), 
@@ -16,7 +16,7 @@ Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp
 void Arma::update(int it) {
 
     if (not this->animacionCompleta) {
-        this->currentFrame = it;
+        this->currentFrame++;
         this->currentFrame = this->currentFrame % 10;
     }
 
@@ -46,7 +46,12 @@ void Arma::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzqu
 
 void Arma::equipar_arma(int tipo, std::string &ruta) {
     this->tipoDeArma = tipo;
-    this->texture.Update(SDL2pp::NullOpt, SDL2pp::Surface(DATA_PATH + ruta).SetColorKey(true, 0));
+
+    SDL2pp::Surface surface(DATA_PATH + ruta);
+
+    this->numFrames = surface.GetHeight() / surface.GetWidth();
+    this->size = surface.GetWidth();
+    this->texture.Update(SDL2pp::NullOpt, surface.SetColorKey(true, 0));
 }
 
 int Arma::get_tipo() {
