@@ -3,6 +3,7 @@
 #include <thread>
 
 #define TURN_DURATION 60
+#define TIME_LEFT_AFTER_ATTACK 5
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
@@ -134,7 +135,9 @@ void Game::addPlayerId(uint8_t id) {
 void Game::passTurn() {
     // cambio de turno 
     end = std::chrono::steady_clock::now();
-    if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION) {
+    if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION ||
+        (wormAttacked && std::chrono::duration_cast<std::chrono::seconds> (end - timeOfAttack).count() >= TIME_LEFT_AFTER_ATTACK)) {
+        wormAttacked = false;
         std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
         std::cout << "turno actual = " << idTurn << "\n";
         begin = std::chrono::steady_clock::now();
@@ -296,16 +299,14 @@ void Game::batWorm(int angle) {
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->bat(world.getWorms(), angle);
 
-   
-    begin = std::chrono::steady_clock::now();
+    timeOfAttack = std::chrono::steady_clock::now();
+    wormAttacked = true;
+    /*//timeOfAttack = std::chrono::steady_clock::now();
     if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
         indexOfActualPlayer = 0;
     } else {
         indexOfActualPlayer++;
-    }
-    idTurn = idPlayers[indexOfActualPlayer];
-    players[indexOfActualPlayer].changeActualWorm();
-    actualWormId = players[indexOfActualPlayer].actualWormId;
+    }*/
 }
 
 void Game::stop()
@@ -322,6 +323,18 @@ void Game::throwGreenGrenade(float angle, int power) {
                                     5);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     greenGrenade->shoot(direction, angle, power);
+
+    timeOfAttack = std::chrono::steady_clock::now();
+    wormAttacked = true;
+    /*begin = std::chrono::steady_clock::now();
+    if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
+        indexOfActualPlayer = 0;
+    } else {
+        indexOfActualPlayer++;
+    }
+    idTurn = idPlayers[indexOfActualPlayer];
+    players[indexOfActualPlayer].changeActualWorm();
+    actualWormId = players[indexOfActualPlayer].actualWormId;*/
 }
 
 void Game::executeCommand(std::shared_ptr<Dto> dto)

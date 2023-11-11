@@ -31,6 +31,8 @@ private:
     std::vector<Player> players;
     std::chrono::steady_clock::time_point begin;
     std::chrono::steady_clock::time_point end;
+    std::chrono::steady_clock::time_point timeOfAttack;
+    bool wormAttacked;
     int numberOfPlayers;
     int numberOfWormsMoving = 0;
     int actualWormId;
