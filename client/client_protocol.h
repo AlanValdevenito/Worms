@@ -22,6 +22,7 @@
 #include "gusano.h"
 #include "mover.h"
 #include "batear.h"
+#include "granada.h"
 #include "partidas_lista.h"
 #include "nueva_partida.h"
 #include "cliente_id.h"
@@ -39,9 +40,7 @@ public:
     bool enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed);
     bool saltar(std::shared_ptr<Dto> s, bool &was_closed);
     bool enviarNuevaPartida(std::shared_ptr<NuevaPartida> n, bool &was_closed);
-
-    void sendPruebita(uint8_t a);
-    void recvPruebita();
+    bool enviarAtaqueConGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed);
 
 private:
     SocketInterface &skt;
@@ -51,7 +50,7 @@ private:
     std::shared_ptr<Dto> recibirGusanos(bool &was_closed);
     std::shared_ptr<Dto> recibirPartidas(bool &was_closed);
     std::shared_ptr<Dto> recibirId(bool &was_closed);
-    std::shared_ptr<Dto> recibirTurnoDeGusano(bool &was_closed);
+    std::shared_ptr<Dto> recibirTrayectoriaGranadaVerde(bool &was_closed); // si se repiten -> nombre trayetoria_proyectil
     bool enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed);
     bool recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed);
     uint8_t cantidadARecibir(bool &was_closed);

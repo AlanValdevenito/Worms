@@ -6,15 +6,13 @@
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
-Partida::Partida(Client &cliente) : cliente(cliente), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
+Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 12), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
 
 int Partida::iniciar()
 {
     /******************** INICIAR SDL ********************/
 
     SDL sdl(SDL_INIT_VIDEO);
-
-    SDLTTF ttf;
 
     Window window(TITULO,
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -23,29 +21,16 @@ int Partida::iniciar()
 
     Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    /******************** TEXTURAS ********************/
+    /******************** TEXTURAS Y COLORES ********************/
 
-    this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
-    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
-    this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
-
-    // Cargamos la fuente de la letra
-    Font font(DATA_PATH "/Vera.ttf", 12);
-
-    /******************** COLORES ********************/
-
-    std::map<int, Color> colores;
-
-    colores[0] = SDL2pp::Color(255,0,0); // Rojo
-    colores[1] = SDL2pp::Color(0,0,255); // Azul
-    colores[2] = SDL2pp::Color(0,255,0); // Verde
-    colores[3] = SDL2pp::Color(255,255,255); // Blanco
-    colores[4] = SDL2pp::Color(0,0,0); // Negro
+    inicializar_texturas(renderer);
+    inicializar_colores();
 
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
     guardar_vigas();
     guardar_worms(renderer, colores);
+    this->granada = new Granada(renderer);
 
     /******************** GAME LOOP ********************/
 
@@ -84,7 +69,7 @@ int Partida::iniciar()
             return 0;
         }
 
-        renderizar(renderer, font);
+        renderizar(renderer);
 
         /* IF BEHIND, KEEP WORKING */
         // Buscamos mantener un ritmo constante para ejecutar las funciones 'actualizar' y 'renderizar'
@@ -122,6 +107,22 @@ int Partida::iniciar()
     }
 
     return 0;
+}
+
+/******************** ALMACENAMIENTO DEL ESTADO INICIAL DEL JUEGO ********************/
+
+void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
+    this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
+    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
+    this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
+}
+
+void Partida::inicializar_colores() {
+    this->colores[0] = SDL2pp::Color(255,0,0); // Rojo
+    this->colores[1] = SDL2pp::Color(0,0,255); // Azul
+    this->colores[2] = SDL2pp::Color(0,255,0); // Verde
+    this->colores[3] = SDL2pp::Color(255,255,255); // Blanco
+    this->colores[4] = SDL2pp::Color(0,0,0); // Negro
 }
 
 void Partida::guardar_vigas()
@@ -164,10 +165,14 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
     // delete dto;
 }
 
+/******************** HANDLER DE EVENTOS ********************/
+
 bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 {
     // Procesamiento de evento
     SDL_Event event;
+
+    std::string ruta;
 
     // Revisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
     while (SDL_PollEvent(&event))
@@ -272,8 +277,52 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 break;
 
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
-            case SDLK_0:
-                // ...
+            case SDLK_1:
+                
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->granada->set_tiempo(1);
+                }
+
+                break;
+
+            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
+            case SDLK_2:
+                
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->granada->set_tiempo(2);
+                }
+
+                break;
+
+            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
+            case SDLK_3:
+                
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->granada->set_tiempo(3);
+                }
+
+                break;
+
+            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
+            case SDLK_4:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->granada->set_tiempo(4);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F2 el worm se equipa un arma
+            case SDLK_F2:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                
+                } else {
+                    ruta = "/wgrnlnk.png";
+                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE, ruta);
+                }
+
                 break;
 
             // Si se presiona la tecla de F7 el worm se equipa un arma
@@ -283,7 +332,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->equipar_arma();
+                    ruta = "/wbsblnk.png";
+                    this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta);
                 }
 
                 break;
@@ -324,10 +374,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_SPACE:
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
+                    enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
-
                     this->tiempoInicial = this->tiempoActual;
+
+                    this->granada->update(320, this->worms[this->id_gusano_actual]->get_y());
                 }
                 
                 break;
@@ -348,12 +399,81 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
     return false;
 }
 
-void Partida::renderizar(SDL2pp::Renderer &renderer, SDL2pp::Font &font)
+void Partida::enviarAtaque() {
+    int armaEquipada = this->worms[this->id_gusano_actual]->get_tipo_de_arma();
+
+    if(armaEquipada == BATE) {
+        cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
+    
+    } else if (armaEquipada == GRANADA_VERDE) {
+        this->granada->lanzarGranada();
+        cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(),
+                                                               this->granada->get_tiempo()));
+    
+    } else {
+        std::cerr << "El numero recibido no esta asociado a ningun arma\n";
+    }
+}
+
+/******************** ACTUALIZACION Y RENDERIZADO ********************/
+
+bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
+{
+    // std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
+
+    std::shared_ptr<Dto> dead = cliente.recv_queue.pop();
+    
+    if(not dead->is_alive())
+        return false;
+
+    std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
+
+    
+    int id_gusano_siguiente = dto->get_gusano_de_turno();
+
+    if (id_gusano_siguiente != this->id_gusano_actual) {
+        this->worms[this->id_gusano_actual]->cambiar_turno(); // Le aviso al Worm del turno anterior que ya no es mas su turno
+        this->id_gusano_actual = id_gusano_siguiente;
+        this->worms[this->id_gusano_actual]->turno_actual(); // Le aviso al Worm del turno actual que es su turno
+    
+    } else {
+        this->id_gusano_actual = id_gusano_siguiente;
+        this->worms[this->id_gusano_actual]->turno_actual(); // Le aviso al Worm del turno actual que es su turno
+    }
+
+    float altura = renderer.GetOutputHeight();
+
+    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
+    // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
+    int cantidad = dto->cantidad();
+    for (int i = 0; i < cantidad; i++)
+    {
+        std::shared_ptr<Gusano> gusano = dto->popGusano(i);
+
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+        this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
+    }
+
+    this->granada->set_flag((int) dto->get_flag_proyectil());
+    if(this->granada->get_flag()) {
+        std::shared_ptr<GranadaVerde> granada = std::dynamic_pointer_cast<GranadaVerde>(cliente.recv_queue.pop());
+        
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)granada->y_pos()));
+        this->granada->update(metros_a_pixeles(centimetros_a_metros((int)granada->x_pos())), nuevoY);
+    }
+
+    camara.seguirWorm(*this->worms[this->id_gusano_actual]);
+
+    return true;
+}
+
+void Partida::renderizar(SDL2pp::Renderer &renderer)
 {
     renderer.Clear();
 
     renderizar_mapa(renderer);
-    renderizar_temporizador(renderer, font);
+    renderizar_temporizador(renderer);
     renderizar_worms(renderer);
 
     renderer.Present();
@@ -378,13 +498,24 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-        //if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), ancho, alto)) {
+        if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), ancho, alto)) {
             renderer.Copy(
                 *this->texturas[2],
                 Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) /*- this->camara.getLimiteIzquierdo()*/), altura - metros_a_pixeles(centimetros_a_metros(y)),
+                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y - alto/2)),
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
-        //}
+        }
+    }
+
+    if((this->camara.comprobarRenderizado(this->granada->get_x() / 24, this->granada->get_y() / 24, 1, 1)) && (this->granada->seLanzoGranada())) {
+
+        if (this->granada->get_flag() == 1) {
+            this->granada->render(renderer, this->camara.getLimiteIzquierdo() * 24);
+
+        } else if (this->granada->get_flag() == 0) {
+            this->granada->explotar(renderer, this->camara.getLimiteIzquierdo() * 24);
+        }
+
     }
 }
 
@@ -392,13 +523,17 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
     for (const auto &elemento : this->worms)
     {
-        //if (this->camara.comprobarRenderizado(elemento.second->get_x(), elemento.second->get_y(), 24, 24)) {
+
+        if (elemento.first == this->id_gusano_actual) {
             elemento.second->render(renderer);
-        //}
+        
+        } else if (this->camara.comprobarRenderizado(elemento.second->get_x() / 24, elemento.second->get_y() / 24, 1, 1)) {
+            elemento.second->render_camara(renderer, this->camara.getLimiteIzquierdo() * 24);
+        }
     }
 }
 
-void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &font)
+void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
 {
     int altura = renderer.GetOutputHeight(); // 480
 
@@ -412,42 +547,14 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer, SDL2pp::Font &
     renderer.SetDrawColor(negro);
     renderer.FillRect(contenedor);
 
-    Surface surface = font.RenderText_Solid(std::to_string((int) (this->tiempoRestante * 0.001)), blanco);
+    Surface surface = this->fuente.RenderText_Solid(std::to_string((int) (this->tiempoRestante * 0.001)), blanco);
     Texture texture(renderer, surface);
 
     Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
     renderer.Copy(texture, NullOpt, nombre);
 }
 
-bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
-{
-    // std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
-
-    std::shared_ptr<Dto> dead = cliente.recv_queue.pop();
-    
-    if(not dead->is_alive())
-        return false;
-
-    std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
-    this->id_gusano_actual = dto->get_gusano_de_turno();
-
-    float altura = renderer.GetOutputHeight();
-
-    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
-    // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
-    int cantidad = dto->cantidad();
-    for (int i = 0; i < cantidad; i++)
-    {
-        std::shared_ptr<Gusano> gusano = dto->popGusano(i);
-
-        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
-    }
-
-    // camara.seguirWorm(*this->worms[this->id_gusano_actual]);
-
-    return true;
-}
+/******************** CONVERSIONES ********************/
 
 float Partida::metros_a_pixeles(float metros)
 {
@@ -458,6 +565,8 @@ float Partida::centimetros_a_metros(float centimetros)
 {
     return centimetros / 100;
 }
+
+/******************** MEMORIA ********************/
 
 void Partida::liberar_memoria()
 {

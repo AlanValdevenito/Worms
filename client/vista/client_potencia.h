@@ -7,26 +7,21 @@ class Potencia
 {
 
 private:
-    // Atributo que almacena la textura de la animacion
-    // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
-    SDL2pp::Texture texture;
-    // Entero que almacena el indice del frame actual en la animacion.
+    SDL2pp::Texture texture; // Atributo que almacena la textura de la animacion
+
     int currentFrame;
-    // Entero que representa el numero todal de frames en la animacion.
-    // Se calcula dividiendo la altura de la textura por su ancho.
     int numFrames;
-    // Entero que almacena el tamaño de cada frame (altura y acho).
-    int size;
+    int size; // Entero que almacena el tamaño de cada frame (altura y ancho)
 
 public:
     Potencia(SDL2pp::Renderer &renderer);
 
-    // Renderiza la potencia.
-    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda, int angulo);
-    // Actualiza la animacion. 
-    void update();
-    void reiniciar();
+    void update(); // Actualiza la animacion. 
+    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda, int angulo); // Renderiza la potencia.
+
     int get_current_frame();
+
+    void reiniciar();
 };
 
 #endif // POTENCIA_H

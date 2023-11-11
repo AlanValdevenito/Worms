@@ -28,6 +28,8 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
         return std::make_shared<Dto>(INICIAR_PARIDA);
     else if (code == FINALIZAR_CODE)
         return std::make_shared<DeadDto>();
+    else if (code == GRANADA_VERDE_CODE)
+        return recibirTrayectoriaGranadaVerde(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
@@ -91,6 +93,8 @@ bool ClientProtocol::recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed)
 
     x = ntohs(posicion_x);
     y = ntohs(posicion_y);
+
+    // print
 
     return true;
 }
@@ -159,10 +163,18 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     uint8_t turno;
     skt.recvall(&turno, sizeof(turno), &was_closed);
     if (was_closed)
+<<<<<<< HEAD
+=======
+        return std::make_shared<DeadDto>();
+
+    uint8_t flag;
+    skt.recvall(&flag, sizeof(flag), &was_closed);
+    if (was_closed)
+>>>>>>> granada_verde
         return std::make_shared<DeadDto>();
 
     // printf("cant: %u\n",cant);
-    // printf("turno: %u\n",turno);
+    //printf("flag: %u\n",flag);
 
     std::vector<std::shared_ptr<Gusano>> lista;
     for (int i = 0; i < cant; i++)
@@ -175,6 +187,10 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(lista);
     gusanos->set_gusano_de_turno(turno);
+<<<<<<< HEAD
+=======
+    gusanos->set_flag_proyectil(flag);
+>>>>>>> granada_verde
     return gusanos;
 }
 
@@ -213,6 +229,31 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
 
     return std::make_shared<Gusano>(id, x, y, vida, color);
 }
+
+std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_closed)
+{
+    uint16_t x;
+    uint16_t y;
+
+    skt.recvall(&x, sizeof(x), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&y, sizeof(y), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    x = ntohs(x);
+    y = ntohs(y);
+
+    // printf("Trayectoria ---> x:%u y:%u \n", x, y);
+
+    return std::make_shared<GranadaVerde>(x, y);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool ClientProtocol::enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed)
 {
@@ -282,6 +323,7 @@ bool ClientProtocol::enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_clos
 {
     return enviarIdDelClienteYCodigoDeAccion(dto, was_closed);
 }
+
 bool ClientProtocol::enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_closed)
 {
     bool se_envio = enviarIdDelClienteYCodigoDeAccion(b, was_closed);
@@ -292,6 +334,30 @@ bool ClientProtocol::enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_cl
     uint8_t angulo = b->get_angulo();
     skt.sendall(&angulo, sizeof(angulo), &was_closed);
 
+    if (was_closed)
+        return false;
+
+    return true;
+}
+
+bool ClientProtocol::enviarAtaqueConGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed)
+{
+    bool se_envio = enviarIdDelClienteYCodigoDeAccion(g, was_closed);
+    if (!se_envio)
+        return se_envio;
+
+    uint8_t potencia = g->get_potencia();
+    skt.sendall(&potencia, sizeof(potencia), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t angulo = g->get_angulo();
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t tiempo = g->get_tiempo();
+    skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
     if (was_closed)
         return false;
 

@@ -11,28 +11,17 @@ class Area;
 class Animation {
 
 private:
-    // Atributo que almacena la textura de la animacion
-    // Es una referencia para que esta pueda ser cambiada en cualquier momento segun el evento que este ocurriendo
-    SDL2pp::Texture texture;
-    // Entero que almacena el indice del frame actual en la animacion.
-    int currentFrame;
-    // Entero que representa el numero todal de frames en la animacion.
-    // Se calcula dividiendo la altura de la textura por su ancho.
-    int numFrames;
-    // Entero que almacena el tamaño de cada frame (altura y acho).
-    int size;
-    // Flotante que realiza un seguimiento del tiempo transcurrido desde el ultimo frame de animacion.
-    float elapsed;
+    SDL2pp::Texture texture; // Atributo que almacena la textura de la animacion
+
+    int currentFrame; // Entero que almacena el indice del frame actual en la animacion
+    int numFrames; // Entero que representa el numero todal de frames en la animacion
+    int size; // Entero que almacena el tamaño de cada frame (altura y ancho)
 
 public:
-
     Animation(SDL2pp::Renderer &renderer);
 
-    // Actualiza la animacion. 
-    void update(int it);
-    // Renderiza la animacion en el area especificada. 
-    // El ultimo parametro se utiliza para controlar el volteo de la imagen.
-    void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType);
+    void update(int it); // Actualiza la animacion. 
+    void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType); // Renderiza la animacion en el area especificada. El ultimo parametro se utiliza para controlar el volteo de la imagen.
 };
 
 #endif  //__ANIMATION_H__

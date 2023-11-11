@@ -15,7 +15,8 @@ void Sender::run()
             if (not se_envio)
                 break;
         }
-        else{
+        else
+        {
             // protocolo.enviarFinalizarPartida(d, was_closed);
             was_closed = true;
         }
@@ -41,6 +42,8 @@ bool Sender::send(std::shared_ptr<Dto> d)
         return protocol.enviarIniciarPartida(d, was_closed);
     else if (d->return_code() == FINALIZAR_CODE)
         return protocol.enviarFinalizarPartida(d, was_closed);
+    else if (d->return_code() == GRANADA_VERDE_CODE)
+        return protocol.enviarTrayectoriaDeGranadaVerde(std::dynamic_pointer_cast<GranadaVerde>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

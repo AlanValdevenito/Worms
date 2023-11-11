@@ -22,6 +22,7 @@
 #include "partidas_lista.h"
 #include "cliente_id.h"
 #include "nueva_partida.h"
+#include "granada.h"
 #include "socket.h"
 #include "socket_interface.h"
 #include "socket_mock.h"
@@ -40,12 +41,14 @@ public:
     bool enviarListaDePartidas(std::shared_ptr<ListaDePartidas> l, bool &was_closed);
     bool enviarIniciarPartida(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_closed);
+    bool enviarTrayectoriaDeGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed);
 
 private:
     // Socket &skt;
     SocketInterface *skt;
     std::shared_ptr<Dto> recibirPartidaSeleccionada(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBate(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirAtaqueConGranadaVerde(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);
     bool enviarViga(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_closed);

@@ -34,11 +34,11 @@ public:
     ~Lobby();
     void kill();
     void reap_dead();
-    // void newClient(Socket &&s);
     void newClient(Socket *s);
 
 private:
     std::list<ServerClient *> clients;
+    // Queue<std::shared_ptr<Dto>> common_queue;
     Queue<std::shared_ptr<Dto>> lobby_queue;
     uint8_t mapId;
     std::list<Partida *> partidas;
