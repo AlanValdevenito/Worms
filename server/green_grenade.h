@@ -4,7 +4,6 @@
 #include <chrono>
 #include "entity.h"
 
-enum Direction {LEFT, RIGHT};
 
 class GreenGrenade : public Entity {
 public:

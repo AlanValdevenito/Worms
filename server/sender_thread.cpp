@@ -44,6 +44,8 @@ bool Sender::send(std::shared_ptr<Dto> d)
         return protocol.enviarFinalizarPartida(d, was_closed);
     else if (d->return_code() == GRANADA_VERDE_CODE)
         return protocol.enviarTrayectoriaDeGranadaVerde(std::dynamic_pointer_cast<GranadaVerde>(d), was_closed);
+    else if (d->return_code() == BAZUKA_CODE)
+        return protocol.enviarTrayectoriaDeBazuka(std::dynamic_pointer_cast<Bazuka>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

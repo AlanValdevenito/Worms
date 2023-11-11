@@ -14,5 +14,6 @@ const uint8_t FINALIZAR_CODE = 9;
 const uint8_t SALTAR_CODE = 10;
 const uint8_t NUEVA_PARTIDA_CODE = 11;
 const uint8_t GRANADA_VERDE_CODE = 12;
+const uint8_t BAZUKA_CODE = 13;
 
 #endif

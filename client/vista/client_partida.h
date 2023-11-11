@@ -20,6 +20,7 @@
 
 const int BATE = 1;
 const int GRANADA_VERDE = 2;
+const int BAZOOKA = 3;
 
 using namespace SDL2pp;
 

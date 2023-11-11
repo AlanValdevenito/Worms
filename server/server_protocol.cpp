@@ -201,6 +201,33 @@ bool ServerProtocol::enviarTrayectoriaDeGranadaVerde(std::shared_ptr<GranadaVerd
     return true;
 }
 
+bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(b, was_closed))
+        return false;
+
+    // envio coordenadas
+    uint16_t x = htons(b->x_pos());
+    uint16_t y = htons(b->y_pos());
+    uint8_t angulo = b->get_angulo();
+
+    skt->sendall(&(x), sizeof(x), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(y), sizeof(y), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria BAZUKA---> x:%u y:%u \n", b->x_pos(), b->y_pos());
+
+    return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,6 +275,23 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranadaVerde(uint8_t id, bo
     return std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBazuka(uint8_t id, bool &was_closed)
+{
+    uint8_t potencia;
+    skt->recvall(&potencia, sizeof(potencia), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+
+    printf("%u %u \n",potencia, angulo);
+    return std::make_shared<Bazuka>(id, potencia, angulo);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirParametrosDeLaPartida(bool &was_closed)
 {
     uint8_t cantidad_de_jugadores;
@@ -291,6 +335,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return recibirParametrosDeLaPartida(was_closed);
     else if (code == GRANADA_VERDE_CODE)
         return recibirAtaqueConGranadaVerde(id, was_closed);
+    else if (code == BAZUKA_CODE)
+        return recibirAtaqueConBazuka(id, was_closed);
 
     return std::make_shared<DeadDto>();
 }

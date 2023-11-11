@@ -1,8 +1,9 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+enum Direction {LEFT, RIGHT};
 
-enum EntityType {WORM, BEAM, GREEN_GRENADE};
+enum EntityType {WORM, BEAM, GREEN_GRENADE, BAZOOKA_ROCKET};
 
 class Entity {
 public:

@@ -26,6 +26,7 @@ void SenderTH::run()
 
 bool SenderTH::send(std::shared_ptr<Dto> d)
 {
+
     if (d->return_code() == MOVER_A_DERECHA_CODE)
         return protocol.moverADerecha(std::dynamic_pointer_cast<MoverADerecha>(d), was_closed);
     else if (d->return_code() == MOVER_A_IZQUIERDA_CODE)
@@ -42,6 +43,8 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
         return protocol.enviarNuevaPartida(std::dynamic_pointer_cast<NuevaPartida>(d), was_closed);
     else if (d->return_code() == GRANADA_VERDE_CODE)
         return protocol.enviarAtaqueConGranadaVerde(std::dynamic_pointer_cast<GranadaVerde>(d), was_closed);
+    else if (d->return_code() == BAZUKA_CODE)
+        return protocol.enviarAtaqueConBazuka(std::dynamic_pointer_cast<Bazuka>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

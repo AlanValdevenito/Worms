@@ -201,6 +201,11 @@ void Game::update()
         }
     }
 
+    if (bazookaRocket != NULL) {
+        if (bazookaRocket->exploded) {
+            bazookaRocket = NULL;
+        }
+    }
     
     sendWorms();
 }
@@ -233,7 +238,7 @@ void Game::sendWorms()
     gusanos->set_gusano_de_turno(id);
 
     // SI HAY GRANADA
-    if (greenGrenade != NULL) {
+    if (greenGrenade != NULL || bazookaRocket != NULL) {
         gusanos->set_flag_proyectil(true);
     }
     
@@ -243,6 +248,11 @@ void Game::sendWorms()
         std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100));
 
         broadcaster.AddDtoToQueues(granada);
+    }
+
+    if (bazookaRocket != NULL) {
+        std::shared_ptr<Bazuka> bazooka = std::make_shared<Bazuka>((uint16_t)(bazookaRocket->getXCoordinate() * 100), (uint16_t)(bazookaRocket->getYCoordinate() * 100), 0);
+        broadcaster.AddDtoToQueues(bazooka);
     }
 }
 
@@ -320,6 +330,17 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
     wormAttacked = true;
 }
 
+
+void Game::shootBazooka(float angle, int power) {
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
+    Worm *actualWorm = world.getWormsById()[idActualWorm];
+    bazookaRocket = new BazookaRocket(&world.world, actualWorm->getXCoordinate(), 
+                                    actualWorm->getYCoordinate());
+    Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
+    bazookaRocket->shoot(direction, angle, power);
+}
+
+
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
     uint8_t clientId = dto->get_cliente_id();
@@ -344,6 +365,10 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
         std::shared_ptr<GranadaVerde> grenade = std::dynamic_pointer_cast<GranadaVerde>(dto);
         std::cout << "angulo = " << (int)grenade->get_angulo() << " potencia = " << (int)grenade->get_potencia() << "\n";
         throwGreenGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia(), grenade->get_tiempo());
+    } else if (code == BAZUKA_CODE) {
+        std::cout << "game -> bazooka\n";
+        std::shared_ptr<Bazuka> bazooka = std::dynamic_pointer_cast<Bazuka>(dto);
+        shootBazooka(bazooka->get_angulo() * 3.14f / 180.0f, bazooka->get_potencia());
     }
 }
 

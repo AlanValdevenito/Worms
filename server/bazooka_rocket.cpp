@@ -1,52 +1,42 @@
-#include "green_grenade.h"
+#include "bazooka_rocket.h"
 #include "worm.h"
-#include <iostream>
 
 
-
-GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds) {
+BazookaRocket::BazookaRocket(b2World *world, float x, float y) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
 	bodyDef.userData.pointer = (uintptr_t)this;
 	body = world->CreateBody(&bodyDef);
-	
-    
-    /*b2FixtureDef fixtureDef;
-    b2CircleShape circleShape;
-    circleShape.m_p.Set(0, 0); //position, relative to body position
-    circleShape.m_radius = 0.005f; //radius
-    fixtureDef.shape = &circleShape; //this is a pointer to the shape above
-    fixtureDef.restitution = 0.0f;
-    fixtureDef.density = 1.0f;
-    body->CreateFixture(&fixtureDef); //add a fixture to the body*/
-
-    
 
     b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(0.025f, 0.025f);
+	dynamicBox.SetAsBox(0.15f, 0.025f);
     b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.5f;
-    fixtureDef.restitution = 0.2f;
+    fixtureDef.restitution = 0.0f;
 	fixtureDef.filter.categoryBits = 0x02;
     fixtureDef.filter.maskBits = 0xFD;
 
 	
 	body->CreateFixture(&fixtureDef);
-    timeToExplotion = timeToExplotionInSeconds;
-    spawnTime = std::chrono::steady_clock::now();
- }
+}
 
-float GreenGrenade::getXCoordinate() {
+
+float BazookaRocket::getXCoordinate() {
     return body->GetPosition().x;
 }
 
-float GreenGrenade::getYCoordinate() {
+float BazookaRocket::getYCoordinate() {
     return body->GetPosition().y;
 }
 
-void GreenGrenade::shoot(Direction direction, float angle, int power) {
+float getDistance(float x1, float y1, float x2, float y2) {
+    return sqrt(pow((x2-x1),2)+pow((y2-y1),2));
+}
+
+
+void BazookaRocket::shoot(Direction direction, float angle, int power) {
     
     float xComponent = (float(power) / 40.0f ) * cos(angle);
     float yComponent = (float(power) / 40.0f ) * sin(angle);
@@ -60,15 +50,19 @@ void GreenGrenade::shoot(Direction direction, float angle, int power) {
     }
 }
 
-float getDist(float x1, float y1, float x2, float y2) {
-    return sqrt(pow((x2-x1),2)+pow((y2-y1),2));
-}
 
-void GreenGrenade::explode() {
+
+void BazookaRocket::startContact() {
+    explode();
+}
+    
+void BazookaRocket::endContact() {}
+
+void BazookaRocket::explode() {
     float xComponent; float yComponent;
     for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
     {   
-        float distance = getDist(body->GetPosition().x, body->GetPosition().y,
+        float distance = getDistance(body->GetPosition().x, body->GetPosition().y,
                                      b->GetPosition().x, b->GetPosition().y);
         if (b->GetType() == b2_dynamicBody && distance < 4.0f && distance != 0.0f) {
             Entity *entity = (Entity*)b->GetUserData().pointer;
@@ -84,11 +78,8 @@ void GreenGrenade::explode() {
             b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
         }
     }
+    exploded = true;
 }
 
-void GreenGrenade::startContact() {}
-    
-void GreenGrenade::endContact() {}
 
-
-GreenGrenade::~GreenGrenade() {}
+BazookaRocket::~BazookaRocket() {}

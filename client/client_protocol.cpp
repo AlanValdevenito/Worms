@@ -30,6 +30,8 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
         return std::make_shared<DeadDto>();
     else if (code == GRANADA_VERDE_CODE)
         return recibirTrayectoriaGranadaVerde(was_closed);
+    else if (code == BAZUKA_CODE)
+        return recibirTrayectoriaBazuka(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
@@ -170,7 +172,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("cant: %u\n",cant);
+    // 
     //printf("flag: %u\n",flag);
 
     std::vector<std::shared_ptr<Gusano>> lista;
@@ -188,7 +190,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     return gusanos;
 }
 
-std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
+std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool& was_closed)
 {
     uint8_t id;
     uint16_t x;
@@ -245,6 +247,32 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_cl
     return std::make_shared<GranadaVerde>(x, y);
 }
 
+std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
+{
+    uint16_t x;
+    uint16_t y;
+    uint8_t angulo;
+
+    skt.recvall(&x, sizeof(x), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&y, sizeof(y), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    x = ntohs(x);
+    y = ntohs(y);
+
+    // printf("Trayectoria recibida---> x:%u y:%u angulo:%u\n", x, y,angulo);
+
+    return std::make_shared<Bazuka>(x, y, angulo);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,6 +293,23 @@ bool ClientProtocol::enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto,
 
     return true;
 }
+
+// bool ClientProtocol::enviarAnguloYPotenciaDeProyectil(std::shared_ptr<Dto> dto, bool &was_closed)
+// {
+//     // printf("enviar: %u\n", a);
+
+//     uint8_t potencia = g->get_potencia();
+//     skt.sendall(&potencia, sizeof(potencia), &was_closed);
+//     if (was_closed)
+//         return false;
+
+//     uint8_t angulo = g->get_angulo();
+//     skt.sendall(&angulo, sizeof(angulo), &was_closed);
+//     if (was_closed)
+//         return false;
+
+//     return true;
+// }
 
 bool ClientProtocol::moverADerecha(std::shared_ptr<MoverADerecha> m, bool &was_closed)
 {
@@ -354,6 +399,27 @@ bool ClientProtocol::enviarAtaqueConGranadaVerde(std::shared_ptr<GranadaVerde> g
     skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
     if (was_closed)
         return false;
+
+    return true;
+}
+
+bool ClientProtocol::enviarAtaqueConBazuka(std::shared_ptr<Bazuka> g, bool &was_closed)
+{
+    bool se_envio = enviarIdDelClienteYCodigoDeAccion(g, was_closed);
+    if (!se_envio)
+        return se_envio;
+
+    uint8_t potencia = g->get_potencia();
+    skt.sendall(&potencia, sizeof(potencia), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t angulo = g->get_angulo();
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("bazuuka: %u %u \n",potencia, angulo);
 
     return true;
 }

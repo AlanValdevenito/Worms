@@ -25,6 +25,7 @@ public:
 
     void render(SDL2pp::Renderer &renderer, float camara);
     void update(float nuevoX, float nuevoY);
+    void cambiar(std::string &ruta);
 
     void explotar(SDL2pp::Renderer &renderer, float camara);
 

@@ -1,0 +1,151 @@
+# Archivo YAML
+
+armas:
+  - nombre: Bazooka
+    descripcion: >
+      Arma predilecta de los gusanos que dispara un misil que estalla al impactar con un tiro parabólico.
+    mira: si
+    combate_cuerpo_a_cuerpo: no
+    disparo_potencia_variable: si
+    cuenta_regresiva: no
+    teledirigido: no
+    trayectoria_afectada_por_viento: si
+    municiones: infinitas
+    danio:
+      epicentro: 50 pts
+      radio: 2 mts
+
+  - nombre: Mortero
+    descripcion: >
+      Es igual a la bazooka pero al estallar lanza fragmentos al aire con trayectoria parabólica que estallan al impactar.
+    mira: si
+    combate_cuerpo_a_cuerpo: no
+    disparo_potencia_variable: si
+    cuenta_regresiva: no
+    teledirigido: no
+    trayectoria_afectada_por_viento: si
+    municiones: 10
+    danio:
+      estallido_principal:
+        epicentro: 50 pts
+        radio: 2 mts
+      fragmento:
+        epicentro: 10 pts
+        radio: 2 mts
+    cantidad_fragmentos: 6
+
+  - nombre: Granada Verde
+    descripcion: >
+      La segunda arma predilecta de los gusanos.
+      Como otros tipos de granada no se ve afectada por el viento.
+    mira: si
+    combate_cuerpo_a_cuerpo: no
+    disparo_potencia_variable: si
+    cuenta_regresiva: si
+    teledirigido: no
+    trayectoria_afectada_por_viento: no
+    municiones: infinitas
+    danio:
+      epicentro: 30 pts
+      radio: 2 mts
+
+  - nombre: Granada Roja
+    descripcion: >
+      Al igual que el Mortero, al explotar lanza fragmentos al aire con tiro parabólico que estallan al impacto.
+    mira: si
+    combate_cuerpo_a_cuerpo: no
+    disparo_potencia_variable: si
+    cuenta_regresiva: si
+    teledirigido: no
+    trayectoria_afectada_por_viento: no
+    municiones: 10
+    danio:
+      estallido_principal:
+        epicentro: 30 pts
+        radio: 2 mts
+      fragmento:
+        epicentro: 10 pts
+        radio: 2 mts
+    cantidad_fragmentos: 6
+
+  - nombre: Banana
+    descripcion: >
+      Es un tipo de granada que tiene la particularidad de rebotar varias veces de forma muy elástica hasta explotar.
+    mira: si
+    combate_cuerpo_a_cuerpo: no
+    disparo_potencia_variable: si
+    cuenta_regresiva: si
+    teledirigido: no
+    trayectoria_afectada_por_viento: no
+    municiones: 5
+    danio:
+      epicentro: 70 pts
+      radio: 4 mts
+
+  - nombre: Granada Santa
+    descripcion: >
+      Una de las armas más poderosas en el arsenal.
+      Justo antes de estallar, produce un sonido característico.
+    mira: si
+    combate_cuerpo_a_cuerpo: no
+    disparo_potencia_variable: si
+    cuenta_regresiva: si
+    teledirigido: no
+    trayectoria_afectada_por_viento: no
+    municiones: 2
+    danio:
+      epicentro: 110 pts
+      radio: 8 mts
+
+  - nombre: Dinamita
+    descripcion: >
+      Al activarse, el gusano deja en el lugar una dinamita que estalla luego de cierta cantidad de segundos.
+    mira: no
+    combate_cuerpo_a_cuerpo: si
+    disparo_potencia_variable: no
+    cuenta_regresiva: si
+    teledirigido: no
+    trayectoria_afectada_por_viento: no
+    municiones: 5
+    danio:
+      epicentro: 50 pts
+      radio: 4 mts
+
+  - nombre: Bate de Baseball
+    descripcion: >
+      Al activarse el arma, el gusano batea lanzando a todo aquel cercano. La dirección de los gusanos lanzados dependerá de la dirección del bateo.
+    mira: si
+    combate_cuerpo_a_cuerpo: si
+    disparo_potencia_variable: no
+    cuenta_regresiva: no
+    teledirigido: no
+    trayectoria_afectada_por_viento: no
+    municiones: infinitas
+    danio:
+      epicentro: 10 pts
+
+  - nombre: Ataque Aereo
+    descripcion: >
+      Caen del cielo 6 misiles hacia el objetivo marcado por el jugador cada uno de ellos explotando independientemente. Los misiles pueden impactar antes si se encuentran en su trayectoria con algún otro objeto.
+    mira: no
+    combate_cuerpo_a_cuerpo: no
+    disparo_potencia_variable: no
+    cuenta_regresiva: no
+    teledirigido: si
+    trayectoria_afectada_por_viento: si
+    municiones: 2
+    danio:
+      epicentro: 40 pts
+      radio: 2 mts
+
+  - nombre: Teletransportación
+    descripcion: >
+      Al activarse la herramienta, el gusano puede teletransportarse a cualquier parte del escenario (salvo el interior de una viga).
+    mira: no
+    combate_cuerpo_a_cuerpo: no
+    disparo_potencia_variable: no
+    cuenta_regresiva: no
+    teledirigido: si
+    trayectoria_afectada_por_viento: no
+    municiones: infinitas
+    danio: ninguno

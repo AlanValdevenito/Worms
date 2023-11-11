@@ -19,6 +19,10 @@
 #include "gusano.h"
 #include "player.h"
 #include "green_grenade.h"
+#include "bazooka_rocket.h"
+#include "entity.h"
+
+
 
 class Game : public Thread
 {
@@ -46,6 +50,7 @@ private:
 
 public:
     GreenGrenade *greenGrenade = NULL;
+    BazookaRocket *bazookaRocket = NULL;
     int idTurn;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
@@ -66,6 +71,7 @@ public:
     void passTurn();
     void addPlayerId(uint8_t id);
     bool anyWormMoving();
+    void shootBazooka(float angle, int power);
     ~Game();
 };
 #endif

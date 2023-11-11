@@ -1,5 +1,7 @@
 #include "box2d/box2d.h"
+//#include "bazooka_rocket.h"
 
+//class BazookaRocket;
 
 class ContactListener : public b2ContactListener {
     void BeginContact(b2Contact* contact) {
@@ -7,9 +9,13 @@ class ContactListener : public b2ContactListener {
         Entity *entity = (Entity*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
 	  
         if (entity != NULL) {
-            if ((entity->entityType == WORM)) {;
+            if ((entity->entityType == WORM)) {
                 Worm *worm = (Worm*)entity;
                 worm->startContact();
+            } else if (entity->entityType == BAZOOKA_ROCKET) {
+                entity->startContact();
+                //BazookaRocket *bazookaRocket = (BazookaRocket*)entity;
+                //bazookaRocket->startContact();
             }
         } 
         entity = (Entity*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
@@ -17,6 +23,10 @@ class ContactListener : public b2ContactListener {
             if (entity->entityType == WORM) {
                 Worm *worm = (Worm*)entity;
                 worm->startContact();
+            } else if (entity->entityType == BAZOOKA_ROCKET) {
+                entity->startContact();
+                //BazookaRocket *bazookaRocket = (BazookaRocket*)entity;
+                //bazookaRocket->startContact();
             }
         }
     }
