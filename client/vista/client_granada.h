@@ -18,6 +18,8 @@ private:
     int exploto;
     int currentFrame;
 
+    int tiempo;
+
 public:
     Granada(SDL2pp::Renderer &renderer);
 
@@ -34,6 +36,9 @@ public:
 
     float get_x();
     float get_y();
+
+    void set_tiempo(int tiempoElegido);
+    int get_tiempo();
 };
 
 #endif // _GRANADA_H

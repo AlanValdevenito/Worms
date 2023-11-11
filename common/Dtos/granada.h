@@ -13,17 +13,18 @@ class GranadaVerde : public Dto
 private:
     uint8_t potencia;
     uint8_t angulo;
-    // uint8_t tiempo;
+    uint8_t tiempo;
     uint16_t x;
     uint16_t y;
 
 public:
-    GranadaVerde(uint8_t id, uint8_t potencia, uint8_t angulo);
+    GranadaVerde(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo);
     GranadaVerde(uint16_t x, uint16_t y);
     ~GranadaVerde();
     bool is_alive() override;
     uint8_t get_angulo();
     uint8_t get_potencia();
+    uint8_t get_tiempo();
     uint16_t x_pos();
     uint16_t y_pos();
 };

@@ -277,8 +277,39 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 break;
 
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
-            case SDLK_0:
-                // ...
+            case SDLK_1:
+                
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->granada->set_tiempo(1);
+                }
+
+                break;
+
+            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
+            case SDLK_2:
+                
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->granada->set_tiempo(2);
+                }
+
+                break;
+
+            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
+            case SDLK_3:
+                
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->granada->set_tiempo(3);
+                }
+
+                break;
+
+            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
+            case SDLK_4:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->granada->set_tiempo(4);
+                }
+
                 break;
 
             // Si se presiona la tecla de F2 el worm se equipa un arma
@@ -377,7 +408,8 @@ void Partida::enviarAtaque() {
     } else if (armaEquipada == GRANADA_VERDE) {
         this->granada->lanzarGranada();
         cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
-                                                               this->worms[this->id_gusano_actual]->get_angulo()));
+                                                               this->worms[this->id_gusano_actual]->get_angulo(),
+                                                               this->granada->get_tiempo()));
     
     } else {
         std::cerr << "El numero recibido no esta asociado a ningun arma\n";
@@ -476,7 +508,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
     }
 
     if((this->camara.comprobarRenderizado(this->granada->get_x() / 24, this->granada->get_y() / 24, 1, 1)) && (this->granada->seLanzoGranada())) {
-        
+
         if (this->granada->get_flag() == 1) {
             this->granada->render(renderer, this->camara.getLimiteIzquierdo() * 24);
 

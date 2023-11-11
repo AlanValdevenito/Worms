@@ -239,8 +239,13 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranadaVerde(uint8_t id, bo
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
     // printf("angulo recibido: %u\n", angulo);
-    return std::make_shared<GranadaVerde>(id, potencia, angulo);
+    return std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirParametrosDeLaPartida(bool &was_closed)

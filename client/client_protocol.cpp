@@ -94,6 +94,8 @@ bool ClientProtocol::recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed)
     x = ntohs(posicion_x);
     y = ntohs(posicion_y);
 
+    // print
+
     return true;
 }
 
@@ -238,7 +240,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_cl
     x = ntohs(x);
     y = ntohs(y);
 
-    printf("Trayectoria ---> x:%u y:%u \n", x, y);
+    // printf("Trayectoria ---> x:%u y:%u \n", x, y);
 
     return std::make_shared<GranadaVerde>(x, y);
 }
@@ -345,6 +347,11 @@ bool ClientProtocol::enviarAtaqueConGranadaVerde(std::shared_ptr<GranadaVerde> g
 
     uint8_t angulo = g->get_angulo();
     skt.sendall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t tiempo = g->get_tiempo();
+    skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
     if (was_closed)
         return false;
 

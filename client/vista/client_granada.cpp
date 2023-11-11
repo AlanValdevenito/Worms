@@ -6,7 +6,8 @@ Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, 
                                                                           y(0),
                                                                           seLanzo(false),
                                                                           exploto(1),
-                                                                          currentFrame(12) {}
+                                                                          currentFrame(12),
+                                                                          tiempo(5) {}
 
 // En Box2D la granada es una caja de 5m x 5m
  
@@ -68,4 +69,12 @@ float Granada::get_x() {
 
 float Granada::get_y() {
     return this->y;
+}
+
+void Granada::set_tiempo(int tiempoElegido) {
+    this->tiempo = tiempoElegido;
+}
+
+int Granada::get_tiempo() {
+    return this->tiempo;
 }

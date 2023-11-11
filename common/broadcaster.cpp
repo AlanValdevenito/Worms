@@ -12,32 +12,9 @@ void Broadcaster::addMessageToQueues()
 
 }
 
-// void Broadcaster::AddGusanoToQueues(std::shared_ptr<Gusano> g)
-// {
-//     std::unique_lock<std::mutex> lock(mutex);
-//     for (Queue<std::shared_ptr<Dto>> *q : queues.listado())
-//         q->push(g);
-// }
-
-
-// void Broadcaster::AddGusanosToQueues(std::shared_ptr<Gusanos> gs)
-// {
-//     std::unique_lock<std::mutex> lock(mutex);
-
-//     for (Queue<std::shared_ptr<Dto>> *q : queues.listado())
-//         q->push(gs);
-// }
-
-
-// void Broadcaster::AddVigasToQueues(std::shared_ptr<Vigas> vs)
-// {
-//     std::unique_lock<std::mutex> lock(mutex);
-
-//     for (Queue<std::shared_ptr<Dto>> *q : queues.listado())
-//         q->push(vs);
-// }
-
-
+/*
+*   Agrega a todas las queues del broadcaster el Dto
+*/
 void Broadcaster::AddDtoToQueues(std::shared_ptr<Dto> dto)
 {
     std::unique_lock<std::mutex> lock(mutex);

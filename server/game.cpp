@@ -81,7 +81,6 @@ void Game::createPlayers() {
     int teamNumber = 0;
     numberOfPlayers = (int)idPlayers.size();
     idTurn = idPlayers[indexOfActualPlayer];
-    // for (int playerId : idPlayers) {
 
     for (int playerId : idPlayers) {
         std::vector<int> wormIds;
@@ -100,7 +99,6 @@ void Game::createPlayers() {
 
 void Game::run()
 {   
-    //createPlayers();
     begin = std::chrono::steady_clock::now();
     while (not game_finished)
     {
@@ -301,12 +299,6 @@ void Game::batWorm(int angle) {
 
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
-    /*//timeOfAttack = std::chrono::steady_clock::now();
-    if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
-        indexOfActualPlayer = 0;
-    } else {
-        indexOfActualPlayer++;
-    }*/
 }
 
 void Game::stop()
@@ -315,26 +307,17 @@ void Game::stop()
     // liberar memoria
 }
 
-void Game::throwGreenGrenade(float angle, int power) {
+void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
-                                    5);
+                                    timeToExplotion);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     greenGrenade->shoot(direction, angle, power);
 
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
-    /*begin = std::chrono::steady_clock::now();
-    if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
-        indexOfActualPlayer = 0;
-    } else {
-        indexOfActualPlayer++;
-    }
-    idTurn = idPlayers[indexOfActualPlayer];
-    players[indexOfActualPlayer].changeActualWorm();
-    actualWormId = players[indexOfActualPlayer].actualWormId;*/
 }
 
 void Game::executeCommand(std::shared_ptr<Dto> dto)
@@ -360,7 +343,7 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     else if (code == GRANADA_VERDE_CODE) {
         std::shared_ptr<GranadaVerde> grenade = std::dynamic_pointer_cast<GranadaVerde>(dto);
         std::cout << "angulo = " << (int)grenade->get_angulo() << " potencia = " << (int)grenade->get_potencia() << "\n";
-        throwGreenGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia());
+        throwGreenGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia(), grenade->get_tiempo());
     }
 }
 
