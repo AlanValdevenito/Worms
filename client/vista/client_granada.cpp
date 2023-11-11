@@ -4,8 +4,9 @@ Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, 
                                                                           size(this->texture.GetWidth()),
                                                                           x(0),
                                                                           y(0),
+                                                                          seLanzo(false),
                                                                           exploto(1),
-                                                                          currentFrame(0) {}
+                                                                          currentFrame(12) {}
 
 // En Box2D la granada es una caja de 5m x 5m
  
@@ -39,6 +40,14 @@ void Granada::explotar(SDL2pp::Renderer &renderer) {
     }
 
     this->currentFrame++;
+}
+
+void Granada::lanzarGranada() {
+    this->seLanzo = true;
+}
+
+bool Granada::seLanzoGranada() {
+    return this->seLanzo;
 }
 
 void Granada::set_flag(int flag) {

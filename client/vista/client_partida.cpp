@@ -375,6 +375,7 @@ void Partida::enviarAtaque() {
         cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
     
     } else if (armaEquipada == GRANADA_VERDE) {
+        this->granada->lanzarGranada();
         cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo()));
     
@@ -462,10 +463,15 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         }
     }
 
-    if (this->granada->get_flag() == 1) {
-        this->granada->render(renderer);
-    } else if (this->granada->get_flag() == 0) {
-        this->granada->explotar(renderer);
+    if(this->granada->seLanzoGranada()) {
+
+        if (this->granada->get_flag() == 1) {
+            this->granada->render(renderer);
+
+        } else if (this->granada->get_flag() == 0) {
+            this->granada->explotar(renderer);
+        }
+
     }
 }
 
