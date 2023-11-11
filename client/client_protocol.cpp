@@ -163,14 +163,11 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     uint8_t turno;
     skt.recvall(&turno, sizeof(turno), &was_closed);
     if (was_closed)
-<<<<<<< HEAD
-=======
         return std::make_shared<DeadDto>();
 
     uint8_t flag;
     skt.recvall(&flag, sizeof(flag), &was_closed);
     if (was_closed)
->>>>>>> granada_verde
         return std::make_shared<DeadDto>();
 
     // printf("cant: %u\n",cant);
@@ -187,10 +184,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(lista);
     gusanos->set_gusano_de_turno(turno);
-<<<<<<< HEAD
-=======
     gusanos->set_flag_proyectil(flag);
->>>>>>> granada_verde
     return gusanos;
 }
 
