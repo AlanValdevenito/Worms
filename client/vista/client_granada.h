@@ -21,16 +21,19 @@ private:
 public:
     Granada(SDL2pp::Renderer &renderer);
 
-    void render(SDL2pp::Renderer &renderer);
+    void render(SDL2pp::Renderer &renderer, float camara);
     void update(float nuevoX, float nuevoY);
 
-    void explotar(SDL2pp::Renderer &renderer);
+    void explotar(SDL2pp::Renderer &renderer, float camara);
 
     void lanzarGranada();
     bool seLanzoGranada();
 
     void set_flag(int flag);
     int get_flag();
+
+    float get_x();
+    float get_y();
 };
 
 #endif // _GRANADA_H

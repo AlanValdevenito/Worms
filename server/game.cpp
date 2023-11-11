@@ -12,7 +12,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
 {
     // mapa_rampa();
     mapa_jaula();
-    //mapa_puente();
+    // mapa_puente();
 }
 
 void Game::mapa_rampa() {
@@ -72,7 +72,7 @@ void Game::mapa_puente() {
     world.addBeam(36, 12, 90, LONG);
 
     world.addWorm(15, 14);
-    // world.addWorm(3, 14);
+    world.addWorm(5, 14);
 }
 
 void Game::createPlayers() {

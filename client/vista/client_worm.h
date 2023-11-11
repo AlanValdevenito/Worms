@@ -21,6 +21,7 @@ private:
     int vida;
 
     SDL2pp::Color &color;
+    bool turno;
 
 public:
     Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida);
@@ -28,7 +29,11 @@ public:
     void update(int it, float nuevoX, float nuevoY, int vida); // Actualiza el Worm en funcion del tiempo transcurrido.
 
     void render(SDL2pp::Renderer &renderer); // Renderiza el Worm.
-    void render_vida(SDL2pp::Renderer &renderer);
+    void render_vida(SDL2pp::Renderer &renderer, float camara);
+    void render_camara(SDL2pp::Renderer &renderer, float camara);
+
+    void cambiar_turno();
+    void turno_actual();
 
     void mirar_derecha();
     void mirar_izquierda();
