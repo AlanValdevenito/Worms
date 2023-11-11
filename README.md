@@ -24,6 +24,7 @@ Trabajo final que consiste en la remake del icónico Worms
 * build-essential
 * qt5-default
 * libsdl2-dev
+* libsdl2-image-dev
 * libsdl2-ttf-dev
 * libyaml-cpp-dev
 
@@ -41,13 +42,35 @@ sudo apt-get -y install cmake
 
 ### Instalacion de SDL2pp
 
-Instalar desde una terminal:
+Instalar desde una terminal las dependencias:
 
 ```
-sudo apt install libsdl2-mixer-2.0-0
-sudo apt install libsdl2-mixer-dev
-sudo apt-get install libsdl2-ttf-dev
+sudo apt-get install libjpeg-dev libpng-dev libfreetype-dev libopusfile-dev libflac-dev libxmp-dev libfluidsynth-dev libwavpack-dev cmake libmodplug-dev libsdl2-dev
 ```
+
+Bajar los fuentes de [libsdl2-image](https://github.com/libsdl-org/SDL_image/releases/tag/release-2.6.3), [libsdl2-mixer](https://github.com/libsdl-org/SDL_mixer/releases/tag/release-2.6.3)  y [libsdl2-ttf](https://github.com/libsdl-org/SDL_ttf/releases/tag/release-2.20.2) en formato zip. Para cada uno se debe descomprimir, compilar e instalar de la siguiente forma:
+
+```
+cd carpeta_sdl_x
+mkdir build
+cd build
+cmake ..
+make -j4
+sudo make install
+```
+
+Compilar e instalar la version 0.18.1 de libsdl2pp:
+
+```
+cd libSDL2pp-0.18.1
+mkdir build
+cd build
+cmake ..
+make -j4
+sudo make install
+```
+
+[Repositorio oficial](https://github.com/libsdl-org/SDL_image/tree/release-2.6.3)
 
 ### Instalacion de QT
 
