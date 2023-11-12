@@ -40,7 +40,6 @@ void BazookaRocket::shoot(Direction direction, float angle, int power) {
     
     float xComponent = (float(power) / 40.0f ) * cos(angle);
     float yComponent = (float(power) / 40.0f ) * sin(angle);
-    std::cout << "xComponent = " << xComponent << " yComponent = " << yComponent << "\n";
     if (direction == LEFT) {
         body->ApplyLinearImpulseToCenter(b2Vec2(-xComponent, yComponent), true);
     } else if (direction == RIGHT) {
@@ -53,6 +52,7 @@ void BazookaRocket::shoot(Direction direction, float angle, int power) {
 
 
 void BazookaRocket::startContact() {
+    if (exploded) return;
     explode();
 }
     
