@@ -174,6 +174,73 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __Peticion_de_nueva_partida)
 
     ASSERT_TRUE(id_recibido == 0 && codigo_recibido == NUEVA_PARTIDA_CODE && cantidad_recibida == cantidad_de_jugadores);
 }
+
+TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaVerde)
+{
+
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+    uint8_t id = 2;
+    uint8_t potencia = 20;
+    uint8_t angulo = 28;
+    uint8_t tiempo = 5;
+    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo);
+
+    cp.enviarAtaqueConGranadaVerde(g, was_closed);
+
+    uint8_t id_recibido;
+    uint8_t codigo_recibido;
+    uint8_t potencia_recibida;
+    uint8_t angulo_recibido;
+    uint8_t tiempo_recibido;
+    skt.recvall(&id_recibido, sizeof(id_recibido), &was_closed);
+    skt.recvall(&codigo_recibido, sizeof(codigo_recibido), &was_closed);
+    skt.recvall(&potencia_recibida, sizeof(potencia_recibida), &was_closed);
+    skt.recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
+    skt.recvall(&tiempo_recibido, sizeof(tiempo_recibido), &was_closed);
+
+    // printf("%u %u\n", id_recibido, codigo_recibido);
+
+    ASSERT_TRUE(id_recibido == id);
+    ASSERT_TRUE(codigo_recibido == GRANADA_VERDE_CODE);
+    ASSERT_TRUE(potencia_recibida == potencia);
+    ASSERT_TRUE(angulo_recibido == angulo);
+    ASSERT_TRUE(tiempo_recibido == tiempo);
+}
+
+TEST(PROTOCOLOCLIENTE__ENVIO, __Bazooka)
+{
+
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+    uint8_t id = 2;
+    uint8_t potencia = 20;
+    uint8_t angulo = 28;
+    std::shared_ptr<Bazuka> g = std::make_shared<Bazuka>(id, potencia, angulo);
+
+    cp.enviarAtaqueConBazuka(g, was_closed);
+
+    uint8_t id_recibido;
+    uint8_t codigo_recibido;
+    uint8_t potencia_recibida;
+    uint8_t angulo_recibido;
+    skt.recvall(&id_recibido, sizeof(id_recibido), &was_closed);
+    skt.recvall(&codigo_recibido, sizeof(codigo_recibido), &was_closed);
+    skt.recvall(&potencia_recibida, sizeof(potencia_recibida), &was_closed);
+    skt.recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
+
+    // printf("%u %u\n", id_recibido, codigo_recibido);
+
+    ASSERT_TRUE(id_recibido == id);
+    ASSERT_TRUE(codigo_recibido == BAZUKA_CODE);
+    ASSERT_TRUE(potencia_recibida == potencia);
+    ASSERT_TRUE(angulo_recibido == angulo);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -406,6 +473,60 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, varios_gusanos)
     ASSERT_TRUE(g2->x_pos() == x_2 && g2->y_pos() == y_2 && g2->get_id() == id_2 && g2->get_vida() == vida_2 && g2->get_color() == color_2);
     ASSERT_TRUE(g3->x_pos() == x_3 && g3->y_pos() == y_3 && g3->get_id() == id_3 && g3->get_vida() == vida_3 && g3->get_color() == color_3);
     // ASSERT_TRUE(rta->y_pos() == y);
+    // ASSERT_TRUE(rta->get_id() == id);
+    // ASSERT_TRUE(rta->get_vida() == vida);
+}
+
+TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaVerde)
+{
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+
+    skt.sendall(&GRANADA_VERDE_CODE, sizeof(GRANADA_VERDE_CODE), &was_closed);
+
+    uint16_t x = 30;
+    x = htons(x);
+    skt.sendall(&x, sizeof(x), &was_closed);
+
+    uint16_t y = 10;
+    y = htons(y);
+    skt.sendall(&y, sizeof(y), &was_closed);
+
+    std::shared_ptr<Proyectil> rta = std::dynamic_pointer_cast<Proyectil>(cp.receive(was_closed)); // recibo
+
+    ASSERT_TRUE(ntohs(rta->x_pos()) == x);
+    ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    // ASSERT_TRUE(rta->get_id() == id);
+    // ASSERT_TRUE(rta->get_vida() == vida);
+}
+
+TEST(PROTOCOLOCLIENTE__RECIBIR, __Bazooka)
+{
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+
+    skt.sendall(&BAZUKA_CODE, sizeof(BAZUKA_CODE), &was_closed);
+
+    uint16_t x = 30;
+    x = htons(x);
+    skt.sendall(&x, sizeof(x), &was_closed);
+
+    uint16_t y = 10;
+    y = htons(y);
+    skt.sendall(&y, sizeof(y), &was_closed);
+
+    uint8_t angulo = 27;
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+
+    std::shared_ptr<Proyectil> rta = std::dynamic_pointer_cast<Proyectil>(cp.receive(was_closed)); // recibo
+
+    ASSERT_TRUE(ntohs(rta->x_pos()) == x);
+    ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    ASSERT_TRUE(rta->get_angulo() == angulo);
     // ASSERT_TRUE(rta->get_id() == id);
     // ASSERT_TRUE(rta->get_vida() == vida);
 }
