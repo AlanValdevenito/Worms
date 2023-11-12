@@ -96,7 +96,8 @@ bool ClientProtocol::recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed)
     x = ntohs(posicion_x);
     y = ntohs(posicion_y);
 
-    // print
+    // printf("%u %u\n", x, y);
+    // printf("%u %u\n", posicion_x, posicion_y);
 
     return true;
 }
@@ -124,14 +125,8 @@ std::shared_ptr<Dto> ClientProtocol::recibirViga(bool &was_closed)
     uint16_t alto;
     uint16_t angulo;
 
-    skt.recvall(&x, sizeof(x), &was_closed);
-    if (was_closed)
+    if (not recibirPosicion(x, y, was_closed))
         return std::make_shared<DeadDto>();
-
-    skt.recvall(&y, sizeof(y), &was_closed);
-    if (was_closed)
-        return std::make_shared<DeadDto>();
-    // recibirPosicion(x, y, was_closed);
 
     skt.recvall(&ancho, sizeof(ancho), &was_closed);
     if (was_closed)
@@ -145,8 +140,6 @@ std::shared_ptr<Dto> ClientProtocol::recibirViga(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    x = ntohs(x);
-    y = ntohs(y);
     ancho = ntohs(ancho);
     alto = ntohs(alto);
     angulo = ntohs(angulo);
@@ -172,8 +165,8 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // 
-    //printf("flag: %u\n",flag);
+    //
+    // printf("flag: %u\n",flag);
 
     std::vector<std::shared_ptr<Gusano>> lista;
     for (int i = 0; i < cant; i++)
@@ -190,7 +183,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     return gusanos;
 }
 
-std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool& was_closed)
+std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
 {
     uint8_t id;
     uint16_t x;
@@ -202,12 +195,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool& was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    skt.recvall(&x, sizeof(x), &was_closed);
-    if (was_closed)
-        return std::make_shared<DeadDto>();
-
-    skt.recvall(&y, sizeof(y), &was_closed);
-    if (was_closed)
+    if (not recibirPosicion(x, y, was_closed))
         return std::make_shared<DeadDto>();
 
     skt.recvall(&vida, sizeof(vida), &was_closed);
@@ -217,9 +205,6 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool& was_closed)
     skt.recvall(&color, sizeof(color), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
-
-    x = ntohs(x);
-    y = ntohs(y);
 
     // printf("Cliente ---> id:%u  x:%u y:%u  vida:%u color:%u\n", id, x, y, vida, color);
 
@@ -231,16 +216,8 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_cl
     uint16_t x;
     uint16_t y;
 
-    skt.recvall(&x, sizeof(x), &was_closed);
-    if (was_closed)
+    if (not recibirPosicion(x, y, was_closed))
         return std::make_shared<DeadDto>();
-
-    skt.recvall(&y, sizeof(y), &was_closed);
-    if (was_closed)
-        return std::make_shared<DeadDto>();
-
-    x = ntohs(x);
-    y = ntohs(y);
 
     // printf("Trayectoria ---> x:%u y:%u \n", x, y);
 
@@ -253,20 +230,12 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
     uint16_t y;
     uint8_t angulo;
 
-    skt.recvall(&x, sizeof(x), &was_closed);
-    if (was_closed)
-        return std::make_shared<DeadDto>();
-
-    skt.recvall(&y, sizeof(y), &was_closed);
-    if (was_closed)
+    if (not recibirPosicion(x, y, was_closed))
         return std::make_shared<DeadDto>();
 
     skt.recvall(&angulo, sizeof(angulo), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
-
-    x = ntohs(x);
-    y = ntohs(y);
 
     // printf("Trayectoria recibida---> x:%u y:%u angulo:%u\n", x, y,angulo);
 

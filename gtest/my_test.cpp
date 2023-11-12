@@ -341,6 +341,8 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Viga)
     std::shared_ptr<Vigas> rta = std::dynamic_pointer_cast<Vigas>(cp.receive(was_closed));
     std::shared_ptr<Viga> viga = rta->popViga(0); // tomo la unica viga que inserte
 
+    // printf("%u %u\n", viga->x_pos(), viga->y_pos());
+
     ASSERT_TRUE(viga->x_pos() == x && viga->y_pos() == y && viga->return_ancho() == ancho && viga->return_alto() == alto && viga->return_angulo() == angulo);
 }
 
@@ -394,6 +396,9 @@ void enviar_gusano_con_parametros(SocketMock &skt, uint8_t id, uint16_t x, uint1
     uint8_t id_a_enviar = id;
     uint8_t vida_a_enviar = vida;
     uint8_t color_a_enviar = color;
+
+    // printf("%u %u\n", x, y);
+    // printf("%u %u\n", x_a_enviar, y_a_enviar);
 
     skt.sendall(&id_a_enviar, sizeof(id_a_enviar), &was_closed);
     skt.sendall(&x_a_enviar, sizeof(x_a_enviar), &was_closed);
