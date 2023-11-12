@@ -56,7 +56,9 @@ void Game::mapa_jaula() {
     world.addBeam(25.5f, 14, 90, LONG);
 
     world.addWorm(4, 10);
-    world.addWorm(8, 10);
+    world.addWorm(10, 10);
+    world.addWorm(12, 10);
+    world.addWorm(14, 10);
 }
 
 void Game::mapa_puente() {
@@ -157,7 +159,7 @@ void Game::update()
     
     // actualizo los gusanos
     for (Worm *worm : world.getWorms()) {
-        if (not worm->isMoving() && worm->getHp() == 0) {
+        if (not worm->isMoving() && worm->getHp() == 0 && worm->is_alive) {
             worm->is_alive = false;
             // saco el gusano del juego
             
@@ -304,6 +306,7 @@ void Game::jumpWorm() {
 }
 
 void Game::batWorm(int angle) {
+    if (wormAttacked) return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->bat(world.getWorms(), angle);
 
@@ -318,6 +321,7 @@ void Game::stop()
 }
 
 void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
+    if (wormAttacked) return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
@@ -332,12 +336,16 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
 
 
 void Game::shootBazooka(float angle, int power) {
+    if (wormAttacked) return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     bazookaRocket = new BazookaRocket(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate());
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     bazookaRocket->shoot(direction, angle, power);
+
+    timeOfAttack = std::chrono::steady_clock::now();
+    wormAttacked = true;
 }
 
 
