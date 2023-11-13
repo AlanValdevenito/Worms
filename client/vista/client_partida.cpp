@@ -325,17 +325,17 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
+            // Si se presiona la tecla de F7 el worm se equipa un arma
             case SDLK_F1:
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    ruta = "/wbazlnk.png";
-                    arma = "/bazooka.1.png";
+                    ruta = "/wbsblnk.png";
+                    arma = "/baseball.1.png";
                     this->granada->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(BAZOOKA, ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta);
                 }
 
                 break;
@@ -355,20 +355,66 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F7 el worm se equipa un arma
-            case SDLK_F7:
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F3:
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    ruta = "/wbsblnk.png";
-                    arma = "/baseball.1.png";
+                    ruta = "/wbazlnk.png";
+                    arma = "/bazooka.1.png";
                     this->granada->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BAZOOKA, ruta);
                 }
 
                 break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F4:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                
+                } else {
+                    ruta = "/wbanlnk.png";
+                    arma = "/banana.1.png";
+                    this->granada->cambiar(arma);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BANANA, ruta);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F5:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                
+                } else {
+                    ruta = "/whgrlnk.png";
+                    arma = "/hgrenade.1.png";
+                    this->granada->cambiar(arma);
+                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_SANTA, ruta);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F6:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                
+                } else {
+                    ruta = "/wdynlnk.png";
+                    arma = "/dynamite.1.png";
+                    this->granada->cambiar(arma);
+                    this->worms[this->id_gusano_actual]->equipar_arma(DINAMITA, ruta);
+                }
+
+                break;
+
             }
 
             // Si se suelta alguna tecla...
@@ -408,7 +454,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
-                    this->granada->update(this->camara.getCentroX(), this->worms[this->id_gusano_actual]->get_y());
+                    this->granada->update(this->camara.getCentroX(), this->worms[this->id_gusano_actual]->get_y(), 0, 1);
                 }
                 
                 break;
@@ -492,7 +538,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-        this->granada->update(metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos())), nuevoY);
+        this->granada->update(metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos())), nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
     
     }
 

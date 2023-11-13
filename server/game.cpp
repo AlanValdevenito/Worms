@@ -11,8 +11,8 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
                                                                            game_finished(false)
 {
     // mapa_rampa();
-    mapa_jaula();
-    // mapa_puente();
+    // mapa_jaula();
+    mapa_puente();
 }
 
 void Game::mapa_rampa() {
@@ -71,8 +71,8 @@ void Game::mapa_puente() {
 
     world.addBeam(36, 12, 90, LONG);
 
-    world.addWorm(15, 14);
-    world.addWorm(5, 14);
+    world.addWorm(3, 14);
+    world.addWorm(30, 14);
 }
 
 void Game::createPlayers() {
@@ -191,7 +191,7 @@ void Game::update()
 
 
     if (greenGrenade != NULL) {
-
+        std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
         std::chrono::steady_clock::time_point now;
         now = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::seconds> (now - greenGrenade->spawnTime).count() >= greenGrenade->timeToExplotion) {
@@ -202,6 +202,9 @@ void Game::update()
     }
 
     if (bazookaRocket != NULL) {
+        bazookaRocket->updateAngle();
+        //std::cout << "angulo bazooka = " << bazookaRocket->getAngle() << "\n";
+        
         if (bazookaRocket->exploded) {
             bazookaRocket = NULL;
         }
@@ -245,13 +248,13 @@ void Game::sendWorms()
     broadcaster.AddDtoToQueues(gusanos);
     // crear granada
     if (greenGrenade != NULL) {
-        std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100));
+        std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100), (uint8_t)(greenGrenade->getAngle()));
 
         broadcaster.AddDtoToQueues(granada);
     }
 
     if (bazookaRocket != NULL) {
-        std::shared_ptr<Bazuka> bazooka = std::make_shared<Bazuka>((uint16_t)(bazookaRocket->getXCoordinate() * 100), (uint16_t)(bazookaRocket->getYCoordinate() * 100), 0);
+        std::shared_ptr<Bazuka> bazooka = std::make_shared<Bazuka>((uint16_t)(bazookaRocket->getXCoordinate() * 100), (uint16_t)(bazookaRocket->getYCoordinate() * 100), (uint16_t)(bazookaRocket->getAngle()), bazookaRocket->dir);
         broadcaster.AddDtoToQueues(bazooka);
     }
 }
@@ -322,7 +325,7 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
     if (wormAttacked) return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
-    greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
+    greenGrenade = new Banana(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
                                     timeToExplotion);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
@@ -338,7 +341,7 @@ void Game::shootBazooka(float angle, int power) {
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     bazookaRocket = new BazookaRocket(&world.world, actualWorm->getXCoordinate(), 
-                                    actualWorm->getYCoordinate());
+                                    actualWorm->getYCoordinate(), angle);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     bazookaRocket->shoot(direction, angle, power);
 

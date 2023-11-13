@@ -4,7 +4,7 @@
 
 
 
-Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds) {
+BanananaBananarld, float x, float y, int timeToExplotionInSeconds) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -41,7 +41,7 @@ Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds) {
     spawnTime = std::chrono::steady_clock::now();
  }
 
-float Banana::getXCoordinate() {
+float BananaCoordinate() {
     return body->GetPosition().x;
 }
 
@@ -49,7 +49,7 @@ float Banana::getYCoordinate() {
     return body->GetPosition().y;
 }
 
-void Banana::shoot(Direction direction, float angle, int power) {
+void Bananat(Direction direction, float angle, int power) {
     
     float xComponent = (float(power) / 40.0f ) * cos(angle);
     float yComponent = (float(power) / 40.0f ) * sin(angle);
@@ -67,7 +67,7 @@ float getDist(float x1, float y1, float x2, float y2) {
     return sqrt(pow((x2-x1),2)+pow((y2-y1),2));
 }
 
-void Banana::explode() {
+void Bananaode() {
     float xComponent; float yComponent;
     for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
     {   
@@ -90,13 +90,13 @@ void Banana::explode() {
 }
 
 
-float Banana::getAngle() {
+float Bananangle() {
     return body->GetAngle() * 180.0f / 3.14f;
 }
 
-void Banana::startContact() {}
+void BananatContact() {}
     
-void Banana::endContact() {}
+void Bananaontact() {}
 
 
-Banana::~Banana() {}
+BananaanaBanana

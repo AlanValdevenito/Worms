@@ -2,7 +2,7 @@
 #include "worm.h"
 
 
-BazookaRocket::BazookaRocket(b2World *world, float x, float y) {
+BazookaRocket::BazookaRocket(b2World *world, float x, float y, float angle) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -17,9 +17,20 @@ BazookaRocket::BazookaRocket(b2World *world, float x, float y) {
     fixtureDef.restitution = 0.0f;
 	fixtureDef.filter.categoryBits = 0x02;
     fixtureDef.filter.maskBits = 0xFD;
+    body->CreateFixture(&fixtureDef);
 
-	
-	body->CreateFixture(&fixtureDef);
+    /*b2FixtureDef fixtureDef2;
+    b2PolygonShape dynamicBox2;
+	dynamicBox2.SetAsBox(0.05f, 0.05f, b2Vec2(0.015f, 0.0f), 0);
+    fixtureDef2.shape = &dynamicBox2;
+	fixtureDef2.density = 5.0f;
+    fixtureDef2.filter.categoryBits = 0x02;
+    fixtureDef2.filter.maskBits = 0xFD;
+
+    body->CreateFixture(&fixtureDef2);*/
+
+
+    body->SetTransform(b2Vec2(x, y), angle);
 }
 
 
@@ -38,8 +49,8 @@ float getDistance(float x1, float y1, float x2, float y2) {
 
 void BazookaRocket::shoot(Direction direction, float angle, int power) {
     
-    float xComponent = (float(power) / 40.0f ) * cos(angle);
-    float yComponent = (float(power) / 40.0f ) * sin(angle);
+    float xComponent = (float(power) / 10.0f ) * cos(angle);
+    float yComponent = (float(power) / 10.0f ) * sin(angle);
     if (direction == LEFT) {
         body->ApplyLinearImpulseToCenter(b2Vec2(-xComponent, yComponent), true);
     } else if (direction == RIGHT) {
@@ -47,6 +58,7 @@ void BazookaRocket::shoot(Direction direction, float angle, int power) {
     } else {
         throw std::runtime_error("Invalid direction");
     }
+    dir = direction;
 }
 
 
@@ -81,5 +93,15 @@ void BazookaRocket::explode() {
     exploded = true;
 }
 
+
+float BazookaRocket::getAngle() {
+    return body->GetAngle() * 180.0f / 3.14f;
+}
+
+
+void BazookaRocket::updateAngle() {
+    float angle = atan2(body->GetLinearVelocity().x, body->GetLinearVelocity().y);
+    body->SetTransform(body->GetPosition(), angle);
+}
 
 BazookaRocket::~BazookaRocket() {}
