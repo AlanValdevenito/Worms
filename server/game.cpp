@@ -57,8 +57,6 @@ void Game::mapa_jaula() {
 
     world.addWorm(4, 10);
     world.addWorm(10, 10);
-    world.addWorm(12, 10);
-    world.addWorm(14, 10);
 }
 
 void Game::mapa_puente() {

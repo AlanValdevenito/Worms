@@ -11,11 +11,11 @@ Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, 
 
 // En Box2D la granada es una caja de 5m x 5m
  
-void Granada::render(SDL2pp::Renderer &renderer, float camara) {
+void Granada::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     renderer.Copy(
         this->texture,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(this->x - 8 - camara, this->y - 8, this->size, this->size)
+        SDL2pp::Rect(this->x - 8 - camaraLimiteIzquierdo, this->y - 8 - camaraLimiteSuperior, this->size, this->size)
     );
 }
 
@@ -31,7 +31,7 @@ void Granada::cambiar(std::string &ruta) {
     this->texture.Update(SDL2pp::NullOpt, surface.SetColorKey(true, 0));
 }
 
-void Granada::explotar(SDL2pp::Renderer &renderer, float camara) {
+void Granada::explotar(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     SDL2pp::Texture explosion(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
 
     int tamaño = 60;
@@ -40,7 +40,7 @@ void Granada::explotar(SDL2pp::Renderer &renderer, float camara) {
         renderer.Copy(
             explosion,
             SDL2pp::Rect(0, (tamaño) * currentFrame, tamaño, tamaño),
-            SDL2pp::Rect(this->x - 16 - camara, this->y - 16, tamaño, tamaño)
+            SDL2pp::Rect(this->x - 16 - camaraLimiteIzquierdo, this->y - 16 - camaraLimiteSuperior, tamaño, tamaño)
         );
     }
 

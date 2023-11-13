@@ -39,20 +39,21 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
     }
 }
 
-void Worm::render(SDL2pp::Renderer &renderer, float camara)
+void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
 {
     SDL_RendererFlip flip = this->mirandoIzquierda ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
     if (this->armaEquipada) {
-        this->arma.render(renderer, this->turno ? (320 - OFFSET_X) : (x - OFFSET_X - camara), y - OFFSET_Y, this->mirandoIzquierda);
+        this->arma.render(renderer, this->turno ? (camaraCentroX - OFFSET_X) : (x - OFFSET_X - camaraLimiteIzquierdo),
+                          this->turno ? (y - OFFSET_Y - camaraLimiteSuperior) : (y - OFFSET_Y - camaraLimiteSuperior), this->mirandoIzquierda);
     } else {
-        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(320 - OFFSET_X, y - OFFSET_Y, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET_X - camara, y - OFFSET_Y, ANCHO_SPRITE, ALTO_SPRITE), flip);
+        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET_X, y - OFFSET_Y - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET_X - camaraLimiteIzquierdo, y - OFFSET_Y - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
     }
     
-    this->render_vida(renderer, camara);
+    this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
 }
 
-void Worm::render_vida(SDL2pp::Renderer &renderer, float camara) {
+void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     // Cargamos la fuente de la letra
     SDL2pp::Font font(DATA_PATH "/Vera.ttf", 14);
     SDL2pp::Color blanco(255, 255, 255, 255); 
@@ -62,17 +63,23 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camara) {
     renderer.Copy(
         borde,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(this->turno ? (320 + 10 - OFFSET_X) : (this->x - 19 - camara), this->y - 30, 35, 25)
+        SDL2pp::Rect(this->turno ? (camaraCentroX + 10 - OFFSET_X) : (this->x - 19 - camaraLimiteIzquierdo),
+                     this->turno ? (this->y - 30 - camaraLimiteSuperior) : (this->y - 30 - camaraLimiteSuperior), 
+                     35, 25)
     );
 
-    SDL2pp::Rect contenedor(this->turno ? (320 + 13 - OFFSET_X) : (this->x - 16 - camara), this->y - 27, 28, 18);
+    SDL2pp::Rect contenedor(this->turno ? (camaraCentroX + 13 - OFFSET_X) : (this->x - 16 - camaraLimiteIzquierdo),
+                            this->turno ? (this->y - 27 - camaraLimiteSuperior) : (this->y - 27 - camaraLimiteSuperior), 
+                            28, 18);
 	renderer.SetDrawColor(this->color); 
 	renderer.FillRect(contenedor);
 
 	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), blanco);
 	SDL2pp::Texture texture(renderer, surface);
 
-    SDL2pp::Rect mensaje(this->turno ? (320 + 13 - OFFSET_X) : (this->x - 16 - camara), this->y - 27, surface.GetWidth(), surface.GetHeight());
+    SDL2pp::Rect mensaje(this->turno ? (camaraCentroX + 13 - OFFSET_X) : (this->x - 16 - camaraLimiteIzquierdo),
+                         this->turno ? (this->y - 27 - camaraLimiteSuperior) : (this->y - 27 - camaraLimiteSuperior), 
+                         surface.GetWidth(), surface.GetHeight());
 	renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
 }
 

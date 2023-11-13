@@ -19,6 +19,8 @@ int Partida::iniciar()
                   ANCHO_VENTANA, ALTO_VENTANA,
                   SDL_WINDOW_RESIZABLE);
 
+    // Window& SetIcon(const Surface& icon);
+
     Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     /******************** TEXTURAS Y COLORES ********************/
@@ -179,15 +181,20 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
     // Revisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
     while (SDL_PollEvent(&event))
     {
+        switch (event.type) {
 
-        // Si la ventana se cierra terminamos la ejecucion
-        if (event.type == SDL_QUIT)
-        {
-            return true;
-
-            // Si se hace click ...
+            // Si la ventana se cierra terminamos la ejecucion
+            case SDL_QUIT:
+                return true;
+            
+            case SDL_WINDOWEVENT:
+                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    this->camara.setDimensiones(renderer.GetOutputWidth(), renderer.GetOutputHeight());
+                }
         }
-        else if (event.type == SDL_MOUSEBUTTONDOWN)
+
+        // Si se hace click ...
+        if (event.type == SDL_MOUSEBUTTONDOWN)
         {
 
             switch (event.button.button)
@@ -397,8 +404,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
-                    this->tiempoInicial = this->tiempoActual;
-
                     this->granada->update(320, this->worms[this->id_gusano_actual]->get_y());
                 }
                 
@@ -459,6 +464,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         this->worms[this->id_gusano_actual]->cambiar_turno(); // Le aviso al Worm del turno anterior que ya no es mas su turno
         this->id_gusano_actual = id_gusano_siguiente;
         this->worms[this->id_gusano_actual]->turno_actual(); // Le aviso al Worm del turno actual que es su turno
+        this->tiempoInicial = this->tiempoActual;
     
     } else {
         this->id_gusano_actual = id_gusano_siguiente;
@@ -481,21 +487,10 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     this->granada->set_flag((int) dto->get_flag_proyectil());
     if (this->granada->get_flag()) {
         std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
+
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
         this->granada->update(metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos())), nuevoY);
-
-        // if(proyectil->return_code() == BAZUKA_CODE){
-        //     std::shared_ptr<Bazuka> bazooka = std::dynamic_pointer_cast<Bazuka>(proyectil);
-        //     float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)bazooka->y_pos()));
-        //     this->bazooka->update(metros_a_pixeles(centimetros_a_metros((int)bazooka->x_pos())), nuevoY);
-        // }
-
-        // else{
-        //     std::shared_ptr<GranadaVerde> granada = std::dynamic_pointer_cast<GranadaVerde>(proyectil);
-        //     float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)granada->y_pos()));
-        //     this->granada->update(metros_a_pixeles(centimetros_a_metros((int)granada->x_pos())), nuevoY);
-        // }
-        
+    
     }
 
     camara.seguirWorm(*this->worms[this->id_gusano_actual]);
@@ -537,7 +532,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
             renderer.Copy(
                 *this->texturas[2],
                 Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y - alto/2)),
+                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y - alto/2) + this->camara.getLimiteSuperior()),
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
         }
     }
@@ -545,10 +540,10 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
     if((this->camara.comprobarRenderizado(this->granada->get_x() / 24, this->granada->get_y() / 24, 1, 1)) && (this->granada->seLanzoGranada())) {
 
         if (this->granada->get_flag() == 1) {
-            this->granada->render(renderer, this->camara.getLimiteIzquierdo() * 24);
+            this->granada->render(renderer, this->camara.getLimiteIzquierdo() * 24, this->camara.getLimiteSuperior() * 24);
 
         } else if (this->granada->get_flag() == 0) {
-            this->granada->explotar(renderer, this->camara.getLimiteIzquierdo() * 24);
+            this->granada->explotar(renderer, this->camara.getLimiteIzquierdo() * 24, this->camara.getLimiteSuperior() * 24);
         }
 
     }
@@ -558,13 +553,7 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
     for (const auto &elemento : this->worms)
     {
-
-        if (elemento.first == this->id_gusano_actual) {
-            elemento.second->render(renderer, this->camara.getLimiteIzquierdo() * 24);
-        
-        } else if (this->camara.comprobarRenderizado(elemento.second->get_x() / 24, elemento.second->get_y() / 24, 1, 1)) {
-            elemento.second->render(renderer, this->camara.getLimiteIzquierdo() * 24);
-        }
+        elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
     }
 }
 

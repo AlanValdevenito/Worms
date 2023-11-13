@@ -28,8 +28,8 @@ public:
 
     void update(int it, float nuevoX, float nuevoY, int vida); // Actualiza el Worm en funcion del tiempo transcurrido.
 
-    void render(SDL2pp::Renderer &renderer, float camara);
-    void render_vida(SDL2pp::Renderer &renderer, float camara);
+    void render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
+    void render_vida(SDL2pp::Renderer &renderer,float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
     void cambiar_turno();
     void turno_actual();
