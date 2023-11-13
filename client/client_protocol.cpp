@@ -225,9 +225,12 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_cl
     if (not recibirPosicion(x, y, was_closed))
         return std::make_shared<DeadDto>();
 
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
     // printf("Trayectoria ---> x:%u y:%u \n", x, y);
 
-    return std::make_shared<GranadaVerde>(x, y);
+    return std::make_shared<GranadaVerde>(x, y, angulo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaBanana(bool &was_closed)
