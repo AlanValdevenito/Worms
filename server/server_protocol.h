@@ -54,14 +54,19 @@ private:
     SocketInterface *skt;
     std::shared_ptr<Dto> recibirPartidaSeleccionada(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBate(uint8_t id, bool &was_closed);
-    std::shared_ptr<Dto> recibirAtaqueConGranadaVerde(uint8_t id, bool &was_closed);
-    std::shared_ptr<Dto> recibirAtaqueConGranadaBanana(uint8_t id, bool &was_closed);
-    std::shared_ptr<Dto> recibirAtaqueConGranadaSanta(uint8_t id, bool &was_closed);
+    // std::shared_ptr<Dto> recibirAtaqueConGranadaVerde(uint8_t id, bool &was_closed);
+    // std::shared_ptr<Dto> recibirAtaqueConGranadaBanana(uint8_t id, bool &was_closed);
+    // std::shared_ptr<Dto> recibirAtaqueConGranadaSanta(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirAtaqueConGranada(uint8_t code, uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConDinamita(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBazuka(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);
+    bool recibirGranada(uint8_t &potencia, uint8_t &angulo, uint8_t &tiempo, bool &was_closed);
+    bool esGranada(uint8_t code);
     bool enviarViga(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_closed);
     bool enviarCodigoDeElemento(std::shared_ptr<Dto> dto, bool &was_closed);
+    bool enviarPosicionDelElemento(std::shared_ptr<Dto> dto, bool &was_closed);
+    bool enviarGranada(std::shared_ptr<Proyectil> dto, bool &was_closed);
 };
 #endif
