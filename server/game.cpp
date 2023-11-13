@@ -101,7 +101,8 @@ void Game::run()
 {   
     begin = std::chrono::steady_clock::now();
     while (not game_finished)
-    {
+    {   
+        world.step(timeStep + ((float)lost) / 1000000000.0f);
         std::shared_ptr<Dto> dto;
         if (common_queue.try_pop(dto))
         {   
@@ -120,6 +121,7 @@ void Game::run()
             executeCommand(dto);
         }
         update();
+        limitFrameRate();
         std::this_thread::sleep_for(std::chrono::milliseconds(33));
     
         // broadcast();
@@ -150,7 +152,7 @@ void Game::passTurn() {
     }
 }
 
-/*void Game::limitFrameRate() {
+void Game::limitFrameRate() {
     t2 = std::chrono::steady_clock::now();
     rest = (int)rate - std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
     if (rest < 0) {
@@ -161,11 +163,11 @@ void Game::passTurn() {
         std::this_thread::sleep_for(std::chrono::nanoseconds((int)rest));
     }        
     t1 = t1 + std::chrono::nanoseconds((int)rate);
-}*/
+}
 
 void Game::update()
 {
-    world.step();
+    //world.step();
     passTurn();
     
     // actualizo los gusanos

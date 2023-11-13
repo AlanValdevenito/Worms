@@ -20,7 +20,7 @@ private:
     std::list<Worm*> worms;
     std::map<uint8_t, Worm*> wormsById;
     int idWorms = 0;
-    float timeStep = 1.0f / 30.0f;
+    //float timeStep = 1.0f / 30.0f;
     
 public:
     b2World world;
@@ -44,7 +44,7 @@ public:
     b2Body *createDynamicBody(float x, float y);
 
     // avanza el mundo una fraccion de segundo
-    void step();
+    void step(float timeStep);
 
     ~World();
 };

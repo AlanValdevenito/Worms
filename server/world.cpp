@@ -64,7 +64,7 @@ void World::addWorm(float x, float y)
 
 }
 
-void World::step()
+void World::step(float timeStep)
 {
     world.Step(timeStep, 10, 10);
     //std::cout << "coordenada x = " << worms.front().getXCoordinate() << "\ncoordenada y = " << worms.front().getYCoordinate() << "\n";
@@ -74,21 +74,6 @@ std::map<uint8_t, Worm*>& World::getWormsById() {
     return wormsById;
 }
 
-/*Banana* World::createGreenGrenade(float x, float y, int angle, int direction, int power, int timeToExplotion) {
-    Banana *grenade = new Banana(x, y, angle, timeToExplotion);
-    grenade->body->ApplyLinearImpulse(b2Vec2(power*cos(angle), power*sin(angle)), true);
-    return grenade;
-}*/
-
-
-/*void Banana::explode() {
-    b2Body *otherBody = body->getWorld()->getBodies;
-    for (bodies ...) {
-        if (otherBody esta dentro del epicentro && isDynamic) {
-            le aplico un impulso
-        }
-    }
-}*/
 
 
 World::~World() {

@@ -39,6 +39,14 @@ private:
     std::chrono::steady_clock::time_point begin;
     std::chrono::steady_clock::time_point end;
     std::chrono::steady_clock::time_point timeOfAttack;
+    std::chrono::steady_clock::time_point t1;
+    std::chrono::steady_clock::time_point t2;
+
+    float rate = 1000000000.0f/ 30.0f; // en nanoseconds
+    int rest = 0;
+    int lost = 0;
+    float timeStep = 1.0f / 30.0f;
+    
     bool wormAttacked;
     int numberOfPlayers;
     int numberOfWormsMoving = 0;
@@ -61,7 +69,7 @@ public:
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
     void update();
-    //void limitFrameRate();
+    void limitFrameRate();
     void run() override;
     void stop() override;
     void sendMap();
