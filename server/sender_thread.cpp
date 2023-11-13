@@ -46,6 +46,12 @@ bool Sender::send(std::shared_ptr<Dto> d)
         return protocol.enviarTrayectoriaDeGranadaVerde(std::dynamic_pointer_cast<GranadaVerde>(d), was_closed);
     else if (d->return_code() == BAZUKA_CODE)
         return protocol.enviarTrayectoriaDeBazuka(std::dynamic_pointer_cast<Bazuka>(d), was_closed);
+    else if (d->return_code() == GRANADA_BANANA_CODE)
+        return protocol.enviarTrayectoriaDeGranadaBanana(std::dynamic_pointer_cast<GranadaBanana>(d), was_closed);
+    else if (d->return_code() == GRANADA_SANTA_CODE)
+        return protocol.enviarTrayectoriaDeGranadaSanta(std::dynamic_pointer_cast<GranadaSanta>(d), was_closed);
+    else if (d->return_code() == DINAMITA_CODE)
+        return protocol.enviarTrayectoriaDeDinamita(std::dynamic_pointer_cast<Dinamita>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

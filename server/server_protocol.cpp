@@ -201,6 +201,72 @@ bool ServerProtocol::enviarTrayectoriaDeGranadaVerde(std::shared_ptr<GranadaVerd
     return true;
 }
 
+bool ServerProtocol::enviarTrayectoriaDeGranadaBanana(std::shared_ptr<GranadaBanana> g, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(g, was_closed))
+        return false;
+
+    // envio coordenadas
+    uint16_t x = htons(g->x_pos());
+    uint16_t y = htons(g->y_pos());
+
+    skt->sendall(&(x), sizeof(x), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(y), sizeof(y), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+
+    return true;
+}
+
+bool ServerProtocol::enviarTrayectoriaDeGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(g, was_closed))
+        return false;
+
+    // envio coordenadas
+    uint16_t x = htons(g->x_pos());
+    uint16_t y = htons(g->y_pos());
+
+    skt->sendall(&(x), sizeof(x), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(y), sizeof(y), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+
+    return true;
+}
+
+bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(g, was_closed))
+        return false;
+
+    // envio coordenadas
+    uint16_t x = htons(g->x_pos());
+    uint16_t y = htons(g->y_pos());
+
+    skt->sendall(&(x), sizeof(x), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(y), sizeof(y), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+
+    return true;
+}
+
 bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &was_closed)
 {
     if (not enviarCodigoDeElemento(b, was_closed))
@@ -210,6 +276,7 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
     uint16_t x = htons(b->x_pos());
     uint16_t y = htons(b->y_pos());
     uint8_t angulo = b->get_angulo();
+    uint8_t direccion = b->get_direccion();
 
     skt->sendall(&(x), sizeof(x), &was_closed);
     if (was_closed)
@@ -220,6 +287,10 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
         return false;
 
     skt->sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(direccion), sizeof(direccion), &was_closed);
     if (was_closed)
         return false;
 
@@ -273,6 +344,59 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranadaVerde(uint8_t id, bo
 
     // printf("angulo recibido: %u\n", angulo);
     return std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo);
+}
+
+std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranadaBanana(uint8_t id, bool &was_closed)
+{
+    uint8_t potencia;
+    skt->recvall(&potencia, sizeof(potencia), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("angulo recibido: %u\n", angulo);
+    return std::make_shared<GranadaBanana>(id, potencia, angulo, tiempo);
+}
+
+std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranadaSanta(uint8_t id, bool &was_closed)
+{
+    uint8_t potencia;
+    skt->recvall(&potencia, sizeof(potencia), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("angulo recibido: %u\n", angulo);
+    return std::make_shared<GranadaSanta>(id, potencia, angulo, tiempo);
+}
+
+std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConDinamita(uint8_t id, bool &was_closed)
+{
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("angulo recibido: %u\n", angulo);
+    return std::make_shared<Dinamita>(id, tiempo);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBazuka(uint8_t id, bool &was_closed)
@@ -336,6 +460,12 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return recibirAtaqueConGranadaVerde(id, was_closed);
     else if (code == BAZUKA_CODE)
         return recibirAtaqueConBazuka(id, was_closed);
+    else if (code == GRANADA_BANANA_CODE)
+        return recibirAtaqueConGranadaBanana(id, was_closed);
+    else if (code == GRANADA_SANTA_CODE)
+        return recibirAtaqueConGranadaSanta(id, was_closed);
+    else if (code == DINAMITA_CODE)
+        return recibirAtaqueConDinamita(id, was_closed);
 
     return std::make_shared<DeadDto>();
 }

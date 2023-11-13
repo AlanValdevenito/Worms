@@ -23,6 +23,9 @@
 #include "cliente_id.h"
 #include "nueva_partida.h"
 #include "granada.h"
+#include "granada_santa.h"
+#include "granada_banana.h"
+#include "dinamita.h"
 #include "bazuka.h"
 #include "socket.h"
 #include "socket_interface.h"
@@ -43,12 +46,18 @@ public:
     bool enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarTrayectoriaDeGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed);
     bool enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &was_closed);
+    bool enviarTrayectoriaDeGranadaBanana(std::shared_ptr<GranadaBanana> g, bool &was_closed);
+    bool enviarTrayectoriaDeGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed);
+    bool enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
 
 private:
     SocketInterface *skt;
     std::shared_ptr<Dto> recibirPartidaSeleccionada(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBate(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConGranadaVerde(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirAtaqueConGranadaBanana(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirAtaqueConGranadaSanta(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirAtaqueConDinamita(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBazuka(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);
     bool enviarViga(std::shared_ptr<Dto> dto, bool &was_closed);
