@@ -2,7 +2,7 @@
 
 GranadaBanana::GranadaBanana(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo) : Proyectil(GRANADA_BANANA_CODE, id), potencia(potencia), angulo(angulo), tiempo(tiempo) {}
 
-GranadaBanana::GranadaBanana(uint16_t x, uint16_t y) : Proyectil(GRANADA_BANANA_CODE), x(x), y(y), angulo(0) {}
+GranadaBanana::GranadaBanana(uint16_t x, uint16_t y, uint8_t angulo) : Proyectil(GRANADA_BANANA_CODE), x(x), y(y), angulo(angulo) {}
 
 GranadaBanana::~GranadaBanana() {}
 

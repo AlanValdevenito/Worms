@@ -5,19 +5,19 @@
 #include "entity.h"
 
 
-class GreenGrenade : public Entity {
+class Dynamite : public Entity {
 public:
-    EntityType entityType = GREEN_GRENADE;
+    EntityType entityType = DYNAMITE;
     b2Body *body;
     std::chrono::steady_clock::time_point spawnTime;
     int timeToExplotion;
-    GreenGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds);
+    Dynamite(b2World *world, float x, float y, int timeToExplotionInSeconds);
     float getXCoordinate();
     float getYCoordinate();
-    void shoot(Direction direction, float angle, int power); 
+    void shoot(Direction direction); 
     void explode();
     float getAngle();
     void startContact() override;
     void endContact() override;
-    ~GreenGrenade();
+    ~Dynamite();
 };

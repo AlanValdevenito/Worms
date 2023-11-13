@@ -3,7 +3,7 @@
 
 enum Direction {LEFT, RIGHT};
 
-enum EntityType {WORM, BEAM, GREEN_GRENADE, BAZOOKA_ROCKET, BANANA};
+enum EntityType {WORM, BEAM, GREEN_GRENADE, BAZOOKA_ROCKET, BANANA, HOLY_GRENADE, DYNAMITE};
 
 class Entity {
 public:

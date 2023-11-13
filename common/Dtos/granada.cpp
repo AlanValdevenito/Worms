@@ -17,8 +17,6 @@ uint8_t GranadaVerde::get_angulo() { return angulo; }
 
 uint8_t GranadaVerde::get_tiempo() { return tiempo; }
 
-uint8_t GranadaVerde::get_direccion() { return 0; }
-
 uint16_t GranadaVerde::x_pos() { return x; }
 
 uint16_t GranadaVerde::y_pos() { return y; }

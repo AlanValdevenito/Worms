@@ -1,9 +1,9 @@
-#ifndef _GRANADA_H
-#define _GRANADA_H
+#ifndef _ANIMACION_PROYECTIL_H
+#define _ANIMACION_PROYECTIL_H
 
 #include <SDL2pp/SDL2pp.hh>
 
-class Granada
+class AnimacionProyectil
 {
 
 private:
@@ -23,7 +23,7 @@ private:
     int tiempo;
 
 public:
-    Granada(SDL2pp::Renderer &renderer);
+    AnimacionProyectil(SDL2pp::Renderer &renderer);
 
     void render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion);
@@ -31,8 +31,8 @@ public:
 
     void explotar(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
-    void lanzarGranada();
-    bool seLanzoGranada();
+    void lanzarProyectil();
+    bool seLanzoProyectil();
 
     void set_flag(int flag);
     int get_flag();
@@ -44,4 +44,4 @@ public:
     int get_tiempo();
 };
 
-#endif // _GRANADA_H
+#endif // _ANIMACION_PROYECTIL_H

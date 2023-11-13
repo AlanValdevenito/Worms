@@ -214,6 +214,7 @@ bool ServerProtocol::enviarTrayectoriaDeGranadaBanana(std::shared_ptr<GranadaBan
     // envio coordenadas
     uint16_t x = htons(g->x_pos());
     uint16_t y = htons(g->y_pos());
+    uint8_t angulo = g->get_angulo();
 
     skt->sendall(&(x), sizeof(x), &was_closed);
     if (was_closed)
@@ -223,34 +224,16 @@ bool ServerProtocol::enviarTrayectoriaDeGranadaBanana(std::shared_ptr<GranadaBan
     if (was_closed)
         return false;
 
-    // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria ---> x:%u y:%u angulo:%u \n", g->x_pos(), g->y_pos(), g->get_angulo());
 
     return true;
 }
 
 bool ServerProtocol::enviarTrayectoriaDeGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed)
-{
-    if (not enviarCodigoDeElemento(g, was_closed))
-        return false;
-
-    // envio coordenadas
-    uint16_t x = htons(g->x_pos());
-    uint16_t y = htons(g->y_pos());
-
-    skt->sendall(&(x), sizeof(x), &was_closed);
-    if (was_closed)
-        return false;
-
-    skt->sendall(&(y), sizeof(y), &was_closed);
-    if (was_closed)
-        return false;
-
-    // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
-
-    return true;
-}
-
-bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bool &was_closed)
 {
     if (not enviarCodigoDeElemento(g, was_closed))
         return false;
@@ -277,6 +260,28 @@ bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bo
     return true;
 }
 
+bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(g, was_closed))
+        return false;
+
+    // envio coordenadas
+    uint16_t x = htons(g->x_pos());
+    uint16_t y = htons(g->y_pos());
+
+    skt->sendall(&(x), sizeof(x), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(y), sizeof(y), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+
+    return true;
+}
+
 bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &was_closed)
 {
     if (not enviarCodigoDeElemento(b, was_closed))
@@ -286,6 +291,7 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
     uint16_t x = htons(b->x_pos());
     uint16_t y = htons(b->y_pos());
     uint8_t angulo = b->get_angulo();
+    uint8_t direccion = b->get_direccion();
 
     skt->sendall(&(x), sizeof(x), &was_closed);
     if (was_closed)

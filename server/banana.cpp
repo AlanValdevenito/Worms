@@ -1,10 +1,10 @@
-#include "green_grenade.h"
+#include "banana.h"
 #include "worm.h"
 #include <iostream>
 
 
 
-BanananaBananarld, float x, float y, int timeToExplotionInSeconds) {
+Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -27,11 +27,12 @@ BanananaBananarld, float x, float y, int timeToExplotionInSeconds) {
     
 
     b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(0.025f, 0.025f);
+	dynamicBox.SetAsBox(0.10f, 0.025f);
     b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.5f;
-    fixtureDef.restitution = 0.2f;
+	fixtureDef.density = 1.0f;
+    fixtureDef.restitution = 1.0f;
+    fixtureDef.friction = 0.7f;
 	fixtureDef.filter.categoryBits = 0x02;
     fixtureDef.filter.maskBits = 0xFD;
 
@@ -41,7 +42,7 @@ BanananaBananarld, float x, float y, int timeToExplotionInSeconds) {
     spawnTime = std::chrono::steady_clock::now();
  }
 
-float BananaCoordinate() {
+float Banana::getXCoordinate() {
     return body->GetPosition().x;
 }
 
@@ -49,29 +50,29 @@ float Banana::getYCoordinate() {
     return body->GetPosition().y;
 }
 
-void Bananat(Direction direction, float angle, int power) {
+void Banana::shoot(Direction direction, float angle, int power) {
     
     float xComponent = (float(power) / 40.0f ) * cos(angle);
     float yComponent = (float(power) / 40.0f ) * sin(angle);
     std::cout << "xComponent = " << xComponent << " yComponent = " << yComponent << "\n";
     if (direction == LEFT) {
-        body->ApplyLinearImpulse(b2Vec2(-xComponent, yComponent), b2Vec2(0.025f, 0.025f), true);
+        body->ApplyLinearImpulse(b2Vec2(-xComponent, yComponent), b2Vec2(0.05f, 0.0f), true);
     } else if (direction == RIGHT) {
-        body->ApplyLinearImpulse(b2Vec2(xComponent, yComponent), b2Vec2(0.025f, 0.025f), true);
+        body->ApplyLinearImpulse(b2Vec2(xComponent, yComponent), b2Vec2(-0.05f, 0.0f), true);
     } else {
         throw std::runtime_error("Invalid direction");
     }
 }
 
-float getDist(float x1, float y1, float x2, float y2) {
+float getDista(float x1, float y1, float x2, float y2) {
     return sqrt(pow((x2-x1),2)+pow((y2-y1),2));
 }
 
-void Bananaode() {
+void Banana::explode() {
     float xComponent; float yComponent;
     for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
     {   
-        float distance = getDist(body->GetPosition().x, body->GetPosition().y,
+        float distance = getDista(body->GetPosition().x, body->GetPosition().y,
                                      b->GetPosition().x, b->GetPosition().y);
         if (b->GetType() == b2_dynamicBody && distance < 4.0f && distance != 0.0f) {
             Entity *entity = (Entity*)b->GetUserData().pointer;
@@ -79,7 +80,7 @@ void Bananaode() {
             if (entity != NULL) {
                 if ((entity->entityType == WORM)) {;
                     Worm *worm = (Worm*)entity;
-                    worm->takeDamage(30);
+                    worm->takeDamage(70);
                 }
             } 
             xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
@@ -90,13 +91,13 @@ void Bananaode() {
 }
 
 
-float Bananangle() {
+float Banana::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
 }
 
-void BananatContact() {}
+void Banana::startContact() {}
     
-void Bananaontact() {}
+void Banana::endContact() {}
 
 
-BananaanaBanana
+Banana::~Banana() {}

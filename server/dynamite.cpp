@@ -1,10 +1,10 @@
-#include "green_grenade.h"
+#include "dynamite.h"
 #include "worm.h"
 #include <iostream>
 
 
 
-GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds) {
+Dynamite::Dynamite(b2World *world, float x, float y, int timeToExplotionInSeconds) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -41,37 +41,34 @@ GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotion
     spawnTime = std::chrono::steady_clock::now();
  }
 
-float GreenGrenade::getXCoordinate() {
+float Dynamite::getXCoordinate() {
     return body->GetPosition().x;
 }
 
-float GreenGrenade::getYCoordinate() {
+float Dynamite::getYCoordinate() {
     return body->GetPosition().y;
 }
 
-void GreenGrenade::shoot(Direction direction, float angle, int power) {
-    
-    float xComponent = (float(power) / 40.0f ) * cos(angle);
-    float yComponent = (float(power) / 40.0f ) * sin(angle);
-    std::cout << "xComponent = " << xComponent << " yComponent = " << yComponent << "\n";
+void Dynamite::shoot(Direction direction) {
+    float x = getXCoordinate();
+    float y = getYCoordinate();
     if (direction == LEFT) {
-        body->ApplyLinearImpulse(b2Vec2(-xComponent, yComponent), b2Vec2(0.025f, 0.025f), true);
-    } else if (direction == RIGHT) {
-        body->ApplyLinearImpulse(b2Vec2(xComponent, yComponent), b2Vec2(0.025f, 0.025f), true);
+        body->SetTransform(b2Vec2(x - 0.5f, y + 0.5f), 0);
     } else {
-        throw std::runtime_error("Invalid direction");
+        body->SetTransform(b2Vec2(x + 0.5f, y + 0.5f), 0);
     }
+    
 }
 
-float getDist(float x1, float y1, float x2, float y2) {
+float getDistanc(float x1, float y1, float x2, float y2) {
     return sqrt(pow((x2-x1),2)+pow((y2-y1),2));
 }
 
-void GreenGrenade::explode() {
+void Dynamite::explode() {
     float xComponent; float yComponent;
     for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
     {   
-        float distance = getDist(body->GetPosition().x, body->GetPosition().y,
+        float distance = getDistanc(body->GetPosition().x, body->GetPosition().y,
                                      b->GetPosition().x, b->GetPosition().y);
         if (b->GetType() == b2_dynamicBody && distance < 4.0f && distance != 0.0f) {
             Entity *entity = (Entity*)b->GetUserData().pointer;
@@ -90,13 +87,13 @@ void GreenGrenade::explode() {
 }
 
 
-float GreenGrenade::getAngle() {
+float Dynamite::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
 }
 
-void GreenGrenade::startContact() {}
+void Dynamite::startContact() {}
     
-void GreenGrenade::endContact() {}
+void Dynamite::endContact() {}
 
 
-GreenGrenade::~GreenGrenade() {}
+Dynamite::~Dynamite() {}

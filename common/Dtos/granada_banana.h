@@ -20,7 +20,7 @@ private:
 
 public:
     GranadaBanana(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo);
-    GranadaBanana(uint16_t x, uint16_t y);
+    GranadaBanana(uint16_t x, uint16_t y, uint8_t angulo);
     ~GranadaBanana();
     uint8_t get_angulo() override;
     uint8_t get_potencia() override;

@@ -1,6 +1,6 @@
-#include "client_granada.h"
+#include "client_proyectil.h"
 
-Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/grenade.1.png").SetColorKey(true, 0))), 
+AnimacionProyectil::AnimacionProyectil(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/grenade.1.png").SetColorKey(true, 0))), 
                                                                           size(this->texture.GetWidth()),
                                                                           x(0),
                                                                           y(0),
@@ -11,7 +11,7 @@ Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, 
                                                                           currentFrame(12),
                                                                           tiempo(5) {}
 
-void Granada::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+void AnimacionProyectil::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     renderer.Copy(
         this->texture,
         SDL2pp::NullOpt,
@@ -21,21 +21,21 @@ void Granada::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, fl
     );
 }
 
-void Granada::update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion) {
+void AnimacionProyectil::update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion) {
     this->x = nuevoX;
     this->y = nuevoY;
     this->angulo = nuevoAngulo;
     this->direccion = nuevaDireccion;
 }
 
-void Granada::cambiar(std::string &ruta) {
+void AnimacionProyectil::cambiar(std::string &ruta) {
     SDL2pp::Surface surface(DATA_PATH + ruta);
 
     this->size = surface.GetWidth();
     this->texture.Update(SDL2pp::NullOpt, surface.SetColorKey(true, 0));
 }
 
-void Granada::explotar(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+void AnimacionProyectil::explotar(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     SDL2pp::Texture explosion(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
 
     int tamaño = 60;
@@ -51,15 +51,15 @@ void Granada::explotar(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, 
     this->currentFrame++;
 }
 
-void Granada::lanzarGranada() {
+void AnimacionProyectil::lanzarProyectil() {
     this->seLanzo = true;
 }
 
-bool Granada::seLanzoGranada() {
+bool AnimacionProyectil::seLanzoProyectil() {
     return this->seLanzo;
 }
 
-void Granada::set_flag(int flag) {
+void AnimacionProyectil::set_flag(int flag) {
     this->exploto = flag;
 
     // Si el flag es igual a 1 quiere decir que tiramos la bomba y debemos reiniciar el frame actual de la explosion
@@ -68,22 +68,22 @@ void Granada::set_flag(int flag) {
     }
 }
 
-int Granada::get_flag() {
+int AnimacionProyectil::get_flag() {
     return this->exploto;
 }
 
-float Granada::get_x() {
+float AnimacionProyectil::get_x() {
     return this->x;
 }
 
-float Granada::get_y() {
+float AnimacionProyectil::get_y() {
     return this->y;
 }
 
-void Granada::set_tiempo(int tiempoElegido) {
+void AnimacionProyectil::set_tiempo(int tiempoElegido) {
     this->tiempo = tiempoElegido;
 }
 
-int Granada::get_tiempo() {
+int AnimacionProyectil::get_tiempo() {
     return this->tiempo;
 }

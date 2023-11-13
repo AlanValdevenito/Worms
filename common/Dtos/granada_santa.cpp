@@ -2,7 +2,7 @@
 
 GranadaSanta::GranadaSanta(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo) : Proyectil(GRANADA_SANTA_CODE, id), potencia(potencia), angulo(angulo), tiempo(tiempo) {}
 
-GranadaSanta::GranadaSanta(uint16_t x, uint16_t y) : Proyectil(GRANADA_SANTA_CODE), x(x), y(y), angulo(0) {}
+GranadaSanta::GranadaSanta(uint16_t x, uint16_t y, uint8_t angulo) : Proyectil(GRANADA_SANTA_CODE), x(x), y(y), angulo(angulo) {}
 
 GranadaSanta::~GranadaSanta() {}
 

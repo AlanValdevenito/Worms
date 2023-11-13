@@ -1,10 +1,10 @@
-#include "green_grenade.h"
+#include "holy_grenade.h"
 #include "worm.h"
 #include <iostream>
 
 
 
-GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds) {
+HolyGrenade::HolyGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -41,15 +41,15 @@ GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotion
     spawnTime = std::chrono::steady_clock::now();
  }
 
-float GreenGrenade::getXCoordinate() {
+float HolyGrenade::getXCoordinate() {
     return body->GetPosition().x;
 }
 
-float GreenGrenade::getYCoordinate() {
+float HolyGrenade::getYCoordinate() {
     return body->GetPosition().y;
 }
 
-void GreenGrenade::shoot(Direction direction, float angle, int power) {
+void HolyGrenade::shoot(Direction direction, float angle, int power) {
     
     float xComponent = (float(power) / 40.0f ) * cos(angle);
     float yComponent = (float(power) / 40.0f ) * sin(angle);
@@ -63,15 +63,15 @@ void GreenGrenade::shoot(Direction direction, float angle, int power) {
     }
 }
 
-float getDist(float x1, float y1, float x2, float y2) {
+float getDistan(float x1, float y1, float x2, float y2) {
     return sqrt(pow((x2-x1),2)+pow((y2-y1),2));
 }
 
-void GreenGrenade::explode() {
+void HolyGrenade::explode() {
     float xComponent; float yComponent;
     for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
     {   
-        float distance = getDist(body->GetPosition().x, body->GetPosition().y,
+        float distance = getDistan(body->GetPosition().x, body->GetPosition().y,
                                      b->GetPosition().x, b->GetPosition().y);
         if (b->GetType() == b2_dynamicBody && distance < 4.0f && distance != 0.0f) {
             Entity *entity = (Entity*)b->GetUserData().pointer;
@@ -90,13 +90,13 @@ void GreenGrenade::explode() {
 }
 
 
-float GreenGrenade::getAngle() {
+float HolyGrenade::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
 }
 
-void GreenGrenade::startContact() {}
+void HolyGrenade::startContact() {}
     
-void GreenGrenade::endContact() {}
+void HolyGrenade::endContact() {}
 
 
-GreenGrenade::~GreenGrenade() {}
+HolyGrenade::~HolyGrenade() {}

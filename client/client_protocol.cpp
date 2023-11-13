@@ -221,6 +221,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_cl
 {
     uint16_t x;
     uint16_t y;
+    uint8_t angulo;
 
     if (not recibirPosicion(x, y, was_closed))
         return std::make_shared<DeadDto>();
@@ -237,26 +238,34 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaBanana(bool &was_c
 {
     uint16_t x;
     uint16_t y;
+    uint8_t angulo;
 
     if (not recibirPosicion(x, y, was_closed))
         return std::make_shared<DeadDto>();
 
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
     // printf("Trayectoria ---> x:%u y:%u \n", x, y);
 
-    return std::make_shared<GranadaBanana>(x, y);
+    return std::make_shared<GranadaBanana>(x, y,angulo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaSanta(bool &was_closed)
 {
     uint16_t x;
     uint16_t y;
+    uint8_t angulo;
 
     if (not recibirPosicion(x, y, was_closed))
         return std::make_shared<DeadDto>();
 
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
     // printf("Trayectoria ---> x:%u y:%u \n", x, y);
 
-    return std::make_shared<GranadaSanta>(x, y);
+    return std::make_shared<GranadaSanta>(x, y,angulo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaDinamita(bool &was_closed)

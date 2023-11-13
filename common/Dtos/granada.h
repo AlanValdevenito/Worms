@@ -28,7 +28,6 @@ public:
     uint8_t get_angulo()override;
     uint8_t get_potencia()override;
     uint8_t get_tiempo()override;
-    uint8_t get_direccion()override;
     uint16_t x_pos()override;
     uint16_t y_pos()override;
 };

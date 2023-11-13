@@ -33,7 +33,7 @@ int Partida::iniciar()
     guardar_vigas();
     guardar_worms(renderer, colores);
 
-    this->granada = new Granada(renderer);
+    this->proyectil = new AnimacionProyectil(renderer);
 
     /******************** GAME LOOP ********************/
 
@@ -293,7 +293,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_1:
                 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->set_tiempo(1);
+                    this->proyectil->set_tiempo(1);
                 }
 
                 break;
@@ -302,7 +302,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_2:
                 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->set_tiempo(2);
+                    this->proyectil->set_tiempo(2);
                 }
 
                 break;
@@ -311,7 +311,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_3:
                 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->set_tiempo(3);
+                    this->proyectil->set_tiempo(3);
                 }
 
                 break;
@@ -320,7 +320,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_4:
 
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->set_tiempo(4);
+                    this->proyectil->set_tiempo(4);
                 }
 
                 break;
@@ -334,7 +334,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wbsblnk.png";
                     arma = "/baseball.1.png";
-                    this->granada->cambiar(arma);
+                    this->proyectil->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta);
                 }
 
@@ -349,7 +349,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wgrnlnk.png";
                     arma = "/grenade.1.png";
-                    this->granada->cambiar(arma);
+                    this->proyectil->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE, ruta);
                 }
 
@@ -364,7 +364,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wbazlnk.png";
                     arma = "/bazooka.1.png";
-                    this->granada->cambiar(arma);
+                    this->proyectil->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(BAZOOKA, ruta);
                 }
 
@@ -379,7 +379,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wbanlnk.png";
                     arma = "/banana.1.png";
-                    this->granada->cambiar(arma);
+                    this->proyectil->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(BANANA, ruta);
                 }
 
@@ -394,7 +394,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/whgrlnk.png";
                     arma = "/hgrenade.1.png";
-                    this->granada->cambiar(arma);
+                    this->proyectil->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_SANTA, ruta);
                 }
 
@@ -409,7 +409,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wdynlnk.png";
                     arma = "/dynamite.1.png";
-                    this->granada->cambiar(arma);
+                    this->proyectil->cambiar(arma);
                     this->worms[this->id_gusano_actual]->equipar_arma(DINAMITA, ruta);
                 }
 
@@ -454,7 +454,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
-                    this->granada->update(this->camara.getCentroX(), this->worms[this->id_gusano_actual]->get_y(), 0, 1);
+                    this->proyectil->update(this->camara.getCentroX(), this->worms[this->id_gusano_actual]->get_y(), 0, 1);
                 }
                 
                 break;
@@ -482,15 +482,32 @@ void Partida::enviarAtaque() {
         cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
     
     } else if (armaEquipada == GRANADA_VERDE) {
-        this->granada->lanzarGranada();
+        this->proyectil->lanzarProyectil();
         cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->granada->get_tiempo()));
+                                                               this->proyectil->get_tiempo()));
     
     } else if (armaEquipada == BAZOOKA) {
-        this->granada->lanzarGranada();
+        this->proyectil->lanzarProyectil();
         cliente.send_queue.push(std::make_shared<Bazuka>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo()));
+    
+    } else if (armaEquipada == BANANA) {
+        this->proyectil->lanzarProyectil();
+        cliente.send_queue.push(std::make_shared<GranadaBanana>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(),
+                                                               this->proyectil->get_tiempo()));
+    
+    } else if (armaEquipada == GRANADA_SANTA) {
+        this->proyectil->lanzarProyectil();
+        cliente.send_queue.push(std::make_shared<GranadaSanta>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(),
+                                                               this->proyectil->get_tiempo()));
+    
+    } else if (armaEquipada == DINAMITA) {
+        this->proyectil->lanzarProyectil();
+        cliente.send_queue.push(std::make_shared<Dinamita>(this->cliente.id, this->proyectil->get_tiempo()));
+    
     } else {
         std::cerr << "El numero recibido no esta asociado a ningun arma\n";
     }
@@ -530,15 +547,15 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
     }
 
-    this->granada->set_flag((int) dto->get_flag_proyectil());
+    this->proyectil->set_flag((int) dto->get_flag_proyectil());
     // 0 = false -> Cuando no se tiro la bomba y no se recibe nada
     // 1 = true -> Cuando tiro la bomba
     // 0 = false -> Cuando explota
-    if (this->granada->get_flag()) {
+    if (this->proyectil->get_flag()) {
         std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-        this->granada->update(metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos())), nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
+        this->proyectil->update(metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos())), nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
     
     }
 
@@ -586,13 +603,13 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         }
     }
 
-    if((this->camara.comprobarRenderizado(this->granada->get_x() / 24, this->granada->get_y() / 24, 1, 1)) && (this->granada->seLanzoGranada())) {
+    if((this->camara.comprobarRenderizado(this->proyectil->get_x() / 24, this->proyectil->get_y() / 24, 1, 1)) && (this->proyectil->seLanzoProyectil())) {
 
-        if (this->granada->get_flag() == 1) {
-            this->granada->render(renderer, this->camara.getLimiteIzquierdo() * 24, this->camara.getLimiteSuperior() * 24);
+        if (this->proyectil->get_flag() == 1) {
+            this->proyectil->render(renderer, this->camara.getLimiteIzquierdo() * 24, this->camara.getLimiteSuperior() * 24);
 
-        } else if (this->granada->get_flag() == 0) {
-            this->granada->explotar(renderer, this->camara.getLimiteIzquierdo() * 24, this->camara.getLimiteSuperior() * 24);
+        } else if (this->proyectil->get_flag() == 0) {
+            this->proyectil->explotar(renderer, this->camara.getLimiteIzquierdo() * 24, this->camara.getLimiteSuperior() * 24);
         }
 
     }

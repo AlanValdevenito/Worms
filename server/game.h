@@ -20,6 +20,9 @@
 #include "player.h"
 #include "green_grenade.h"
 #include "bazooka_rocket.h"
+#include "banana.h"
+#include "holy_grenade.h"
+#include "dynamite.h"
 #include "entity.h"
 
 
@@ -49,12 +52,16 @@ private:
     void mapa_puente();
 
 public:
-    Banana *greenGrenade = NULL;
+    GreenGrenade *greenGrenade = NULL;
     BazookaRocket *bazookaRocket = NULL;
+    Banana *banana = NULL;
+    HolyGrenade *holyGrenade = NULL;
+    Dynamite *dynamite = NULL;
     int idTurn;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
     void update();
+    //void limitFrameRate();
     void run() override;
     void stop() override;
     void sendMap();
@@ -68,6 +75,9 @@ public:
     void broadcast();
     void createPlayers();
     void throwGreenGrenade(float angle, int power, int timeToExplotion);
+    void shootHolyGrenade(float angle, int power, int timeToExplotion);
+    void shootBanana(float angle, int power, int timeToExplotion);
+    void shootDynamite(int timeToExplotion);
     void passTurn();
     void addPlayerId(uint8_t id);
     bool anyWormMoving();

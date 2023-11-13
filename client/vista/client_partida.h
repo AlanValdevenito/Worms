@@ -11,7 +11,7 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "client_camara.h"
-#include "client_granada.h"
+#include "client_proyectil.h"
 #include "client_worm.h"
 #include "client.h"
 #include "viga.h"
@@ -37,7 +37,7 @@ private:
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
     // std::vector<Granada> granadas;
-    Granada *granada; // Si no es un puntero le molesta ya que no lo inicializo
+    AnimacionProyectil *proyectil; // Si no es un puntero le molesta ya que no lo inicializo
     
     int id_gusano_actual;
 

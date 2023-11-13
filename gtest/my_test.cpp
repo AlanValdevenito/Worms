@@ -596,10 +596,14 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaVerde)
     y = htons(y);
     skt.sendall(&y, sizeof(y), &was_closed);
 
+    uint8_t angulo = 15;
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+
     std::shared_ptr<Proyectil> rta = std::dynamic_pointer_cast<Proyectil>(cp.receive(was_closed)); // recibo
 
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    ASSERT_TRUE(rta->get_angulo() == angulo);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaBanana)
@@ -619,10 +623,14 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaBanana)
     y = htons(y);
     skt.sendall(&y, sizeof(y), &was_closed);
 
+    uint8_t angulo = 15;
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+
     std::shared_ptr<Proyectil> rta = std::dynamic_pointer_cast<Proyectil>(cp.receive(was_closed)); // recibo
 
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    ASSERT_TRUE(rta->get_angulo() == angulo);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaSanta)
@@ -642,10 +650,14 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaSanta)
     y = htons(y);
     skt.sendall(&y, sizeof(y), &was_closed);
 
+    uint8_t angulo = 15;
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+
     std::shared_ptr<Proyectil> rta = std::dynamic_pointer_cast<Proyectil>(cp.receive(was_closed)); // recibo
 
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    ASSERT_TRUE(rta->get_angulo() == angulo);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __Dinamita)
@@ -691,11 +703,15 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Bazooka)
     uint8_t angulo = 27;
     skt.sendall(&angulo, sizeof(angulo), &was_closed);
 
+    uint8_t direccion = 1;
+    skt.sendall(&direccion, sizeof(direccion), &was_closed);
+
     std::shared_ptr<Proyectil> rta = std::dynamic_pointer_cast<Proyectil>(cp.receive(was_closed)); // recibo
 
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_angulo() == angulo);
+    ASSERT_TRUE(rta->get_direccion() == direccion);
     // ASSERT_TRUE(rta->get_id() == id);
     // ASSERT_TRUE(rta->get_vida() == vida);
 }
@@ -1028,7 +1044,8 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaVerde)
 
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
-    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(x_enviada, y_enviada);
+    uint16_t angulo_enviado = 19;
+    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(x_enviada, y_enviada, angulo_enviado);
 
     sp.enviarTrayectoriaDeGranadaVerde(g, was_closed);
 
@@ -1043,10 +1060,14 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaVerde)
     skt->recvall(&y, sizeof(y), &was_closed);
     y = ntohs(y);
 
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+
     delete skt;
     ASSERT_TRUE(code == GRANADA_VERDE_CODE);
     ASSERT_TRUE(x == x_enviada);
     ASSERT_TRUE(y == y_enviada);
+    ASSERT_TRUE(angulo == angulo_enviado);
 }
 
 TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaBanana)
@@ -1057,7 +1078,8 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaBanana)
 
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
-    std::shared_ptr<GranadaBanana> g = std::make_shared<GranadaBanana>(x_enviada, y_enviada);
+    uint8_t angulo_enviado = 11;
+    std::shared_ptr<GranadaBanana> g = std::make_shared<GranadaBanana>(x_enviada, y_enviada,angulo_enviado);
 
     sp.enviarTrayectoriaDeGranadaBanana(g, was_closed);
 
@@ -1072,10 +1094,14 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaBanana)
     skt->recvall(&y, sizeof(y), &was_closed);
     y = ntohs(y);
 
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+
     delete skt;
     ASSERT_TRUE(code == GRANADA_BANANA_CODE);
     ASSERT_TRUE(x == x_enviada);
     ASSERT_TRUE(y == y_enviada);
+    ASSERT_TRUE(angulo == angulo_enviado);
 }
 
 TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaSanta)
@@ -1086,7 +1112,8 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaSanta)
 
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
-    std::shared_ptr<GranadaSanta> g = std::make_shared<GranadaSanta>(x_enviada, y_enviada);
+    uint8_t angulo_enviado = 11;
+    std::shared_ptr<GranadaSanta> g = std::make_shared<GranadaSanta>(x_enviada, y_enviada, angulo_enviado);
 
     sp.enviarTrayectoriaDeGranadaSanta(g, was_closed);
 
@@ -1101,10 +1128,14 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaSanta)
     skt->recvall(&y, sizeof(y), &was_closed);
     y = ntohs(y);
 
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+
     delete skt;
     ASSERT_TRUE(code == GRANADA_SANTA_CODE);
     ASSERT_TRUE(x == x_enviada);
     ASSERT_TRUE(y == y_enviada);
+    ASSERT_TRUE(angulo == angulo_enviado);
 }
 
 TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaDinamita)
@@ -1145,7 +1176,8 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaBazooka)
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
     uint16_t angulo_enviado = 75;
-    std::shared_ptr<Bazuka> g = std::make_shared<Bazuka>(x_enviada, y_enviada, angulo_enviado);
+    uint16_t direccion_enviado = 1;
+    std::shared_ptr<Bazuka> g = std::make_shared<Bazuka>(x_enviada, y_enviada, angulo_enviado, direccion_enviado);
 
     sp.enviarTrayectoriaDeBazuka(g, was_closed);
 
@@ -1163,11 +1195,15 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaBazooka)
     uint8_t angulo;
     skt->recvall(&angulo, sizeof(angulo), &was_closed);
 
+    uint8_t direccion;
+    skt->recvall(&direccion, sizeof(direccion), &was_closed);
+
     delete skt;
     ASSERT_TRUE(code == BAZUKA_CODE);
     ASSERT_TRUE(x == x_enviada);
     ASSERT_TRUE(y == y_enviada);
     ASSERT_TRUE(angulo == angulo_enviado);
+    ASSERT_TRUE(direccion == direccion_enviado);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
