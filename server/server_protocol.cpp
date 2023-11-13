@@ -187,12 +187,17 @@ bool ServerProtocol::enviarTrayectoriaDeGranadaVerde(std::shared_ptr<GranadaVerd
     // envio coordenadas
     uint16_t x = htons(g->x_pos());
     uint16_t y = htons(g->y_pos());
+    uint8_t angulo = g->get_angulo();
 
     skt->sendall(&(x), sizeof(x), &was_closed);
     if (was_closed)
         return false;
 
     skt->sendall(&(y), sizeof(y), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
     if (was_closed)
         return false;
 
@@ -210,6 +215,8 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
     uint16_t x = htons(b->x_pos());
     uint16_t y = htons(b->y_pos());
     uint8_t angulo = b->get_angulo();
+    uint8_t direccion = b->get_direccion();
+    
 
     skt->sendall(&(x), sizeof(x), &was_closed);
     if (was_closed)
@@ -220,6 +227,10 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
         return false;
 
     skt->sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(direccion), sizeof(direccion), &was_closed);
     if (was_closed)
         return false;
 

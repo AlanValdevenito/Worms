@@ -4,24 +4,28 @@ Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, 
                                                                           size(this->texture.GetWidth()),
                                                                           x(0),
                                                                           y(0),
+                                                                          angulo(0),
+                                                                          direccion(1),
                                                                           seLanzo(false),
                                                                           exploto(0),
                                                                           currentFrame(12),
                                                                           tiempo(5) {}
 
-// En Box2D la granada es una caja de 5m x 5m
- 
 void Granada::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     renderer.Copy(
         this->texture,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(this->x - 8 - camaraLimiteIzquierdo, this->y - 8 - camaraLimiteSuperior, this->size, this->size)
+        SDL2pp::Rect(this->x - 8 - camaraLimiteIzquierdo, this->y - 8 - camaraLimiteSuperior, this->size, this->size), this->angulo - 45,
+        SDL2pp::NullOpt,    // rotation center - not needed
+        this->direccion ? SDL_FLIP_VERTICAL : SDL_FLIP_NONE
     );
 }
 
-void Granada::update(float nuevoX, float nuevoY) {
+void Granada::update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion) {
     this->x = nuevoX;
     this->y = nuevoY;
+    this->angulo = nuevoAngulo;
+    this->direccion = nuevaDireccion;
 }
 
 void Granada::cambiar(std::string &ruta) {

@@ -408,7 +408,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
-                    this->granada->update(this->camara.getCentroX(), this->worms[this->id_gusano_actual]->get_y());
+                    this->granada->update(this->camara.getCentroX(), this->worms[this->id_gusano_actual]->get_y(), 0, 1);
                 }
                 
                 break;
@@ -492,7 +492,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-        this->granada->update(metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos())), nuevoY);
+        this->granada->update(metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos())), nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
     
     }
 

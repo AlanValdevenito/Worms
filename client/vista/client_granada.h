@@ -13,6 +13,8 @@ private:
 
     float x;
     float y;
+    int angulo;
+    int direccion;
 
     bool seLanzo;
     int exploto;
@@ -24,7 +26,7 @@ public:
     Granada(SDL2pp::Renderer &renderer);
 
     void render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
-    void update(float nuevoX, float nuevoY);
+    void update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion);
     void cambiar(std::string &ruta);
 
     void explotar(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);

@@ -19,6 +19,7 @@ public:
     virtual uint8_t get_angulo()=0;
     virtual uint8_t get_potencia()=0;
     virtual uint8_t get_tiempo();
+    virtual uint8_t get_direccion() = 0;
     virtual uint16_t x_pos()=0;
     virtual uint16_t y_pos()=0;
 };

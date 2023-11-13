@@ -12,7 +12,7 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("codigo:%u\n",code);
+    printf("codigo:%u\n",code);
 
     if (code == VIGA_CODE)
         return recibirVigas(was_closed);
@@ -215,19 +215,6 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_cl
 {
     uint16_t x;
     uint16_t y;
-
-    if (not recibirPosicion(x, y, was_closed))
-        return std::make_shared<DeadDto>();
-
-    // printf("Trayectoria ---> x:%u y:%u \n", x, y);
-
-    return std::make_shared<GranadaVerde>(x, y);
-}
-
-std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
-{
-    uint16_t x;
-    uint16_t y;
     uint8_t angulo;
 
     if (not recibirPosicion(x, y, was_closed))
@@ -237,9 +224,32 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    // printf("Trayectoria ---> x:%u y:%u \n", x, y);
+
+    return std::make_shared<GranadaVerde>(x, y, angulo);
+}
+
+std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
+{
+    uint16_t x;
+    uint16_t y;
+    uint8_t angulo;
+    uint8_t direccion;
+
+    if (not recibirPosicion(x, y, was_closed))
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&direccion, sizeof(direccion), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+        
     // printf("Trayectoria recibida---> x:%u y:%u angulo:%u\n", x, y,angulo);
 
-    return std::make_shared<Bazuka>(x, y, angulo);
+    return std::make_shared<Bazuka>(x, y, angulo, direccion);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

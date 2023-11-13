@@ -15,10 +15,13 @@ GreenGrenade::GreenGrenade(b2World *world, float x, float y, int timeToExplotion
     /*b2FixtureDef fixtureDef;
     b2CircleShape circleShape;
     circleShape.m_p.Set(0, 0); //position, relative to body position
-    circleShape.m_radius = 0.005f; //radius
+    circleShape.m_radius = 0.025f; //radius
     fixtureDef.shape = &circleShape; //this is a pointer to the shape above
-    fixtureDef.restitution = 0.0f;
-    fixtureDef.density = 1.0f;
+    fixtureDef.restitution = 0.2f;
+    fixtureDef.density = 1.5f;
+    fixtureDef.friction = 0.5f;
+    fixtureDef.filter.categoryBits = 0x02;
+    fixtureDef.filter.maskBits = 0xFD;
     body->CreateFixture(&fixtureDef); //add a fixture to the body*/
 
     
@@ -52,9 +55,9 @@ void GreenGrenade::shoot(Direction direction, float angle, int power) {
     float yComponent = (float(power) / 40.0f ) * sin(angle);
     std::cout << "xComponent = " << xComponent << " yComponent = " << yComponent << "\n";
     if (direction == LEFT) {
-        body->ApplyLinearImpulseToCenter(b2Vec2(-xComponent, yComponent), true);
+        body->ApplyLinearImpulse(b2Vec2(-xComponent, yComponent), b2Vec2(0.025f, 0.025f), true);
     } else if (direction == RIGHT) {
-        body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+        body->ApplyLinearImpulse(b2Vec2(xComponent, yComponent), b2Vec2(0.025f, 0.025f), true);
     } else {
         throw std::runtime_error("Invalid direction");
     }
@@ -84,6 +87,11 @@ void GreenGrenade::explode() {
             b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
         }
     }
+}
+
+
+float GreenGrenade::getAngle() {
+    return body->GetAngle() * 180.0f / 3.14f;
 }
 
 void GreenGrenade::startContact() {}
