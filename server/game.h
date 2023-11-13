@@ -49,7 +49,7 @@ private:
     void mapa_puente();
 
 public:
-    GreenGrenade *greenGrenade = NULL;
+    Banana *greenGrenade = NULL;
     BazookaRocket *bazookaRocket = NULL;
     int idTurn;
     bool game_finished;

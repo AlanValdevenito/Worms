@@ -1,5 +1,7 @@
 #include "proyectil.h"
 
+Proyectil::Proyectil(uint8_t code) : Dto(code) {}
+
 Proyectil::Proyectil(uint8_t code, uint8_t id) : Dto(code, id){}
 
 Proyectil::~Proyectil(){}

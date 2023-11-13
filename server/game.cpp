@@ -325,7 +325,7 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
     if (wormAttacked) return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
-    greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
+    greenGrenade = new Banana(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
                                     timeToExplotion);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;

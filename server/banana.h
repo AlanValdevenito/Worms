@@ -7,7 +7,7 @@
 
 class Banana : public Entity {
 public:
-    EntityType entityType = GREEN_GRENADE;
+    EntityType entityType = BANANA;
     b2Body *body;
     std::chrono::steady_clock::time_point spawnTime;
     int timeToExplotion;

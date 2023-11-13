@@ -13,6 +13,7 @@ class Proyectil : public Dto
 private:
 
 public:
+    Proyectil(uint8_t code);
     Proyectil(uint8_t code, uint8_t id);
     ~Proyectil();
     bool is_alive() override;
