@@ -226,9 +226,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
-                this->worms[this->id_gusano_actual]->mirar_derecha();
-
-                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
+                
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->mirar_derecha();
+                
+                } else {
                     cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 } 
 
@@ -236,9 +238,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
-                this->worms[this->id_gusano_actual]->mirar_izquierda();
 
-                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->mirar_izquierda();
+                
+                } else {
                     cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 } 
 
@@ -404,7 +408,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 if (this->worms[this->id_gusano_actual]->arma_equipada()) {
                     enviarAtaque();
                     this->worms[this->id_gusano_actual]->desequipar_arma();
-                    this->granada->update(320, this->worms[this->id_gusano_actual]->get_y());
+                    this->granada->update(this->camara.getCentroX(), this->worms[this->id_gusano_actual]->get_y());
                 }
                 
                 break;
@@ -465,10 +469,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         this->id_gusano_actual = id_gusano_siguiente;
         this->worms[this->id_gusano_actual]->turno_actual(); // Le aviso al Worm del turno actual que es su turno
         this->tiempoInicial = this->tiempoActual;
-    
-    } else {
-        this->id_gusano_actual = id_gusano_siguiente;
-        this->worms[this->id_gusano_actual]->turno_actual(); // Le aviso al Worm del turno actual que es su turno
     }
 
     float altura = renderer.GetOutputHeight();
@@ -485,6 +485,9 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     }
 
     this->granada->set_flag((int) dto->get_flag_proyectil());
+    // 0 = false -> Cuando no se tiro la bomba y no se recibe nada
+    // 1 = true -> Cuando tiro la bomba
+    // 0 = false -> Cuando explota
     if (this->granada->get_flag()) {
         std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
 

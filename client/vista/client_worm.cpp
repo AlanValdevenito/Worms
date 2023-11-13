@@ -33,6 +33,13 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
 
         this->animacion.update(it);
 
+        if (nuevoX > this->x) {
+            mirar_derecha();
+        
+        } else if (nuevoX < this->x) {
+            mirar_izquierda();
+        }
+
         this->x = nuevoX;
         this->y = nuevoY;
         this->vida = nuevaVida;

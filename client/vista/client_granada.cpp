@@ -5,7 +5,7 @@ Granada::Granada(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, 
                                                                           x(0),
                                                                           y(0),
                                                                           seLanzo(false),
-                                                                          exploto(1),
+                                                                          exploto(0),
                                                                           currentFrame(12),
                                                                           tiempo(5) {}
 
@@ -58,6 +58,7 @@ bool Granada::seLanzoGranada() {
 void Granada::set_flag(int flag) {
     this->exploto = flag;
 
+    // Si el flag es igual a 1 quiere decir que tiramos la bomba y debemos reiniciar el frame actual de la explosion
     if (flag == 1) {
         this->currentFrame = 0;
     }
