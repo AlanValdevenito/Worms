@@ -12,7 +12,7 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("codigo:%u\n",code);
+    // printf("codigo:%u\n",code);
 
     if (code == VIGA_CODE)
         return recibirVigas(was_closed);
