@@ -235,6 +235,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 
                 } else {
                     cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
+                    // ruta = "/worm_walk.png";
+                    // this->worms[this->id_gusano_actual]->cambiar_animacion(ruta);
                 } 
 
                 break;
@@ -247,6 +249,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 
                 } else {
                     cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
+                    // ruta = "/worm_walk.png";
+                    // this->worms[this->id_gusano_actual]->cambiar_animacion(ruta);
                 } 
 
                 break;
@@ -273,7 +277,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_RETURN:
                 
                 if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id, 0));
+                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id, SALTO_ADELANTE));
+                    // ruta = "/wjump.png";
+                    // this->worms[this->id_gusano_actual]->cambiar_animacion(ruta);
                 } 
                 
                 break;
@@ -291,7 +297,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_BACKSPACE:
 
                 if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id, 1));
+                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id, SALTO_ATRAS));
+                    // ruta = "/wbackflp.png";
+                    // this->worms[this->id_gusano_actual]->cambiar_animacion(ruta);
                 } 
 
                 break;
@@ -339,11 +347,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    ruta = "/wbsblnk.png";
                     arma = "/baseball.1.png";
-                    apuntado = "/wbsbaim.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta, apuntado);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BATE);
                 }
 
                 break;
@@ -355,11 +361,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    ruta = "/wgrnlnk.png";
                     arma = "/grenade.1.png";
-                    apuntado = "/wthrgrn.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE, ruta, apuntado);
+                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE);
                 }
 
                 break;
@@ -371,11 +375,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    ruta = "/wbazlnk.png";
                     arma = "/bazooka.1.png";
-                    apuntado = "/wbaz.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(BAZOOKA, ruta, apuntado);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BAZOOKA);
                 }
 
                 break;
@@ -387,11 +389,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    ruta = "/wbanlnk.png";
                     arma = "/banana.1.png";
-                    apuntado = "/wthrban.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(BANANA, ruta, apuntado);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BANANA);
                 }
 
                 break;
@@ -403,11 +403,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    ruta = "/whgrlnk.png";
                     arma = "/hgrenade.1.png";
-                    apuntado = "/wthrhgr.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_SANTA, ruta, apuntado);
+                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_SANTA);
                 }
 
                 break;
@@ -419,11 +417,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->desequipar_arma();
                 
                 } else {
-                    ruta = "/wdynlnk.png";
                     arma = "/dynamite.1.png";
-                    apuntado = "";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(DINAMITA, ruta, apuntado);
+                    this->worms[this->id_gusano_actual]->equipar_arma(DINAMITA);
                 }
 
                 break;
@@ -436,8 +432,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 
                 } else {
                     ruta = "/wtellnk.png";
-                    apuntado = "";
-                    this->worms[this->id_gusano_actual]->equipar_arma(TELETRANSPORTACION, ruta, apuntado);
+                    this->worms[this->id_gusano_actual]->equipar_arma(TELETRANSPORTACION);
                 }
 
                 break;

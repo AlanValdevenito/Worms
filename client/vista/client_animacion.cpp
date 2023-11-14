@@ -31,3 +31,14 @@ void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_R
             flipType
         );
 }
+
+void Animation::cambiar(std::string &ruta) {
+
+    SDL2pp::Surface surface(DATA_PATH + ruta);
+
+    this->numFrames = surface.GetHeight() / surface.GetWidth();
+    this->size = surface.GetWidth();
+    this->texture.Update(SDL2pp::NullOpt, surface.SetColorKey(true, 0));
+
+    this->currentFrame = 0;
+}

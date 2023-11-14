@@ -2,6 +2,7 @@
 
 armas:
   - codigo: 3
+    nombre: Bazooka
     sprite_worm: /wbazlnk.png
     sprite_apuntado: /wbaz.png
     sprite_proyectil: /bazooka.1.png
@@ -39,13 +40,12 @@ armas:
     cantidad_fragmentos: 6
 
   - codigo: 2
-    sprite_worm: /wbazlnk.png
-    sprite_apuntado: /wbaz.png
-    sprite_proyectil: /bazooka.1.png
     nombre: Granada Verde
+    sprite_worm: /wgrnlnk.png
+    sprite_apuntado: /wthrgrn.png
+    sprite_proyectil: /grenade.1.png
     descripcion: >
-      La segunda arma predilecta de los gusanos.
-      Como otros tipos de granada no se ve afectada por el viento.
+      La segunda arma predilecta de los gusanos. Como otros tipos de granada no se ve afectada por el viento.
     mira: si
     combate_cuerpo_a_cuerpo: no
     disparo_potencia_variable: si
@@ -77,10 +77,10 @@ armas:
     cantidad_fragmentos: 6
 
   - codigo: 4
-    sprite_worm: /wbazlnk.png
-    sprite_apuntado: /wbaz.png
-    sprite_proyectil: /bazooka.1.png
     nombre: Banana
+    sprite_worm: /wbanlnk.png
+    sprite_apuntado: /wthrban.png
+    sprite_proyectil: /banana.1.png
     descripcion: >
       Es un tipo de granada que tiene la particularidad de rebotar varias veces de forma muy elástica hasta explotar.
     mira: si
@@ -95,10 +95,10 @@ armas:
       radio: 4 mts
 
   - codigo: 5
-    sprite_worm: /wbazlnk.png
-    sprite_apuntado: /wbaz.png
-    sprite_proyectil: /bazooka.1.png
     nombre: Granada Santa
+    sprite_worm: /whgrlnk.png
+    sprite_apuntado: /wthrhgr.png
+    sprite_proyectil: /hgrenade.1.png
     descripcion: >
       Una de las armas más poderosas en el arsenal.
       Justo antes de estallar, produce un sonido característico.
@@ -114,10 +114,10 @@ armas:
       radio: 8 mts
 
   - codigo: 6
-    sprite_worm: /wbazlnk.png
-    sprite_apuntado: /wbaz.png
-    sprite_proyectil: /bazooka.1.png
     nombre: Dinamita
+    sprite_worm: /wdynlnk.png
+    sprite_apuntado: /
+    sprite_proyectil: /dynamite.1.png
     descripcion: >
       Al activarse, el gusano deja en el lugar una dinamita que estalla luego de cierta cantidad de segundos.
     mira: no
@@ -132,10 +132,10 @@ armas:
       radio: 4 mts
 
   - codigo: 1
-    sprite_worm: /wbazlnk.png
-    sprite_apuntado: /wbaz.png
-    sprite_proyectil: /bazooka.1.png
     nombre: Bate de Baseball
+    sprite_worm: /wbsblnk.png
+    sprite_apuntado: /wbsbaim.png
+    sprite_proyectil: /baseball.1.png
     descripcion: >
       Al activarse el arma, el gusano batea lanzando a todo aquel cercano. La dirección de los gusanos lanzados dependerá de la dirección del bateo.
     mira: si
@@ -163,10 +163,10 @@ armas:
       radio: 2 mts
 
   - codigo: 7
-    sprite_worm: /wbazlnk.png
-    sprite_apuntado: /wbaz.png
-    sprite_proyectil: /bazooka.1.png
     nombre: Teletransportación
+    sprite_worm: /wtellnk.png
+    sprite_apuntado: /
+    sprite_proyectil: /
     descripcion: >
       Al activarse la herramienta, el gusano puede teletransportarse a cualquier parte del escenario (salvo el interior de una viga).
     mira: no

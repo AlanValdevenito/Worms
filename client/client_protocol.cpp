@@ -102,7 +102,7 @@ bool ClientProtocol::recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed)
     x = ntohs(posicion_x);
     y = ntohs(posicion_y);
 
-    printf("%u %u\n", x, y);
+    // printf("%u %u\n", x, y);
     // printf("%u %u\n", posicion_x, posicion_y);
 
     return true;
@@ -212,7 +212,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("Cliente ---> id:%u   vida:%u color:%u\n", id, vida, color);
+    // printf("Cliente ---> id:%u   vida:%u color:%u\n", id, vida, color);
 
     return std::make_shared<Gusano>(id, x, y, vida, color);
 }

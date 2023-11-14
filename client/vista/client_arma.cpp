@@ -26,7 +26,7 @@ void Arma::update(int it) {
         this->currentFrame = this->currentFrame % this->numFrames;
     }
 
-    if ((not this->animacionCompleta) && (this->currentFrame == this->numFrames - 1) && (this->texturaDeApuntado != "")) {
+    if ((not this->animacionCompleta) && (this->currentFrame == this->numFrames - 1) && (this->texturaDeApuntado != "/")) {
         this->animacionCompleta = true;
 
         SDL2pp::Surface surface(DATA_PATH + this->texturaDeApuntado);

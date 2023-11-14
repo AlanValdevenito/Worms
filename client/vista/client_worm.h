@@ -6,6 +6,8 @@
 #include "client_arma.h"
 #include <map>
 
+#include "yaml-cpp/yaml.h"
+
 class Worm
 {
 
@@ -23,6 +25,8 @@ private:
     SDL2pp::Color &color;
     bool turno;
 
+    YAML::Node nodo;
+
 public:
     Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida);
 
@@ -31,13 +35,15 @@ public:
     void render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void render_vida(SDL2pp::Renderer &renderer,float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
+    void cambiar_animacion(std::string &ruta);
+
     void cambiar_turno();
     void turno_actual();
 
     void mirar_derecha();
     void mirar_izquierda();
 
-    void equipar_arma(int tipo, std::string &texturaDeArma, std::string &texturaDeApuntado);
+    void equipar_arma(int tipo);
     void desequipar_arma();
     int get_tipo_de_arma();
     bool arma_equipada();

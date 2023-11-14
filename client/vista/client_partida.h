@@ -18,15 +18,16 @@
 #include "mover.h"
 #include "dto.h"
 
-#include "yaml-cpp/yaml.h"
+const int SALTO_ADELANTE = 0;
+const int SALTO_ATRAS = 1;
 
-const int BATE = 1;
+const int BATE = 7;
 const int GRANADA_VERDE = 2;
-const int BAZOOKA = 3;
+const int BAZOOKA = 0;
 const int BANANA = 4;
 const int GRANADA_SANTA = 5;
 const int DINAMITA = 6;
-const int TELETRANSPORTACION = 7;
+const int TELETRANSPORTACION = 9;
 
 using namespace SDL2pp;
 
