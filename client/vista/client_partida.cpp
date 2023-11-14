@@ -203,12 +203,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se hace click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
-                std::cout << "Click derecho: " << std::endl;
+                std::cout << "Click derecho se apreta: " << std::endl;
                 break;
 
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
-                std::cout << "Click izquierdo: " << std::endl;
+                std::cout << "Click izquierdo se apreta: " << std::endl;
                 this->x = event.button.x;
                 this->y = renderer.GetOutputHeight() - event.button.y;
                 break;
@@ -439,8 +439,37 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             }
 
-            // Si se suelta alguna tecla...
         }
+
+        // Si se suelta un click
+        else if (event.type == SDL_MOUSEBUTTONUP)
+        {
+
+            switch (event.button.button)
+            {
+
+            // Si se hace click derecho se muestra el menu de armas
+            case SDL_BUTTON_RIGHT:
+                std::cout << "Click derecho se suelta: " << std::endl;
+                break;
+
+            // Si se hace click izquierdo...
+            case SDL_BUTTON_LEFT:
+                std::cout << "Click izquierdo se suelta: " << std::endl;
+                
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    enviarAtaque();
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                    this->proyectil->update(this->camara.getCentroX(), this->worms[this->id_gusano_actual]->get_y(), 0, 1);
+                }
+
+                break;
+            }
+
+            // Si se presiona alguna tecla...
+        }
+
+        // Si se suelta alguna tecla...
         else if (event.type == SDL_KEYUP)
         {
 
