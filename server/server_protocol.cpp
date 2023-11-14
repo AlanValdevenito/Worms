@@ -277,7 +277,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirTeletransportacion(uint8_t id, bool 
     skt->recvall(&x, sizeof(x), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
-    
+
     uint16_t y;
     skt->recvall(&y, sizeof(y), &was_closed);
     if (was_closed)
@@ -286,7 +286,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirTeletransportacion(uint8_t id, bool 
     x = ntohs(x);
     y = ntohs(y);
 
-    printf("x: %u y:%u\n", x,y);
+    // printf("x: %u y:%u\n", x, y);
     return std::make_shared<Teletransportar>(id, x, y);
 }
 
@@ -392,7 +392,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirSalto(uint8_t id, bool &was_closed)
         return std::make_shared<DeadDto>();
 
     // printf("jugadores recibido: %u\n", cantidad_de_jugadores);
-    return std::make_shared<Saltar>(id,direccion);
+    return std::make_shared<Saltar>(id, direccion);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
@@ -422,7 +422,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
     else if (code == FINALIZAR_CODE)
         return std::make_shared<Dto>(FINALIZAR_CODE, id);
     else if (code == SALTAR_CODE)
-        return recibirSalto(id,was_closed);
+        return recibirSalto(id, was_closed);
     else if (code == NUEVA_PARTIDA_CODE)
         return recibirParametrosDeLaPartida(was_closed);
     else if (code == BAZUKA_CODE)

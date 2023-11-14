@@ -67,6 +67,8 @@ private:
     std::shared_ptr<Dto> recibirTrayectoriaDinamita(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaBazuka(bool &was_closed);
     bool enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed);
+    bool enviarAnguloYPotenciaDeProyectil(std::shared_ptr<Proyectil> dto, bool &was_closed);
+    bool enviarAtaqueConGranada(std::shared_ptr<Proyectil> g, bool &was_closed);
     bool recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed);
     uint8_t cantidadARecibir(bool &was_closed);
 };
