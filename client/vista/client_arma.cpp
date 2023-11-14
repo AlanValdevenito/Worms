@@ -2,7 +2,13 @@
 
 #include <cmath>
 
-Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
+// Inicializamos con la imagen "/wbaz.png" ya que su numero de frames es de 32.
+
+// Si por ejemplo inicializamos con la imagen "/worm_walk.pg" su numero de frames seria 15 y luego al hacerle un update
+// para cambiar la imagen por "wbaz.png" sucederia que solo se podrian renderizar los primeros 15 frames cuando en realidad esta imagen
+// tiene 32 frames.
+
+Arma::Arma(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/wbaz.png").SetColorKey(true, 0))), 
                                         mira(renderer),
                                         potencia(renderer),
                                         currentFrame(0), 
@@ -17,10 +23,21 @@ void Arma::update(int it) {
 
     if (not this->animacionCompleta) {
         this->currentFrame++;
-        this->currentFrame = this->currentFrame % 10;
+        this->currentFrame = this->currentFrame % this->numFrames;
     }
 
-    if (this->currentFrame == this->numFrames - 1) {
+    if ((not this->animacionCompleta) && (this->currentFrame == this->numFrames - 1) && (this->texturaDeApuntado != "")) {
+        this->animacionCompleta = true;
+
+        SDL2pp::Surface surface(DATA_PATH + this->texturaDeApuntado);
+
+        this->numFrames = surface.GetHeight() / surface.GetWidth();
+        this->size = surface.GetWidth();
+        this->texture.Update(SDL2pp::NullOpt, surface.SetColorKey(true, 0));
+
+        this->currentFrame = this->numFrames / 2;
+
+    } else if ((not this->animacionCompleta) && (this->currentFrame == this->numFrames - 1)) {
         this->animacionCompleta = true;
     }
 }
@@ -44,10 +61,11 @@ void Arma::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzqu
 
 /******************** ARMA ********************/
 
-void Arma::equipar_arma(int tipo, std::string &ruta) {
+void Arma::equipar_arma(int tipo, std::string &texturaDeArma, std::string &texturaDeApuntado) {
     this->tipoDeArma = tipo;
+    this->texturaDeApuntado = texturaDeApuntado;
 
-    SDL2pp::Surface surface(DATA_PATH + ruta);
+    SDL2pp::Surface surface(DATA_PATH + texturaDeArma);
 
     this->numFrames = surface.GetHeight() / surface.GetWidth();
     this->size = surface.GetWidth();
@@ -62,10 +80,21 @@ int Arma::get_tipo() {
 
 void Arma::aumentar_angulo() {
     this->mira.aumentar_angulo();
+    
+    // Tengo 15 frames de 90º a 0º
+    // Tengo 15 frames de 0º a 90º
+    // Cada +6 grados aumento +1 el frame actual ya que 90 / 15 = 6
+    if ((this->currentFrame < this->numFrames - 2) && (get_angulo() % 6 == 0)) {
+        this->currentFrame++;
+    }
 }
 
 void Arma::decrementar_angulo() {
     this->mira.decrementar_angulo();
+    
+    if ((this->currentFrame > 0) && (get_angulo() % 6 == 0))  {
+        this->currentFrame--;
+    }
 }
 
 int Arma::get_angulo() {

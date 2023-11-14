@@ -177,6 +177,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
     std::string ruta;
     std::string arma;
+    std::string apuntado;
 
     // Revisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
     while (SDL_PollEvent(&event))
@@ -334,8 +335,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wbsblnk.png";
                     arma = "/baseball.1.png";
+                    apuntado = "/wbsbaim.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta, apuntado);
                 }
 
                 break;
@@ -349,8 +351,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wgrnlnk.png";
                     arma = "/grenade.1.png";
+                    apuntado = "/wthrgrn.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE, ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE, ruta, apuntado);
                 }
 
                 break;
@@ -364,8 +367,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wbazlnk.png";
                     arma = "/bazooka.1.png";
+                    apuntado = "/wbaz.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(BAZOOKA, ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BAZOOKA, ruta, apuntado);
                 }
 
                 break;
@@ -379,8 +383,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wbanlnk.png";
                     arma = "/banana.1.png";
+                    apuntado = "/wthrban.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(BANANA, ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(BANANA, ruta, apuntado);
                 }
 
                 break;
@@ -394,8 +399,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/whgrlnk.png";
                     arma = "/hgrenade.1.png";
+                    apuntado = "/wthrhgr.png";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_SANTA, ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_SANTA, ruta, apuntado);
                 }
 
                 break;
@@ -409,8 +415,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 } else {
                     ruta = "/wdynlnk.png";
                     arma = "/dynamite.1.png";
+                    apuntado = "";
                     this->proyectil->cambiar(arma);
-                    this->worms[this->id_gusano_actual]->equipar_arma(DINAMITA, ruta);
+                    this->worms[this->id_gusano_actual]->equipar_arma(DINAMITA, ruta, apuntado);
                 }
 
                 break;

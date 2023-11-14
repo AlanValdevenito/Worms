@@ -37,7 +37,7 @@ public:
     void mirar_derecha();
     void mirar_izquierda();
 
-    void equipar_arma(int tipo, std::string &ruta);
+    void equipar_arma(int tipo, std::string &texturaDeArma, std::string &texturaDeApuntado);
     void desequipar_arma();
     int get_tipo_de_arma();
     bool arma_equipada();

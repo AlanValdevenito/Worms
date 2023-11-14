@@ -22,6 +22,7 @@ private:
     int size; // Entero que almacena el tamaño de cada frame (altura y ancho).
 
     bool animacionCompleta;
+    std::string texturaDeApuntado;
 
 public:
     Arma(SDL2pp::Renderer &renderer);
@@ -29,7 +30,7 @@ public:
     void update(int it); // Actualiza la animacion. 
     void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda); // Renderiza el arma.
 
-    void equipar_arma(int tipo, std::string &ruta);
+    void equipar_arma(int tipo, std::string &texturaDeArma, std::string &texturaDeApuntado);
     int get_tipo();
 
     void aumentar_angulo();

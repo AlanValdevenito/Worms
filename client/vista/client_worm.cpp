@@ -113,8 +113,8 @@ void Worm::mirar_izquierda() {
 
 /******************** ARMA ********************/
 
-void Worm::equipar_arma(int tipo, std::string &ruta) {
-    this->arma.equipar_arma(tipo, ruta);
+void Worm::equipar_arma(int tipo, std::string &texturaDeArma, std::string &texturaDeApuntado) {
+    this->arma.equipar_arma(tipo, texturaDeArma, texturaDeApuntado);
     this->armaEquipada = true;
 }
 
