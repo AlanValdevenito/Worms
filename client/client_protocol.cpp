@@ -102,7 +102,7 @@ bool ClientProtocol::recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed)
     x = ntohs(posicion_x);
     y = ntohs(posicion_y);
 
-    // printf("%u %u\n", x, y);
+    printf("%u %u\n", x, y);
     // printf("%u %u\n", posicion_x, posicion_y);
 
     return true;
@@ -212,7 +212,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("Cliente ---> id:%u  x:%u y:%u  vida:%u color:%u\n", id, x, y, vida, color);
+    printf("Cliente ---> id:%u   vida:%u color:%u\n", id, vida, color);
 
     return std::make_shared<Gusano>(id, x, y, vida, color);
 }
@@ -352,9 +352,19 @@ bool ClientProtocol::moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &w
     return enviarIdDelClienteYCodigoDeAccion(m, was_closed);
 }
 
-bool ClientProtocol::saltar(std::shared_ptr<Dto> s, bool &was_closed)
+bool ClientProtocol::saltar(std::shared_ptr<Saltar> s, bool &was_closed)
 {
-    return enviarIdDelClienteYCodigoDeAccion(s, was_closed);
+    if (not enviarIdDelClienteYCodigoDeAccion(s, was_closed))
+        return false;
+
+
+    uint8_t direccion = s->get_direccion();
+    skt.sendall(&direccion, sizeof(direccion), &was_closed);
+
+    if (was_closed)
+        return false;
+
+    return true;
 }
 
 bool ClientProtocol::enviarNuevaPartida(std::shared_ptr<NuevaPartida> n, bool &was_closed)
@@ -511,6 +521,25 @@ bool ClientProtocol::enviarAtaqueConDinamita(std::shared_ptr<Dinamita> g, bool &
 
     uint8_t tiempo = g->get_tiempo();
     skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return false;
+
+    return true;
+}
+
+bool ClientProtocol::enviarTeletrasnportacion(std::shared_ptr<Teletransportar> t, bool &was_closed)
+{
+    bool se_envio = enviarIdDelClienteYCodigoDeAccion(t, was_closed);
+    if (!se_envio)
+        return se_envio;
+
+    uint16_t x = htons(t->x_pos());
+    skt.sendall(&x, sizeof(x), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint16_t y = htons(t->y_pos());
+    skt.sendall(&y, sizeof(y), &was_closed);
     if (was_closed)
         return false;
 

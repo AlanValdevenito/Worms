@@ -39,6 +39,7 @@ public:
     void setTeamNumber(uint8_t number);
     uint8_t getTeamNumber();
     void jump();
+    void jumpBackward();
     void startContact() override;
     void endContact() override;
     ~Worm() override;

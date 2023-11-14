@@ -19,6 +19,7 @@
 #include "dto.h"
 #include "dead.h"
 #include "viga.h"
+#include "saltar.h"
 #include "gusano.h"
 #include "mover.h"
 #include "batear.h"
@@ -26,6 +27,7 @@
 #include "granada_santa.h"
 #include "granada_banana.h"
 #include "dinamita.h"
+#include "teletransportar.h"
 #include "bazuka.h"
 #include "partidas_lista.h"
 #include "nueva_partida.h"
@@ -42,13 +44,14 @@ public:
     bool enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed);
     bool enviarAtaqueConBate(std::shared_ptr<Batear> b, bool &was_closed);
     bool enviarFinDePartida(std::shared_ptr<Dto> dto, bool &was_closed);
-    bool saltar(std::shared_ptr<Dto> s, bool &was_closed);
+    bool saltar(std::shared_ptr<Saltar> s, bool &was_closed);
     bool enviarNuevaPartida(std::shared_ptr<NuevaPartida> n, bool &was_closed);
     bool enviarAtaqueConGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed);
     bool enviarAtaqueConBazuka(std::shared_ptr<Bazuka> b, bool &was_closed);
     bool enviarAtaqueConGranadaBanana(std::shared_ptr<GranadaBanana> g, bool &was_closed);
     bool enviarAtaqueConGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed);
     bool enviarAtaqueConDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
+    bool enviarTeletrasnportacion(std::shared_ptr<Teletransportar> t, bool &was_closed);
 
 private:
     SocketInterface &skt;

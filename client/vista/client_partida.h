@@ -18,12 +18,15 @@
 #include "mover.h"
 #include "dto.h"
 
+#include "yaml-cpp/yaml.h"
+
 const int BATE = 1;
 const int GRANADA_VERDE = 2;
 const int BAZOOKA = 3;
 const int BANANA = 4;
 const int GRANADA_SANTA = 5;
 const int DINAMITA = 6;
+const int TELETRANSPORTACION = 7;
 
 using namespace SDL2pp;
 
@@ -36,7 +39,7 @@ private:
 
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
-    // std::vector<Granada> granadas;
+
     AnimacionProyectil *proyectil; // Si no es un puntero le molesta ya que no lo inicializo
     
     int id_gusano_actual;
@@ -50,6 +53,8 @@ private:
     Font fuente;
     
     Camara camara;
+
+    int x,y; // Enteros que almacenan la posicion del click en la ventana
 
 public:
     Partida(Client &cliente);
@@ -74,6 +79,8 @@ public:
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);
+    float pixeles_a_metros(float pixeles);
+    float metros_a_centimetros(float metros);
 
     void liberar_memoria();
 };

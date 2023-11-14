@@ -18,5 +18,6 @@ const uint8_t BAZUKA_CODE = 13;
 const uint8_t GRANADA_BANANA_CODE = 14;
 const uint8_t GRANADA_SANTA_CODE = 15;
 const uint8_t DINAMITA_CODE = 16;
+const uint8_t TELETRANSPORTAR_CODE = 17;
 
 #endif

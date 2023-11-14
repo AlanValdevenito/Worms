@@ -38,7 +38,7 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
     else if (d->return_code() == FINALIZAR_CODE)
         return protocol.enviarFinDePartida(d, was_closed);
     else if (d->return_code() == SALTAR_CODE)
-        return protocol.saltar(d, was_closed);
+        return protocol.saltar(std::dynamic_pointer_cast<Saltar>(d), was_closed);
     else if (d->return_code() == NUEVA_PARTIDA_CODE)
         return protocol.enviarNuevaPartida(std::dynamic_pointer_cast<NuevaPartida>(d), was_closed);
     else if (d->return_code() == GRANADA_VERDE_CODE)
@@ -51,6 +51,10 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
         return protocol.enviarAtaqueConGranadaSanta(std::dynamic_pointer_cast<GranadaSanta>(d), was_closed);
     else if (d->return_code() == DINAMITA_CODE)
         return protocol.enviarAtaqueConDinamita(std::dynamic_pointer_cast<Dinamita>(d), was_closed);
+    else if (d->return_code() == DINAMITA_CODE)
+        return protocol.enviarAtaqueConDinamita(std::dynamic_pointer_cast<Dinamita>(d), was_closed);
+    else if (d->return_code() == TELETRANSPORTAR_CODE)
+        return protocol.enviarTeletrasnportacion(std::dynamic_pointer_cast<Teletransportar>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

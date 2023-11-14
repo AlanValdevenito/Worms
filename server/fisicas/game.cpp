@@ -364,9 +364,15 @@ void Game::moveWormLeft()
     world.getWormsById()[idActualWorm]->moveLeft();
 }
 
-void Game::jumpWorm() {
+void Game::jumpWorm(uint8_t direction) {
+    // direction = 0 ==> forward
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
-    world.getWormsById()[idActualWorm]->jump();
+    if (direction == 0) {
+        world.getWormsById()[idActualWorm]->jump();
+    } else {
+        world.getWormsById()[idActualWorm]->jumpBackward();
+    }
+    
 }
 
 void Game::batWorm(int angle) {
@@ -455,6 +461,18 @@ void Game::shootDynamite(int timeToExplotion) {
 }
 
 
+void Game::teleport(float x, float y) {
+    if (wormAttacked) return;
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
+    Worm *actualWorm = world.getWormsById()[idActualWorm];
+    actualWorm->getBody()->SetTransform(b2Vec2(x, y), 0);
+    actualWorm->getBody()->SetAwake(true);
+
+    timeOfAttack = std::chrono::steady_clock::now();
+    wormAttacked = true;
+}
+
+
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
     uint8_t clientId = dto->get_cliente_id();
@@ -473,18 +491,16 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
         int angle = batear->get_angulo();
         batWorm(angle);
     } else if (code == SALTAR_CODE) {
-        jumpWorm();
+        std::shared_ptr<Saltar> saltar = std::dynamic_pointer_cast<Saltar>(dto);
+        jumpWorm(saltar->get_direccion());
     }
     else if (code == GRANADA_VERDE_CODE) {
         std::shared_ptr<GranadaVerde> grenade = std::dynamic_pointer_cast<GranadaVerde>(dto);
-        std::cout << "angulo = " << (int)grenade->get_angulo() << " potencia = " << (int)grenade->get_potencia() << "\n";
         throwGreenGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia(), grenade->get_tiempo());
     } else if (code == BAZUKA_CODE) {
-        std::cout << "game -> bazooka\n";
         std::shared_ptr<Bazuka> bazooka = std::dynamic_pointer_cast<Bazuka>(dto);
         shootBazooka(bazooka->get_angulo() * 3.14f / 180.0f, bazooka->get_potencia());
     } else if (code == GRANADA_BANANA_CODE) {
-        std::cout << "game -> banana\n";
         std::shared_ptr<GranadaBanana> granadaBanana = std::dynamic_pointer_cast<GranadaBanana>(dto);
         shootBanana(granadaBanana->get_angulo() * 3.14f / 180.0f, granadaBanana->get_potencia(), granadaBanana->get_tiempo());
     } else if (code == GRANADA_SANTA_CODE) {
@@ -493,6 +509,11 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     } else if (code == DINAMITA_CODE) {
         std::shared_ptr<Dinamita> dinamita = std::dynamic_pointer_cast<Dinamita>(dto);
         shootDynamite(dinamita->get_tiempo());
+    }
+    else if (code == TELETRANSPORTAR_CODE) {
+        std::shared_ptr<Teletransportar> teletransportar = std::dynamic_pointer_cast<Teletransportar>(dto);
+        std::cout << "game-> teletransportar x = " << (int)teletransportar->x_pos() << ", y = " << (int)teletransportar->y_pos() << "\n";
+        teleport((float)teletransportar->x_pos() / 100.0f, (float) teletransportar->y_pos() / 100.0f);
     }
 }
 

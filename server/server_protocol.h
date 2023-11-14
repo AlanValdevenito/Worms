@@ -26,6 +26,7 @@
 #include "granada_santa.h"
 #include "granada_banana.h"
 #include "dinamita.h"
+#include "teletransportar.h"
 #include "bazuka.h"
 #include "socket.h"
 #include "socket_interface.h"
@@ -54,12 +55,11 @@ private:
     SocketInterface *skt;
     std::shared_ptr<Dto> recibirPartidaSeleccionada(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBate(uint8_t id, bool &was_closed);
-    // std::shared_ptr<Dto> recibirAtaqueConGranadaVerde(uint8_t id, bool &was_closed);
-    // std::shared_ptr<Dto> recibirAtaqueConGranadaBanana(uint8_t id, bool &was_closed);
-    // std::shared_ptr<Dto> recibirAtaqueConGranadaSanta(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConGranada(uint8_t code, uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConDinamita(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirTeletransportacion(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBazuka(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirSalto(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);
     bool recibirGranada(uint8_t &potencia, uint8_t &angulo, uint8_t &tiempo, bool &was_closed);
     bool esGranada(uint8_t code);

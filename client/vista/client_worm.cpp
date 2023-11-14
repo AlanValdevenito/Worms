@@ -114,6 +114,15 @@ void Worm::mirar_izquierda() {
 /******************** ARMA ********************/
 
 void Worm::equipar_arma(int tipo, std::string &texturaDeArma, std::string &texturaDeApuntado) {
+
+    /*YAML::Node nodo = YAML::LoadFile("/configuracion.yml");
+
+    std::string sprite_worm = nodo["armas"][tipo]["sprite_worm"].as<std::string>();
+    std::string sprite_apuntado = nodo["armas"][tipo]["sprite_apuntado"].as<std::string>();
+
+    this->arma.equipar_arma(tipo, sprite_worm, sprite_apuntado);
+    this->armaEquipada = true;*/
+
     this->arma.equipar_arma(tipo, texturaDeArma, texturaDeApuntado);
     this->armaEquipada = true;
 }

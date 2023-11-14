@@ -203,12 +203,14 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se hace click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
-                std::cout << "Click derecho" << std::endl;
+                std::cout << "Click derecho: " << std::endl;
                 break;
 
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
-                std::cout << "Click izquierdo" << std::endl;
+                std::cout << "Click izquierdo: " << std::endl;
+                this->x = event.button.x;
+                this->y = renderer.GetOutputHeight() - event.button.y;
                 break;
             }
 
@@ -271,7 +273,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_RETURN:
                 
                 if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id));
+                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id, 0));
                 } 
                 
                 break;
@@ -285,9 +287,13 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de retroceso el gusano cambia su direccion (se da la vuelta)
+            // Si se presiona la tecla de retroceso el gusano salta hacia atras
             case SDLK_BACKSPACE:
-                // ...
+
+                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id, 1));
+                } 
+
                 break;
 
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
@@ -422,6 +428,20 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F7:
+
+                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                
+                } else {
+                    ruta = "/wtellnk.png";
+                    apuntado = "";
+                    this->worms[this->id_gusano_actual]->equipar_arma(TELETRANSPORTACION, ruta, apuntado);
+                }
+
+                break;
+
             }
 
             // Si se suelta alguna tecla...
@@ -515,7 +535,13 @@ void Partida::enviarAtaque() {
         this->proyectil->lanzarProyectil();
         cliente.send_queue.push(std::make_shared<Dinamita>(this->cliente.id, this->proyectil->get_tiempo()));
     
-    } else {
+    } else if (armaEquipada == TELETRANSPORTACION) {
+        int xCentimetros = metros_a_centimetros(pixeles_a_metros(this->x) + this->camara.getLimiteIzquierdo());
+        int yCentimetros = metros_a_centimetros(pixeles_a_metros(this->y) - this->camara.getLimiteSuperior());
+        std::cout << "Teletransportacion a la posicion (cm): " << xCentimetros << " " << yCentimetros << std::endl;
+        cliente.send_queue.push(std::make_shared<Teletransportar>(this->cliente.id, xCentimetros, yCentimetros));
+    
+    }else {
         std::cerr << "El numero recibido no esta asociado a ningun arma\n";
     }
 }
@@ -661,6 +687,16 @@ float Partida::metros_a_pixeles(float metros)
 float Partida::centimetros_a_metros(float centimetros)
 {
     return centimetros / 100;
+}
+
+float Partida::pixeles_a_metros(float pixeles)
+{
+    return pixeles / 24;
+}
+
+float Partida::metros_a_centimetros(float metros)
+{
+    return metros * 100;
 }
 
 /******************** MEMORIA ********************/

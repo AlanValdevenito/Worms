@@ -62,6 +62,18 @@ void Worm::jump() {
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 }
 
+void Worm::jumpBackward() {
+	if (numberOfContacts == 0) return;
+	float xComponent; float yComponent;
+	if (facingRight) {
+		xComponent = -2.0f;
+	} else {
+		xComponent = 2.0f;
+	}
+	yComponent = 7.0f;
+	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+}
+
 
 void Worm::bat(std::list<Worm*>& worms, int angle) {
 	float x = getXCoordinate();

@@ -271,6 +271,25 @@ std::shared_ptr<Dto> ServerProtocol::recibirPartidaSeleccionada(uint8_t id, bool
     return std::make_shared<ListaDePartidas>(id, op);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recibirTeletransportacion(uint8_t id, bool &was_closed)
+{
+    uint16_t x;
+    skt->recvall(&x, sizeof(x), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+    
+    uint16_t y;
+    skt->recvall(&y, sizeof(y), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    x = ntohs(x);
+    y = ntohs(y);
+
+    printf("x: %u y:%u\n", x,y);
+    return std::make_shared<Teletransportar>(id, x, y);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBate(uint8_t id, bool &was_closed)
 {
     uint8_t angulo;
@@ -365,6 +384,17 @@ std::shared_ptr<Dto> ServerProtocol::recibirParametrosDeLaPartida(bool &was_clos
     return std::make_shared<NuevaPartida>(cantidad_de_jugadores);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recibirSalto(uint8_t id, bool &was_closed)
+{
+    uint8_t direccion;
+    skt->recvall(&direccion, sizeof(direccion), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("jugadores recibido: %u\n", cantidad_de_jugadores);
+    return std::make_shared<Saltar>(id,direccion);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
 {
     uint8_t id;
@@ -392,13 +422,15 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
     else if (code == FINALIZAR_CODE)
         return std::make_shared<Dto>(FINALIZAR_CODE, id);
     else if (code == SALTAR_CODE)
-        return std::make_shared<Saltar>(id);
+        return recibirSalto(id,was_closed);
     else if (code == NUEVA_PARTIDA_CODE)
         return recibirParametrosDeLaPartida(was_closed);
     else if (code == BAZUKA_CODE)
         return recibirAtaqueConBazuka(id, was_closed);
     else if (code == DINAMITA_CODE)
         return recibirAtaqueConDinamita(id, was_closed);
+    else if (code == TELETRANSPORTAR_CODE)
+        return recibirTeletransportacion(id, was_closed);
     else if (esGranada(code))
         return recibirAtaqueConGranada(code, id, was_closed);
 

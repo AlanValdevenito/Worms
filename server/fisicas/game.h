@@ -77,7 +77,8 @@ public:
 
     void moveWormLeft();
     void moveWormRight();
-    void jumpWorm();
+    void teleport(float x, float y);
+    void jumpWorm(uint8_t direction);
     void batWorm(int angle);
     void executeCommand(std::shared_ptr<Dto> dto);
     void broadcast();

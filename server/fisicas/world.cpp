@@ -74,8 +74,9 @@ std::map<uint8_t, Worm*>& World::getWormsById() {
     return wormsById;
 }
 
+/*bool World::isInsideABeam(float x, float y) {
 
-
+}*/ 
 World::~World() {
     for (Worm *worm : worms) {
         delete worm;
