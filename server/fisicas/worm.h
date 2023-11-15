@@ -3,6 +3,8 @@
 #include <cmath>
 #include "entity.h"
 
+#include "yaml-cpp/yaml.h"
+
 class Worm : public Entity {
 private:
     b2Body *body;
@@ -11,8 +13,9 @@ private:
     float y;
     uint8_t id;
     uint8_t teamNumber;
+
+    YAML::Node configuraciones;
     uint8_t hp;
-    
 
 public:
     bool facingRight;

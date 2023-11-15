@@ -17,7 +17,7 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, i
                                                                                           vida(vida),
                                                                                           color(color),
                                                                                           turno(false),
-                                                                                          nodo(YAML::LoadFile("/configuracion.yml")) {}
+                                                                                          configuraciones(YAML::LoadFile("/configuracion.yml")) {}
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos. Esto les va a resultar muy util.
 
@@ -121,8 +121,8 @@ void Worm::mirar_izquierda() {
 /******************** ARMA ********************/
 
 void Worm::equipar_arma(int tipo) {
-    std::string sprite_worm = nodo["armas"][tipo]["sprite_worm"].as<std::string>();
-    std::string sprite_apuntado = nodo["armas"][tipo]["sprite_apuntado"].as<std::string>();
+    std::string sprite_worm = configuraciones["armas"][tipo]["sprite_worm"].as<std::string>();
+    std::string sprite_apuntado = configuraciones["armas"][tipo]["sprite_apuntado"].as<std::string>();
 
     this->arma.equipar_arma(tipo, sprite_worm, sprite_apuntado);
     this->armaEquipada = true;

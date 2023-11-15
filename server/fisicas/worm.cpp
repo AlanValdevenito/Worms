@@ -1,7 +1,14 @@
 #include "worm.h"
 #include <iostream>
 
-Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), y(y), id(id), hp(100), facingRight(true), is_alive(true), isRunning(false) {
+Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), 
+															 y(y), 
+															 id(id), 
+															 configuraciones(YAML::LoadFile("/configuracion.yml")),
+															 hp(configuraciones["worm"]["vida"].as<uint8_t>()), 
+															 facingRight(false), 
+															 is_alive(true), 
+															 isRunning(false) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);

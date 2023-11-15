@@ -25,7 +25,7 @@ private:
     SDL2pp::Color &color;
     bool turno;
 
-    YAML::Node nodo;
+    YAML::Node configuraciones;
 
 public:
     Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida);

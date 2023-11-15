@@ -1,5 +1,8 @@
 # Archivo YAML
 
+worm:
+  vida: 100
+
 armas:
   - codigo: 3
     nombre: Bazooka
