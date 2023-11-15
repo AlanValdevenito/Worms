@@ -41,6 +41,9 @@ void AnimacionProyectil::explotar(SDL2pp::Renderer &renderer, float camaraLimite
     SDL2pp::Texture circulo(renderer, SDL2pp::Surface(DATA_PATH "/circle50.png").SetColorKey(true, 0));
     int tamañoCirculo = circulo.GetWidth();
 
+    SDL2pp::Texture elipse(renderer, SDL2pp::Surface(DATA_PATH "/elipse50.png").SetColorKey(true, 0));
+    int tamañoELipse = elipse.GetWidth();
+
     int tamaño = 60;
 
     if (this->currentFrame < 12) {
@@ -49,6 +52,12 @@ void AnimacionProyectil::explotar(SDL2pp::Renderer &renderer, float camaraLimite
             circulo,
             SDL2pp::Rect(0, (tamañoCirculo) * currentFrame, tamañoCirculo, tamañoCirculo),
             SDL2pp::Rect(this->x - 50 - camaraLimiteIzquierdo, this->y - 50 - camaraLimiteSuperior, tamañoCirculo, tamañoCirculo)
+        );
+
+        renderer.Copy(
+            elipse,
+            SDL2pp::Rect(0, (tamañoELipse) * currentFrame, tamañoELipse, tamañoELipse),
+            SDL2pp::Rect(this->x - 75 - camaraLimiteIzquierdo, this->y - 75 - camaraLimiteSuperior, tamañoELipse, tamañoELipse)
         );
 
         renderer.Copy(
