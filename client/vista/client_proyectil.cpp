@@ -38,14 +38,25 @@ void AnimacionProyectil::cambiar(std::string &ruta) {
 void AnimacionProyectil::explotar(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     SDL2pp::Texture explosion(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
 
+    SDL2pp::Texture circulo(renderer, SDL2pp::Surface(DATA_PATH "/circle50.png").SetColorKey(true, 0));
+    int tamañoCirculo = circulo.GetWidth();
+
     int tamaño = 60;
 
     if (this->currentFrame < 12) {
+
+        renderer.Copy(
+            circulo,
+            SDL2pp::Rect(0, (tamañoCirculo) * currentFrame, tamañoCirculo, tamañoCirculo),
+            SDL2pp::Rect(this->x - 50 - camaraLimiteIzquierdo, this->y - 50 - camaraLimiteSuperior, tamañoCirculo, tamañoCirculo)
+        );
+
         renderer.Copy(
             explosion,
             SDL2pp::Rect(0, (tamaño) * currentFrame, tamaño, tamaño),
-            SDL2pp::Rect(this->x - 16 - camaraLimiteIzquierdo, this->y - 16 - camaraLimiteSuperior, tamaño, tamaño)
+            SDL2pp::Rect(this->x - 30 - camaraLimiteIzquierdo, this->y - 30 - camaraLimiteSuperior, tamaño, tamaño)
         );
+
     }
 
     this->currentFrame++;
