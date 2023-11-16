@@ -32,6 +32,8 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x),
 	polygonShape.SetAsBox(0.05f, 0.05f, b2Vec2(0.0f,-0.5f), 0);
 	sensorFixtureDef.isSensor = true;
 	sensorFixtureDef.shape = &polygonShape;
+	sensorFixtureDef.filter.categoryBits = 0x02;
+    sensorFixtureDef.filter.maskBits = 0xFD;
 	body->CreateFixture(&sensorFixtureDef);
 }
 
