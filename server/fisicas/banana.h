@@ -13,6 +13,8 @@ class Banana : public Entity {
 public:
     EntityType entityType = BANANA;
     b2Body *body;
+    int maxDamage;
+    int explosionRadius;
     std::chrono::steady_clock::time_point spawnTime;
     int timeToExplotion;
     Banana(b2World *world, float x, float y, int timeToExplotionInSeconds);

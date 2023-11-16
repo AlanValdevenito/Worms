@@ -11,6 +11,8 @@ public:
     EntityType entityType = BAZOOKA_ROCKET;
     b2Body *body;
     Direction dir;
+    int maxDamage;
+    int explosionRadius;
     bool exploded = false;
     BazookaRocket(b2World *world, float x, float y, float angle);
     float getXCoordinate();

@@ -12,6 +12,8 @@ class Dynamite : public Entity {
 public:
     EntityType entityType = DYNAMITE;
     b2Body *body;
+    int maxDamage;
+    int explosionRadius;
     std::chrono::steady_clock::time_point spawnTime;
     int timeToExplotion;
     Dynamite(b2World *world, float x, float y, int timeToExplotionInSeconds);

@@ -12,6 +12,8 @@ class HolyGrenade : public Entity {
 public:
     EntityType entityType = HOLY_GRENADE;
     b2Body *body;
+    int maxDamage;
+    int explosionRadius;
     std::chrono::steady_clock::time_point spawnTime;
     int timeToExplotion;
     HolyGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds);

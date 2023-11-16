@@ -4,7 +4,7 @@
 
 
 
-Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds) {
+Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds) : maxDamage(70), explosionRadius(4) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -67,17 +67,19 @@ void Banana::shoot(Direction direction, float angle, int power) {
 
 void Banana::explode() {
     float xComponent; float yComponent;
+    float damage;
     for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
     {   
         float distance = getDistance(body->GetPosition().x, body->GetPosition().y,
                                      b->GetPosition().x, b->GetPosition().y);
-        if (b->GetType() == b2_dynamicBody && distance < 4.0f && distance != 0.0f) {
+        if (b->GetType() == b2_dynamicBody && distance <= explosionRadius && distance != 0.0f) {
             Entity *entity = (Entity*)b->GetUserData().pointer;
 	  
             if (entity != NULL) {
                 if ((entity->entityType == WORM)) {;
                     Worm *worm = (Worm*)entity;
-                    worm->takeDamage(70);
+                    damage = maxDamage * (1 - distance / explosionRadius);
+                    worm->takeDamage(damage);
                 }
             } 
             xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
