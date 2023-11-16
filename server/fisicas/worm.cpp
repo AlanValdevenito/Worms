@@ -25,6 +25,14 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x),
 
 	fixtureDef.friction = 0.7f;
 	body->CreateFixture(&fixtureDef);
+
+	// le agrego un sensor 
+	b2FixtureDef sensorFixtureDef;
+	b2PolygonShape polygonShape;
+	polygonShape.SetAsBox(0.05f, 0.05f, b2Vec2(0.0f,-0.5f), 0);
+	sensorFixtureDef.isSensor = true;
+	sensorFixtureDef.shape = &polygonShape;
+	body->CreateFixture(&sensorFixtureDef);
 }
 
 float Worm::getXCoordinate()

@@ -28,7 +28,18 @@ BazookaRocket::BazookaRocket(b2World *world, float x, float y, float angle) {
     fixtureDef2.filter.maskBits = 0xFD;
 
     body->CreateFixture(&fixtureDef2);*/
+    
+    // sensor
+    b2FixtureDef sensorFixtureDef;
+	b2PolygonShape polygonShape;
+	polygonShape.SetAsBox(0.151f, 0.026f);
 
+	sensorFixtureDef.isSensor = true;
+	sensorFixtureDef.shape = &polygonShape;
+    sensorFixtureDef.filter.categoryBits = 0x02;
+    sensorFixtureDef.filter.maskBits = 0xFD;
+
+	body->CreateFixture(&sensorFixtureDef);
 
     body->SetTransform(b2Vec2(x, y), angle);
 }
