@@ -1,3 +1,6 @@
+#ifndef WORM_H 
+#define WORM_H
+
 #include "box2d/box2d.h"
 #include <list>
 #include <cmath>
@@ -47,3 +50,4 @@ public:
     void endContact() override;
     ~Worm() override;
 };
+#endif

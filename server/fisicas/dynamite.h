@@ -1,9 +1,12 @@
+#ifndef DYNAMITE_H
+#define DYNAMITE_H
+
 #include "box2d/box2d.h"
 #include <list>
 #include <cmath>
 #include <chrono>
 #include "entity.h"
-
+#include "utils.h"
 
 class Dynamite : public Entity {
 public:
@@ -21,3 +24,4 @@ public:
     void endContact() override;
     ~Dynamite();
 };
+#endif

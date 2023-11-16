@@ -1,9 +1,12 @@
+#ifndef HOLY_GRENADE_H
+#define HOLY_GRENADE_H
+
 #include "box2d/box2d.h"
 #include <list>
 #include <cmath>
 #include <chrono>
 #include "entity.h"
-
+#include "utils.h"
 
 class HolyGrenade : public Entity {
 public:
@@ -21,3 +24,4 @@ public:
     void endContact() override;
     ~HolyGrenade();
 };
+#endif

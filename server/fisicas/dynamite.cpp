@@ -60,15 +60,13 @@ void Dynamite::shoot(Direction direction) {
     
 }
 
-float getDistanc(float x1, float y1, float x2, float y2) {
-    return sqrt(pow((x2-x1),2)+pow((y2-y1),2));
-}
+
 
 void Dynamite::explode() {
     float xComponent; float yComponent;
     for ( b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext())
     {   
-        float distance = getDistanc(body->GetPosition().x, body->GetPosition().y,
+        float distance = getDistance(body->GetPosition().x, body->GetPosition().y,
                                      b->GetPosition().x, b->GetPosition().y);
         if (b->GetType() == b2_dynamicBody && distance < 4.0f && distance != 0.0f) {
             Entity *entity = (Entity*)b->GetUserData().pointer;

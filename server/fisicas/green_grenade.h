@@ -1,8 +1,13 @@
+#ifndef GREEN_GRENADE_H
+#define GREEN_GRENADE_H
+
 #include "box2d/box2d.h"
 #include <list>
 #include <cmath>
 #include <chrono>
 #include "entity.h"
+#include "utils.h"
+
 
 
 class GreenGrenade : public Entity {
@@ -21,3 +26,4 @@ public:
     void endContact() override;
     ~GreenGrenade();
 };
+#endif

@@ -1,8 +1,12 @@
+#ifndef BANANA_H
+#define BANANA_H
+
 #include "box2d/box2d.h"
 #include <list>
 #include <cmath>
 #include <chrono>
 #include "entity.h"
+#include "utils.h"
 
 
 class Banana : public Entity {
@@ -21,3 +25,4 @@ public:
     void endContact() override;
     ~Banana();
 };
+#endif

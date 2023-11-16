@@ -1,6 +1,10 @@
+#ifndef BAZOOKA_ROCKET_H
+#define BAZOOKA_ROCKET_H
+
 #include "box2d/box2d.h"
 #include "entity.h"
 #include <iostream>
+#include "utils.h"
 
 class BazookaRocket : public Entity {
 public:
@@ -20,4 +24,6 @@ public:
     float getAngle();
     ~BazookaRocket();
 };
+
+#endif
 
