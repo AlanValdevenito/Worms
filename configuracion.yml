@@ -12,12 +12,12 @@ armas:
     nombre: Bazooka
     descripcion: >
       Arma predilecta de los gusanos que dispara un misil que estalla al impactar con un tiro parabólico.
-    mira: si
-    combate_cuerpo_a_cuerpo: no
-    disparo_potencia_variable: si
-    cuenta_regresiva: no
-    teledirigido: no
-    trayectoria_afectada_por_viento: si
+    mira: true
+    combate_cuerpo_a_cuerpo: false
+    disparo_potencia_variable: true
+    cuenta_regresiva: false
+    teledirigido: false
+    trayectoria_afectada_por_viento: true
     municiones: infinitas
     danio:
       epicentro: 50 pts
@@ -49,12 +49,12 @@ armas:
     sprite_proyectil: /grenade.1.png
     descripcion: >
       La segunda arma predilecta de los gusanos. Como otros tipos de granada no se ve afectada por el viento.
-    mira: si
-    combate_cuerpo_a_cuerpo: no
-    disparo_potencia_variable: si
-    cuenta_regresiva: si
-    teledirigido: no
-    trayectoria_afectada_por_viento: no
+    mira: true
+    combate_cuerpo_a_cuerpo: false
+    disparo_potencia_variable: true
+    cuenta_regresiva: true
+    teledirigido: false
+    trayectoria_afectada_por_viento: false
     municiones: infinitas
     danio:
       epicentro: 30 pts
@@ -63,12 +63,12 @@ armas:
   - nombre: Granada Roja
     descripcion: >
       Al igual que el Mortero, al explotar lanza fragmentos al aire con tiro parabólico que estallan al impacto.
-    mira: si
-    combate_cuerpo_a_cuerpo: no
-    disparo_potencia_variable: si
-    cuenta_regresiva: si
-    teledirigido: no
-    trayectoria_afectada_por_viento: no
+    mira: true
+    combate_cuerpo_a_cuerpo: false
+    disparo_potencia_variable: true
+    cuenta_regresiva: true
+    teledirigido: false
+    trayectoria_afectada_por_viento: false
     municiones: 10
     danio:
       estallido_principal:
@@ -86,12 +86,12 @@ armas:
     sprite_proyectil: /banana.1.png
     descripcion: >
       Es un tipo de granada que tiene la particularidad de rebotar varias veces de forma muy elástica hasta explotar.
-    mira: si
-    combate_cuerpo_a_cuerpo: no
-    disparo_potencia_variable: si
-    cuenta_regresiva: si
-    teledirigido: no
-    trayectoria_afectada_por_viento: no
+    mira: true
+    combate_cuerpo_a_cuerpo: false
+    disparo_potencia_variable: true
+    cuenta_regresiva: true
+    teledirigido: false
+    trayectoria_afectada_por_viento: false
     municiones: 5
     danio:
       epicentro: 70 pts
@@ -105,12 +105,12 @@ armas:
     descripcion: >
       Una de las armas más poderosas en el arsenal.
       Justo antes de estallar, produce un sonido característico.
-    mira: si
-    combate_cuerpo_a_cuerpo: no
-    disparo_potencia_variable: si
-    cuenta_regresiva: si
-    teledirigido: no
-    trayectoria_afectada_por_viento: no
+    mira: true
+    combate_cuerpo_a_cuerpo: false
+    disparo_potencia_variable: true
+    cuenta_regresiva: true
+    teledirigido: false
+    trayectoria_afectada_por_viento: false
     municiones: 2
     danio:
       epicentro: 110 pts
@@ -119,16 +119,15 @@ armas:
   - codigo: 6
     nombre: Dinamita
     sprite_worm: /wdynlnk.png
-    sprite_apuntado: /
     sprite_proyectil: /dynamite.1.png
     descripcion: >
       Al activarse, el gusano deja en el lugar una dinamita que estalla luego de cierta cantidad de segundos.
-    mira: no
-    combate_cuerpo_a_cuerpo: si
-    disparo_potencia_variable: no
-    cuenta_regresiva: si
-    teledirigido: no
-    trayectoria_afectada_por_viento: no
+    mira: false
+    combate_cuerpo_a_cuerpo: true
+    disparo_potencia_variable: false
+    cuenta_regresiva: true
+    teledirigido: false
+    trayectoria_afectada_por_viento: false
     municiones: 5
     danio:
       epicentro: 50 pts
@@ -141,12 +140,12 @@ armas:
     sprite_proyectil: /baseball.1.png
     descripcion: >
       Al activarse el arma, el gusano batea lanzando a todo aquel cercano. La dirección de los gusanos lanzados dependerá de la dirección del bateo.
-    mira: si
-    combate_cuerpo_a_cuerpo: si
-    disparo_potencia_variable: no
-    cuenta_regresiva: no
-    teledirigido: no
-    trayectoria_afectada_por_viento: no
+    mira: true
+    combate_cuerpo_a_cuerpo: true
+    disparo_potencia_variable: false
+    cuenta_regresiva: false
+    teledirigido: false
+    trayectoria_afectada_por_viento: false
     municiones: infinitas
     danio:
       epicentro: 10 pts
@@ -168,15 +167,13 @@ armas:
   - codigo: 7
     nombre: Teletransportación
     sprite_worm: /wtellnk.png
-    sprite_apuntado: /
-    sprite_proyectil: /
     descripcion: >
       Al activarse la herramienta, el gusano puede teletransportarse a cualquier parte del escenario (salvo el interior de una viga).
-    mira: no
-    combate_cuerpo_a_cuerpo: no
-    disparo_potencia_variable: no
-    cuenta_regresiva: no
-    teledirigido: si
-    trayectoria_afectada_por_viento: no
+    mira: false
+    combate_cuerpo_a_cuerpo: false
+    disparo_potencia_variable: false
+    cuenta_regresiva: false
+    teledirigido: true
+    trayectoria_afectada_por_viento: false
     municiones: infinitas
     danio: ninguno

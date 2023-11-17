@@ -3,33 +3,34 @@
 #define ANCHO_SPRITE 60
 #define ALTO_SPRITE 60
 
-#define OFFSET_Y 8 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
-                 // tienen el (0,0) de los cuerpos en el centro
+#define OFFSET 30 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
+                  // tienen el (0,0) de los cuerpos en el centro
 
-#define OFFSET_X 30
-
-Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida): animacion(renderer), 
-                                                                                          arma(renderer), 
-                                                                                          armaEquipada(false), 
-                                                                                          mirandoIzquierda(true), 
+Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
+                                                                                          apuntado(renderer), 
+                                                                                          proyectil(renderer),
+                                                                                          estado(MOVIENDOSE),
+                                                                                          apuntadoActivado(false), 
                                                                                           x(x), 
                                                                                           y(y), 
                                                                                           vida(vida),
-                                                                                          color(color),
                                                                                           turno(false),
+                                                                                          mirandoIzquierda(true), 
+                                                                                          color(color),
                                                                                           configuraciones(YAML::LoadFile("/configuracion.yml")) {}
 
-// Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos. Esto les va a resultar muy util.
+// Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos.
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
 void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
 {
 
-    if (this->armaEquipada) {
-        this->arma.update(it);
+    if (this->estado == EQUIPANDO_ARMA) {
+        this->animacion.update(it);
     }
 
+    // if (this->estado == MOVIENDOSE) {
     if ((nuevoX != this->x) || (nuevoY != this->y)) {
 
         this->animacion.update(it);
@@ -47,22 +48,66 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
     }
 }
 
-void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
+void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
+    this->estado = nuevoEstado;
+    
+    if (nuevoEstado == MOVIENDOSE) {
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+        this->animacion.cambiar(nuevaTextura);
+    }
+
+    else if (nuevoEstado == EQUIPANDO_ARMA) {
+        std::string sprite_worm = configuraciones["armas"][tipoDeArma]["sprite_worm"].as<std::string>();
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_worm).SetColorKey(true, 0));
+
+        this->animacion.cambiar(nuevaTextura);
+        this->animacion.no_repetir_animacion();
+
+        this->apuntadoActivado = configuraciones["armas"][tipoDeArma]["mira"].as<bool>();
+
+        if (this->apuntadoActivado) {
+            std::string sprite_apuntado = configuraciones["armas"][tipoDeArma]["sprite_apuntado"].as<std::string>();
+            std::shared_ptr<SDL2pp::Texture> armaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_apuntado).SetColorKey(true, 0));
+            this->apuntado.cambiar(armaTextura);
+        }
+
+        bool armaTeledirigida = configuraciones["armas"][tipoDeArma]["teledirigido"].as<bool>();
+
+        if (not armaTeledirigida) {
+            std::string sprite_proyectil = configuraciones["armas"][tipoDeArma]["sprite_proyectil"].as<std::string>();
+            std::shared_ptr<SDL2pp::Texture> proyectilTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_proyectil).SetColorKey(true, 0));
+            
+            this->proyectil.cambiar(proyectilTextura);
+        }
+
+        this->tipoDeArma = tipoDeArma;
+    } 
+}
+
+void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
 {
     SDL_RendererFlip flip = this->mirandoIzquierda ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
-    if (this->armaEquipada) {
-        this->arma.render(renderer, this->turno ? (camaraCentroX - OFFSET_X) : (x - OFFSET_X - camaraLimiteIzquierdo),
-                          this->turno ? (y - OFFSET_Y - camaraLimiteSuperior) : (y - OFFSET_Y - camaraLimiteSuperior), this->mirandoIzquierda);
-    } else {
-        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET_X, y - OFFSET_Y - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET_X - camaraLimiteIzquierdo, y - OFFSET_Y - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
-    }
+    if (this->estado == APUNTANDO) {
+        this->apuntado.render(renderer, this->turno ? (camaraCentroX - OFFSET) : (x - OFFSET - camaraLimiteIzquierdo), this->turno ? (y - OFFSET - camaraLimiteSuperior) : (y - OFFSET - camaraLimiteSuperior), this->mirandoIzquierda);
     
+    } else {
+        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
+    }
+
+    this->proyectil.render(renderer, camara.getLimiteIzquierdo() * 24, camara.getLimiteSuperior() * 24);
     this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
+
+    if ((this->estado == EQUIPANDO_ARMA) && (this->animacion.completa())) {
+
+        if (this->apuntadoActivado) {
+            this->estado = APUNTANDO;
+        } 
+
+    }
 }
 
 void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
-    // Cargamos la fuente de la letra
     SDL2pp::Font font(DATA_PATH "/Vera.ttf", 14);
     SDL2pp::Color blanco(255, 255, 255, 255); 
 
@@ -71,13 +116,13 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
     renderer.Copy(
         borde,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(this->turno ? (camaraCentroX + 10 - OFFSET_X) : (this->x - 19 - camaraLimiteIzquierdo),
-                     this->turno ? (this->y - 30 - camaraLimiteSuperior) : (this->y - 30 - camaraLimiteSuperior), 
+        SDL2pp::Rect(this->turno ? (camaraCentroX + 10 - OFFSET) : (this->x - 19 - camaraLimiteIzquierdo),
+                     this->turno ? (this->y - 45 - camaraLimiteSuperior) : (this->y - 45 - camaraLimiteSuperior), 
                      35, 25)
     );
 
-    SDL2pp::Rect contenedor(this->turno ? (camaraCentroX + 13 - OFFSET_X) : (this->x - 16 - camaraLimiteIzquierdo),
-                            this->turno ? (this->y - 27 - camaraLimiteSuperior) : (this->y - 27 - camaraLimiteSuperior), 
+    SDL2pp::Rect contenedor(this->turno ? (camaraCentroX + 13 - OFFSET) : (this->x - 16 - camaraLimiteIzquierdo),
+                            this->turno ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                             28, 18);
 	renderer.SetDrawColor(this->color); 
 	renderer.FillRect(contenedor);
@@ -85,26 +130,19 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
 	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), blanco);
 	SDL2pp::Texture texture(renderer, surface);
 
-    SDL2pp::Rect mensaje(this->turno ? (camaraCentroX + 13 - OFFSET_X) : (this->x - 16 - camaraLimiteIzquierdo),
-                         this->turno ? (this->y - 27 - camaraLimiteSuperior) : (this->y - 27 - camaraLimiteSuperior), 
+    SDL2pp::Rect mensaje(this->turno ? (camaraCentroX + 13 - OFFSET) : (this->x - 16 - camaraLimiteIzquierdo),
+                         this->turno ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                          surface.GetWidth(), surface.GetHeight());
 	renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
 }
 
-/******************** ANIMACION ********************/
-
-void Worm::cambiar_animacion(std::string &ruta) {
-    this->animacion.cambiar(ruta);
-}
-
 /******************** TURNO ********************/
 
-void Worm::cambiar_turno() {
+void Worm::desactivar_turno() {
     this->turno = false;
-    desequipar_arma();
 }
 
-void Worm::turno_actual() {
+void Worm::activar_turno() {
     this->turno = true;
 }
 
@@ -120,52 +158,61 @@ void Worm::mirar_izquierda() {
 
 /******************** ARMA ********************/
 
-void Worm::equipar_arma(int tipo) {
-    std::string sprite_worm = configuraciones["armas"][tipo]["sprite_worm"].as<std::string>();
-    std::string sprite_apuntado = configuraciones["armas"][tipo]["sprite_apuntado"].as<std::string>();
-
-    this->arma.equipar_arma(tipo, sprite_worm, sprite_apuntado);
-    this->armaEquipada = true;
-}
-
-void Worm::desequipar_arma() {
-    this->armaEquipada = false;
-    this->arma.reiniciar();
-}
-
 int Worm::get_tipo_de_arma() {
-    return this->arma.get_tipo();
+    return this->tipoDeArma;
 }
 
-bool Worm::arma_equipada() {
-    return this->armaEquipada;
+/******************** PROYECTIL ********************/
+
+void Worm::update_proyectil(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion) {
+    this->proyectil.update(nuevoX, nuevoY,  nuevoAngulo, nuevaDireccion);
+}
+
+void Worm::set_flag_proyectil(int flag) {
+    this->proyectil.set_flag(flag);
+}
+
+int Worm::get_flag_proyectil() {
+    return this->proyectil.get_flag();
+}
+
+void Worm::set_tiempo(int tiempo) {
+    this->proyectil.set_tiempo(tiempo);
+}
+
+int Worm::get_tiempo() {
+    return this->proyectil.get_tiempo();
 }
 
 /******************** ANGULO ********************/
 
 void Worm::aumentar_angulo() {
-    this->arma.aumentar_angulo();
+    if (this->estado == APUNTANDO) {
+        this->apuntado.aumentar_angulo();
+    }
 }
 
 void Worm::decrementar_angulo() {
-    this->arma.decrementar_angulo();
+    if (this->estado == APUNTANDO) {
+        this->apuntado.decrementar_angulo();
+    }
 }
 
 int Worm::get_angulo() {
-    return this->arma.get_angulo();
+    return this->apuntado.get_angulo();
 }
 
 /******************** POTENCIA ********************/
 
 void Worm::aumentar_potencia() {
-    if (this->armaEquipada) {
-        this->arma.aumentar_potencia();
+    if (this->estado == APUNTANDO) {
+        this->apuntado.aumentar_potencia();
     }
 }
 
 int Worm::get_potencia() {
-    if (this->armaEquipada) {
-        return this->arma.get_potencia();
+    if (this->estado == APUNTANDO) {
+        return this->apuntado.get_potencia();
     } 
 
     return 0;
@@ -185,8 +232,6 @@ float Worm::get_y() {
     return this->y;
 }
 
-/******************** SETTERS GENERALES ********************/
-
-void Worm::set_x(float nuevoX) {
-    this->x = nuevoX;
+int Worm::get_estado() {
+    return this->estado;
 }

@@ -4,9 +4,9 @@
 
 Camara::Camara(float ventanaAncho, float ventanaAlto): x(0), y(0), ancho(ventanaAncho), alto(ventanaAlto) {}
 
-void Camara::seguirWorm(Worm &worm) {
-    this->x = worm.get_x() / 24;
-    this->y = worm.get_y() / 24;
+void Camara::seguirWorm(float nuevoX, float nuevoY) {
+    this->x = nuevoX / 24;
+    this->y = nuevoY / 24;
 }
 
 bool Camara::comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto) {

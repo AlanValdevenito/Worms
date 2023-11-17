@@ -11,7 +11,6 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "client_camara.h"
-#include "client_proyectil.h"
 #include "client_worm.h"
 #include "client.h"
 #include "viga.h"
@@ -21,13 +20,13 @@
 const int SALTO_ADELANTE = 0;
 const int SALTO_ATRAS = 1;
 
-const int BATE = 7;
-const int GRANADA_VERDE = 2;
-const int BAZOOKA = 0;
-const int BANANA = 4;
-const int GRANADA_SANTA = 5;
-const int DINAMITA = 6;
-const int TELETRANSPORTACION = 9;
+struct Temporizador {
+    unsigned int cuentaRegresiva;
+
+    unsigned int tiempoInicial;
+    unsigned int tiempoActual;  
+    unsigned int tiempoRestante; 
+};
 
 using namespace SDL2pp;
 
@@ -40,19 +39,13 @@ private:
 
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
-
-    AnimacionProyectil *proyectil; // Si no es un puntero le molesta ya que no lo inicializo
-    
     int id_gusano_actual;
-
-    unsigned int tiempoInicial;
-    unsigned int tiempoActual;  
-    unsigned int tiempoRestante; 
 
     std::map<int, SDL2pp::Texture *> texturas;
     std::map<int, SDL2pp::Color> colores;
     Font fuente;
     
+    Temporizador temporizador;
     Camara camara;
 
     int x,y; // Enteros que almacenan la posicion del click en la ventana

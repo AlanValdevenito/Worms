@@ -2,6 +2,7 @@
 #define __ANIMACION_H__
 
 #include <SDL2pp/SDL2pp.hh>
+#include <memory>
 
 class SdlTexture;
 class Area;
@@ -11,19 +12,24 @@ class Area;
 class Animation {
 
 private:
-    SDL2pp::Texture texture; // Atributo que almacena la textura de la animacion
+    std::shared_ptr<SDL2pp::Texture> textura;
 
     int currentFrame; // Entero que almacena el indice del frame actual en la animacion
     int numFrames; // Entero que representa el numero todal de frames en la animacion
     int size; // Entero que almacena el tamaño de cada frame (altura y ancho)
 
+    bool repetirAnimacion;
+
 public:
-    Animation(SDL2pp::Renderer &renderer);
+    Animation(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion = false);
 
     void update(int it); // Actualiza la animacion. 
     void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType); // Renderiza la animacion en el area especificada. El ultimo parametro se utiliza para controlar el volteo de la imagen.
 
-    void cambiar(std::string &ruta);
+    void cambiar(std::shared_ptr<SDL2pp::Texture> nuevaTextura);
+
+    void no_repetir_animacion();
+    bool completa();
 };
 
 #endif  //__ANIMATION_H__
