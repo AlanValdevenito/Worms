@@ -38,6 +38,8 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
         return recibirTrayectoriaDinamita(was_closed);
     else if (code == BAZUKA_CODE)
         return recibirTrayectoriaBazuka(was_closed);
+    else if (code == ATAQUE_AEREO_CODE)
+        return recibirTrayectoriaMisil(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
@@ -196,6 +198,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     uint16_t y;
     uint8_t vida;
     uint8_t color;
+    uint8_t estado;
 
     skt.recvall(&id, sizeof(id), &was_closed);
     if (was_closed)
@@ -212,9 +215,13 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    skt.recvall(&estado, sizeof(estado), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
     // printf("Cliente ---> id:%u   vida:%u color:%u\n", id, vida, color);
 
-    return std::make_shared<Gusano>(id, x, y, vida, color);
+    return std::make_shared<Gusano>(id, x, y, vida, color,estado);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_closed)
@@ -302,6 +309,20 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
     // printf("Trayectoria recibida---> x:%u y:%u angulo:%u\n", x, y,angulo);
 
     return std::make_shared<Bazuka>(x, y, angulo, direccion);
+}
+
+
+std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaMisil(bool &was_closed)
+{
+    uint16_t x;
+    uint16_t y;
+
+    if (not recibirPosicion(x, y, was_closed))
+        return std::make_shared<DeadDto>();
+
+    printf("Trayectoria misil---> x:%u y:%u \n", x, y);
+
+    return std::make_shared<Misil>(x, y);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,6 +492,25 @@ bool ClientProtocol::enviarAtaqueConDinamita(std::shared_ptr<Dinamita> g, bool &
 
 bool ClientProtocol::enviarTeletrasnportacion(std::shared_ptr<Teletransportar> t, bool &was_closed)
 {
+    if (not enviarIdDelClienteYCodigoDeAccion(t, was_closed))
+        return false;
+
+    uint16_t x = htons(t->x_pos());
+    skt.sendall(&x, sizeof(x), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint16_t y = htons(t->y_pos());
+    skt.sendall(&y, sizeof(y), &was_closed);
+    if (was_closed)
+        return false;
+
+    return true;
+}
+
+bool ClientProtocol::enviarAtaqueaereo(std::shared_ptr<Misil> t, bool &was_closed)
+{
+
     if (not enviarIdDelClienteYCodigoDeAccion(t, was_closed))
         return false;
 

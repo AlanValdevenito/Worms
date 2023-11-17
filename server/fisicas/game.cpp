@@ -118,11 +118,12 @@ void Game::run()
             //     stop();
             //     broadcaster.deleteAllQueues();
             // }
+            printf("antes de execute %u\n",dto->return_code());
             executeCommand(dto);
         }
         update();
         limitFrameRate();
-    
+        std::this_thread::sleep_for(std::chrono::milliseconds(33));
         // broadcast();
     }
 }
@@ -171,6 +172,7 @@ void Game::update()
     
     // actualizo los gusanos
     for (Worm *worm : world.getWorms()) {
+        //std::cout << "worm x = " << worm->getXCoordinate() << "\n";
         if (not worm->isMoving() && worm->getHp() == 0 && worm->is_alive) {
             worm->is_alive = false;
             // saco el gusano del juego
@@ -257,6 +259,14 @@ void Game::update()
         }
     }
     
+    if (airStrikeRocket != NULL) {
+        //std::cout << "angulo bazooka = " << bazookaRocket->getAngle() << "\n";
+        
+        if (airStrikeRocket->exploded) {
+            airStrikeRocket = NULL;
+        }
+    }
+
     sendWorms();
 }
 
@@ -266,17 +276,17 @@ void Game::sendWorms()
     std::vector<std::shared_ptr<Gusano>> vectorGusanos;
     for (Worm *w : world.getWorms())
     {   
-        if (w->isAlive() || w->isMoving()) {
-            if ((int)w->getHp() < 100) {
-                //std::cout << "hp = " << (int)w->getHp() << "\n";
-            }
+        if (w->is_alive || w->isMoving()) {
             std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
-                                                        (int)(w->getXCoordinate() * 100),
-                                                        (int)(w->getYCoordinate() * 100),
-                                                        w->getHp(),
-                                                        w->getTeamNumber());
+                                                    (int)(w->getXCoordinate() * 100),
+                                                    (int)(w->getYCoordinate() * 100),
+                                                    w->getHp(),
+                                                    w->getTeamNumber(),
+                                                    w->getState());
             vectorGusanos.push_back(g);
         }
+        
+        
 
         // IF NO ESTA VIVO Y ESTA QUIETO O COLISIONANDO CONTRA LA VIGA -> LO ELIMINAS
 
@@ -288,7 +298,7 @@ void Game::sendWorms()
     gusanos->set_gusano_de_turno(id);
 
     // SI HAY GRANADA
-    if (greenGrenade != NULL || bazookaRocket != NULL || banana != NULL || holyGrenade != NULL || dynamite != NULL) {
+    if (greenGrenade != NULL || bazookaRocket != NULL || banana != NULL || holyGrenade != NULL || dynamite != NULL || airStrikeRocket != NULL) {
         gusanos->set_flag_proyectil(true);
     }
     
@@ -318,6 +328,11 @@ void Game::sendWorms()
     if (dynamite != NULL) {
         std::shared_ptr<Dinamita> dinamita = std::make_shared<Dinamita>((uint16_t)(dynamite->getXCoordinate() * 100), (uint16_t)(dynamite->getYCoordinate() * 100));
         broadcaster.AddDtoToQueues(dinamita);
+    }
+
+    if (airStrikeRocket != NULL) {
+        std::shared_ptr<Misil> misil = std::make_shared<Misil>(0, (uint16_t)(airStrikeRocket->getXCoordinate() * 100), (uint16_t)(airStrikeRocket->getYCoordinate() * 100));
+        broadcaster.AddDtoToQueues(misil);
     }
 }
 
@@ -471,12 +486,22 @@ void Game::teleport(float x, float y) {
     wormAttacked = true;
 }
 
+void Game::airStrike(float x, float y) {
+    if (wormAttacked) return;
+    airStrikeRocket = new AirStrikeRocket(&world.world, x, y);
+    //airStrike.push_back(airStrikeRocket);
+    airStrikeRocket->shoot();
+    timeOfAttack = std::chrono::steady_clock::now();
+    wormAttacked = true;
+}
+
 
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
     uint8_t clientId = dto->get_cliente_id();
     if (clientId != idTurn) return;
     uint8_t code = dto->return_code();
+    printf("codigo mate %u\n",code);
     if (code == MOVER_A_DERECHA_CODE)
     {
         moveWormRight(); // SI ES SU TURNO, LE PASAMOS EL ID
@@ -511,8 +536,12 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     }
     else if (code == TELETRANSPORTAR_CODE) {
         std::shared_ptr<Teletransportar> teletransportar = std::dynamic_pointer_cast<Teletransportar>(dto);
-        std::cout << "game-> teletransportar x = " << (int)teletransportar->x_pos() << ", y = " << (int)teletransportar->y_pos() << "\n";
         teleport((float)teletransportar->x_pos() / 100.0f, (float) teletransportar->y_pos() / 100.0f);
+    }
+    else if (code == ATAQUE_AEREO_CODE) {
+        std::shared_ptr<Misil> misil = std::dynamic_pointer_cast<Misil>(dto);
+        std::cout << "game-> ataque aereo x = " << (int)misil->x_pos() << ", y = " << (int)misil->y_pos() << "\n";
+        airStrike((float)misil->x_pos() / 100.0f, (float) misil->y_pos() / 100.0f);
     }
 }
 

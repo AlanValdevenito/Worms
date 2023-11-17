@@ -4,8 +4,8 @@
 Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), 
 															 y(y), 
 															 id(id), 
-															 configuraciones(YAML::LoadFile("/configuracion.yml")),
-															 hp(configuraciones["worm"]["vida"].as<uint8_t>()), 
+															 //configuraciones(YAML::LoadFile("/configuracion.yml")),
+															 hp(10), 
 															 facingRight(false), 
 															 is_alive(true), 
 															 isRunning(false) {
@@ -53,18 +53,22 @@ uint8_t Worm::getId()
 }
 
 void Worm::moveLeft() {
+	//std::cout << "worm -> moveLeft\n";
 	if (numberOfContacts == 0) return;
 	facingRight = false;
 	isRunning = true;
 	body->SetLinearVelocity(b2Vec2(-2.0f, 0.0f));
+	state = MOVING;
 }
 
 void Worm::moveRight()
 {	
+	//std::cout << "worm -> moveRight\n";
 	if (numberOfContacts == 0) return;
 	facingRight = true;
 	isRunning = true;
     body->SetLinearVelocity(b2Vec2(2.0f, 0.0f));
+	state = MOVING;
 }
 
 void Worm::jump() {
@@ -77,6 +81,7 @@ void Worm::jump() {
 	}
 	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+	state = JUMPING_FORWARD;
 }
 
 void Worm::jumpBackward() {
@@ -89,6 +94,7 @@ void Worm::jumpBackward() {
 	}
 	yComponent = 7.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+	state = JUMPING_BACKWARD;
 }
 
 
@@ -117,6 +123,7 @@ void Worm::makeDamage() {
 	//std::cout << "make damage, damage taken = " << (int)damageTaken << "\n"; 
 	if (hp <= damageTaken) {
 		hp = 0;
+		state = DEAD;
 		//is_alive = false;
 	} else {
 		hp -= damageTaken;
@@ -150,6 +157,10 @@ void Worm::setPlayerId(uint8_t id) {
 	playerId = id;
 }
 
+uint8_t Worm::getState() {
+	return (uint8_t)state;
+}
+
 void Worm::setTeamNumber(uint8_t number) {
 	teamNumber = number;
 }
@@ -160,6 +171,7 @@ uint8_t Worm::getTeamNumber() {
 
 void Worm::startContact() {
 	numberOfContacts++;
+	state = MOVING;
 }
 
 void Worm::endContact() {

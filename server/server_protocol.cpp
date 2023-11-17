@@ -94,6 +94,7 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint8_t id = g->get_id();
     uint8_t vida = g->get_vida();
     uint8_t color = g->get_color();
+    uint8_t estado = g->get_estado();
 
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
@@ -110,6 +111,11 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     if (was_closed)
         return false;
 
+    skt->sendall(&(estado), sizeof(estado), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("estado: %u\n", g->get_estado());
     // printf("id:%u  x:%u  y:%u vida:%u color:%u\n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida(), g->get_color());
     return true;
 }
@@ -223,6 +229,20 @@ bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bo
         return false;
 
     // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+
+    return true;
+}
+
+bool ServerProtocol::enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &was_closed)
+{
+    std::cout<<"entra\n";
+    if (not enviarCodigoDeElemento(g, was_closed))
+        return false;
+
+    if (not enviarPosicionDelElemento(g, was_closed))
+        return false;
+
+    printf("Trayectoria enviada misil ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
 
     return true;
 }
@@ -395,6 +415,25 @@ std::shared_ptr<Dto> ServerProtocol::recibirSalto(uint8_t id, bool &was_closed)
     return std::make_shared<Saltar>(id, direccion);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recibirAtaqueAereo( uint8_t id, bool &was_closed)
+{
+    uint16_t x;
+    skt->recvall(&x, sizeof(x), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint16_t y;
+    skt->recvall(&y, sizeof(y), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    x = ntohs(x);
+    y = ntohs(y);
+
+    printf("recibir pos ataque: %u %u\n", x,y);
+    return std::make_shared<Misil>(id,x,y);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
 {
     uint8_t id;
@@ -409,7 +448,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
     skt->recvall(&code, sizeof(code), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
-    // printf("codigo: %u\n", code);
+    printf("codigo: %u\n", code);
 
     if (code == LISTA_DE_PARTIDAS_CODE)
         return recibirPartidaSeleccionada(id, was_closed);
@@ -431,6 +470,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return recibirAtaqueConDinamita(id, was_closed);
     else if (code == TELETRANSPORTAR_CODE)
         return recibirTeletransportacion(id, was_closed);
+    else if (code == ATAQUE_AEREO_CODE)
+        return recibirAtaqueAereo(id, was_closed);
     else if (esGranada(code))
         return recibirAtaqueConGranada(code, id, was_closed);
 

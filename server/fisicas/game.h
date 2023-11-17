@@ -23,6 +23,7 @@
 #include "banana.h"
 #include "holy_grenade.h"
 #include "dynamite.h"
+#include "air_strike_rocket.h"
 #include "entity.h"
 
 
@@ -65,6 +66,8 @@ public:
     Banana *banana = NULL;
     HolyGrenade *holyGrenade = NULL;
     Dynamite *dynamite = NULL;
+    //std::list<airStrikeRocket*> airStrike;
+    AirStrikeRocket *airStrikeRocket = NULL;
     int idTurn;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
@@ -87,6 +90,7 @@ public:
     void shootHolyGrenade(float angle, int power, int timeToExplotion);
     void shootBanana(float angle, int power, int timeToExplotion);
     void shootDynamite(int timeToExplotion);
+    void airStrike(float x, float y);
     void passTurn();
     void addPlayerId(uint8_t id);
     bool anyWormMoving();

@@ -1,6 +1,6 @@
 #include "gusano.h"
 
-Gusano::Gusano(uint8_t id, uint16_t x, uint16_t y, uint8_t vida, uint8_t color) : Dto(GUSANO_CODE), id(id), x(x), y(y), vida(vida), color(color) {}
+Gusano::Gusano(uint8_t id, uint16_t x, uint16_t y, uint8_t vida, uint8_t color, uint8_t estado) : Dto(GUSANO_CODE), id(id), x(x), y(y), vida(vida), color(color), estado(estado) {}
 
 Gusano::~Gusano() {}
 
@@ -15,6 +15,8 @@ uint8_t Gusano::get_id() { return id; }
 uint8_t Gusano::get_vida() { return vida; }
 
 uint8_t Gusano::get_color() { return color; }
+
+uint8_t Gusano::get_estado() { return estado; }
 
 Gusanos::Gusanos() : Dto(GUSANOS_CODE) {}
 

@@ -29,6 +29,7 @@
 #include "dinamita.h"
 #include "teletransportar.h"
 #include "bazuka.h"
+#include "ataque_aereo.h"
 #include "partidas_lista.h"
 #include "nueva_partida.h"
 #include "cliente_id.h"
@@ -52,6 +53,7 @@ public:
     bool enviarAtaqueConGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed);
     bool enviarAtaqueConDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
     bool enviarTeletrasnportacion(std::shared_ptr<Teletransportar> t, bool &was_closed);
+    bool enviarAtaqueaereo(std::shared_ptr<Misil> t, bool &was_closed);
 
 private:
     SocketInterface &skt;
@@ -66,6 +68,7 @@ private:
     std::shared_ptr<Dto> recibirTrayectoriaGranadaBanana(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaDinamita(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaBazuka(bool &was_closed);
+    std::shared_ptr<Dto> recibirTrayectoriaMisil(bool &was_closed);
     bool enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarAnguloYPotenciaDeProyectil(std::shared_ptr<Proyectil> dto, bool &was_closed);
     bool enviarAtaqueConGranada(std::shared_ptr<Proyectil> g, bool &was_closed);

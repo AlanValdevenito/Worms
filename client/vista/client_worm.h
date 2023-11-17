@@ -5,13 +5,8 @@
 #include "client_animacion.h"
 #include "client_proyectil.h"
 #include "client_apuntado.h"
+#include "constantes.h"
 #include <map>
-
-#include "yaml-cpp/yaml.h"
-
-const int MOVIENDOSE = 0;
-const int EQUIPANDO_ARMA = 1;
-const int APUNTANDO = 2;
 
 const int BATE = 7;
 const int GRANADA_VERDE = 2;
@@ -20,6 +15,9 @@ const int BANANA = 4;
 const int GRANADA_SANTA = 5;
 const int DINAMITA = 6;
 const int TELETRANSPORTACION = 9;
+const int ATAQUE_AEREO = 8;
+
+#include "yaml-cpp/yaml.h"
 
 class Worm
 {

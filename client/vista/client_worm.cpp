@@ -36,10 +36,10 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
         this->animacion.update(it);
 
         if (nuevoX > this->x) {
-            mirar_derecha();
+            // mirar_derecha();
         
         } else if (nuevoX < this->x) {
-            mirar_izquierda();
+            // mirar_izquierda();
         }
 
         this->x = nuevoX;
@@ -54,6 +54,32 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     if (nuevoEstado == MOVIENDOSE) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
+    }
+
+    else if (nuevoEstado == SALTANDO_ADELANTE) {
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wjump.png").SetColorKey(true, 0));
+        this->animacion.cambiar(nuevaTextura);
+    }
+
+    else if (nuevoEstado == SALTANDO_ATRAS) {
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
+        this->animacion.cambiar(nuevaTextura);
+    }
+    
+    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == ATAQUE_AEREO)) {
+        std::cout << "1" << std::endl;
+        std::string sprite_worm = configuraciones["armas"][tipoDeArma]["sprite_worm"].as<std::string>();
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_worm).SetColorKey(true, 0));
+        std::cout << "2" << std::endl;
+        this->animacion.cambiar(nuevaTextura);
+        this->animacion.no_repetir_animacion();
+        std::cout << "3" << std::endl;
+        std::string sprite_proyectil = configuraciones["armas"][tipoDeArma]["sprite_proyectil"].as<std::string>();
+        std::shared_ptr<SDL2pp::Texture> proyectilTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_proyectil).SetColorKey(true, 0));
+        std::cout << "4" << std::endl;
+        this->proyectil.cambiar(proyectilTextura);
+        this->tipoDeArma = tipoDeArma;
+        std::cout << "5" << std::endl;
     }
 
     else if (nuevoEstado == EQUIPANDO_ARMA) {

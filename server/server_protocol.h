@@ -27,6 +27,7 @@
 #include "granada_banana.h"
 #include "dinamita.h"
 #include "teletransportar.h"
+#include "ataque_aereo.h"
 #include "bazuka.h"
 #include "socket.h"
 #include "socket_interface.h"
@@ -50,6 +51,7 @@ public:
     bool enviarTrayectoriaDeGranadaBanana(std::shared_ptr<GranadaBanana> g, bool &was_closed);
     bool enviarTrayectoriaDeGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed);
     bool enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
+    bool enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &was_closed);
 
 private:
     SocketInterface *skt;
@@ -61,6 +63,7 @@ private:
     std::shared_ptr<Dto> recibirAtaqueConBazuka(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirSalto(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);
+    std::shared_ptr<Dto> recibirAtaqueAereo(uint8_t id, bool &was_closed);
     bool recibirGranada(uint8_t &potencia, uint8_t &angulo, uint8_t &tiempo, bool &was_closed);
     bool esGranada(uint8_t code);
     bool enviarViga(std::shared_ptr<Dto> dto, bool &was_closed);

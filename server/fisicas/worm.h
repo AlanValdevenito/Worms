@@ -8,6 +8,14 @@
 
 #include "yaml-cpp/yaml.h"
 
+const int MOVING = 0;
+const int JUMPING_FORWARD = 1;
+const int JUMPING_BACKWARD = 2;
+const int EQUIPING_WEAPON = 3;
+const int AIMING = 4;
+const int DEAD = 5;
+
+
 class Worm : public Entity {
 private:
     b2Body *body;
@@ -17,7 +25,7 @@ private:
     uint8_t id;
     uint8_t teamNumber;
 
-    YAML::Node configuraciones;
+    //YAML::Node configuraciones;
     uint8_t hp;
 
 public:
@@ -25,6 +33,7 @@ public:
     bool is_alive;
     uint8_t damageTaken;
     bool isRunning;
+    int state = MOVING;
     uint8_t playerId = -1;
     EntityType entityType = WORM;
     int numberOfContacts = 0;
@@ -32,6 +41,7 @@ public:
     float getXCoordinate();
     float getYCoordinate();
     uint8_t getId();
+    uint8_t getState();
     void moveLeft();
     void moveRight();
     b2Body* getBody();

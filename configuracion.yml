@@ -150,15 +150,18 @@ armas:
     danio:
       epicentro: 10 pts
 
-  - nombre: Ataque Aereo
+  - codigo: 8
+    nombre: Ataque Aereo
+    sprite_worm: /wairlnk.png
+    sprite_proyectil: /airstrke.png
     descripcion: >
       Caen del cielo 6 misiles hacia el objetivo marcado por el jugador cada uno de ellos explotando independientemente. Los misiles pueden impactar antes si se encuentran en su trayectoria con algún otro objeto.
-    mira: no
-    combate_cuerpo_a_cuerpo: no
-    disparo_potencia_variable: no
-    cuenta_regresiva: no
-    teledirigido: si
-    trayectoria_afectada_por_viento: si
+    mira: false
+    combate_cuerpo_a_cuerpo: false
+    disparo_potencia_variable: false
+    cuenta_regresiva: false
+    teledirigido: true
+    trayectoria_afectada_por_viento: true
     municiones: 2
     danio:
       epicentro: 40 pts

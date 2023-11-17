@@ -27,6 +27,7 @@ void Sender::run()
 
 bool Sender::send(std::shared_ptr<Dto> d)
 {
+    printf("codigo sender: %u\n",d->return_code());
 
     if (d->return_code() == CLIENTE_ID_CODE)
         return protocol.enviarId(std::dynamic_pointer_cast<ClienteId>(d), was_closed);
@@ -52,6 +53,8 @@ bool Sender::send(std::shared_ptr<Dto> d)
         return protocol.enviarTrayectoriaDeGranadaSanta(std::dynamic_pointer_cast<GranadaSanta>(d), was_closed);
     else if (d->return_code() == DINAMITA_CODE)
         return protocol.enviarTrayectoriaDeDinamita(std::dynamic_pointer_cast<Dinamita>(d), was_closed);
+    else if (d->return_code() == ATAQUE_AEREO_CODE)
+        return protocol.enviarTrayectoriaDeMisil(std::dynamic_pointer_cast<Misil>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

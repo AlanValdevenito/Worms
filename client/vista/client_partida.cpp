@@ -227,6 +227,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->mirar_derecha();
                 
                 } else {
+                    this->worms[this->id_gusano_actual]->mirar_derecha();
                     this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                     cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 } 
@@ -240,6 +241,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     this->worms[this->id_gusano_actual]->mirar_izquierda();
                 
                 } else {
+                    this->worms[this->id_gusano_actual]->mirar_izquierda();
                     this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                     cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 } 
@@ -399,6 +401,18 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F8:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, ATAQUE_AEREO);
+                }
+
+                break;
+
             }
 
         }
@@ -519,7 +533,12 @@ void Partida::enviarAtaque() {
         int yCentimetros = metros_a_centimetros(pixeles_a_metros(this->y) - this->camara.getLimiteSuperior());
         cliente.send_queue.push(std::make_shared<Teletransportar>(this->cliente.id, xCentimetros, yCentimetros));
     
-    }else {
+    } else if (armaEquipada == ATAQUE_AEREO) {
+        int xCentimetros = metros_a_centimetros(pixeles_a_metros(this->x) + this->camara.getLimiteIzquierdo());
+        int yCentimetros = metros_a_centimetros(pixeles_a_metros(this->y) - this->camara.getLimiteSuperior());
+        cliente.send_queue.push(std::make_shared<Misil>(this->cliente.id, xCentimetros, yCentimetros));
+    
+    } else {
         std::cerr << "El numero recibido no esta asociado a ningun arma\n";
     }
 }
@@ -565,9 +584,24 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     for (int i = 0; i < cantidad; i++) {
         std::shared_ptr<Gusano> gusano = gusanos->popGusano(i);
 
+        int nuevoEstado = (int) gusano->get_estado();
+
+        // if (nuevoEstado == MUERTO) {
+        //     this->worms.erase(gusano->get_id());
+        //     continue;
+        // }
+
         float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida());
+
+        if (this->worms[gusano->get_id()]->get_estado() != nuevoEstado) {
+
+            if ((this->worms[gusano->get_id()]->get_estado() != EQUIPANDO_ARMA) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
+                this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado);
+            }
+
+        }
     }
 
     /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/
@@ -613,7 +647,6 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
             Rect(0, 0, 50, 50),
             Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()) - 70, altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()) - 10,
             metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
-
     }
 }
 
