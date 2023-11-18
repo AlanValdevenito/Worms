@@ -56,6 +56,8 @@ void Game::mapa_jaula() {
     world.addBeam(25.5f, 14, 90, LONG);
 
     world.addWorm(4, 10);
+    world.addWorm(6, 10);
+    world.addWorm(8, 10);
     world.addWorm(10, 10);
 }
 
@@ -175,24 +177,27 @@ void Game::update()
         //std::cout << "worm x = " << worm->getXCoordinate() << "\n";
         if (not worm->isMoving() && worm->getHp() == 0 && worm->is_alive) {
             worm->is_alive = false;
-            // saco el gusano del juego
+            
             
             players[worm->playerId - 1].numberOfAliveWorms--;
-            /*int idWorm = worm->getId();
-            world.getWorms().remove(worm);
+            // saco el gusano del juego
+            int idWorm = worm->getId();
+            //world.getWorms().remove(worm);
             world.getWormsById().erase(idWorm);
             int indexOfWormToRemove = 0;
             // busco el indice del gusano dentro del vector de ids de gusanos del player
-            for (int i = 0; i < (int)players[worm->playerId - 1].size(); i++) {
+            for (int i = 0; i < (int)(players.size()); i++) {
                 if (players[worm->playerId - 1].wormIds[i] == idWorm) {
                     indexOfWormToRemove = i;
                     break;
                 }
             }
-            players[worm->playerId - 1].wormIds.erase(indexOfWormToRemove);
-            */
+            players[worm->playerId - 1].wormIds.erase(players[worm->playerId - 1].wormIds.begin() + indexOfWormToRemove);
+            
+        } else {
+            worm->makeDamage();
         }
-        worm->makeDamage();
+        
     }
 
     // actualizo los players
