@@ -30,7 +30,6 @@ public:
 
     void update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado);
     void render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
-    void renderizar_movimiento(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
     void cambiar(std::shared_ptr<SDL2pp::Texture> texturaProyectil);
 

@@ -14,6 +14,9 @@ private:
     Animation biff;
     Animation circulo;
     Animation elipse;
+    Animation fuego;
+
+    int movimientoFuego;
 
 public:
     Explosion(SDL2pp::Renderer &renderer);
