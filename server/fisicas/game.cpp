@@ -56,8 +56,6 @@ void Game::mapa_jaula() {
     world.addBeam(25.5f, 14, 90, LONG);
 
     world.addWorm(4, 10);
-    world.addWorm(6, 10);
-    world.addWorm(8, 10);
     world.addWorm(10, 10);
 }
 
@@ -210,69 +208,121 @@ void Game::update()
         }
     }
 
-
     if (greenGrenade != NULL) {
-        std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
-        std::chrono::steady_clock::time_point now;
-        now = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::seconds> (now - greenGrenade->spawnTime).count() >= greenGrenade->timeToExplotion) {
-            std::cout << "granada explota\n";
-            greenGrenade->explode();
-            greenGrenade = NULL;
-        }
-    }
-
-    if (bazookaRocket != NULL) {
-        bazookaRocket->updateAngle();
-        //std::cout << "angulo bazooka = " << bazookaRocket->getAngle() << "\n";
-        
-        if (bazookaRocket->exploded) {
-            bazookaRocket = NULL;
-        }
-    }
-
-    if (banana != NULL) {
-        //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
-        std::chrono::steady_clock::time_point now;
-        now = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::seconds> (now - banana->spawnTime).count() >= banana->timeToExplotion) {
-            std::cout << "banana explota\n";
-            banana->explode();
-            banana = NULL;
-        }
-    }
-
-    if (holyGrenade != NULL) {
-        //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
-        std::chrono::steady_clock::time_point now;
-        now = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::seconds> (now - holyGrenade->spawnTime).count() >= holyGrenade->timeToExplotion) {
-            std::cout << "granada santa explota\n";
-            holyGrenade->explode();
-            holyGrenade = NULL;
-        }
-    }
-
-    if (dynamite != NULL) {
-        //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
-        std::chrono::steady_clock::time_point now;
-        now = std::chrono::steady_clock::now();
-        if (std::chrono::duration_cast<std::chrono::seconds> (now - dynamite->spawnTime).count() >= dynamite->timeToExplotion) {
-            std::cout << "granada santa explota\n";
-            dynamite->explode();
-            dynamite = NULL;
+        if (not greenGrenade->exploded) {
+            std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
+            std::chrono::steady_clock::time_point now;
+            now = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::seconds> (now - greenGrenade->spawnTime).count() >= greenGrenade->timeToExplotion) {
+                std::cout << "granada explota\n";
+                greenGrenade->explode();
+                //greenGrenade = NULL;
+            }
         }
     }
     
-    if (airStrikeRocket != NULL) {
-        //std::cout << "angulo bazooka = " << bazookaRocket->getAngle() << "\n";
-        
-        if (airStrikeRocket->exploded) {
-            airStrikeRocket = NULL;
+    if (bazookaRocket != NULL) {
+        if (not bazookaRocket->exploded) {
+            bazookaRocket->updateAngle();
+            //std::cout << "angulo bazooka = " << bazookaRocket->getAngle() << "\n";
+            
+            if (bazookaRocket->exploded) {
+                //bazookaRocket = NULL;
+            }
         }
     }
+    
+    if (banana != NULL) {
+        if (not banana->exploded) {
+            //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
+            std::chrono::steady_clock::time_point now;
+            now = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::seconds> (now - banana->spawnTime).count() >= banana->timeToExplotion) {
+                std::cout << "banana explota\n";
+                banana->explode();
+                //banana = NULL;
+            }
+        }
+    }
+    
+    if (holyGrenade != NULL) {
+        if (not holyGrenade->exploded) {
+            //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
+            std::chrono::steady_clock::time_point now;
+            now = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::seconds> (now - holyGrenade->spawnTime).count() >= holyGrenade->timeToExplotion) {
+                std::cout << "granada santa explota\n";
+                holyGrenade->explode();
+                //holyGrenade = NULL;
+            }
+        }
+    }
+    
+    if (dynamite != NULL) {
+        if (not dynamite->exploded) {
+            //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
+            std::chrono::steady_clock::time_point now;
+            now = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::seconds> (now - dynamite->spawnTime).count() >= dynamite->timeToExplotion) {
+                std::cout << "granada santa explota\n";
+                dynamite->explode();
+                //dynamite = NULL;
+            }
+        }
+    }
+    
+    
+    for (AirStrikeRocket *rocket : airStrike) {
+        if (rocket != NULL) {
+    
+            
+            if (rocket->exploded) {
+                std::cout << "explota cohete ataque aereo\n";
+                //rocket = NULL;
+                std::cout << "rocket seteado a NULL\n";
+            }
+        }
+    }
+    
 
     sendWorms();
+}
+
+bool Game::anyAirStrikeRocket() {
+    for (AirStrikeRocket *rocket : airStrike) {
+        if (rocket != NULL) {
+           
+            if (not rocket->exploded) {
+                return true;
+            }
+        }
+    }
+    std::cout << "no hay mas cohetes del ataque aereo\n";
+    return false;
+}
+
+bool Game::hayBombas() {
+    if (greenGrenade != NULL) {
+        if (not greenGrenade->exploded) return true;
+    }
+    if (banana != NULL) {
+        if (not banana->exploded) return true;
+    }
+    if (dynamite != NULL) {
+        if (not dynamite->exploded) return true;
+    }
+    if (bazookaRocket != NULL) {
+        if (not bazookaRocket->exploded) return true;
+    }
+    if (holyGrenade != NULL) {
+        if (not holyGrenade->exploded) return true;
+    }
+    for (AirStrikeRocket *rocket : airStrike) {
+        if (rocket != NULL) {
+            if (not rocket->exploded) return true;
+        }
+    }
+    return false;
 }
 
 void Game::sendWorms()
@@ -303,42 +353,68 @@ void Game::sendWorms()
     gusanos->set_gusano_de_turno(id);
 
     // SI HAY GRANADA
-    if (greenGrenade != NULL || bazookaRocket != NULL || banana != NULL || holyGrenade != NULL || dynamite != NULL || airStrikeRocket != NULL) {
+    std::vector<std::shared_ptr<Proyectil>> proyectiles ;
+    if (hayBombas()) {
         gusanos->set_flag_proyectil(true);
     }
-    
+
     broadcaster.AddDtoToQueues(gusanos);
     // crear granada
-    if (greenGrenade != NULL) {
-        std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100), (uint8_t)(greenGrenade->getAngle()));
+    if (hayBombas()) {
+        if (greenGrenade != NULL) {
+            if (not greenGrenade->exploded) {
+                std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100), (uint8_t)(greenGrenade->getAngle()), greenGrenade->exploded);
+                proyectiles.push_back(granada);
+            }
+        }
+        
+        if (bazookaRocket != NULL) {
+            if (not bazookaRocket->exploded) {
+                std::shared_ptr<Bazuka> bazooka = std::make_shared<Bazuka>((uint16_t)(bazookaRocket->getXCoordinate() * 100), (uint16_t)(bazookaRocket->getYCoordinate() * 100), (uint16_t)(bazookaRocket->getAngle()), bazookaRocket->dir, bazookaRocket->exploded);
 
-        broadcaster.AddDtoToQueues(granada);
-    }
+                proyectiles.push_back(bazooka);
+            } 
+        }
+        
+        if (banana != NULL) {
+            if (not banana->exploded) {
+                std::shared_ptr<GranadaBanana> granadaBanana = std::make_shared<GranadaBanana>((uint16_t)(banana->getXCoordinate() * 100), (uint16_t)(banana->getYCoordinate() * 100), (uint8_t)(banana->getAngle()), banana->exploded);
+                proyectiles.push_back(granadaBanana);
+            }
+        }
+        
+        if (holyGrenade != NULL) {
+            if (not holyGrenade->exploded) {
+                std::shared_ptr<GranadaSanta> granadaSanta = std::make_shared<GranadaSanta>((uint16_t)(holyGrenade->getXCoordinate() * 100), (uint16_t)(holyGrenade->getYCoordinate() * 100), (uint8_t)holyGrenade->getAngle(), holyGrenade->exploded);
+                
+                proyectiles.push_back(granadaSanta);
+            }
+        }
+        
+        if (dynamite != NULL) {
+            if (not dynamite->exploded) {
+                std::shared_ptr<Dinamita> dinamita = std::make_shared<Dinamita>((uint16_t)(dynamite->getXCoordinate() * 100), (uint16_t)(dynamite->getYCoordinate() * 100), dynamite->exploded);
+                
+                proyectiles.push_back(dinamita);
+            }
+        }
+        
 
-    if (bazookaRocket != NULL) {
-        std::shared_ptr<Bazuka> bazooka = std::make_shared<Bazuka>((uint16_t)(bazookaRocket->getXCoordinate() * 100), (uint16_t)(bazookaRocket->getYCoordinate() * 100), (uint16_t)(bazookaRocket->getAngle()), bazookaRocket->dir);
-        broadcaster.AddDtoToQueues(bazooka);
-    }
+        
+        int id_proyectil = 1;
+        for (AirStrikeRocket *rocket : airStrike) {
+            if (rocket != NULL) {
+                std::shared_ptr<Misil> misil = std::make_shared<Misil>(id_proyectil, (uint16_t)(rocket->getXCoordinate() * 100), (uint16_t)(rocket->getYCoordinate() * 100), rocket->exploded);
+                proyectiles.push_back(misil);
+            }
+            id_proyectil++;
+        }
 
-    if (banana != NULL) {
-        std::shared_ptr<GranadaBanana> granadaBanana = std::make_shared<GranadaBanana>((uint16_t)(banana->getXCoordinate() * 100), (uint16_t)(banana->getYCoordinate() * 100), (uint8_t)(banana->getAngle()));
-        broadcaster.AddDtoToQueues(granadaBanana);
-    }
-
-    if (holyGrenade != NULL) {
-        std::shared_ptr<GranadaSanta> granadaSanta = std::make_shared<GranadaSanta>((uint16_t)(holyGrenade->getXCoordinate() * 100), (uint16_t)(holyGrenade->getYCoordinate() * 100), (uint8_t)holyGrenade->getAngle());
-        broadcaster.AddDtoToQueues(granadaSanta);
-    }
-
-    if (dynamite != NULL) {
-        std::shared_ptr<Dinamita> dinamita = std::make_shared<Dinamita>((uint16_t)(dynamite->getXCoordinate() * 100), (uint16_t)(dynamite->getYCoordinate() * 100));
-        broadcaster.AddDtoToQueues(dinamita);
-    }
-
-    if (airStrikeRocket != NULL) {
-        std::shared_ptr<Misil> misil = std::make_shared<Misil>(0, (uint16_t)(airStrikeRocket->getXCoordinate() * 100), (uint16_t)(airStrikeRocket->getYCoordinate() * 100));
-        broadcaster.AddDtoToQueues(misil);
-    }
+        if (proyectiles.size() > 0) {
+            std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);    
+            broadcaster.AddDtoToQueues(ps);
+        }
+    } 
 }
 
 
@@ -491,11 +567,16 @@ void Game::teleport(float x, float y) {
     wormAttacked = true;
 }
 
-void Game::airStrike(float x, float y) {
+void Game::shootAirStrike(float x, float y) {
     if (wormAttacked) return;
-    airStrikeRocket = new AirStrikeRocket(&world.world, x, y);
-    //airStrike.push_back(airStrikeRocket);
-    airStrikeRocket->shoot();
+    //airStrikeRocket = new AirStrikeRocket(&world.world, x, y);
+    airStrike.clear();
+    for (int i = 0; i < 1; i++) {
+        std::cout<<"cohete +1\n";
+        airStrike.push_back(new AirStrikeRocket(&world.world, x + 2*i, y));
+        //airStrike[i]->shoot();
+    }
+    
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
 }
@@ -546,7 +627,7 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     else if (code == ATAQUE_AEREO_CODE) {
         std::shared_ptr<Misil> misil = std::dynamic_pointer_cast<Misil>(dto);
         std::cout << "game-> ataque aereo x = " << (int)misil->x_pos() << ", y = " << (int)misil->y_pos() << "\n";
-        airStrike((float)misil->x_pos() / 100.0f, (float) misil->y_pos() / 100.0f);
+        shootAirStrike((float)misil->x_pos() / 100.0f, (float) misil->y_pos() / 100.0f);
     }
 }
 

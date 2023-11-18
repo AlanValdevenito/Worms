@@ -87,6 +87,7 @@ void HolyGrenade::explode() {
             b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
         }
     }
+    exploded = true;
 }
 
 

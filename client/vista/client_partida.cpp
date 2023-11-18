@@ -509,24 +509,24 @@ void Partida::enviarAtaque() {
     } else if (armaEquipada == GRANADA_VERDE) {
         cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->worms[this->id_gusano_actual]->get_tiempo()));
+                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
     
     } else if (armaEquipada == BAZOOKA) {
         cliente.send_queue.push(std::make_shared<Bazuka>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
-                                                               this->worms[this->id_gusano_actual]->get_angulo()));
+                                                               this->worms[this->id_gusano_actual]->get_angulo(), false));
     
     } else if (armaEquipada == BANANA) {
         cliente.send_queue.push(std::make_shared<GranadaBanana>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->worms[this->id_gusano_actual]->get_tiempo()));
+                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
     
     } else if (armaEquipada == GRANADA_SANTA) {
         cliente.send_queue.push(std::make_shared<GranadaSanta>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->worms[this->id_gusano_actual]->get_tiempo()));
+                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
     
     } else if (armaEquipada == DINAMITA) {
-        cliente.send_queue.push(std::make_shared<Dinamita>(this->cliente.id, this->worms[this->id_gusano_actual]->get_tiempo()));
+        cliente.send_queue.push(std::make_shared<Dinamita>(this->cliente.id, this->worms[this->id_gusano_actual]->get_tiempo(), false));
     
     } else if (armaEquipada == TELETRANSPORTACION) {
         int xCentimetros = metros_a_centimetros(pixeles_a_metros(this->x) + this->camara.getLimiteIzquierdo());
@@ -536,7 +536,7 @@ void Partida::enviarAtaque() {
     } else if (armaEquipada == ATAQUE_AEREO) {
         int xCentimetros = metros_a_centimetros(pixeles_a_metros(this->x) + this->camara.getLimiteIzquierdo());
         int yCentimetros = metros_a_centimetros(pixeles_a_metros(this->y) - this->camara.getLimiteSuperior());
-        cliente.send_queue.push(std::make_shared<Misil>(this->cliente.id, xCentimetros, yCentimetros));
+        cliente.send_queue.push(std::make_shared<Misil>(this->cliente.id, xCentimetros, yCentimetros, false));
     
     } else {
         std::cerr << "El numero recibido no esta asociado a ningun arma\n";
@@ -557,14 +557,38 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
     /***** ACTUALIZAMOS LA POSICION DEL PROYECTIL (SI ES QUE HAY) *****/
 
-    this->worms[this->id_gusano_actual]->set_flag_proyectil((int) gusanos->get_flag_proyectil());
+    /*this->worms[this->id_gusano_actual]->set_flag_proyectil((int) gusanos->get_flag_proyectil());
 
     if (this->worms[this->id_gusano_actual]->get_flag_proyectil()) {
-        std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
+        std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
+        std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(0);
+        
+        // std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
 
         float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-        this->worms[this->id_gusano_actual]->update_proyectil(nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
+        this->worms[this->id_gusano_actual]->update_proyectil(0, nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
+    }*/
+    
+    int flag = (int) gusanos->get_flag_proyectil();
+
+    if (flag) {
+        std::cout << "\nEntro a recibir proyectiles\n";
+        std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
+    
+        int cantidad = proyectiles->cantidad();
+        std::cout << "Cantidad de proyectiles: " << cantidad << std::endl;
+        for (int i = 0; i < cantidad; i++) {
+            std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(i);
+
+            std::cout << "Proyectil: " << (int) proyectil->get_id() << std::endl;
+
+            float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
+            float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
+            this->worms[this->id_gusano_actual]->update_proyectil((int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
+        }
+
+        std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;
     }
 
     /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/
@@ -660,7 +684,7 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 
 void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
 {
-    int altura = renderer.GetOutputHeight(); // 480
+    int altura = renderer.GetOutputHeight();
 
     Rect borde(5, altura - 42, 65, 36);
     Color blanco(255, 255, 255, 255);

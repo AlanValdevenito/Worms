@@ -1,8 +1,9 @@
 #include "bazuka.h"
 
-Bazuka::Bazuka(uint8_t id, uint8_t potencia, uint8_t angulo) : Proyectil(BAZUKA_CODE, id), potencia(potencia), angulo(angulo) {}
 
-Bazuka::Bazuka(uint16_t x, uint16_t y, uint8_t angulo, uint8_t direccion) : Proyectil(BAZUKA_CODE,1), x(x), y(y), angulo(angulo), direccion(direccion) {}
+Bazuka::Bazuka(uint8_t id, uint8_t potencia, uint8_t angulo, bool exploto) : Proyectil(BAZUKA_CODE, id, exploto), potencia(potencia), angulo(angulo) {}
+
+Bazuka::Bazuka(uint16_t x, uint16_t y, uint8_t angulo, uint8_t direccion, bool exploto) : Proyectil(BAZUKA_CODE,exploto), x(x), y(y), angulo(angulo), direccion(direccion) {}
 
 Bazuka::~Bazuka() {}
 

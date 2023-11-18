@@ -16,6 +16,7 @@ public:
     int explosionRadius;
     std::chrono::steady_clock::time_point spawnTime;
     int timeToExplotion;
+    bool exploded = false;
     Dynamite(b2World *world, float x, float y, int timeToExplotionInSeconds);
     float getXCoordinate();
     float getYCoordinate();

@@ -61,13 +61,14 @@ private:
     void mapa_puente();
 
 public:
+    //GreenGrenade *greenGrenade = new GreenGrenade(&world.world, -100, -100, 100);
     GreenGrenade *greenGrenade = NULL;
     BazookaRocket *bazookaRocket = NULL;
     Banana *banana = NULL;
     HolyGrenade *holyGrenade = NULL;
     Dynamite *dynamite = NULL;
-    //std::list<airStrikeRocket*> airStrike;
-    AirStrikeRocket *airStrikeRocket = NULL;
+    std::list<AirStrikeRocket*> airStrike;
+    //AirStrikeRocket *airStrikeRocket = NULL;
     int idTurn;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
@@ -77,7 +78,7 @@ public:
     void stop() override;
     void sendMap();
     void sendWorms();
-
+    bool hayBombas();
     void moveWormLeft();
     void moveWormRight();
     void teleport(float x, float y);
@@ -90,9 +91,10 @@ public:
     void shootHolyGrenade(float angle, int power, int timeToExplotion);
     void shootBanana(float angle, int power, int timeToExplotion);
     void shootDynamite(int timeToExplotion);
-    void airStrike(float x, float y);
+    void shootAirStrike(float x, float y);
     void passTurn();
     void addPlayerId(uint8_t id);
+    bool anyAirStrikeRocket();
     bool anyWormMoving();
     void shootBazooka(float angle, int power);
     ~Game();

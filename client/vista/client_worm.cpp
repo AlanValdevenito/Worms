@@ -8,7 +8,6 @@
 
 Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
                                                                                           apuntado(renderer), 
-                                                                                          proyectil(renderer),
                                                                                           estado(MOVIENDOSE),
                                                                                           apuntadoActivado(false), 
                                                                                           x(x), 
@@ -50,7 +49,7 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
 
 void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
     this->estado = nuevoEstado;
-    
+
     if (nuevoEstado == MOVIENDOSE) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
@@ -65,21 +64,54 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
     }
-    
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == ATAQUE_AEREO)) {
-        std::cout << "1" << std::endl;
+
+    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == TELETRANSPORTACION)) {
         std::string sprite_worm = configuraciones["armas"][tipoDeArma]["sprite_worm"].as<std::string>();
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_worm).SetColorKey(true, 0));
-        std::cout << "2" << std::endl;
+
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
-        std::cout << "3" << std::endl;
+
+        this->apuntadoActivado = configuraciones["armas"][tipoDeArma]["mira"].as<bool>();
+
+        this->tipoDeArma = tipoDeArma;
+    }
+    
+    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == DINAMITA)) {
+        std::string sprite_worm = configuraciones["armas"][tipoDeArma]["sprite_worm"].as<std::string>();
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_worm).SetColorKey(true, 0));
+
+        this->animacion.cambiar(nuevaTextura);
+        this->animacion.no_repetir_animacion();
+
+        this->apuntadoActivado = configuraciones["armas"][tipoDeArma]["mira"].as<bool>();
+
         std::string sprite_proyectil = configuraciones["armas"][tipoDeArma]["sprite_proyectil"].as<std::string>();
         std::shared_ptr<SDL2pp::Texture> proyectilTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_proyectil).SetColorKey(true, 0));
-        std::cout << "4" << std::endl;
-        this->proyectil.cambiar(proyectilTextura);
+
+        this->proyectiles[0] = new AnimacionProyectil(renderer);
+        this->proyectiles[0]->cambiar(proyectilTextura);
         this->tipoDeArma = tipoDeArma;
-        std::cout << "5" << std::endl;
+    }
+
+    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == ATAQUE_AEREO || tipoDeArma == DINAMITA)) {
+        std::string sprite_worm = configuraciones["armas"][tipoDeArma]["sprite_worm"].as<std::string>();
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_worm).SetColorKey(true, 0));
+
+        this->animacion.cambiar(nuevaTextura);
+        this->animacion.no_repetir_animacion();
+
+        this->apuntadoActivado = configuraciones["armas"][tipoDeArma]["mira"].as<bool>();
+
+        std::string sprite_proyectil = configuraciones["armas"][tipoDeArma]["sprite_proyectil"].as<std::string>();
+        std::shared_ptr<SDL2pp::Texture> proyectilTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_proyectil).SetColorKey(true, 0));
+
+        for (int i = 1; i <= 1; i++) {
+            this->proyectiles[i] = new AnimacionProyectil(renderer);
+            this->proyectiles[i]->cambiar(proyectilTextura);
+        }
+
+        this->tipoDeArma = tipoDeArma;
     }
 
     else if (nuevoEstado == EQUIPANDO_ARMA) {
@@ -91,21 +123,16 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
 
         this->apuntadoActivado = configuraciones["armas"][tipoDeArma]["mira"].as<bool>();
 
-        if (this->apuntadoActivado) {
-            std::string sprite_apuntado = configuraciones["armas"][tipoDeArma]["sprite_apuntado"].as<std::string>();
-            std::shared_ptr<SDL2pp::Texture> armaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_apuntado).SetColorKey(true, 0));
-            this->apuntado.cambiar(armaTextura);
-        }
-
-        bool armaTeledirigida = configuraciones["armas"][tipoDeArma]["teledirigido"].as<bool>();
-
-        if (not armaTeledirigida) {
-            std::string sprite_proyectil = configuraciones["armas"][tipoDeArma]["sprite_proyectil"].as<std::string>();
-            std::shared_ptr<SDL2pp::Texture> proyectilTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_proyectil).SetColorKey(true, 0));
-            
-            this->proyectil.cambiar(proyectilTextura);
-        }
-
+        std::string sprite_apuntado = configuraciones["armas"][tipoDeArma]["sprite_apuntado"].as<std::string>();
+        std::shared_ptr<SDL2pp::Texture> armaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_apuntado).SetColorKey(true, 0));
+        
+        this->apuntado.cambiar(armaTextura);
+    
+        std::string sprite_proyectil = configuraciones["armas"][tipoDeArma]["sprite_proyectil"].as<std::string>();
+        std::shared_ptr<SDL2pp::Texture> proyectilTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_proyectil).SetColorKey(true, 0));
+        
+        this->proyectiles[0] = new AnimacionProyectil(renderer);
+        this->proyectiles[0]->cambiar(proyectilTextura);
         this->tipoDeArma = tipoDeArma;
     } 
 }
@@ -121,7 +148,15 @@ void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentro
         this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
     }
 
-    this->proyectil.render(renderer, camara.getLimiteIzquierdo() * 24, camara.getLimiteSuperior() * 24);
+    // this->proyectil.render(renderer, camara.getLimiteIzquierdo() * 24, camara.getLimiteSuperior() * 24);
+
+    for (auto &elemento : this->proyectiles)
+    {
+        if (elemento.second->get_estado() != EXPLOTO) {
+            elemento.second->render(renderer, camara.getLimiteIzquierdo() * 24, camara.getLimiteSuperior() * 24);
+        }
+    }  
+
     this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
 
     if ((this->estado == EQUIPANDO_ARMA) && (this->animacion.completa())) {
@@ -190,24 +225,17 @@ int Worm::get_tipo_de_arma() {
 
 /******************** PROYECTIL ********************/
 
-void Worm::update_proyectil(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion) {
-    this->proyectil.update(nuevoX, nuevoY,  nuevoAngulo, nuevaDireccion);
-}
-
-void Worm::set_flag_proyectil(int flag) {
-    this->proyectil.set_flag(flag);
-}
-
-int Worm::get_flag_proyectil() {
-    return this->proyectil.get_flag();
+void Worm::update_proyectil(int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado) {
+    // this->proyectil.update(nuevoX, nuevoY,  nuevoAngulo, nuevaDireccion);
+    this->proyectiles[id]->update(nuevoX, nuevoY,  nuevoAngulo, nuevaDireccion, nuevoEstado);
 }
 
 void Worm::set_tiempo(int tiempo) {
-    this->proyectil.set_tiempo(tiempo);
+    this->proyectiles[0]->set_tiempo(tiempo);
 }
 
 int Worm::get_tiempo() {
-    return this->proyectil.get_tiempo();
+    return this->proyectiles[0]->get_tiempo();
 }
 
 /******************** ANGULO ********************/

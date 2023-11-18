@@ -5,7 +5,7 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x),
 															 y(y), 
 															 id(id), 
 															 //configuraciones(YAML::LoadFile("/configuracion.yml")),
-															 hp(10), 
+															 hp(100), 
 															 facingRight(false), 
 															 is_alive(true), 
 															 isRunning(false) {

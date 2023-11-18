@@ -12,9 +12,10 @@
 class Proyectil : public Dto
 {
 private:
+    bool exploto;
 public:
-    Proyectil(uint8_t code);
-    Proyectil(uint8_t code, uint8_t id);
+    Proyectil(uint8_t code, bool exploto);
+    Proyectil(uint8_t code, uint8_t id, bool exploto);
     ~Proyectil();
     bool is_alive() override;
     virtual uint8_t get_angulo() = 0;
@@ -23,6 +24,9 @@ public:
     virtual uint8_t get_direccion();
     virtual uint16_t x_pos() = 0;
     virtual uint16_t y_pos() = 0;
+    virtual uint8_t get_id();
+    virtual bool get_exploto();
+    virtual void set_exploto(bool estado);
 };
 
 class Proyectiles : public Dto

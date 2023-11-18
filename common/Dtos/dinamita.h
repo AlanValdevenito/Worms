@@ -17,8 +17,8 @@ private:
     uint8_t tiempo;
 
 public:
-    Dinamita(uint8_t id, uint8_t tiempo);
-    Dinamita(uint16_t x, uint16_t y);
+    Dinamita(uint8_t id, uint8_t tiempo, bool exploto);
+    Dinamita(uint16_t x, uint16_t y, bool exploto);
     ~Dinamita();
     uint8_t get_angulo() override;
     uint8_t get_potencia() override;

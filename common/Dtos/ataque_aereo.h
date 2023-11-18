@@ -18,8 +18,8 @@ private:
     uint16_t y;
 
 public:
-    Misil(uint8_t id, uint16_t x, uint16_t y);
-    Misil(uint16_t x, uint16_t y);
+    Misil(uint8_t id, uint16_t x, uint16_t y, bool exploto);
+    Misil(uint16_t x, uint16_t y, bool exploto);
     ~Misil();
     bool is_alive() override;
     uint16_t x_pos() override;
@@ -27,6 +27,7 @@ public:
     uint8_t get_potencia() override;
     uint8_t get_tiempo() override;
     uint8_t get_angulo() override;
+    uint8_t get_id() override;
 };
 
 #endif

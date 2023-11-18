@@ -3,6 +3,11 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+const int MOVIENDOSE_PROYECTIL = 0;
+const int EXPLOTAR = 1;
+const int EXPLOTO = 2;
+const int APUNTANDO_PROYECTIL = 3;
+
 class AnimacionProyectil
 {
 
@@ -16,32 +21,26 @@ private:
     int angulo;
     int direccion;
 
-    int flag; // Entero que indica: 
-              // (0/false): Cuando el servidor no envia posiciones ya que no se lanzo un proyectil
-              // (1/true): Cuando el servidor envia posiciones ya que se lanzo un proyectil
-
     int currentFrame;
 
     int tiempo;
 
-    bool debeExplotar;
-    bool enMovimiento;
+    int estado;
 
 public:
     AnimacionProyectil(SDL2pp::Renderer &renderer);
 
-    void update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion);
+    void update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado);
     void render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void renderizar_movimiento(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void renderizar_explosion(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
     void cambiar(std::shared_ptr<SDL2pp::Texture> texturaProyectil);
 
-    void set_flag(int flag);
-    int get_flag();
-
     void set_tiempo(int tiempoElegido);
     int get_tiempo();
+
+    int get_estado();
 };
 
 #endif // _ANIMACION_PROYECTIL_H

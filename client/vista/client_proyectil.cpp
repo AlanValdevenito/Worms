@@ -6,27 +6,26 @@ AnimacionProyectil::AnimacionProyectil(SDL2pp::Renderer &renderer): texture(std:
                                                                           y(0),
                                                                           angulo(0),
                                                                           direccion(1),
-                                                                          flag(0),
                                                                           currentFrame(12),
                                                                           tiempo(5),
-                                                                          debeExplotar(false),
-                                                                          enMovimiento(false) {}
+                                                                          estado(APUNTANDO_PROYECTIL) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
-void AnimacionProyectil::update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion) {
+void AnimacionProyectil::update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado) {
     this->x = nuevoX;
     this->y = nuevoY;
     this->angulo = nuevoAngulo;
     this->direccion = nuevaDireccion;
+    this->estado = nuevoEstado;
 }
 
 void AnimacionProyectil::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
 
-    if (this->enMovimiento) {
+    if (this->estado == MOVIENDOSE_PROYECTIL) {
         renderizar_movimiento(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior);
     
-    } else if (this->debeExplotar) {
+    } else if (this->estado == EXPLOTAR) {
         renderizar_explosion(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior);
     }
 }
@@ -71,10 +70,10 @@ void AnimacionProyectil::renderizar_explosion(SDL2pp::Renderer &renderer, float 
         );
     }
 
-    this->currentFrame++;
-
     if (this->currentFrame > (explosion.GetHeight() / explosion.GetWidth())) {
-        this->debeExplotar = false;
+        this->estado = EXPLOTO;
+    } else {
+        this->currentFrame++;
     }
 }
 
@@ -85,30 +84,6 @@ void AnimacionProyectil::cambiar(std::shared_ptr<SDL2pp::Texture> texturaProyect
     this->size = this->texture->GetWidth();
 }
 
-/******************** FLAG DEL SERVIDOR ********************/
-
-void AnimacionProyectil::set_flag(int nuevoFlag) {
-
-    if ((nuevoFlag == 0)) {
-        this->enMovimiento = false;
-    }
-
-    if ((nuevoFlag == 1) && (this->flag == 0)) {
-        this->enMovimiento = true;
-    }
-
-    if ((nuevoFlag == 0) && (this->flag == 1)) {
-        this->debeExplotar = true;
-        this->currentFrame = 0;
-    }
-
-    this->flag = nuevoFlag;
-}
-
-int AnimacionProyectil::get_flag() {
-    return this->flag;
-}
-
 /******************** TIEMPO DE EXPLOSION ********************/
 
 void AnimacionProyectil::set_tiempo(int tiempoElegido) {
@@ -117,4 +92,10 @@ void AnimacionProyectil::set_tiempo(int tiempoElegido) {
 
 int AnimacionProyectil::get_tiempo() {
     return this->tiempo;
+}
+
+/******************** GETTERS ********************/
+
+int AnimacionProyectil::get_estado() {
+    return this->estado;
 }
