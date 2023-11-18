@@ -14,19 +14,13 @@ class AnimacionProyectil
 {
 
 private:
-    std::shared_ptr<SDL2pp::Texture> texture; // Atributo que almacena la textura de la animacion
-
+    Animation movimiento;
     Explosion explosion;
-
-    int size; // Entero que almacena el tamaño de cada frame (altura y ancho).
 
     float x;
     float y;
     int angulo;
     int direccion;
-
-    int currentFrame;
-
     int tiempo;
 
     int estado;
@@ -37,7 +31,6 @@ public:
     void update(float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado);
     void render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void renderizar_movimiento(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
-    void renderizar_explosion(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
     void cambiar(std::shared_ptr<SDL2pp::Texture> texturaProyectil);
 

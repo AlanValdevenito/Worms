@@ -10,9 +10,14 @@ void Explosion::update() {
     this->biff.update(1);
 }
 
-void Explosion::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest) {
+void Explosion::render(SDL2pp::Renderer &renderer, float x, float y, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     SDL_RendererFlip flip = SDL_FLIP_NONE;
-    this->circulo.render(renderer, dest, flip);
-    this->elipse.render(renderer, dest, flip);
-    this->biff.render(renderer, dest, flip);
+
+    this->circulo.render(renderer, SDL2pp::Rect(x - 50 - camaraLimiteIzquierdo, y - 50 - camaraLimiteSuperior, 100, 100), flip);
+    this->elipse.render(renderer, SDL2pp::Rect(x - 75 - camaraLimiteIzquierdo, y - 75 - camaraLimiteSuperior, 150, 150), flip);
+    this->biff.render(renderer, SDL2pp::Rect(x - 30 - camaraLimiteIzquierdo, y - 30 - camaraLimiteSuperior, 60, 60), flip);
+}
+
+bool Explosion::animacion_completa() {
+    return (this->circulo.completa() && this->elipse.completa() && this->biff.completa());
 }

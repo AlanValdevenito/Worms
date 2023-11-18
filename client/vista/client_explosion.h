@@ -19,7 +19,8 @@ public:
     Explosion(SDL2pp::Renderer &renderer);
 
     void update();
-    void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest); // Renderiza el arma.
+    void render(SDL2pp::Renderer &renderer, float x, float y, float camaraLimiteIzquierdo, float camaraLimiteSuperior); // Renderiza el arma.
+    bool animacion_completa();
 };
 
 #endif // EXPLOSION_H

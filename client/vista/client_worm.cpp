@@ -131,8 +131,11 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
         std::string sprite_proyectil = configuraciones["armas"][tipoDeArma]["sprite_proyectil"].as<std::string>();
         std::shared_ptr<SDL2pp::Texture> proyectilTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH + sprite_proyectil).SetColorKey(true, 0));
         
+        std::cout << "A" << std::endl;
         this->proyectiles[0] = new AnimacionProyectil(renderer);
+        std::cout << "B" << std::endl;
         this->proyectiles[0]->cambiar(proyectilTextura);
+        std::cout << "C" << std::endl;
         this->tipoDeArma = tipoDeArma;
     } 
 }
