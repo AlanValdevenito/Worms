@@ -53,6 +53,9 @@ public:
     bool enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
     bool enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &was_closed);
 
+    bool enviarProyectiles(std::shared_ptr<Proyectiles> proyectiles, bool &was_closed);
+    bool enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_closed);
+
 private:
     SocketInterface *skt;
     std::shared_ptr<Dto> recibirPartidaSeleccionada(uint8_t id, bool &was_closed);

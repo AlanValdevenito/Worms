@@ -28,17 +28,19 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
         return std::make_shared<Dto>(INICIAR_PARIDA);
     else if (code == FINALIZAR_CODE)
         return std::make_shared<DeadDto>();
-    else if (code == GRANADA_VERDE_CODE)
+    else if (code == PROYECTILES_CODE)
+        return recibirProyectiles(was_closed);
+    else if (code == GRANADA_VERDE_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
         return recibirTrayectoriaGranadaVerde(was_closed);
-    else if (code == GRANADA_BANANA_CODE)
+    else if (code == GRANADA_BANANA_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
         return recibirTrayectoriaGranadaBanana(was_closed);
-    else if (code == GRANADA_SANTA_CODE)
+    else if (code == GRANADA_SANTA_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
         return recibirTrayectoriaGranadaSanta(was_closed);
-    else if (code == DINAMITA_CODE)
+    else if (code == DINAMITA_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
         return recibirTrayectoriaDinamita(was_closed);
-    else if (code == BAZUKA_CODE)
+    else if (code == BAZUKA_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
         return recibirTrayectoriaBazuka(was_closed);
-    else if (code == ATAQUE_AEREO_CODE)
+    else if (code == ATAQUE_AEREO_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
         return recibirTrayectoriaMisil(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
@@ -221,7 +223,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
 
     // printf("Cliente ---> id:%u   vida:%u color:%u\n", id, vida, color);
 
-    return std::make_shared<Gusano>(id, x, y, vida, color,estado);
+    return std::make_shared<Gusano>(id, x, y, vida, color, estado);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_closed)
@@ -311,7 +313,6 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
     return std::make_shared<Bazuka>(x, y, angulo, direccion);
 }
 
-
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaMisil(bool &was_closed)
 {
     uint16_t x;
@@ -323,6 +324,47 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaMisil(bool &was_closed)
     printf("Trayectoria misil---> x:%u y:%u \n", x, y);
 
     return std::make_shared<Misil>(x, y);
+}
+
+std::shared_ptr<Dto> ClientProtocol::recibirProyectil(bool &was_closed)
+{
+
+    uint8_t code;
+    skt.recvall(&code, sizeof(code), &was_closed);
+    // if (was_closed)
+    //     return std::make_shared<DeadDto>();
+
+    if (code == GRANADA_VERDE_CODE)
+        return std::dynamic_pointer_cast<Proyectil>(recibirTrayectoriaGranadaVerde(was_closed));
+    else if (code == GRANADA_BANANA_CODE)
+        return std::dynamic_pointer_cast<Proyectil>(recibirTrayectoriaGranadaBanana(was_closed));
+    else if (code == GRANADA_SANTA_CODE)
+        return std::dynamic_pointer_cast<Proyectil>(recibirTrayectoriaGranadaSanta(was_closed));
+    else if (code == DINAMITA_CODE)
+        return std::dynamic_pointer_cast<Proyectil>(recibirTrayectoriaDinamita(was_closed));
+    else if (code == BAZUKA_CODE)
+        return std::dynamic_pointer_cast<Proyectil>(recibirTrayectoriaBazuka(was_closed));
+    else if (code == ATAQUE_AEREO_CODE)
+        return std::dynamic_pointer_cast<Proyectil>(recibirTrayectoriaMisil(was_closed));
+
+    return std::make_shared<DeadDto>();
+}
+
+std::shared_ptr<Dto> ClientProtocol::recibirProyectiles(bool &was_closed)
+{
+    uint8_t cant = cantidadARecibir(was_closed);
+    if (cant < 0)
+        return std::make_shared<DeadDto>();
+
+    std::vector<std::shared_ptr<Proyectil>> ps;
+    for (int i = 0; i < cant; i++)
+    {
+        std::shared_ptr<Proyectil> p = std::dynamic_pointer_cast<Proyectil>(recibirProyectil(was_closed));
+        if (not p->is_alive())
+            return std::make_shared<DeadDto>();
+        ps.push_back(p);
+    }
+    return std::make_shared<Proyectiles>(ps);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
