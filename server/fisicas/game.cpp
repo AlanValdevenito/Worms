@@ -216,7 +216,7 @@ void Game::update()
             if (std::chrono::duration_cast<std::chrono::seconds> (now - greenGrenade->spawnTime).count() >= greenGrenade->timeToExplotion) {
                 std::cout << "granada explota\n";
                 greenGrenade->explode();
-                //greenGrenade = NULL;
+                // greenGrenade = NULL;
             }
         }
     }
@@ -303,7 +303,8 @@ bool Game::anyAirStrikeRocket() {
 
 bool Game::hayBombas() {
     if (greenGrenade != NULL) {
-        if (not greenGrenade->exploded) return true;
+        // if (not greenGrenade->exploded) return true;
+        return true;
     }
     if (banana != NULL) {
         if (not banana->exploded) return true;
@@ -362,9 +363,13 @@ void Game::sendWorms()
     // crear granada
     if (hayBombas()) {
         if (greenGrenade != NULL) {
-            if (not greenGrenade->exploded) {
+            // if (not greenGrenade->exploded) {
                 std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100), (uint8_t)(greenGrenade->getAngle()), greenGrenade->exploded);
                 proyectiles.push_back(granada);
+            // }
+
+            if (greenGrenade->exploded) {
+                greenGrenade = NULL;
             }
         }
         

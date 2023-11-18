@@ -572,23 +572,25 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     
     int flag = (int) gusanos->get_flag_proyectil();
 
+    std::cout << flag << std::endl;
+
     if (flag) {
-        std::cout << "\nEntro a recibir proyectiles\n";
+        // std::cout << "\nEntro a recibir proyectiles\n";
         std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
     
         int cantidad = proyectiles->cantidad();
-        std::cout << "Cantidad de proyectiles: " << cantidad << std::endl;
+        // std::cout << "Cantidad de proyectiles: " << cantidad << std::endl;
         for (int i = 0; i < cantidad; i++) {
             std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(i);
 
-            std::cout << "Proyectil: " << (int) proyectil->get_id() << std::endl;
+            std::cout << "Proyectil: " << (int) proyectil->get_id() << " " << (int) proyectil->get_exploto() << std::endl;
 
             float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
             float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
             this->worms[this->id_gusano_actual]->update_proyectil((int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
         }
 
-        std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;
+        // std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;
     }
 
     /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/

@@ -148,8 +148,6 @@ void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentro
         this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
     }
 
-    // this->proyectil.render(renderer, camara.getLimiteIzquierdo() * 24, camara.getLimiteSuperior() * 24);
-
     for (auto &elemento : this->proyectiles)
     {
         if (elemento.second->get_estado() != EXPLOTO) {
@@ -226,7 +224,6 @@ int Worm::get_tipo_de_arma() {
 /******************** PROYECTIL ********************/
 
 void Worm::update_proyectil(int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado) {
-    // this->proyectil.update(nuevoX, nuevoY,  nuevoAngulo, nuevaDireccion);
     this->proyectiles[id]->update(nuevoX, nuevoY,  nuevoAngulo, nuevaDireccion, nuevoEstado);
 }
 

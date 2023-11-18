@@ -1,12 +1,13 @@
 #include "client_proyectil.h"
 
 AnimacionProyectil::AnimacionProyectil(SDL2pp::Renderer &renderer): texture(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grenade.1.png").SetColorKey(true, 0))), 
+                                                                          explosion(renderer),
                                                                           size(this->texture->GetWidth()),
                                                                           x(0),
                                                                           y(0),
                                                                           angulo(0),
                                                                           direccion(1),
-                                                                          currentFrame(12),
+                                                                          currentFrame(0),
                                                                           tiempo(5),
                                                                           estado(APUNTANDO_PROYECTIL) {}
 
@@ -70,7 +71,7 @@ void AnimacionProyectil::renderizar_explosion(SDL2pp::Renderer &renderer, float 
         );
     }
 
-    if (this->currentFrame > (explosion.GetHeight() / explosion.GetWidth())) {
+    if (this->currentFrame >= (explosion.GetHeight() / explosion.GetWidth())) {
         this->estado = EXPLOTO;
     } else {
         this->currentFrame++;

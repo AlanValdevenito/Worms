@@ -3,6 +3,8 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
+#include "client_explosion.h"
+
 const int MOVIENDOSE_PROYECTIL = 0;
 const int EXPLOTAR = 1;
 const int EXPLOTO = 2;
@@ -13,6 +15,8 @@ class AnimacionProyectil
 
 private:
     std::shared_ptr<SDL2pp::Texture> texture; // Atributo que almacena la textura de la animacion
+
+    Explosion explosion;
 
     int size; // Entero que almacena el tamaño de cada frame (altura y ancho).
 
