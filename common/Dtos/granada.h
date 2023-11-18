@@ -24,10 +24,10 @@ public:
     GranadaVerde(uint16_t x, uint16_t y, uint8_t angulo, bool exploto);
     GranadaVerde(uint16_t x, uint16_t y, bool exploto);
     ~GranadaVerde();
-    uint8_t get_angulo()override;
-    uint8_t get_potencia()override;
-    uint8_t get_tiempo()override;
-    uint16_t x_pos()override;
-    uint16_t y_pos()override;
+    uint8_t get_angulo() override;
+    uint8_t get_potencia() override;
+    uint8_t get_tiempo() override;
+    uint16_t x_pos() override;
+    uint16_t y_pos() override;
 };
 #endif

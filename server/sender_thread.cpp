@@ -47,17 +47,5 @@ bool Sender::send(std::shared_ptr<Dto> d)
         return protocol.enviarProyectiles(std::dynamic_pointer_cast<Proyectiles>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
-    // else if (d->return_code() == GRANADA_VERDE_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-    //     return protocol.enviarTrayectoriaDeGranadaVerde(std::dynamic_pointer_cast<GranadaVerde>(d), was_closed);
-    // else if (d->return_code() == BAZUKA_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-    //     return protocol.enviarTrayectoriaDeBazuka(std::dynamic_pointer_cast<Bazuka>(d), was_closed);
-    // else if (d->return_code() == GRANADA_BANANA_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-    //     return protocol.enviarTrayectoriaDeGranadaBanana(std::dynamic_pointer_cast<GranadaBanana>(d), was_closed);
-    // else if (d->return_code() == GRANADA_SANTA_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-    //     return protocol.enviarTrayectoriaDeGranadaSanta(std::dynamic_pointer_cast<GranadaSanta>(d), was_closed);
-    // else if (d->return_code() == DINAMITA_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-    //     return protocol.enviarTrayectoriaDeDinamita(std::dynamic_pointer_cast<Dinamita>(d), was_closed);
-    // else if (d->return_code() == ATAQUE_AEREO_CODE) // ELIMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-    //     return protocol.enviarTrayectoriaDeMisil(std::dynamic_pointer_cast<Misil>(d), was_closed);
     return false;
 }

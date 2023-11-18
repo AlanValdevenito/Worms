@@ -13,9 +13,10 @@ class Proyectil : public Dto
 {
 private:
     bool exploto;
+
 public:
-    Proyectil(uint8_t code, bool exploto);
-    Proyectil(uint8_t code, uint8_t id, bool exploto);
+    Proyectil(uint8_t code, bool exploto = false);
+    Proyectil(uint8_t code, uint8_t id, bool exploto = false);
     ~Proyectil();
     bool is_alive() override;
     virtual uint8_t get_angulo() = 0;
