@@ -57,7 +57,7 @@ bool ServerProtocol::enviarVigas(std::shared_ptr<Dto> vs, bool &was_closed)
     {
         std::shared_ptr<Viga> v = std::dynamic_pointer_cast<Vigas>(vs)->popViga(i);
         if (not enviarViga(v, was_closed)) // envio la viga
-            return false;                  // ESTA BIENN??    <-------------------------------
+            return false;
     }
 
     return true;
@@ -235,14 +235,13 @@ bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bo
 
 bool ServerProtocol::enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &was_closed)
 {
-    std::cout<<"entra\n";
     if (not enviarCodigoDeElemento(g, was_closed))
         return false;
 
     if (not enviarPosicionDelElemento(g, was_closed))
         return false;
 
-    printf("Trayectoria enviada misil ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+    // printf("Trayectoria enviada misil ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
 
     return true;
 }
@@ -265,6 +264,44 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
     skt->sendall(&(direccion), sizeof(direccion), &was_closed);
     if (was_closed)
         return false;
+
+    // printf("Trayectoria BAZUKA---> x:%u y:%u \n", b->x_pos(), b->y_pos());
+
+    return true;
+}
+
+bool ServerProtocol::enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_closed)
+{
+    uint8_t code = p->return_code(); // el codigo se encargan de enviarlo las funciones
+    if (esGranada(code))
+        return enviarGranada(p, was_closed);
+    else if (code == BAZUKA_CODE)
+        return enviarTrayectoriaDeBazuka(std::dynamic_pointer_cast<Bazuka>(p), was_closed);
+    else if (code == DINAMITA_CODE)
+        return enviarTrayectoriaDeDinamita(std::dynamic_pointer_cast<Dinamita>(p), was_closed);
+    else if (code == ATAQUE_AEREO_CODE)
+        return enviarTrayectoriaDeMisil(std::dynamic_pointer_cast<Misil>(p), was_closed);
+
+    return false;
+}
+
+bool ServerProtocol::enviarProyectiles(std::shared_ptr<Proyectiles> proyectiles, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(proyectiles, was_closed))
+        return false;
+
+    uint8_t cantidad = proyectiles->cantidad();
+
+    skt->sendall(&(cantidad), sizeof(cantidad), &was_closed);
+    if (was_closed)
+        return false;
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        std::shared_ptr<Proyectil> p = proyectiles->popProyectil(i);
+        if (not enviarProyectil(p, was_closed))
+            return false;
+    }
 
     // printf("Trayectoria BAZUKA---> x:%u y:%u \n", b->x_pos(), b->y_pos());
 
@@ -415,7 +452,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirSalto(uint8_t id, bool &was_closed)
     return std::make_shared<Saltar>(id, direccion);
 }
 
-std::shared_ptr<Dto> ServerProtocol::recibirAtaqueAereo( uint8_t id, bool &was_closed)
+std::shared_ptr<Dto> ServerProtocol::recibirAtaqueAereo(uint8_t id, bool &was_closed)
 {
     uint16_t x;
     skt->recvall(&x, sizeof(x), &was_closed);
@@ -430,8 +467,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueAereo( uint8_t id, bool &was_c
     x = ntohs(x);
     y = ntohs(y);
 
-    printf("recibir pos ataque: %u %u\n", x,y);
-    return std::make_shared<Misil>(id,x,y);
+    printf("recibir pos ataque: %u %u\n", x, y);
+    return std::make_shared<Misil>(id, x, y);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
@@ -448,7 +485,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
     skt->recvall(&code, sizeof(code), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
-    printf("codigo: %u\n", code);
+    // printf("codigo: %u\n", code);
 
     if (code == LISTA_DE_PARTIDAS_CODE)
         return recibirPartidaSeleccionada(id, was_closed);

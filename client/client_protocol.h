@@ -29,6 +29,7 @@
 #include "dinamita.h"
 #include "teletransportar.h"
 #include "bazuka.h"
+#include "proyectil.h"
 #include "ataque_aereo.h"
 #include "partidas_lista.h"
 #include "nueva_partida.h"
@@ -74,5 +75,7 @@ private:
     bool enviarAtaqueConGranada(std::shared_ptr<Proyectil> g, bool &was_closed);
     bool recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed);
     uint8_t cantidadARecibir(bool &was_closed);
+    std::shared_ptr<Dto> recibirProyectiles(bool &was_closed);
+    std::shared_ptr<Dto> recibirProyectil(bool &was_closed);
 };
 #endif
