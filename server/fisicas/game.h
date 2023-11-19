@@ -73,6 +73,9 @@ public:
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
     void update();
+    void updateWorms();
+    void updatePlayers();
+    void updateBombs();
     void limitFrameRate();
     void run() override;
     void stop() override;

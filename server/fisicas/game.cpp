@@ -139,11 +139,11 @@ void Game::passTurn() {
     if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION ||
         (wormAttacked && std::chrono::duration_cast<std::chrono::seconds> (end - timeOfAttack).count() >= TIME_LEFT_AFTER_ATTACK)) {
         if (world.anyMovement() || hayBombas())  {
-            std::cout << "hay movimiento\n";
+            //std::cout << "hay movimiento\n";
             idTurn = -1;
             return;
         }
-        
+        updateWorms();
         wormAttacked = false;
         std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
         std::cout << "turno actual = " << idTurn << "\n";
@@ -172,11 +172,7 @@ void Game::limitFrameRate() {
     t1 = t1 + std::chrono::nanoseconds((int)rate);
 }
 
-void Game::update()
-{
-    //world.step();
-    
-    
+void Game::updateWorms() {
     // actualizo los gusanos
     for (Worm *worm : world.getWorms()) {
         //std::cout << "worm x = " << worm->getXCoordinate() << "\n";
@@ -185,12 +181,14 @@ void Game::update()
             std::cout << "murio el worm de id " << (int)worm->getId() << "\n";
             players[worm->playerId - 1].numberOfAliveWorms--;
             players[worm->playerId - 1].markWormAsDead(worm->getId());
-        } else if (not world.anyMovement()){
+        }
+        if (not world.anyMovement()) {
             worm->makeDamage();
         }
-        
     }
-    passTurn();
+}
+
+void Game::updatePlayers() {
     // actualizo los players
     for (int i = 0; i < numberOfPlayers; i++) {
         if (players[i].numberOfAliveWorms == 0) {
@@ -200,7 +198,9 @@ void Game::update()
             return;
         }
     }
+}
 
+void Game::updateBombs() {
     if (greenGrenade != NULL) {
         if (not greenGrenade->exploded) {
             std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
@@ -209,7 +209,6 @@ void Game::update()
             if (std::chrono::duration_cast<std::chrono::seconds> (now - greenGrenade->spawnTime).count() >= greenGrenade->timeToExplotion) {
                 std::cout << "granada explota\n";
                 greenGrenade->explode();
-                // greenGrenade = NULL;
             }
         }
     }
@@ -217,49 +216,36 @@ void Game::update()
     if (bazookaRocket != NULL) {
         if (not bazookaRocket->exploded) {
             bazookaRocket->updateAngle();
-            //std::cout << "angulo bazooka = " << bazookaRocket->getAngle() << "\n";
-            
-            if (bazookaRocket->exploded) {
-                //bazookaRocket = NULL;
-            }
         }
     }
     
     if (banana != NULL) {
         if (not banana->exploded) {
-            //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
             std::chrono::steady_clock::time_point now;
             now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::seconds> (now - banana->spawnTime).count() >= banana->timeToExplotion) {
-                std::cout << "banana explota\n";
                 banana->explode();
-                //banana = NULL;
             }
         }
     }
     
     if (holyGrenade != NULL) {
         if (not holyGrenade->exploded) {
-            //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
             std::chrono::steady_clock::time_point now;
             now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::seconds> (now - holyGrenade->spawnTime).count() >= holyGrenade->timeToExplotion) {
                 std::cout << "granada santa explota\n";
                 holyGrenade->explode();
-                //holyGrenade = NULL;
             }
         }
     }
     
     if (dynamite != NULL) {
         if (not dynamite->exploded) {
-            //std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
             std::chrono::steady_clock::time_point now;
             now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::seconds> (now - dynamite->spawnTime).count() >= dynamite->timeToExplotion) {
-                std::cout << "granada santa explota\n";
                 dynamite->explode();
-                //dynamite = NULL;
             }
         }
     }
@@ -267,18 +253,20 @@ void Game::update()
     
     for (AirStrikeRocket *rocket : airStrike) {
         if (rocket != NULL) {
-    
-            
             if (rocket->exploded) {
-                std::cout << "explota cohete ataque aereo\n";
-                //rocket = NULL;
-                std::cout << "rocket seteado a NULL\n";
+
             }
         }
     }
-    
+}
 
+void Game::update()
+{   
+    updateWorms();
+    updatePlayers();
+    updateBombs();
     sendWorms();
+    passTurn();
 }
 
 bool Game::anyAirStrikeRocket() {
@@ -314,7 +302,7 @@ void Game::sendWorms()
     for (Worm *w : world.getWorms())
     {   
         if (w->is_alive || w->isMoving()) {
-            std::cout << "sendWorms(), w->getHp() = " << (int)w->getHp() << "\n";
+            //std::cout << "sendWorms(), w->getHp() = " << (int)w->getHp() << "\n";
             std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
                                                     (int)(w->getXCoordinate() * 100),
                                                     (int)(w->getYCoordinate() * 100),
