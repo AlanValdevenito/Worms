@@ -8,7 +8,7 @@ armas:
     nombre: Bazooka
     sprite_worm: /wbazlnk.png
     sprite_apuntado: /wbaz.png
-    sprite_proyectil: /bazooka.1.png
+    sprite_proyectil: /missile.png
     nombre: Bazooka
     descripcion: >
       Arma predilecta de los gusanos que dispara un misil que estalla al impactar con un tiro parabólico.
@@ -46,7 +46,7 @@ armas:
     nombre: Granada Verde
     sprite_worm: /wgrnlnk.png
     sprite_apuntado: /wthrgrn.png
-    sprite_proyectil: /grenade.1.png
+    sprite_proyectil: /grenade.png
     descripcion: >
       La segunda arma predilecta de los gusanos. Como otros tipos de granada no se ve afectada por el viento.
     mira: true
@@ -83,7 +83,7 @@ armas:
     nombre: Banana
     sprite_worm: /wbanlnk.png
     sprite_apuntado: /wthrban.png
-    sprite_proyectil: /banana.1.png
+    sprite_proyectil: /banana.png
     descripcion: >
       Es un tipo de granada que tiene la particularidad de rebotar varias veces de forma muy elástica hasta explotar.
     mira: true
@@ -101,7 +101,7 @@ armas:
     nombre: Granada Santa
     sprite_worm: /whgrlnk.png
     sprite_apuntado: /wthrhgr.png
-    sprite_proyectil: /hgrenade.1.png
+    sprite_proyectil: /hgrenade.png
     descripcion: >
       Una de las armas más poderosas en el arsenal.
       Justo antes de estallar, produce un sonido característico.
@@ -119,7 +119,7 @@ armas:
   - codigo: 6
     nombre: Dinamita
     sprite_worm: /wdynlnk.png
-    sprite_proyectil: /dynamite.1.png
+    sprite_proyectil: /dynamite.png
     descripcion: >
       Al activarse, el gusano deja en el lugar una dinamita que estalla luego de cierta cantidad de segundos.
     mira: false
@@ -153,7 +153,7 @@ armas:
   - codigo: 8
     nombre: Ataque Aereo
     sprite_worm: /wairlnk.png
-    sprite_proyectil: /airstrke.png
+    sprite_proyectil: /airmisl.png
     descripcion: >
       Caen del cielo 6 misiles hacia el objetivo marcado por el jugador cada uno de ellos explotando independientemente. Los misiles pueden impactar antes si se encuentran en su trayectoria con algún otro objeto.
     mira: false

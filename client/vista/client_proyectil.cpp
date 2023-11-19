@@ -23,7 +23,8 @@ void AnimacionProyectil::render(SDL2pp::Renderer &renderer, float camaraLimiteIz
 
     if (this->estado == MOVIENDOSE_PROYECTIL) {
         SDL_RendererFlip flip = this->direccion ? SDL_FLIP_VERTICAL : SDL_FLIP_NONE;
-        this->movimiento.render(renderer, SDL2pp::Rect(this->x - (32/2) - camaraLimiteIzquierdo, this->y - (32/2) - camaraLimiteSuperior, 32, 32), flip, this->angulo - 45);
+        int offset = this->direccion ? 180 : (-90);
+        this->movimiento.render(renderer, SDL2pp::Rect(this->x - (30) - camaraLimiteIzquierdo, this->y - (30) - camaraLimiteSuperior, 60, 60), flip, this->angulo - offset);
     
     } else if (this->estado == EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);

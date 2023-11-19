@@ -30,6 +30,8 @@ public:
 
     void no_repetir_animacion();
     bool completa();
+
+    void set_current_frame(int nuevoCurrentFrame);
 };
 
 #endif  //__ANIMATION_H__

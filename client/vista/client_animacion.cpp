@@ -52,3 +52,7 @@ void Animation::no_repetir_animacion() {
 bool Animation::completa() {
     return (this->currentFrame == this->numFrames - 1);
 }
+
+void Animation::set_current_frame(int nuevoCurrentFrame) {
+    this->currentFrame = nuevoCurrentFrame;
+}

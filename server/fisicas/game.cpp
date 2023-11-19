@@ -56,7 +56,7 @@ void Game::mapa_jaula() {
     world.addBeam(25.5f, 14, 90, LONG);
 
     world.addWorm(4, 10);
-    world.addWorm(10, 10);
+    world.addWorm(22, 10);
     
 }
 
@@ -515,7 +515,7 @@ void Game::shootAirStrike(float x, float y) {
     if (wormAttacked) return;
     //airStrikeRocket = new AirStrikeRocket(&world.world, x, y);
     airStrike.clear();
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 6; i++) {
         std::cout<<"cohete +1\n";
         airStrike.push_back(new AirStrikeRocket(&world.world, x + 2*i, y));
         //airStrike[i]->shoot();

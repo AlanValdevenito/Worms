@@ -24,6 +24,7 @@ private:
     int tiempo;
 
     int estado;
+    int currentFrame;
 
 public:
     AnimacionProyectil(SDL2pp::Renderer &renderer);
