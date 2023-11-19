@@ -388,6 +388,40 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __Teletransportacion)
     ASSERT_TRUE(ntohs(y_recibido) == y);
 }
 
+TEST(PROTOCOLOCLIENTE__ENVIO, __AtaqueAereo)
+{
+
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+    uint8_t id = 2;
+    uint16_t x = 200;
+    uint16_t y = 300;
+    std::shared_ptr<Misil> t = std::make_shared<Misil>(id, x, y, false);
+
+    cp.enviarAtaqueaereo(t, was_closed);
+
+    uint8_t id_recibido;
+    uint8_t codigo_recibido;
+    uint16_t x_recibido;
+    uint16_t y_recibido;
+    uint8_t exploto_recibido;
+    skt.recvall(&id_recibido, sizeof(id_recibido), &was_closed);
+    skt.recvall(&codigo_recibido, sizeof(codigo_recibido), &was_closed);
+    skt.recvall(&x_recibido, sizeof(x_recibido), &was_closed);
+    skt.recvall(&y_recibido, sizeof(y_recibido), &was_closed);
+    skt.recvall(&exploto_recibido, sizeof(exploto_recibido), &was_closed);
+
+    // printf("%u %u\n", id_recibido, codigo_recibido);
+
+    ASSERT_TRUE(id_recibido == id);
+    ASSERT_TRUE(codigo_recibido == ATAQUE_AEREO_CODE);
+    ASSERT_TRUE(ntohs(x_recibido) == x);
+    ASSERT_TRUE(ntohs(y_recibido) == y);
+    ASSERT_TRUE(exploto_recibido == false);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1627,6 +1661,36 @@ TEST(PROTOCOLOSERVIDOR__RECIBIR, __Teletransportacion)
     skt->sendall(&y, sizeof(y), &was_closed);
 
     std::shared_ptr<Teletransportar> rta = std::dynamic_pointer_cast<Teletransportar>(sp.recibirActividad(was_closed));
+
+    // printf("TEST: %u %u\n",rta->x_pos(),rta->y_pos());
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(id == rta->get_cliente_id());
+    ASSERT_TRUE(x_enviado == rta->x_pos());
+    ASSERT_TRUE(y_enviado == rta->y_pos());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __AtaqueAereo)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 2;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = ATAQUE_AEREO_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    uint16_t x_enviado = 200;
+    uint16_t x = htons(x_enviado);
+    skt->sendall(&x, sizeof(x), &was_closed);
+
+    uint16_t y_enviado = 300;
+    uint16_t y = htons(y_enviado);
+    skt->sendall(&y, sizeof(y), &was_closed);
+
+    std::shared_ptr<Misil> rta = std::dynamic_pointer_cast<Misil>(sp.recibirActividad(was_closed));
 
     // printf("TEST: %u %u\n",rta->x_pos(),rta->y_pos());
     delete skt;

@@ -201,7 +201,7 @@ bool ServerProtocol::enviarGranada(std::shared_ptr<Proyectil> dto, bool &was_clo
     if (was_closed)
         return false;
 
-    uint8_t exploto = dto->get_exploto();    
+    uint8_t exploto = dto->get_exploto();
     skt->sendall(&(exploto), sizeof(exploto), &was_closed);
     if (was_closed)
         return false;
@@ -233,11 +233,10 @@ bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bo
     if (not enviarPosicionDelElemento(g, was_closed))
         return false;
 
-    
-    uint8_t exploto = g ->get_exploto();    
+    uint8_t exploto = g->get_exploto();
     skt->sendall(&(exploto), sizeof(exploto), &was_closed);
     if (was_closed)
-        return false;    
+        return false;
     // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
 
     return true;
@@ -256,7 +255,7 @@ bool ServerProtocol::enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &wa
     if (not enviarPosicionDelElemento(g, was_closed))
         return false;
 
-    uint8_t exploto = g->get_exploto();    
+    uint8_t exploto = g->get_exploto();
     skt->sendall(&(exploto), sizeof(exploto), &was_closed);
     if (was_closed)
         return false;
@@ -285,7 +284,7 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
     if (was_closed)
         return false;
 
-    uint8_t exploto = b->get_exploto();    
+    uint8_t exploto = b->get_exploto();
     skt->sendall(&(exploto), sizeof(exploto), &was_closed);
     if (was_closed)
         return false;
@@ -312,7 +311,7 @@ bool ServerProtocol::enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_clo
 
 bool ServerProtocol::enviarProyectiles(std::shared_ptr<Proyectiles> proyectiles, bool &was_closed)
 {
-    std::cout<<"entro a enviar proyectil\n";
+    std::cout << "entro a enviar proyectil\n";
     if (not enviarCodigoDeElemento(proyectiles, was_closed))
         return false;
 
@@ -493,8 +492,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueAereo(uint8_t id, bool &was_cl
     x = ntohs(x);
     y = ntohs(y);
 
-    printf("recibir pos ataque: %u %u\n", x, y);
-    return std::make_shared<Misil>(id, x, y);
+    // printf("recibir pos ataque: %u %u %u\n", id, x, y);
+    return std::make_shared<Misil>(id, x, y, false);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
