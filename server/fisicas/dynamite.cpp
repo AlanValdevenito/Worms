@@ -87,6 +87,15 @@ void Dynamite::explode() {
     exploded = true;
 }
 
+void Dynamite::update() {
+    if (not exploded) {
+        std::chrono::steady_clock::time_point now;
+        now = std::chrono::steady_clock::now();
+        if (std::chrono::duration_cast<std::chrono::seconds> (now - spawnTime).count() >= timeToExplotion) {
+            explode();
+        }
+    }
+}
 
 float Dynamite::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;

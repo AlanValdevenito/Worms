@@ -129,7 +129,7 @@ void Worm::makeDamage() {
 		hp -= damageTaken;
 	}
 	damageTaken = 0;
-	std::cout << "Worm::makeDamage, hp = " << (int)hp << "\n";
+	//std::cout << "Worm::makeDamage, hp = " << (int)hp << "\n";
 	
 }
 

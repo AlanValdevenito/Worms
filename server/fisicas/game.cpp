@@ -202,15 +202,7 @@ void Game::updatePlayers() {
 
 void Game::updateBombs() {
     if (greenGrenade != NULL) {
-        if (not greenGrenade->exploded) {
-            std::cout << "angulo granada = " << greenGrenade->body->GetAngle() * 180.0f / 3.14f << "\n";
-            std::chrono::steady_clock::time_point now;
-            now = std::chrono::steady_clock::now();
-            if (std::chrono::duration_cast<std::chrono::seconds> (now - greenGrenade->spawnTime).count() >= greenGrenade->timeToExplotion) {
-                std::cout << "granada explota\n";
-                greenGrenade->explode();
-            }
-        }
+        greenGrenade->update();
     }
     
     if (bazookaRocket != NULL) {
@@ -220,43 +212,15 @@ void Game::updateBombs() {
     }
     
     if (banana != NULL) {
-        if (not banana->exploded) {
-            std::chrono::steady_clock::time_point now;
-            now = std::chrono::steady_clock::now();
-            if (std::chrono::duration_cast<std::chrono::seconds> (now - banana->spawnTime).count() >= banana->timeToExplotion) {
-                banana->explode();
-            }
-        }
+        banana->update();
     }
     
     if (holyGrenade != NULL) {
-        if (not holyGrenade->exploded) {
-            std::chrono::steady_clock::time_point now;
-            now = std::chrono::steady_clock::now();
-            if (std::chrono::duration_cast<std::chrono::seconds> (now - holyGrenade->spawnTime).count() >= holyGrenade->timeToExplotion) {
-                std::cout << "granada santa explota\n";
-                holyGrenade->explode();
-            }
-        }
+        holyGrenade->update();
     }
     
     if (dynamite != NULL) {
-        if (not dynamite->exploded) {
-            std::chrono::steady_clock::time_point now;
-            now = std::chrono::steady_clock::now();
-            if (std::chrono::duration_cast<std::chrono::seconds> (now - dynamite->spawnTime).count() >= dynamite->timeToExplotion) {
-                dynamite->explode();
-            }
-        }
-    }
-    
-    
-    for (AirStrikeRocket *rocket : airStrike) {
-        if (rocket != NULL) {
-            if (rocket->exploded) {
-
-            }
-        }
+        dynamite->update();
     }
 }
 

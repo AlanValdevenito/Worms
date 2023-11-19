@@ -23,6 +23,7 @@ public:
     float getYCoordinate();
     void shoot(Direction direction, float angle, int power); 
     void explode();
+    void update();
     float getAngle();
     void startContact() override;
     void endContact() override;
