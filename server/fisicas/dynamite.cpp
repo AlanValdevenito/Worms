@@ -1,10 +1,14 @@
 #include "dynamite.h"
 #include "worm.h"
+
 #include <iostream>
 
 
 
-Dynamite::Dynamite(b2World *world, float x, float y, int timeToExplotionInSeconds) : maxDamage(50), explosionRadius(4) {
+Dynamite::Dynamite(b2World *world, float x, float y,
+                    int timeToExplotionInSeconds,
+                    std::map<std::string, int>& config) : maxDamage(config["dynamiteDamage"]),
+                                                          explosionRadius(config["dynamiteRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);

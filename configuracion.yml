@@ -1,7 +1,36 @@
 # Archivo YAML
 
 worm:
-  vida: 100
+  hp: 1
+  speed: 2
+
+
+turn_duration: 60
+time_left_after_attack: 3
+
+dynamite:
+  damage: 50
+  radius: 4
+
+green_grenade:
+  damage: 30
+  radius: 2
+
+bazooka:
+  damage: 50
+  radius: 2
+
+banana:
+  damage: 70
+  radius: 4
+
+holy_grenade:
+  damage: 110
+  radius: 8
+
+air_strike:
+  damage: 40
+  radius: 10000
 
 armas:
   - codigo: 3

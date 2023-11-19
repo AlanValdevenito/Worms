@@ -2,7 +2,9 @@
 #include "worm.h"
 
 
-AirStrikeRocket::AirStrikeRocket(b2World *world, float x, float y) : maxDamage(50), explosionRadius(2) {
+AirStrikeRocket::AirStrikeRocket(b2World *world, float x, float y,
+                                std::map<std::string, int>& config) : maxDamage(config["airStrikeDamage"]),
+                                                                      explosionRadius(config["airStrikeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);

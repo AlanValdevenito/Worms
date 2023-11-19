@@ -1,14 +1,20 @@
 #include "worm.h"
 #include <iostream>
 
-Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x), 
-															 y(y), 
-															 id(id), 
-															 //configuraciones(YAML::LoadFile("/configuracion.yml")),
-															 hp(10), 
-															 facingRight(false), 
-															 is_alive(true), 
-															 isRunning(false) {
+Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
+		   std::map<std::string, int>& config) : Entity(),
+												hp(config["wormHp"]), 
+												id(id), 
+												//configuraciones(YAML::LoadFile("/configuracion.yml")),
+												numberOfContacts(0),
+												speed(config["wormSpeed"]),
+												
+												
+												facingRight(false), 
+												is_alive(true), 
+												isRunning(false)
+												//speed(config["wormSpeed"])
+												{
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);
@@ -57,7 +63,7 @@ void Worm::moveLeft() {
 	if (numberOfContacts == 0) return;
 	facingRight = false;
 	isRunning = true;
-	body->SetLinearVelocity(b2Vec2(-2.0f, 0.0f));
+	body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
 	state = MOVING;
 }
 
@@ -67,7 +73,7 @@ void Worm::moveRight()
 	if (numberOfContacts == 0) return;
 	facingRight = true;
 	isRunning = true;
-    body->SetLinearVelocity(b2Vec2(2.0f, 0.0f));
+    body->SetLinearVelocity(b2Vec2(speed, 0.0f));
 	state = MOVING;
 }
 
@@ -120,7 +126,7 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 }
 
 void Worm::makeDamage() {
-	//std::cout << "make damage, damage taken = " << (int)damageTaken << "\n";
+	//std::cout << "Worm::makeDamage\n";
 	if (hp <= damageTaken) {
 		hp = 0;
 		state = DEAD;

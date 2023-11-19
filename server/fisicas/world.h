@@ -15,17 +15,18 @@ class World
 {
 private:
     ContactListener contactListener;
-    
+    std::map<std::string, int>& config;
     std::list<Beam> beams;
     std::list<Worm*> worms;
     std::map<uint8_t, Worm*> wormsById;
     int idWorms = 0;
+    
     //float timeStep = 1.0f / 30.0f;
     
 public:
     b2World world;
     // crea un mundo
-    World();
+    World(std::map<std::string, int>& config);
 
     // agrega una viga centrada en el punto (x, y) de ancho <width> y alto <height>
     void addBeam(float x, float y, float angle, BeamType type);

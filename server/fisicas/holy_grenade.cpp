@@ -4,7 +4,9 @@
 
 
 
-HolyGrenade::HolyGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds) : maxDamage(110), explosionRadius(8) {
+HolyGrenade::HolyGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds,
+                        std::map<std::string, int>& config) : maxDamage(config["holyGrenadeDamage"]),
+                                                              explosionRadius(config["holyGrenadeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);

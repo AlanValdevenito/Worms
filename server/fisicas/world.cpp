@@ -1,6 +1,6 @@
 #include "world.h"
 
-World::World() : world(b2Vec2(0, -10)) {
+World::World(std::map<std::string, int>& config) : config(config), world(b2Vec2(0, -10)) {
     world.SetContactListener(&contactListener);
 }
 
@@ -58,7 +58,7 @@ std::list<Worm*> &World::getWorms()
 void World::addWorm(float x, float y)
 {   
     idWorms = idWorms + 1;
-    Worm *worm = new Worm(&world, x, y, idWorms);
+    Worm *worm = new Worm(&world, x, y, idWorms, config);
     worms.push_back(worm);
     wormsById[idWorms] = worm;
 

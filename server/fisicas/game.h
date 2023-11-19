@@ -33,6 +33,7 @@ class Game : public Thread
 private:
     Queue<std::shared_ptr<Dto>> &common_queue;
     Broadcaster &broadcaster;
+    std::map<std::string, int> config;
     World world;
     //b2Body *body_w;
     std::vector<uint8_t> idPlayers;
@@ -42,7 +43,7 @@ private:
     std::chrono::steady_clock::time_point timeOfAttack;
     std::chrono::steady_clock::time_point t1;
     std::chrono::steady_clock::time_point t2;
-
+    
     float rate = 1000000000.0f/ 30.0f; // en nanoseconds
     int rest = 0;
     int lost = 0;

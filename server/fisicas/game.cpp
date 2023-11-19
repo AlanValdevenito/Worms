@@ -5,9 +5,33 @@
 #define TURN_DURATION 60
 #define TIME_LEFT_AFTER_ATTACK 2
 
+std::map<std::string, int> loadConfig(const std::string configFileName) {
+    YAML::Node yaml = YAML::LoadFile(configFileName);
+    std::map<std::string, int> config;
+    config["wormHp"] = yaml["worm"]["hp"].as<int>();
+    config["wormSpeed"] = yaml["worm"]["speed"].as<int>();
+    config["turnDuration"] = yaml["turn_duration"].as<int>();
+    config["timeLeftAfterAttack"] = yaml["time_left_after_attack"].as<int>();
+    config["dynamiteDamage"] = yaml["dynamite"]["damage"].as<int>();
+    config["dynamiteRadius"] = yaml["dynamite"]["radius"].as<int>();
+    config["greenGrenadeDamage"] = yaml["green_grenade"]["damage"].as<int>();
+    config["greenGrenadeRadius"] = yaml["green_grenade"]["radius"].as<int>();
+    config["bazookaDamage"] = yaml["bazooka"]["damage"].as<int>();
+    config["bazookaRadius"] = yaml["bazooka"]["radius"].as<int>();
+    config["bananaDamage"] = yaml["banana"]["damage"].as<int>();
+    config["bananaRadius"] = yaml["banana"]["radius"].as<int>();
+    config["holyGrenadeDamage"] = yaml["holy_grenade"]["damage"].as<int>();
+    config["holyGrenadeRadius"] = yaml["holy_grenade"]["radius"].as<int>();
+    config["airStrikeDamage"] = yaml["air_strike"]["damage"].as<int>();
+    config["airStrikeRadius"] = yaml["air_strike"]["radius"].as<int>();
+    return config;
+}
+
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
-                                                                           world(World()),
+                                                                           config(loadConfig("/configuracion.yml")),
+                                                                           world(World(config)),
+                                                                           
                                                                            game_finished(false)
 {
     // mapa_rampa();
@@ -57,7 +81,8 @@ void Game::mapa_jaula() {
 
     world.addWorm(4, 10);
     world.addWorm(22, 10);
-    
+    world.addWorm(10, 10);
+    world.addWorm(15, 10);
 }
 
 void Game::mapa_puente() {
@@ -136,8 +161,8 @@ void Game::addPlayerId(uint8_t id) {
 void Game::passTurn() {
     // cambio de turno 
     end = std::chrono::steady_clock::now();
-    if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION ||
-        (wormAttacked && std::chrono::duration_cast<std::chrono::seconds> (end - timeOfAttack).count() >= TIME_LEFT_AFTER_ATTACK)) {
+    if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= config["turnDuration"] ||
+        (wormAttacked && std::chrono::duration_cast<std::chrono::seconds> (end - timeOfAttack).count() >= config["timeLeftAfterAttack"])) {
         if (world.anyMovement() || hayBombas())  {
             //std::cout << "hay movimiento\n";
             idTurn = -1;
@@ -435,7 +460,7 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     greenGrenade = new GreenGrenade(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
-                                    timeToExplotion);
+                                    timeToExplotion, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     greenGrenade->shoot(direction, angle, power);
 
@@ -449,7 +474,7 @@ void Game::shootBazooka(float angle, int power) {
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     bazookaRocket = new BazookaRocket(&world.world, actualWorm->getXCoordinate(), 
-                                    actualWorm->getYCoordinate(), angle);
+                                    actualWorm->getYCoordinate(), angle, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     bazookaRocket->shoot(direction, angle, power);
 
@@ -463,7 +488,7 @@ void Game::shootBanana(float angle, int power, int timeToExplotion) {
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     banana = new Banana(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
-                                    timeToExplotion);
+                                    timeToExplotion, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     banana->shoot(direction, angle, power);
 
@@ -477,7 +502,7 @@ void Game::shootHolyGrenade(float angle, int power, int timeToExplotion) {
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     holyGrenade = new HolyGrenade(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
-                                    timeToExplotion);
+                                    timeToExplotion, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     holyGrenade->shoot(direction, angle, power);
 
@@ -491,7 +516,7 @@ void Game::shootDynamite(int timeToExplotion) {
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     dynamite = new Dynamite(&world.world, actualWorm->getXCoordinate(), 
                                     actualWorm->getYCoordinate(),
-                                    timeToExplotion);
+                                    timeToExplotion, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     dynamite->shoot(direction);
 
@@ -517,7 +542,7 @@ void Game::shootAirStrike(float x, float y) {
     airStrike.clear();
     for (int i = 0; i < 6; i++) {
         std::cout<<"cohete +1\n";
-        airStrike.push_back(new AirStrikeRocket(&world.world, x + 2*i, y));
+        airStrike.push_back(new AirStrikeRocket(&world.world, x + 2*i, y, config));
         //airStrike[i]->shoot();
     }
     

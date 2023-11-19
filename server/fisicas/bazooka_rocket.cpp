@@ -2,7 +2,9 @@
 #include "worm.h"
 
 
-BazookaRocket::BazookaRocket(b2World *world, float x, float y, float angle) : maxDamage(50), explosionRadius(2) {
+BazookaRocket::BazookaRocket(b2World *world, float x, float y, float angle,
+                             std::map<std::string, int>& config) : maxDamage(config["bazookaDamage"]),
+                                                                   explosionRadius(config["bazookaRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);

@@ -4,6 +4,8 @@
 #include "box2d/box2d.h"
 #include "entity.h"
 #include <iostream>
+#include <string>
+#include <map>
 #include "utils.h"
 
 class BazookaRocket : public Entity {
@@ -14,7 +16,7 @@ public:
     int maxDamage;
     int explosionRadius;
     bool exploded = false;
-    BazookaRocket(b2World *world, float x, float y, float angle);
+    BazookaRocket(b2World *world, float x, float y, float angle, std::map<std::string, int>& config);
     float getXCoordinate();
     float getYCoordinate();
     void shoot(Direction direction, float angle, int power); 

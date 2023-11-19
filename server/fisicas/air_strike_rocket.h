@@ -5,6 +5,8 @@
 #include "entity.h"
 #include <iostream>
 #include "utils.h"
+#include <string>
+#include <map>
 
 class AirStrikeRocket : public Entity {
 public:
@@ -14,7 +16,7 @@ public:
     int maxDamage;
     int explosionRadius;
     bool exploded = false;
-    AirStrikeRocket(b2World *world, float x, float y);
+    AirStrikeRocket(b2World *world, float x, float y, std::map<std::string, int>& config);
     float getXCoordinate();
     float getYCoordinate();
     void shoot(); 

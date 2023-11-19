@@ -7,6 +7,8 @@
 #include <chrono>
 #include "entity.h"
 #include "utils.h"
+#include <map>
+#include <string>
 
 class HolyGrenade : public Entity {
 public:
@@ -17,7 +19,7 @@ public:
     std::chrono::steady_clock::time_point spawnTime;
     int timeToExplotion;
     bool exploded = false;
-    HolyGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds);
+    HolyGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds, std::map<std::string, int>& config);
     float getXCoordinate();
     float getYCoordinate();
     void shoot(Direction direction, float angle, int power); 
