@@ -43,8 +43,9 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
 
         this->x = nuevoX;
         this->y = nuevoY;
-        this->vida = nuevaVida;
+        
     }
+    this->vida = nuevaVida;
 }
 
 void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
