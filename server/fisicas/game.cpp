@@ -3,7 +3,7 @@
 #include <thread>
 
 #define TURN_DURATION 60
-#define TIME_LEFT_AFTER_ATTACK 5
+#define TIME_LEFT_AFTER_ATTACK 2
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : common_queue(queue),
                                                                            broadcaster(broadcaster),
@@ -57,6 +57,7 @@ void Game::mapa_jaula() {
 
     world.addWorm(4, 10);
     world.addWorm(10, 10);
+    
 }
 
 void Game::mapa_puente() {
@@ -137,6 +138,12 @@ void Game::passTurn() {
     end = std::chrono::steady_clock::now();
     if (std::chrono::duration_cast<std::chrono::seconds> (end - begin).count() >= TURN_DURATION ||
         (wormAttacked && std::chrono::duration_cast<std::chrono::seconds> (end - timeOfAttack).count() >= TIME_LEFT_AFTER_ATTACK)) {
+        if (world.anyMovement() || hayBombas())  {
+            std::cout << "hay movimiento\n";
+            idTurn = -1;
+            return;
+        }
+        
         wormAttacked = false;
         std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
         std::cout << "turno actual = " << idTurn << "\n";
@@ -168,36 +175,22 @@ void Game::limitFrameRate() {
 void Game::update()
 {
     //world.step();
-    passTurn();
+    
     
     // actualizo los gusanos
     for (Worm *worm : world.getWorms()) {
         //std::cout << "worm x = " << worm->getXCoordinate() << "\n";
         if (not worm->isMoving() && worm->getHp() == 0 && worm->is_alive) {
             worm->is_alive = false;
-            
-            
+            std::cout << "murio el worm de id " << (int)worm->getId() << "\n";
             players[worm->playerId - 1].numberOfAliveWorms--;
-            // saco el gusano del juego
-            int idWorm = worm->getId();
-            //world.getWorms().remove(worm);
-            world.getWormsById().erase(idWorm);
-            int indexOfWormToRemove = 0;
-            // busco el indice del gusano dentro del vector de ids de gusanos del player
-            for (int i = 0; i < (int)(players.size()); i++) {
-                if (players[worm->playerId - 1].wormIds[i] == idWorm) {
-                    indexOfWormToRemove = i;
-                    break;
-                }
-            }
-            players[worm->playerId - 1].wormIds.erase(players[worm->playerId - 1].wormIds.begin() + indexOfWormToRemove);
-            
-        } else {
+            players[worm->playerId - 1].markWormAsDead(worm->getId());
+        } else if (not world.anyMovement()){
             worm->makeDamage();
         }
         
     }
-
+    passTurn();
     // actualizo los players
     for (int i = 0; i < numberOfPlayers; i++) {
         if (players[i].numberOfAliveWorms == 0) {
@@ -321,6 +314,7 @@ void Game::sendWorms()
     for (Worm *w : world.getWorms())
     {   
         if (w->is_alive || w->isMoving()) {
+            std::cout << "sendWorms(), w->getHp() = " << (int)w->getHp() << "\n";
             std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
                                                     (int)(w->getXCoordinate() * 100),
                                                     (int)(w->getYCoordinate() * 100),
@@ -583,9 +577,10 @@ void Game::shootAirStrike(float x, float y) {
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
     uint8_t clientId = dto->get_cliente_id();
+    std::cout << "clientId = " << (int)clientId << "\n";
     if (clientId != idTurn) return;
     uint8_t code = dto->return_code();
-    printf("codigo mate %u\n",code);
+    //printf("codigo mate %u\n",code);
     if (code == MOVER_A_DERECHA_CODE)
     {
         moveWormRight(); // SI ES SU TURNO, LE PASAMOS EL ID

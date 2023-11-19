@@ -88,6 +88,7 @@ void Banana::explode() {
         }
     }
     exploded = true;
+    body->GetWorld()->DestroyBody(body);
 }
 
 

@@ -5,7 +5,7 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id) : x(x),
 															 y(y), 
 															 id(id), 
 															 //configuraciones(YAML::LoadFile("/configuracion.yml")),
-															 hp(100), 
+															 hp(10), 
 															 facingRight(false), 
 															 is_alive(true), 
 															 isRunning(false) {
@@ -120,7 +120,7 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 }
 
 void Worm::makeDamage() {
-	//std::cout << "make damage, damage taken = " << (int)damageTaken << "\n"; 
+	//std::cout << "make damage, damage taken = " << (int)damageTaken << "\n";
 	if (hp <= damageTaken) {
 		hp = 0;
 		state = DEAD;
@@ -129,6 +129,7 @@ void Worm::makeDamage() {
 		hp -= damageTaken;
 	}
 	damageTaken = 0;
+	std::cout << "Worm::makeDamage, hp = " << (int)hp << "\n";
 	
 }
 

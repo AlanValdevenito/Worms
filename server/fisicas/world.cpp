@@ -74,9 +74,17 @@ std::map<uint8_t, Worm*>& World::getWormsById() {
     return wormsById;
 }
 
-/*bool World::isInsideABeam(float x, float y) {
+bool World::anyMovement() {
+    for ( b2Body* b = world.GetBodyList(); b; b = b->GetNext())
+    {   
+        b2Vec2 velocity = b->GetLinearVelocity();
+        if (velocity.x != 0.0f || velocity.y != 0.0f) {
+            return true;
+        }
+    }
+    return false;
+}
 
-}*/ 
 World::~World() {
     for (Worm *worm : worms) {
         delete worm;

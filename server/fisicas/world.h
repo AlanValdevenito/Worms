@@ -43,6 +43,7 @@ public:
 
     b2Body *createDynamicBody(float x, float y);
 
+    bool anyMovement();
     // avanza el mundo una fraccion de segundo
     void step(float timeStep);
     // bool isInsideABeam(float x, float y);
