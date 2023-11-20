@@ -5,8 +5,15 @@
 Apuntado::Apuntado(SDL2pp::Renderer &renderer): texture(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0))), 
                                         mira(renderer),
                                         potencia(renderer),
-                                        currentFrame(0), 
                                         numFrames(this->texture->GetHeight() / this->texture->GetWidth()),
+                                        currentFrame(0), 
+                                        size(this->texture->GetWidth()) {}
+
+Apuntado::Apuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura): texture(textura), 
+                                        mira(renderer),
+                                        potencia(renderer),
+                                        numFrames(this->texture->GetHeight() / this->texture->GetWidth()),
+                                        currentFrame(this->numFrames / 2), 
                                         size(this->texture->GetWidth()) {}
 
 
@@ -47,18 +54,6 @@ void Apuntado::render(SDL2pp::Renderer &renderer, float x, float y, bool mirando
 
     this->mira.render(renderer, x, y, mirandoIzquierda);
     this->potencia.render(renderer, x, y, mirandoIzquierda, this->mira.get_angulo());
-}
-
-/******************** ARMA ********************/
-
-void Apuntado::cambiar(std::shared_ptr<SDL2pp::Texture> texturaArma) {
-    this->texture = texturaArma;
-    this->numFrames = this->texture->GetHeight() / this->texture->GetWidth();
-    this->currentFrame = this->numFrames / 2;
-    this->size = this->texture->GetWidth();
-
-    this->mira.reiniciar();
-    this->potencia.reiniciar();
 }
 
 /******************** GETTERS ********************/

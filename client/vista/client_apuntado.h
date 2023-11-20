@@ -5,7 +5,6 @@
 
 #include "client_mira.h"
 #include "client_potencia.h"
-#include "client_proyectil.h"
 
 #include "client_camara.h"
 
@@ -20,20 +19,19 @@ private:
 
     int tipoDeArma;
 
-    int currentFrame;
     int numFrames;
+    int currentFrame;
     int size; // Entero que almacena el tamaño de cada frame (altura y ancho).
 
 public:
     Apuntado(SDL2pp::Renderer &renderer);
+    Apuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura);
 
     void aumentar_potencia();
     void aumentar_angulo();
     void decrementar_angulo();
 
     void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda); // Renderiza el arma.
-
-    void cambiar(std::shared_ptr<SDL2pp::Texture> nuevaTextura);
 
     int get_angulo();
     int get_potencia();

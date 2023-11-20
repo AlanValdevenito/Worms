@@ -3,10 +3,17 @@
 
 #include <SDL2pp/SDL2pp.hh>
 #include "client_animacion.h"
-#include "client_proyectil.h"
 #include "client_apuntado.h"
 #include "constantes.h"
 #include <map>
+
+#include "vista_bate.h"
+#include "vista_granada_verde.h"
+#include "vista_bazooka.h"
+#include "vista_banana.h"
+#include "vista_granada_santa.h"
+#include "vista_dinamita.h"
+#include "vista_ataque_aereo.h"
 
 const int BATE = 7;
 const int GRANADA_VERDE = 2;
@@ -24,13 +31,11 @@ class Worm
 
 private:
     Animation animacion;
-    Apuntado apuntado;
-    // AnimacionProyectil proyectil;
-    std::map<int, AnimacionProyectil *> proyectiles;
+
+    std::shared_ptr<Arma> arma;
 
     int estado;
 
-    bool apuntadoActivado;
     int tipoDeArma;
 
     float x;

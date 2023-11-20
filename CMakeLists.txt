@@ -45,6 +45,7 @@ include_directories(common/Dtos)
 include_directories(common)
 include_directories(client)
 include_directories(client/vista)
+include_directories(client/vista/armas)
 include_directories(client/vista/data)
 include_directories(server)
 include_directories(server/fisicas)
@@ -96,6 +97,8 @@ file(GLOB CLIENT_SOURCES client/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS client/*.h)
 file(GLOB CLIENT_SOURCES_VISTA client/vista/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS_VISTA client/vista/*.h)
+file(GLOB CLIENT_SOURCES_ARMAS client/vista/armas/*.cpp *.$(extension))
+file(GLOB CLIENT_HEADERS_ARMAS client/vista/armas/*.h)
 
 file(GLOB SERVER_SOURCES server/*.cpp *.$(extension))
 file(GLOB SERVER_HEADERS server/*.h)
@@ -105,7 +108,7 @@ file(GLOB FISICAS_HEADERS server/fisicas/*.h)
 
 # Define los ejecutables que se compilarán. 
 # Se utilizan las variables que contienen las listas de archivos .cpp y .h en los directorios common, client y server para definir los objetivos.
-add_executable(client ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} )
+add_executable(client ${CLIENT_SOURCES_ARMAS} ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_ARMAS} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} )
 add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${FISICAS_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${SERVER_SOURCES} ${FISICAS_SOURCES})
 
 # Enlaza las bibliotecas a los ejecutables. En este caso, se enlazan las bibliotecas definidas en LINK_LIBS.

@@ -260,7 +260,7 @@ bool ServerProtocol::enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &wa
     if (was_closed)
         return false;
 
-    printf("Trayectoria enviada misil ---> id:%u x:%u y:%u \n", id, g->x_pos(), g->y_pos());
+    // printf("Trayectoria enviada misil ---> id:%u x:%u y:%u \n", id, g->x_pos(), g->y_pos());
 
     return true;
 }
@@ -311,7 +311,7 @@ bool ServerProtocol::enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_clo
 
 bool ServerProtocol::enviarProyectiles(std::shared_ptr<Proyectiles> proyectiles, bool &was_closed)
 {
-    std::cout << "entro a enviar proyectil\n";
+    // std::cout << "entro a enviar proyectil\n";
     if (not enviarCodigoDeElemento(proyectiles, was_closed))
         return false;
 

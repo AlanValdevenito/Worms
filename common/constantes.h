@@ -29,5 +29,6 @@ const int SALTANDO_ATRAS = 2;
 const int EQUIPANDO_ARMA = 3;
 const int APUNTANDO = 4;
 const int MUERTO = 5;
+const int USAR = 6;
 
 #endif
