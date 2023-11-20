@@ -587,7 +587,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
             float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
             float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-            this->worms[this->id_gusano_actual]->update_proyectil((int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
+            this->worms[this->id_gusano_actual]->update_proyectil(renderer, (int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
         }
 
         std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;

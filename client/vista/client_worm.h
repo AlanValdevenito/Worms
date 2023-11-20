@@ -52,7 +52,9 @@ public:
     Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida);
 
     void update(int it, float nuevoX, float nuevoY, int vida); // Actualiza el Worm en funcion del tiempo transcurrido.
-    void update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int arma = -1);
+    void update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int arma = 0);
+
+    void equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma);
 
     void render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void render_vida(SDL2pp::Renderer &renderer,float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
@@ -65,7 +67,7 @@ public:
 
     int get_tipo_de_arma();
 
-    void update_proyectil(int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoFlag);
+    void update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoFlag);
     void set_tiempo(int tiempo);
     int get_tiempo();
 

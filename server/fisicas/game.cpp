@@ -80,8 +80,8 @@ void Game::mapa_jaula() {
     world.addBeam(25.5f, 14, 90, LONG);
 
     world.addWorm(4, 10);
-    world.addWorm(22, 10);
-    world.addWorm(10, 10);
+    // world.addWorm(22, 10);
+    // world.addWorm(10, 10);
     world.addWorm(15, 10);
 }
 

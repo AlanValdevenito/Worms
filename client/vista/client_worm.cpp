@@ -33,10 +33,10 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
         this->animacion.update(it);
 
         if (nuevoX > this->x) {
-            // mirar_derecha();
+            mirar_derecha();
         
         } else if (nuevoX < this->x) {
-            // mirar_izquierda();
+            mirar_izquierda();
         }
 
         this->x = nuevoX;
@@ -64,82 +64,74 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
         this->animacion.cambiar(nuevaTextura);
     }
 
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == BATE)) {
+    else if (nuevoEstado == EQUIPANDO_ARMA) {
+        equipar_arma(renderer, tipoDeArma);
+    }
+}
+
+void Worm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
+    this->tipoDeArma = tipoDeArma;
+
+    if (tipoDeArma == BATE) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
 
         this->arma = std::make_shared<AnimacionBateDeBaseball>(renderer);
-
-        this->tipoDeArma = tipoDeArma;
     }
 
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == GRANADA_VERDE)) {
+    else if (tipoDeArma == GRANADA_VERDE) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wgrnlnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
 
         this->arma = std::make_shared<AnimacionGranadaVerde>(renderer);
-
-        this->tipoDeArma = tipoDeArma;
     }
 
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == BAZOOKA)) {
+    else if (tipoDeArma == BAZOOKA) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
 
         this->arma = std::make_shared<AnimacionBazooka>(renderer);
-
-        this->tipoDeArma = tipoDeArma;
     }
 
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == BANANA)) {
+    else if (tipoDeArma == BANANA) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbanlnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
 
         this->arma = std::make_shared<AnimacionBanana>(renderer);
-
-        this->tipoDeArma = tipoDeArma;
     }
 
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == GRANADA_SANTA)) {
+    else if (tipoDeArma == GRANADA_SANTA) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/whgrlnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
 
         this->arma = std::make_shared<AnimacionGranadaSanta>(renderer);
-
-        this->tipoDeArma = tipoDeArma;
     }
 
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == DINAMITA)) {
+    else if (tipoDeArma == DINAMITA) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wdynlnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
 
         this->arma = std::make_shared<AnimacionDinamita>(renderer);
-
-        this->tipoDeArma = tipoDeArma;
     }
 
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == TELETRANSPORTACION)) {
+    else if (tipoDeArma == TELETRANSPORTACION) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wtellnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
-
-        this->tipoDeArma = tipoDeArma;
     }
 
-    else if ((nuevoEstado == EQUIPANDO_ARMA) && (tipoDeArma == ATAQUE_AEREO)) {
+    else if (tipoDeArma == ATAQUE_AEREO) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wairlnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
 
         this->arma = std::make_shared<AnimacionAtaqueAereo>(renderer);
-
-        this->tipoDeArma = tipoDeArma;
     }
 }
 
@@ -227,7 +219,16 @@ int Worm::get_tipo_de_arma() {
 
 /******************** PROYECTIL ********************/
 
-void Worm::update_proyectil(int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado) {
+void Worm::update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado) {
+    
+    /*if (this->arma) {
+        this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, 0, id);
+    }*/
+
+    if (not this->arma) {
+        this->arma = std::make_shared<AnimacionGranadaVerde>(renderer);
+    }
+
     this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, 0, id);
 }
 
