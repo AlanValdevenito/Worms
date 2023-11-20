@@ -28,7 +28,7 @@ sudo apt-get install libjpeg-dev        \
                      libfluidsynth-dev  \
                      libwavpack-dev     \
                      libmodplug-dev     \
-                     libsdl2-dev
+                     libsdl2-dev -y
 
 
 mkdir -p "$SDL_DIR"
@@ -40,7 +40,8 @@ wget "$SDL2PP_URL" -P "$SDL_DIR"
 unzip "$SDL_DIR/SDL2_image-2.6.3.zip" -d "$SDL_DIR"
 unzip "$SDL_DIR/SDL2_mixer-2.6.3.zip" -d "$SDL_DIR"
 unzip "$SDL_DIR/SDL2_ttf-2.20.2.zip" -d "$SDL_DIR"
-unzip "$SDL_DIR/libSDL2pp-0.18.1.zip" -P "$SDL_DIR"
+unzip "$SDL_DIR/0.18.1.zip" -d "$SDL_DIR"
+
 
 cd "$SDL_DIR/SDL2_image-2.6.3"
 mkdir build
@@ -50,7 +51,7 @@ make -j4
 sudo make install
 
 cd ../..
-cd "$SDL_DIR/SDL2_mixer-2.6.3"
+cd "SDL2_mixer-2.6.3"
 mkdir build
 cd build
 cmake ..
@@ -58,7 +59,7 @@ make -j4
 sudo make install
 
 cd ../..
-cd "$SDL_DIR/SDL2_ttf-2.20.2"
+cd "SDL2_ttf-2.20.2"
 mkdir build
 cd build
 cmake ..
@@ -66,14 +67,14 @@ make -j4
 sudo make install
 
 cd ../..
-cd "$SDL_DIR/libSDL2pp-0.18.1"
+cd "libSDL2pp-0.18.1"
 mkdir build
 cd build
 cmake ..
 make -j4
 sudo make install
 
-cd ../..
+cd ../../..
 
 
 
@@ -81,8 +82,8 @@ cd ../..
 
 echo ${green}"Instalando worms\n"
 
-
 mkdir build
 cd build
 sudo cmake ..
 sudo make
+
