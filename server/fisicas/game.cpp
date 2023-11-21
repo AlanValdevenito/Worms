@@ -210,6 +210,11 @@ void Game::updateWorms() {
         if (not world.anyMovement()) {
             worm->makeDamage();
         }
+        if (worm->numberOfContacts == 0) {
+            if (worm->getYCoordinate() > worm->highestYCoordinateReached) {
+                worm->highestYCoordinateReached = worm->getYCoordinate();
+            }
+        }
     }
 }
 

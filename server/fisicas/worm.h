@@ -35,6 +35,7 @@ public:
     int state = MOVING;
     uint8_t playerId = -1;
     EntityType entityType = WORM;
+    float highestYCoordinateReached;
     
     
     Worm(b2World *b2world, float x, float y, uint8_t id, std::map<std::string, int>& config);

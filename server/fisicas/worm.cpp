@@ -179,6 +179,12 @@ uint8_t Worm::getTeamNumber() {
 void Worm::startContact() {
 	numberOfContacts++;
 	state = MOVING;
+	float fallDistance = highestYCoordinateReached - body->GetPosition().y;
+	if (fallDistance > 2.0f) {
+		takeDamage(std::min((int)fallDistance, 25));
+	}
+	std::cout << "fallDistance = " << fallDistance << "\n";
+	highestYCoordinateReached = body->GetPosition().y;
 }
 
 void Worm::endContact() {
