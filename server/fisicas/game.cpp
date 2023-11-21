@@ -25,6 +25,7 @@ std::map<std::string, int> loadConfig(const std::string configFileName) {
     config["holyGrenadeRadius"] = yaml["holy_grenade"]["radius"].as<int>();
     config["airStrikeDamage"] = yaml["air_strike"]["damage"].as<int>();
     config["airStrikeRadius"] = yaml["air_strike"]["radius"].as<int>();
+    config["cantidad_de_worms"] = yaml["cantidad_de_worms"].as<int>();
     return config;
 }
 
@@ -61,8 +62,13 @@ void Game::mapa_rampa() {
     world.addBeam(10, 9, 0, LONG);
     world.addBeam(5.5, 9.75, 150, SHORT);
 
-    world.addWorm(10, 14);
-    world.addWorm(12, 14);
+    int j = 10;
+    int cantidad = config["cantidad_de_worms"];
+    for (int i = 0; i < cantidad; i++) {
+        world.addWorm(j, 14);
+        j += 2;
+    }
+
 }
 
 void Game::mapa_jaula() {
@@ -84,10 +90,13 @@ void Game::mapa_jaula() {
     world.addBeam(25.5f, 8, 90, LONG);
     world.addBeam(25.5f, 14, 90, LONG);
 
-    world.addWorm(4, 10);
-    world.addWorm(22, 10);
-    world.addWorm(10, 10);
-    world.addWorm(15, 10);
+    int j = 10;
+    int cantidad = config["cantidad_de_worms"];
+    for (int i = 0; i < cantidad; i++) {
+        world.addWorm(j, 10);
+        j += 2;
+    }
+
 }
 
 void Game::mapa_puente() {
@@ -102,8 +111,13 @@ void Game::mapa_puente() {
 
     world.addBeam(36, 12, 90, LONG);
 
-    world.addWorm(3, 14);
-    world.addWorm(30, 14);
+    int j = 3;
+    int cantidad = config["cantidad_de_worms"];
+    for (int i = 0; i < cantidad; i++) {
+        world.addWorm(j, 14);
+        j += 2;
+    }
+
 }
 
 void Game::createPlayers() {

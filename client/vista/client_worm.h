@@ -66,9 +66,6 @@ public:
     void desactivar_turno();
     void activar_turno();
 
-    void mirar_derecha();
-    void mirar_izquierda();
-
     int get_tipo_de_arma();
 
     void update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoFlag);

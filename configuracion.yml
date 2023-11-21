@@ -1,9 +1,12 @@
 # Archivo YAML
 
-map: 1      # map puede tomar valores 1 o 2     
+map: 1      # map puede tomar valores 1 o 2 o 3
             # siendo 1 = mapa_jaula,
             #        2 = mapa_rampa (vigas inclinadas)
             #        3 = mapa_puente
+
+cantidad_de_worms: 2  # Puede tomar solo valores pares 
+
 worm:
   hp: 10
   speed: 2
