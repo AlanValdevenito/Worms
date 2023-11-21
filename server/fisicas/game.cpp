@@ -173,8 +173,12 @@ void Game::passTurn() {
             idTurn = -1;
             return;
         }
+        // cuando al gusano se le termina el turno, le saco el arma.
+        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
         updateWorms();
         wormAttacked = false;
+        
+        
         std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
         std::cout << "turno actual = " << idTurn << "\n";
         begin = std::chrono::steady_clock::now();
@@ -186,6 +190,7 @@ void Game::passTurn() {
         idTurn = idPlayers[indexOfActualPlayer];
         players[indexOfActualPlayer].changeActualWorm();
         actualWormId = players[indexOfActualPlayer].actualWormId;
+        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
     }
 }
 
@@ -324,7 +329,9 @@ void Game::sendWorms()
                                                     (int)(w->getYCoordinate() * 100),
                                                     w->getHp(),
                                                     w->getTeamNumber(),
-                                                    w->getState());
+                                                    w->getState(),
+                                                    w->getWeapon()
+                                                    );
             vectorGusanos.push_back(g);
         }
         
@@ -362,7 +369,7 @@ void Game::sendWorms()
             proyectiles.push_back(granadaRoja);
 
             if (redGrenade->exploded) {
-                
+                /*
                 float x = redGrenade->getXCoordinate();
                 float y = redGrenade->getYCoordinate();
                 Direction direction;
@@ -371,6 +378,7 @@ void Game::sendWorms()
                     direction = (i < 3) ? LEFT : RIGHT;
                     redGrenadeFragments[i]->shoot(direction, 30*i, 4);
                 }
+                */
                 redGrenade = NULL;
                 // falta enviar los fragmentos
             }
@@ -519,6 +527,7 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
 
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
+    //actualWorm->equipWeapon(NO_WEAPON);
 }
 
 void Game::throwRedGrenade(float angle, int power, int timeToExplotion) {
@@ -681,12 +690,21 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
         shootAirStrike((float)misil->x_pos() / 100.0f, (float) misil->y_pos() / 100.0f);
     }
     else if (code == GRANADA_ROJA_CODE) {
+        std::cout << "game->granada roja\n";
         std::shared_ptr<GranadaRoja> grenade = std::dynamic_pointer_cast<GranadaRoja>(dto);
         throwRedGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia(), grenade->get_tiempo());
     }
     else if (code == MORTERO_CODE) {
         std::shared_ptr<Mortero> mortero = std::dynamic_pointer_cast<Mortero>(dto);
         shootMortero(mortero->get_angulo() * 3.14f / 180.0f, mortero->get_potencia());
+    }
+    else if (code == EQUIPAR_ARMA_CODE) {
+        std::shared_ptr<EquiparArma> equiparArma = std::dynamic_pointer_cast<EquiparArma>(dto);
+        world.getWormsById()[actualWormId]->equipWeapon(equiparArma->get_arma());
+    }
+
+    if (wormAttacked) {
+        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
     }
 }
 

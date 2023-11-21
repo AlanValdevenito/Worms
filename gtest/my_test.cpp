@@ -578,6 +578,7 @@ void enviar_gusano_con_parametros(SocketMock &skt, uint8_t id, uint16_t x, uint1
     uint8_t vida_a_enviar = vida;
     uint8_t color_a_enviar = color;
     uint8_t estado_a_enviar = estado;
+    uint8_t arma_a_enviar = 1;
 
     // printf("%u %u\n", x, y);
     // printf("%u %u\n", x_a_enviar, y_a_enviar);
@@ -588,6 +589,7 @@ void enviar_gusano_con_parametros(SocketMock &skt, uint8_t id, uint16_t x, uint1
     skt.sendall(&vida_a_enviar, sizeof(vida_a_enviar), &was_closed);
     skt.sendall(&color_a_enviar, sizeof(color_a_enviar), &was_closed);
     skt.sendall(&estado_a_enviar, sizeof(estado_a_enviar), &was_closed);
+    skt.sendall(&arma_a_enviar, sizeof(arma_a_enviar), &was_closed);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __Gusano)
@@ -949,6 +951,7 @@ void recibir_parametros_del_gusano(SocketMock *skt, uint8_t &id, uint16_t &x, ui
     uint8_t vida_recibido;
     uint8_t color_recibido;
     uint8_t estado_recibido;
+    uint8_t arma_recibido;
 
     skt->recvall(&id_recibido, sizeof(id_recibido), &was_closed);
     skt->recvall(&x_recibido, sizeof(x_recibido), &was_closed);
@@ -956,6 +959,7 @@ void recibir_parametros_del_gusano(SocketMock *skt, uint8_t &id, uint16_t &x, ui
     skt->recvall(&vida_recibido, sizeof(vida_recibido), &was_closed);
     skt->recvall(&color_recibido, sizeof(color_recibido), &was_closed);
     skt->recvall(&estado_recibido, sizeof(estado_recibido), &was_closed);
+    skt->recvall(&arma_recibido, sizeof(estado_recibido), &was_closed);
 
     id = id_recibido;
     x = ntohs(x_recibido);
@@ -979,7 +983,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Gusano)
     uint8_t color = 3;
     uint8_t estado = 3;
 
-    std::shared_ptr<Gusano> gusano = std::make_shared<Gusano>(id, x, y, vida, color, estado);
+    std::shared_ptr<Gusano> gusano = std::make_shared<Gusano>(id, x, y, vida, color, estado, 1);
 
     sp.enviarGusano(gusano, was_closed);
 
@@ -1017,7 +1021,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada1 = 85;
     uint8_t color_enviada1 = 3;
     uint8_t estado_enviada1 = 3;
-    std::shared_ptr<Gusano> gusano1 = std::make_shared<Gusano>(id_enviada1, x_enviada1, y_enviada1, vida_enviada1, color_enviada1, estado_enviada1);
+    std::shared_ptr<Gusano> gusano1 = std::make_shared<Gusano>(id_enviada1, x_enviada1, y_enviada1, vida_enviada1, color_enviada1, estado_enviada1, 1);
 
     uint8_t id_enviada2 = 3;
     uint16_t x_enviada2 = 24;
@@ -1025,7 +1029,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada2 = 86;
     uint8_t color_enviada2 = 10;
     uint8_t estado_enviada2 = 3;
-    std::shared_ptr<Gusano> gusano2 = std::make_shared<Gusano>(id_enviada2, x_enviada2, y_enviada2, vida_enviada2, color_enviada2, estado_enviada2);
+    std::shared_ptr<Gusano> gusano2 = std::make_shared<Gusano>(id_enviada2, x_enviada2, y_enviada2, vida_enviada2, color_enviada2, estado_enviada2, 1);
 
     uint8_t id_enviada3 = 6;
     uint16_t x_enviada3 = 54;
@@ -1033,7 +1037,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada3 = 16;
     uint8_t color_enviada3 = 11;
     uint8_t estado_enviada3 = 3;
-    std::shared_ptr<Gusano> gusano3 = std::make_shared<Gusano>(id_enviada3, x_enviada3, y_enviada3, vida_enviada3, color_enviada3, estado_enviada3);
+    std::shared_ptr<Gusano> gusano3 = std::make_shared<Gusano>(id_enviada3, x_enviada3, y_enviada3, vida_enviada3, color_enviada3, estado_enviada3, 1);
 
     std::vector<std::shared_ptr<Gusano>> lista;
     lista.push_back(gusano1);

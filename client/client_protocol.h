@@ -35,6 +35,7 @@
 #include "ataque_aereo.h"
 #include "partidas_lista.h"
 #include "nueva_partida.h"
+#include "equipar_arma.h"
 #include "cliente_id.h"
 
 class ClientProtocol
@@ -58,6 +59,7 @@ public:
     bool enviarAtaqueConGranadaRoja(std::shared_ptr<GranadaRoja> g, bool &was_closed);
     bool enviarAtaqueConDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
     bool enviarTeletrasnportacion(std::shared_ptr<Teletransportar> t, bool &was_closed);
+    bool enviarEquipadoDeArma(std::shared_ptr<EquiparArma> t, bool &was_closed);
     bool enviarAtaqueaereo(std::shared_ptr<Misil> t, bool &was_closed);
 
 private:
@@ -71,6 +73,7 @@ private:
     std::shared_ptr<Dto> recibirTrayectoriaGranadaVerde(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaGranadaSanta(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaGranadaBanana(bool &was_closed);
+    std::shared_ptr<Dto> recibirTrayectoriaGranadaRoja(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaDinamita(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaBazuka(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaMortero(bool &was_closed);

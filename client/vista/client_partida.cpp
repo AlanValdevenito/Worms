@@ -321,10 +321,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F1:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BATE));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BATE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BATE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BATE));
                 }
 
                 break;
@@ -333,10 +335,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F2:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_VERDE));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_VERDE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_VERDE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_VERDE));
                 }
 
                 break;
@@ -345,10 +349,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F3:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
-                
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BAZOOKA));
+
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BAZOOKA);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BAZOOKA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BAZOOKA));
                 }
 
                 break;
@@ -357,10 +363,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F4:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BANANA));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BANANA);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BANANA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BANANA));
                 }
 
                 break;
@@ -369,10 +377,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F5:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_SANTA));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_SANTA);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_SANTA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_SANTA));
                 }
 
                 break;
@@ -381,10 +391,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F6:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, DINAMITA));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, DINAMITA);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, DINAMITA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, DINAMITA));
                 }
 
                 break;
@@ -393,10 +405,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F7:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, TELETRANSPORTACION));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, TELETRANSPORTACION);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, TELETRANSPORTACION);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, TELETRANSPORTACION));
                 }
 
                 break;
@@ -405,10 +419,40 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F8:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, ATAQUE_AEREO));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, ATAQUE_AEREO);
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, ATAQUE_AEREO);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, ATAQUE_AEREO));
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F9:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_ROJA));
+                
+                } else {
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_ROJA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_ROJA));
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F10:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, MORTERO));
+                
+                } else {
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, MORTERO);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, MORTERO));
                 }
 
                 break;
@@ -435,7 +479,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     enviarAtaque();
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    int tipoDeArma = this->worms[this->id_gusano_actual]->get_tipo_de_arma();
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, tipoDeArma));
+                    // this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                 }
 
                 break;
@@ -479,7 +525,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     enviarAtaque();
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                 }
                 
                 break;
@@ -538,6 +583,15 @@ void Partida::enviarAtaque() {
         int yCentimetros = metros_a_centimetros(pixeles_a_metros(this->y) - this->camara.getLimiteSuperior());
         cliente.send_queue.push(std::make_shared<Misil>(this->cliente.id, xCentimetros, yCentimetros, false));
     
+    } else if (armaEquipada == GRANADA_ROJA) {
+        cliente.send_queue.push(std::make_shared<GranadaRoja>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(),
+                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+    
+    } else if (armaEquipada == MORTERO) {
+        cliente.send_queue.push(std::make_shared<Mortero>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(), false));
+    
     } else {
         std::cerr << "El numero recibido no esta asociado a ningun arma\n";
     }
@@ -572,25 +626,26 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     
     int flag = (int) gusanos->get_flag_proyectil();
 
-    std::cout << flag << std::endl;
+    // std::cout << flag << std::endl;
 
     if (flag) {
-        std::cout << "\nEntro a recibir proyectiles\n";
+        // std::cout << "\nEntro a recibir proyectiles\n";
         std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
     
         int cantidad = proyectiles->cantidad();
-        std::cout << "Cantidad de proyectiles: " << cantidad << std::endl;
+        // std::cout << "Cantidad de proyectiles: " << cantidad << std::endl;
         for (int i = 0; i < cantidad; i++) {
             std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(i);
 
-            std::cout << "Proyectil: " << (int) proyectil->get_id() << " " << (int) proyectil->get_exploto() << std::endl;
+            // std::cout << "Proyectil: " << (int) proyectil->get_id() << " " << (int) proyectil->get_exploto() << std::endl;
+            std::cout << "Worm: " << this->id_gusano_actual << std::endl;
 
             float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
             float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
             this->worms[this->id_gusano_actual]->update_proyectil(renderer, (int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
         }
 
-        std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;
+        // std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;
     }
 
     /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/
@@ -611,6 +666,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         std::shared_ptr<Gusano> gusano = gusanos->popGusano(i);
 
         int nuevoEstado = (int) gusano->get_estado();
+        int tipoDeArma = (int) gusano->get_arma();
 
         // if (nuevoEstado == MUERTO) {
         //     this->worms.erase(gusano->get_id());
@@ -621,12 +677,12 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida());
 
-        if (this->worms[gusano->get_id()]->get_estado() != nuevoEstado) {
+        if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
+            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        }
 
-            if ((this->worms[gusano->get_id()]->get_estado() != EQUIPANDO_ARMA) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
-                this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado);
-            }
-
+        else if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (tipoDeArma == 10) && (this->worms[gusano->get_id()]->get_estado() == APUNTANDO)) {
+            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
     }
 

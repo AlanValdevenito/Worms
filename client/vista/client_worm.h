@@ -14,6 +14,8 @@
 #include "vista_granada_santa.h"
 #include "vista_dinamita.h"
 #include "vista_ataque_aereo.h"
+#include "vista_granada_roja.h"
+#include "vista_mortero.h"
 
 const int BATE = 7;
 const int GRANADA_VERDE = 2;
@@ -23,6 +25,8 @@ const int GRANADA_SANTA = 5;
 const int DINAMITA = 6;
 const int TELETRANSPORTACION = 9;
 const int ATAQUE_AEREO = 8;
+const int GRANADA_ROJA = 3;
+const int MORTERO = 1;
 
 #include "yaml-cpp/yaml.h"
 
