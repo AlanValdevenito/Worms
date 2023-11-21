@@ -8,6 +8,7 @@
 std::map<std::string, int> loadConfig(const std::string configFileName) {
     YAML::Node yaml = YAML::LoadFile(configFileName);
     std::map<std::string, int> config;
+    config["map"] = yaml["map"].as<int>();
     config["wormHp"] = yaml["worm"]["hp"].as<int>();
     config["wormSpeed"] = yaml["worm"]["speed"].as<int>();
     config["turnDuration"] = yaml["turn_duration"].as<int>();
@@ -33,10 +34,14 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster) : commo
                                                                            world(World(config)),
                                                                            
                                                                            game_finished(false)
-{
-    // mapa_rampa();
-    mapa_jaula();
-    // mapa_puente();
+{   
+    if (config["map"] == 1) {
+        mapa_jaula();
+    } else if (config["map"] == 2) {
+        mapa_rampa();
+    } else {
+        mapa_puente();
+    }
 }
 
 void Game::mapa_rampa() {
@@ -214,6 +219,9 @@ void Game::updateWorms() {
             if (worm->getYCoordinate() > worm->highestYCoordinateReached) {
                 worm->highestYCoordinateReached = worm->getYCoordinate();
             }
+        }
+        if (worm->getYCoordinate() <= 0) {
+            worm->takeDamage(worm->getHp());
         }
     }
 }
