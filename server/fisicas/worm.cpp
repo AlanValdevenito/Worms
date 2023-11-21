@@ -20,9 +20,38 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 	bodyDef.position.Set(x, y);
 	bodyDef.userData.pointer = (uintptr_t)this;
 	body = b2world->CreateBody(&bodyDef);
+	
+	// cuerpo circular
+	b2FixtureDef fixtureDef;
+    b2CircleShape circleShape;
+    circleShape.m_p.Set(0, 0); 
+    circleShape.m_radius = 0.5f; 
+    fixtureDef.shape = &circleShape; 
+    fixtureDef.restitution = 0.0f;
+    fixtureDef.density = 1.0f;
+    fixtureDef.friction = 0.7f;
+    fixtureDef.filter.categoryBits = 0x02;
+    fixtureDef.filter.maskBits = 0xFD;
+    body->CreateFixture(&fixtureDef); 
+
+	// sensor de cuerpo circular 
+	b2FixtureDef sensorFixtureDef;
+	b2PolygonShape polygonShape;
+	polygonShape.SetAsBox(0.4f, 0.25f, b2Vec2(0.0f,-0.25f), 0);
+	sensorFixtureDef.isSensor = true;
+	sensorFixtureDef.shape = &polygonShape;
+	sensorFixtureDef.filter.categoryBits = 0x02;
+    sensorFixtureDef.filter.maskBits = 0xFD;
+	body->CreateFixture(&sensorFixtureDef);
+
+	body->SetFixedRotation(true);
+
+
+	// cuerpo rectangular
+
+	/*
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(0.5f, 0.5f);
-
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
@@ -41,6 +70,7 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 	sensorFixtureDef.filter.categoryBits = 0x02;
     sensorFixtureDef.filter.maskBits = 0xFD;
 	body->CreateFixture(&sensorFixtureDef);
+	*/
 }
 
 float Worm::getXCoordinate()
