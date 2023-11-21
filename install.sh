@@ -12,6 +12,7 @@ sudo apt install -y qtcreator qtbase5-dev qt5-qmake cmake
 sudo apt-get install libqt5multimedia5-plugins -y
 sudo apt-get install qtmultimedia5-dev -y
 sudo apt-get install libyaml-cpp-dev -y
+sudo apt-get install libbox2d-dev -y
 
 SDL_IMAGE_URL="https://github.com/libsdl-org/SDL_image/releases/download/release-2.6.3/SDL2_image-2.6.3.zip"
 SDL_MIXER_URL="https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.6.3/SDL2_mixer-2.6.3.zip"
