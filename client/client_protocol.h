@@ -25,8 +25,10 @@
 #include "batear.h"
 #include "granada.h"
 #include "granada_santa.h"
+#include "granada_roja.h"
 #include "granada_banana.h"
 #include "dinamita.h"
+#include "mortero.h"
 #include "teletransportar.h"
 #include "bazuka.h"
 #include "proyectil.h"
@@ -50,8 +52,10 @@ public:
     bool enviarNuevaPartida(std::shared_ptr<NuevaPartida> n, bool &was_closed);
     bool enviarAtaqueConGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed);
     bool enviarAtaqueConBazuka(std::shared_ptr<Bazuka> b, bool &was_closed);
+    bool enviarAtaqueConMortero(std::shared_ptr<Mortero> b, bool &was_closed);
     bool enviarAtaqueConGranadaBanana(std::shared_ptr<GranadaBanana> g, bool &was_closed);
     bool enviarAtaqueConGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed);
+    bool enviarAtaqueConGranadaRoja(std::shared_ptr<GranadaRoja> g, bool &was_closed);
     bool enviarAtaqueConDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
     bool enviarTeletrasnportacion(std::shared_ptr<Teletransportar> t, bool &was_closed);
     bool enviarAtaqueaereo(std::shared_ptr<Misil> t, bool &was_closed);
@@ -69,6 +73,7 @@ private:
     std::shared_ptr<Dto> recibirTrayectoriaGranadaBanana(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaDinamita(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaBazuka(bool &was_closed);
+    std::shared_ptr<Dto> recibirTrayectoriaMortero(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaMisil(bool &was_closed);
     bool enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarAnguloYPotenciaDeProyectil(std::shared_ptr<Proyectil> dto, bool &was_closed);

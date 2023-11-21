@@ -329,6 +329,34 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
     return std::make_shared<Bazuka>(x, y, angulo, direccion, exploto);
 }
 
+std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaMortero(bool &was_closed)
+{
+    uint16_t x;
+    uint16_t y;
+    uint8_t angulo;
+    uint8_t direccion;
+
+    if (not recibirPosicion(x, y, was_closed))
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&direccion, sizeof(direccion), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint8_t exploto;
+    skt.recvall(&exploto, sizeof(exploto), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("Trayectoria recibida---> x:%u y:%u angulo:%u\n", x, y,angulo);
+
+    return std::make_shared<Mortero>(x, y, angulo, direccion, exploto);
+}
+
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaMisil(bool &was_closed)
 {
     uint16_t x;
@@ -373,6 +401,8 @@ std::shared_ptr<Dto> ClientProtocol::recibirProyectil(bool &was_closed)
         return recibirTrayectoriaBazuka(was_closed);
     else if (code == ATAQUE_AEREO_CODE)
         return recibirTrayectoriaMisil(was_closed);
+    else if (code == MORTERO_CODE)
+        return recibirTrayectoriaMortero(was_closed);
 
     return std::make_shared<DeadDto>();
 }
@@ -516,6 +546,14 @@ bool ClientProtocol::enviarAtaqueConBazuka(std::shared_ptr<Bazuka> g, bool &was_
     return enviarAnguloYPotenciaDeProyectil(g, was_closed);
 }
 
+bool ClientProtocol::enviarAtaqueConMortero(std::shared_ptr<Mortero> g, bool &was_closed)
+{
+    if (not enviarIdDelClienteYCodigoDeAccion(g, was_closed))
+        return false;
+
+    return enviarAnguloYPotenciaDeProyectil(g, was_closed);
+}
+
 bool ClientProtocol::enviarAtaqueConGranada(std::shared_ptr<Proyectil> g, bool &was_closed)
 {
 
@@ -544,6 +582,11 @@ bool ClientProtocol::enviarAtaqueConGranadaBanana(std::shared_ptr<GranadaBanana>
 }
 
 bool ClientProtocol::enviarAtaqueConGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed)
+{
+    return enviarAtaqueConGranada(g, was_closed);
+}
+
+bool ClientProtocol::enviarAtaqueConGranadaRoja(std::shared_ptr<GranadaRoja> g, bool &was_closed)
 {
     return enviarAtaqueConGranada(g, was_closed);
 }

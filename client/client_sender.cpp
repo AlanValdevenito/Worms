@@ -26,8 +26,6 @@ void SenderTH::run()
 
 bool SenderTH::send(std::shared_ptr<Dto> d)
 {
-    printf("send %u\n", d->return_code());
-
     if (d->return_code() == MOVER_A_DERECHA_CODE)
         return protocol.moverADerecha(std::dynamic_pointer_cast<MoverADerecha>(d), was_closed);
     else if (d->return_code() == MOVER_A_IZQUIERDA_CODE)
@@ -50,14 +48,16 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
         return protocol.enviarAtaqueConGranadaBanana(std::dynamic_pointer_cast<GranadaBanana>(d), was_closed);
     else if (d->return_code() == GRANADA_SANTA_CODE)
         return protocol.enviarAtaqueConGranadaSanta(std::dynamic_pointer_cast<GranadaSanta>(d), was_closed);
-    else if (d->return_code() == DINAMITA_CODE)
-        return protocol.enviarAtaqueConDinamita(std::dynamic_pointer_cast<Dinamita>(d), was_closed);
+    else if (d->return_code() == GRANADA_ROJA_CODE)
+        return protocol.enviarAtaqueConGranadaRoja(std::dynamic_pointer_cast<GranadaRoja>(d), was_closed);
     else if (d->return_code() == DINAMITA_CODE)
         return protocol.enviarAtaqueConDinamita(std::dynamic_pointer_cast<Dinamita>(d), was_closed);
     else if (d->return_code() == TELETRANSPORTAR_CODE)
         return protocol.enviarTeletrasnportacion(std::dynamic_pointer_cast<Teletransportar>(d), was_closed);
     else if (d->return_code() == ATAQUE_AEREO_CODE)
         return protocol.enviarAtaqueaereo(std::dynamic_pointer_cast<Misil>(d), was_closed);
+    else if (d->return_code() == MORTERO_CODE)
+        return protocol.enviarAtaqueConMortero(std::dynamic_pointer_cast<Mortero>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

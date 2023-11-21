@@ -34,7 +34,7 @@ holy_grenade:
 
 air_strike:
   damage: 40
-  radius: 10000
+  radius: 2
 
 armas:
   - codigo: 3

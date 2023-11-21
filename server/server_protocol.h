@@ -25,7 +25,9 @@
 #include "granada.h"
 #include "granada_santa.h"
 #include "granada_banana.h"
+#include "granada_roja.h"
 #include "dinamita.h"
+#include "mortero.h"
 #include "teletransportar.h"
 #include "ataque_aereo.h"
 #include "bazuka.h"
@@ -48,6 +50,7 @@ public:
     bool enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarTrayectoriaDeGranadaVerde(std::shared_ptr<GranadaVerde> g, bool &was_closed);
     bool enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &was_closed);
+    bool enviarTrayectoriaDeMortero(std::shared_ptr<Mortero> b, bool &was_closed);
     bool enviarTrayectoriaDeGranadaBanana(std::shared_ptr<GranadaBanana> g, bool &was_closed);
     bool enviarTrayectoriaDeGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed);
     bool enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
@@ -64,6 +67,7 @@ private:
     std::shared_ptr<Dto> recibirAtaqueConDinamita(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirTeletransportacion(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueConBazuka(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirAtaqueConMortero(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirSalto(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueAereo(uint8_t id, bool &was_closed);

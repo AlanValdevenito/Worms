@@ -294,6 +294,35 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
     return true;
 }
 
+bool ServerProtocol::enviarTrayectoriaDeMortero(std::shared_ptr<Mortero> b, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(b, was_closed))
+        return false;
+
+    uint8_t angulo = b->get_angulo();
+    uint8_t direccion = b->get_direccion();
+
+    if (not enviarPosicionDelElemento(b, was_closed))
+        return false;
+
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(direccion), sizeof(direccion), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t exploto = b->get_exploto();
+    skt->sendall(&(exploto), sizeof(exploto), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria BAZUKA---> x:%u y:%u \n", b->x_pos(), b->y_pos());
+
+    return true;
+}
+
 bool ServerProtocol::enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_closed)
 {
     uint8_t code = p->return_code(); // el codigo se encargan de enviarlo las funciones
@@ -301,6 +330,8 @@ bool ServerProtocol::enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_clo
         return enviarGranada(p, was_closed);
     else if (code == BAZUKA_CODE)
         return enviarTrayectoriaDeBazuka(std::dynamic_pointer_cast<Bazuka>(p), was_closed);
+    else if (code == MORTERO_CODE)
+        return enviarTrayectoriaDeMortero(std::dynamic_pointer_cast<Mortero>(p), was_closed);
     else if (code == DINAMITA_CODE)
         return enviarTrayectoriaDeDinamita(std::dynamic_pointer_cast<Dinamita>(p), was_closed);
     else if (code == ATAQUE_AEREO_CODE)
@@ -339,7 +370,7 @@ bool ServerProtocol::enviarProyectiles(std::shared_ptr<Proyectiles> proyectiles,
 
 bool ServerProtocol::esGranada(uint8_t code)
 {
-    return (code == GRANADA_BANANA_CODE || code == GRANADA_SANTA_CODE || code == GRANADA_VERDE_CODE);
+    return (code == GRANADA_BANANA_CODE || code == GRANADA_SANTA_CODE || code == GRANADA_VERDE_CODE || code == GRANADA_ROJA_CODE);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirPartidaSeleccionada(uint8_t id, bool &was_closed)
@@ -424,6 +455,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranada(uint8_t code, uint8
         return std::make_shared<GranadaSanta>(id, potencia, angulo, tiempo, false);
     else if (code == GRANADA_VERDE_CODE)
         return std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo, false);
+    else if (code == GRANADA_ROJA_CODE)
+        return std::make_shared<GranadaRoja>(id, potencia, angulo, tiempo, false);
 
     return std::make_shared<DeadDto>();
 }
@@ -453,6 +486,22 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConBazuka(uint8_t id, bool &wa
 
     // printf("%u %u \n",potencia, angulo);
     return std::make_shared<Bazuka>(id, potencia, angulo, false);
+}
+
+std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConMortero(uint8_t id, bool &was_closed)
+{
+    uint8_t potencia;
+    skt->recvall(&potencia, sizeof(potencia), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("%u %u \n",potencia, angulo);
+    return std::make_shared<Mortero>(id, potencia, angulo, false);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirParametrosDeLaPartida(bool &was_closed)
@@ -528,6 +577,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return recibirParametrosDeLaPartida(was_closed);
     else if (code == BAZUKA_CODE)
         return recibirAtaqueConBazuka(id, was_closed);
+    else if (code == MORTERO_CODE)
+        return recibirAtaqueConMortero(id, was_closed);
     else if (code == DINAMITA_CODE)
         return recibirAtaqueConDinamita(id, was_closed);
     else if (code == TELETRANSPORTAR_CODE)

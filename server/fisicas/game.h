@@ -24,6 +24,9 @@
 #include "holy_grenade.h"
 #include "dynamite.h"
 #include "air_strike_rocket.h"
+#include "red_grenade.h"
+#include "red_grenade_fragment.h"
+#include "mortero_rocket.h"
 #include "entity.h"
 
 
@@ -35,7 +38,7 @@ private:
     Broadcaster &broadcaster;
     std::map<std::string, int> config;
     World world;
-    //b2Body *body_w;
+    
     std::vector<uint8_t> idPlayers;
     std::vector<Player> players;
     std::chrono::steady_clock::time_point begin;
@@ -62,14 +65,17 @@ private:
     void mapa_puente();
 
 public:
-    //GreenGrenade *greenGrenade = new GreenGrenade(&world.world, -100, -100, 100);
+    
     GreenGrenade *greenGrenade = NULL;
     BazookaRocket *bazookaRocket = NULL;
+    MorteroRocket *morteroRocket = NULL;
     Banana *banana = NULL;
     HolyGrenade *holyGrenade = NULL;
     Dynamite *dynamite = NULL;
+    RedGrenade *redGrenade = NULL;
+    std::vector<RedGrenadeFragment*> redGrenadeFragments;
     std::list<AirStrikeRocket*> airStrike;
-    //AirStrikeRocket *airStrikeRocket = NULL;
+
     int idTurn;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
@@ -92,6 +98,7 @@ public:
     void broadcast();
     void createPlayers();
     void throwGreenGrenade(float angle, int power, int timeToExplotion);
+    void throwRedGrenade(float angle, int power, int timeToExplotion);
     void shootHolyGrenade(float angle, int power, int timeToExplotion);
     void shootBanana(float angle, int power, int timeToExplotion);
     void shootDynamite(int timeToExplotion);
@@ -101,6 +108,7 @@ public:
     bool anyAirStrikeRocket();
     bool anyWormMoving();
     void shootBazooka(float angle, int power);
+    void shootMortero(float angle, int power);
     ~Game();
 };
 #endif

@@ -260,6 +260,14 @@ void Game::updateBombs() {
     if (dynamite != NULL) {
         dynamite->update();
     }
+    if (redGrenade != NULL) {
+        redGrenade->update();
+    }
+    if (morteroRocket != NULL) {
+        if (not morteroRocket->exploded) {
+            morteroRocket->updateAngle();
+        }
+    }
 }
 
 void Game::update()
@@ -286,11 +294,16 @@ bool Game::anyAirStrikeRocket() {
 
 bool Game::hayBombas() {
     if (greenGrenade != NULL || banana != NULL || dynamite != NULL || 
-        bazookaRocket != NULL || holyGrenade != NULL) {
+        bazookaRocket != NULL || holyGrenade != NULL || redGrenade != NULL || morteroRocket != NULL) {
         return true;
     }
     for (AirStrikeRocket *rocket : airStrike) {
         if (rocket != NULL) {
+            return true;
+        }
+    }
+    for (RedGrenadeFragment *fragment : redGrenadeFragments) {
+        if (fragment != NULL) {
             return true;
         }
     }
@@ -342,6 +355,25 @@ void Game::sendWorms()
                 greenGrenade = NULL;
             }
         }
+
+        if (redGrenade != NULL) {
+            std::shared_ptr<GranadaRoja> granadaRoja = std::make_shared<GranadaRoja>((uint16_t)(redGrenade->getXCoordinate() * 100), (uint16_t)(redGrenade->getYCoordinate() * 100), (uint8_t)(redGrenade->getAngle()), redGrenade->exploded);
+            proyectiles.push_back(granadaRoja);
+
+            if (redGrenade->exploded) {
+                
+                float x = redGrenade->getXCoordinate();
+                float y = redGrenade->getYCoordinate();
+                Direction direction;
+                for (int i = 0; i < 6; i++) {
+                    redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
+                    direction = (i < 3) ? LEFT : RIGHT;
+                    redGrenadeFragments[i]->shoot(direction, 30*i, 4);
+                }
+                redGrenade = NULL;
+                // falta enviar los fragmentos
+            }
+        }
         
         if (bazookaRocket != NULL) {
             std::shared_ptr<Bazuka> bazooka = std::make_shared<Bazuka>((uint16_t)(bazookaRocket->getXCoordinate() * 100), (uint16_t)(bazookaRocket->getYCoordinate() * 100), (uint16_t)(bazookaRocket->getAngle()), bazookaRocket->dir, bazookaRocket->exploded);
@@ -377,6 +409,13 @@ void Game::sendWorms()
             }
         }
         
+        if (morteroRocket != NULL) {
+            std::shared_ptr<Mortero> mortero = std::make_shared<Mortero>((uint16_t)(morteroRocket->getXCoordinate() * 100), (uint16_t)(morteroRocket->getYCoordinate() * 100), (uint16_t)(morteroRocket->getAngle()), morteroRocket->dir, morteroRocket->exploded);
+            proyectiles.push_back(mortero);
+            if (morteroRocket->exploded) {
+                morteroRocket = NULL;
+            }
+        }
 
         
         int id_proyectil = 1;
@@ -481,6 +520,21 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
     wormAttacked = true;
 }
 
+void Game::throwRedGrenade(float angle, int power, int timeToExplotion) {
+    if (wormAttacked) return;
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
+    Worm *actualWorm = world.getWormsById()[idActualWorm];
+    redGrenade = new RedGrenade(&world.world, actualWorm->getXCoordinate(), 
+                                    actualWorm->getYCoordinate(),
+                                    timeToExplotion, config);
+    Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
+    redGrenade->shoot(direction, angle, power);
+
+    timeOfAttack = std::chrono::steady_clock::now();
+    wormAttacked = true;
+}
+
+
 
 void Game::shootBazooka(float angle, int power) {
     if (wormAttacked) return;
@@ -490,6 +544,19 @@ void Game::shootBazooka(float angle, int power) {
                                     actualWorm->getYCoordinate(), angle, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     bazookaRocket->shoot(direction, angle, power);
+
+    timeOfAttack = std::chrono::steady_clock::now();
+    wormAttacked = true;
+}
+
+void Game::shootMortero(float angle, int power) {
+    if (wormAttacked) return;
+    int idActualWorm = players[indexOfActualPlayer].getActualWormId();
+    Worm *actualWorm = world.getWormsById()[idActualWorm];
+    morteroRocket = new MorteroRocket(&world.world, actualWorm->getXCoordinate(), 
+                                    actualWorm->getYCoordinate(), angle, config);
+    Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
+    morteroRocket->shoot(direction, angle, power);
 
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
@@ -611,6 +678,14 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
         std::shared_ptr<Misil> misil = std::dynamic_pointer_cast<Misil>(dto);
         std::cout << "game-> ataque aereo x = " << (int)misil->x_pos() << ", y = " << (int)misil->y_pos() << "\n";
         shootAirStrike((float)misil->x_pos() / 100.0f, (float) misil->y_pos() / 100.0f);
+    }
+    else if (code == GRANADA_ROJA_CODE) {
+        std::shared_ptr<GranadaRoja> grenade = std::dynamic_pointer_cast<GranadaRoja>(dto);
+        throwRedGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia(), grenade->get_tiempo());
+    }
+    else if (code == MORTERO_CODE) {
+        std::shared_ptr<Mortero> mortero = std::dynamic_pointer_cast<Mortero>(dto);
+        shootMortero(mortero->get_angulo() * 3.14f / 180.0f, mortero->get_potencia());
     }
 }
 

@@ -21,7 +21,10 @@ const uint8_t DINAMITA_CODE = 16;
 const uint8_t TELETRANSPORTAR_CODE = 17;
 const uint8_t ATAQUE_AEREO_CODE = 18;
 const uint8_t MISIL_CODE = 19;
-const uint8_t PROYECTILES_CODE = 20;
+const uint8_t GRANADA_ROJA_CODE = 20;
+const uint8_t MORTERO_CODE = 21;
+const uint8_t PROYECTILES_CODE = 22;
+
 
 const int MOVIENDOSE = 0;
 const int SALTANDO_ADELANTE = 1;
