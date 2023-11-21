@@ -16,7 +16,7 @@ void Potencia::update() {
     }
 }
 
-void Potencia::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda, int angulo) {
+void Potencia::render(SDL2pp::Renderer &renderer, float x, float y, int direccion, int angulo) {
     
     int radio = 15;
 
@@ -25,7 +25,7 @@ void Potencia::render(SDL2pp::Renderer &renderer, float x, float y, bool mirando
         renderer.Copy(
             this->texture,
             SDL2pp::Rect(0, (this->size) * i, this->size, this->size),
-            SDL2pp::Rect(x + ((mirandoIzquierda ? -radio : radio) * cos(angulo * (M_PI / 180))), 
+            SDL2pp::Rect(x + ((direccion ? radio : -radio) * cos(angulo * (M_PI / 180))), 
                          y - (radio * sin(angulo * (M_PI / 180))), this->size, this->size)
         );
 

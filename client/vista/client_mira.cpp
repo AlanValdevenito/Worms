@@ -10,12 +10,12 @@ Mira::Mira(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp
                                         size(this->texture.GetWidth()), 
                                         angulo(0) {}
 
-void Mira::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda) {
+void Mira::render(SDL2pp::Renderer &renderer, float x, float y, int direccion) {
 
     renderer.Copy(
         texture,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(x + OFFSET + ((mirandoIzquierda ? -RADIO : RADIO) * cos(this->angulo * (M_PI / 180))), 
+        SDL2pp::Rect(x + OFFSET + ((direccion ? RADIO : -RADIO) * cos(this->angulo * (M_PI / 180))), 
                         y + OFFSET - (RADIO * sin(this->angulo * (M_PI / 180))), this->size, this->size)
     );
 }

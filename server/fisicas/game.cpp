@@ -85,8 +85,8 @@ void Game::mapa_jaula() {
     world.addBeam(25.5f, 14, 90, LONG);
 
     world.addWorm(4, 10);
-    // world.addWorm(22, 10);
-    // world.addWorm(10, 10);
+    world.addWorm(22, 10);
+    world.addWorm(10, 10);
     world.addWorm(15, 10);
 }
 
@@ -188,7 +188,9 @@ void Game::passTurn() {
             indexOfActualPlayer++;
         }
         idTurn = idPlayers[indexOfActualPlayer];
+        std::cout << "En Gamme::passTurn antes del llamado a changeActualWorm" << std::endl;
         players[indexOfActualPlayer].changeActualWorm();
+        std::cout << "En Gamme::passTurn despues del llamado a changeActualWorm" << std::endl;
         actualWormId = players[indexOfActualPlayer].actualWormId;
         world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
     }
@@ -213,21 +215,41 @@ void Game::updateWorms() {
         //std::cout << "worm x = " << worm->getXCoordinate() << "\n";
         if (not worm->isMoving() && worm->getHp() == 0 && worm->is_alive) {
             worm->is_alive = false;
-            std::cout << "murio el worm de id " << (int)worm->getId() << "\n";
+            begin = std::chrono::steady_clock::now();
+
             players[worm->playerId - 1].numberOfAliveWorms--;
             players[worm->playerId - 1].markWormAsDead(worm->getId());
+            
+            
         }
         if (not world.anyMovement()) {
             worm->makeDamage();
+            if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive) {
+                // cambio de turno
+                players[worm->playerId - 1].markWormAsDead(worm->getId());
+                if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
+                    indexOfActualPlayer = 0;
+                } else {
+                    indexOfActualPlayer++;
+                }
+                idTurn = idPlayers[indexOfActualPlayer];
+                std::cout << "updateWorms antes de changeActualWorm\n";
+;                players[indexOfActualPlayer].changeActualWorm();
+                std::cout << "updateWorms antes de changeActualWorm\n";
+                actualWormId = players[indexOfActualPlayer].actualWormId;
+                world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+                std::cout << "murio el worm de id " << (int)worm->getId() << "\n";
+                continue;
+            }
         }
         if (worm->numberOfContacts == 0) {
             if (worm->getYCoordinate() > worm->highestYCoordinateReached) {
                 worm->highestYCoordinateReached = worm->getYCoordinate();
             }
         }
-        if (worm->getYCoordinate() <= 0) {
+        /*if (worm->getYCoordinate() <= 0) {
             worm->takeDamage(worm->getHp());
-        }
+        }*/
         if (worm->jumpTimeout > 0) worm->jumpTimeout--;
     }
 }
@@ -279,7 +301,9 @@ void Game::updateBombs() {
 void Game::update()
 {   
     updateWorms();
+    std::cout << "worms updated\n";
     updatePlayers();
+    std::cout << "players updated\n";
     updateBombs();
     sendWorms();
     passTurn();
@@ -322,7 +346,7 @@ void Game::sendWorms()
     std::vector<std::shared_ptr<Gusano>> vectorGusanos;
     for (Worm *w : world.getWorms())
     {   
-        if (w->is_alive || w->isMoving()) {
+        if (w->is_alive) {
             //std::cout << "sendWorms(), w->getHp() = " << (int)w->getHp() << "\n";
             std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
                                                     (int)(w->getXCoordinate() * 100),
@@ -330,7 +354,8 @@ void Game::sendWorms()
                                                     w->getHp(),
                                                     w->getTeamNumber(),
                                                     w->getState(),
-                                                    w->getWeapon()
+                                                    w->getWeapon(),
+                                                    w->getDirection()
                                                     );
             vectorGusanos.push_back(g);
         }
@@ -497,7 +522,6 @@ void Game::jumpWorm(uint8_t direction) {
     } else {
         world.getWormsById()[idActualWorm]->jumpBackward();
     }
-    
 }
 
 void Game::batWorm(int angle) {

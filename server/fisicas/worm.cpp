@@ -9,7 +9,8 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 												speed(config["wormSpeed"]),
 												facingRight(false), 
 												is_alive(true), 
-												isRunning(false)
+												isRunning(false),
+												direction(LEFT)
 												{
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -86,19 +87,27 @@ uint8_t Worm::getId()
 
 void Worm::moveLeft() {
 	if (numberOfContacts == 0) return;
+	if (actualWeapon == NO_WEAPON) {
+		isRunning = true;
+		body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
+		state = MOVING;
+	}
 	facingRight = false;
-	isRunning = true;
-	body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
-	state = MOVING;
+	direction = LEFT;
 }
 
 void Worm::moveRight()
 {	
 	if (numberOfContacts == 0) return;
+	// si no tiene arma, que se mueva
+	// si tiene arma, cambia la direccion a la derecha pero no se mueve
+	if (actualWeapon == NO_WEAPON) {
+		isRunning = true;
+		body->SetLinearVelocity(b2Vec2(speed, 0.0f));
+		state = MOVING;
+	}
 	facingRight = true;
-	isRunning = true;
-    body->SetLinearVelocity(b2Vec2(speed, 0.0f));
-	state = MOVING;
+	direction = RIGHT;
 }
 
 void Worm::jump() {
@@ -223,6 +232,10 @@ void Worm::equipWeapon(uint8_t weapon) {
 
 uint8_t Worm::getWeapon() {
 	return actualWeapon;
+}
+
+uint8_t Worm::getDirection() {
+	return direction;
 }
 
 void Worm::endContact() {

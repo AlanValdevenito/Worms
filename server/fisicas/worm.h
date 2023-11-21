@@ -15,8 +15,10 @@ const int JUMPING_BACKWARD = 2;
 const int EQUIPING_WEAPON = 3;
 const int AIMING = 4;
 const int DEAD = 5;
-
 const int NO_WEAPON = 10;
+
+
+
 /*const int BATE = 7;
 const int GRANADA_VERDE = 2;
 const int BAZOOKA = 0;
@@ -50,6 +52,7 @@ public:
     float highestYCoordinateReached;
     int jumpTimeout = 0;
     int actualWeapon = NO_WEAPON;
+    uint8_t direction;
     Worm(b2World *b2world, float x, float y, uint8_t id, std::map<std::string, int>& config);
     float getXCoordinate();
     float getYCoordinate();
@@ -69,6 +72,7 @@ public:
     void equipWeapon(uint8_t weapon);
     uint8_t getWeapon();
     uint8_t getTeamNumber();
+    uint8_t getDirection();
     void jump();
     void jumpBackward();
     void startContact() override;

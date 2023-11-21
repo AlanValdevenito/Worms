@@ -5,7 +5,7 @@ map: 1      # map puede tomar valores 1 o 2
             #        2 = mapa_rampa (vigas inclinadas)
             #        3 = mapa_puente
 worm:
-  hp: 100
+  hp: 10
   speed: 2
 
 

@@ -39,9 +39,9 @@ void Apuntado::decrementar_angulo() {
     }
 }
 
-void Apuntado::render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda) {
+void Apuntado::render(SDL2pp::Renderer &renderer, float x, float y, int direccion) {
 
-    SDL_RendererFlip flipType = mirandoIzquierda ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_RendererFlip flipType = direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
     renderer.Copy(
         *this->texture,
@@ -52,8 +52,8 @@ void Apuntado::render(SDL2pp::Renderer &renderer, float x, float y, bool mirando
         flipType
     );
 
-    this->mira.render(renderer, x, y, mirandoIzquierda);
-    this->potencia.render(renderer, x, y, mirandoIzquierda, this->mira.get_angulo());
+    this->mira.render(renderer, x, y, direccion);
+    this->potencia.render(renderer, x, y, direccion, this->mira.get_angulo());
 }
 
 /******************** GETTERS ********************/

@@ -17,7 +17,7 @@ public:
     Potencia(SDL2pp::Renderer &renderer);
 
     void update(); // Actualiza la animacion. 
-    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda, int angulo); // Renderiza la potencia.
+    void render(SDL2pp::Renderer &renderer, float x, float y, int direccion, int angulo); // Renderiza la potencia.
 
     int get_current_frame();
 

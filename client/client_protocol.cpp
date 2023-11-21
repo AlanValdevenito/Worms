@@ -165,7 +165,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("flag: %u\n",flag);
+    printf("flag: %u turno:%u cant: %u\n",flag, turno, cant);
 
     std::vector<std::shared_ptr<Gusano>> lista;
     for (int i = 0; i < cant; i++)
@@ -191,6 +191,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     uint8_t color;
     uint8_t estado;
     uint8_t arma;
+    uint8_t direccion;
 
     skt.recvall(&id, sizeof(id), &was_closed);
     if (was_closed)
@@ -215,9 +216,14 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("Cliente ---> id:%u   vida:%u color:%u estado:%u arma:%u\n", id, vida, color, estado, arma);
+    skt.recvall(&direccion, sizeof(direccion), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
 
-    return std::make_shared<Gusano>(id, x, y, vida, color, estado, arma);
+    // printf("Cliente ---> id:%u   vida:%u color:%u estado:%u arma:%u dir: %u\n", id, vida, color, estado, arma, direccion);
+    printf("id:%u\n", id);
+
+    return std::make_shared<Gusano>(id, x, y, vida, color, estado, arma, direccion);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_closed)

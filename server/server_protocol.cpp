@@ -96,6 +96,7 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint8_t color = g->get_color();
     uint8_t estado = g->get_estado();
     uint8_t arma = g->get_arma();
+    uint8_t direccion = g->get_direccion();
 
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
@@ -117,6 +118,10 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
         return false;
 
     skt->sendall(&(arma), sizeof(arma), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(direccion), sizeof(direccion), &was_closed);
     if (was_closed)
         return false;
 

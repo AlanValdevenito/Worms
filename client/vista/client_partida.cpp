@@ -159,7 +159,7 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
         // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
+        this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
     }
 
     camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
@@ -222,30 +222,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
-
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->mirar_derecha();
-                
-                } else {
-                    this->worms[this->id_gusano_actual]->mirar_derecha();
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
-                    cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
-                } 
-
+                cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 break;
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
-
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->mirar_izquierda();
-                
-                } else {
-                    this->worms[this->id_gusano_actual]->mirar_izquierda();
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
-                    cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
-                } 
-
+                cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 break;
 
             // Si se presiona la flecha hacia ariba el gusano direcciona su arma
@@ -609,20 +591,45 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
     std::shared_ptr<Gusanos> gusanos  = std::dynamic_pointer_cast<Gusanos>(dto);
 
+    /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/
+
+    int id_gusano_siguiente = gusanos->get_gusano_de_turno();
+
+    if (this->id_gusano_actual != id_gusano_siguiente) {
+        this->worms[this->id_gusano_actual]->desactivar_turno(); // Le aviso al Worm del turno anterior que ya no es mas su turno
+        this->id_gusano_actual = id_gusano_siguiente;
+        this->worms[this->id_gusano_actual]->activar_turno(); // Le aviso al Worm del turno actual que es su turno
+        this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
+    }
+
+    /***** ACTUALIZAMOS LA POSICION DE CADA WORM *****/
+
+    int cantidad = gusanos->cantidad();
+    for (int i = 0; i < cantidad; i++) {
+        std::shared_ptr<Gusano> gusano = gusanos->popGusano(i);
+
+        int nuevoEstado = (int) gusano->get_estado();
+        int tipoDeArma = (int) gusano->get_arma();
+
+        if (nuevoEstado == MUERTO) {
+            this->worms.erase(gusano->get_id());
+            continue;
+        }
+
+        float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion());
+
+        if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
+            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        }
+
+        else if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (tipoDeArma == 10) && (this->worms[gusano->get_id()]->get_estado() == APUNTANDO)) {
+            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        }
+    }
+
     /***** ACTUALIZAMOS LA POSICION DEL PROYECTIL (SI ES QUE HAY) *****/
-
-    /*this->worms[this->id_gusano_actual]->set_flag_proyectil((int) gusanos->get_flag_proyectil());
-
-    if (this->worms[this->id_gusano_actual]->get_flag_proyectil()) {
-        std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
-        std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(0);
-        
-        // std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
-
-        float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
-        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-        this->worms[this->id_gusano_actual]->update_proyectil(0, nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
-    }*/
     
     int flag = (int) gusanos->get_flag_proyectil();
 
@@ -646,44 +653,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         }
 
         // std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;
-    }
-
-    /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/
-
-    int id_gusano_siguiente = gusanos->get_gusano_de_turno();
-
-    if (this->id_gusano_actual != id_gusano_siguiente) {
-        this->worms[this->id_gusano_actual]->desactivar_turno(); // Le aviso al Worm del turno anterior que ya no es mas su turno
-        this->id_gusano_actual = id_gusano_siguiente;
-        this->worms[this->id_gusano_actual]->activar_turno(); // Le aviso al Worm del turno actual que es su turno
-        this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
-    }
-
-    /***** ACTUALIZAMOS LA POSICION DE CADA WORM *****/
-
-    int cantidad = gusanos->cantidad();
-    for (int i = 0; i < cantidad; i++) {
-        std::shared_ptr<Gusano> gusano = gusanos->popGusano(i);
-
-        int nuevoEstado = (int) gusano->get_estado();
-        int tipoDeArma = (int) gusano->get_arma();
-
-        // if (nuevoEstado == MUERTO) {
-        //     this->worms.erase(gusano->get_id());
-        //     continue;
-        // }
-
-        float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
-        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida());
-
-        if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
-            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
-        }
-
-        else if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (tipoDeArma == 10) && (this->worms[gusano->get_id()]->get_estado() == APUNTANDO)) {
-            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
-        }
     }
 
     /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/

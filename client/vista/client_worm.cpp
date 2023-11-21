@@ -3,16 +3,19 @@
 #define ANCHO_SPRITE 60
 #define ALTO_SPRITE 60
 
+#define DERECHA 0
+#define IZQUIERDA 1
+
 #define OFFSET 30 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                   // tienen el (0,0) de los cuerpos en el centro
 
-Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
+Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida, int direccion): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
                                                                                           estado(MOVIENDOSE),
                                                                                           x(x), 
                                                                                           y(y), 
                                                                                           vida(vida),
-                                                                                          turno(false),
-                                                                                          mirandoIzquierda(true), 
+                                                                                          direccion(direccion),
+                                                                                          turno(false), 
                                                                                           color(color),
                                                                                           configuraciones(YAML::LoadFile("/configuracion.yml")) {}
 
@@ -20,7 +23,7 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, i
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
-void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
+void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDireccion)
 {
 
     if (this->estado == EQUIPANDO_ARMA) {
@@ -32,18 +35,21 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida)
 
         this->animacion.update(it);
 
+
         if (nuevoX > this->x) {
-            mirar_derecha();
+            // mirar_derecha();
         
         } else if (nuevoX < this->x) {
-            mirar_izquierda();
+            // mirar_izquierda();
         }
 
         this->x = nuevoX;
         this->y = nuevoY;
         
     }
+
     this->vida = nuevaVida;
+    this->direccion = nuevaDireccion;
 }
 
 void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
@@ -154,12 +160,12 @@ void Worm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
 
 void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
 {
-    SDL_RendererFlip flip = this->mirandoIzquierda ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+    SDL_RendererFlip flip = this->direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
     if (this->estado == APUNTANDO) {
         int posicionX = this->turno ? (camaraCentroX - OFFSET) : (x - OFFSET - camaraLimiteIzquierdo);
         int posicionY = this->turno ? (y - OFFSET - camaraLimiteSuperior) : (y - OFFSET - camaraLimiteSuperior);
-        this->arma->render(renderer, posicionX, posicionY, this->mirandoIzquierda);
+        this->arma->render(renderer, posicionX, posicionY, this->direccion);
 
     } else {
         this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
@@ -218,16 +224,6 @@ void Worm::activar_turno() {
     this->turno = true;
 }
 
-/******************** DIRECCION ********************/
-
-void Worm::mirar_derecha() {
-    this->mirandoIzquierda = false;
-}
-
-void Worm::mirar_izquierda() {
-    this->mirandoIzquierda = true;
-}
-
 /******************** ARMA ********************/
 
 int Worm::get_tipo_de_arma() {
@@ -237,15 +233,6 @@ int Worm::get_tipo_de_arma() {
 /******************** PROYECTIL ********************/
 
 void Worm::update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado) {
-    
-    /*if (this->arma) {
-        this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, 0, id);
-    }*/
-
-    // if (not this->arma) {
-    //     this->arma = std::make_shared<AnimacionGranadaVerde>(renderer);
-    // }
-
     this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, 0, id);
 }
 
