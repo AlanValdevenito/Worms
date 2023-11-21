@@ -108,7 +108,8 @@ void Worm::moveRight()
 }
 
 void Worm::jump() {
-	if (numberOfContacts == 0) return;
+	if (numberOfContacts == 0 || jumpTimeout > 0) return;
+	std::cout << "Worm::jump(), number of contacts > 0\n";
 	float xComponent; float yComponent;
 	if (facingRight) {
 		xComponent = 2.0f;
@@ -118,6 +119,7 @@ void Worm::jump() {
 	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 	state = JUMPING_FORWARD;
+	jumpTimeout = 5;
 }
 
 void Worm::jumpBackward() {

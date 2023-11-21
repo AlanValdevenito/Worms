@@ -36,7 +36,7 @@ public:
     uint8_t playerId = -1;
     EntityType entityType = WORM;
     float highestYCoordinateReached;
-    
+    int jumpTimeout = 0;
     
     Worm(b2World *b2world, float x, float y, uint8_t id, std::map<std::string, int>& config);
     float getXCoordinate();

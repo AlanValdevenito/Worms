@@ -149,7 +149,7 @@ void Game::run()
             //     stop();
             //     broadcaster.deleteAllQueues();
             // }
-            printf("antes de execute %u\n",dto->return_code());
+            //printf("antes de execute %u\n",dto->return_code());
             executeCommand(dto);
         }
         update();
@@ -223,6 +223,7 @@ void Game::updateWorms() {
         if (worm->getYCoordinate() <= 0) {
             worm->takeDamage(worm->getHp());
         }
+        if (worm->jumpTimeout > 0) worm->jumpTimeout--;
     }
 }
 
@@ -634,7 +635,7 @@ void Game::shootAirStrike(float x, float y) {
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
     uint8_t clientId = dto->get_cliente_id();
-    std::cout << "clientId = " << (int)clientId << "\n";
+    //std::cout << "clientId = " << (int)clientId << "\n";
     if (clientId != idTurn) return;
     uint8_t code = dto->return_code();
     //printf("codigo mate %u\n",code);
