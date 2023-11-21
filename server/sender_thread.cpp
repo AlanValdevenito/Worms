@@ -27,6 +27,7 @@ void Sender::run()
 
 bool Sender::send(std::shared_ptr<Dto> d)
 {
+    //printf("codigo sender: %u\n", d->return_code());
 
     if (d->return_code() == CLIENTE_ID_CODE)
         return protocol.enviarId(std::dynamic_pointer_cast<ClienteId>(d), was_closed);
@@ -42,8 +43,8 @@ bool Sender::send(std::shared_ptr<Dto> d)
         return protocol.enviarIniciarPartida(d, was_closed);
     else if (d->return_code() == FINALIZAR_CODE)
         return protocol.enviarFinalizarPartida(d, was_closed);
-    else if (d->return_code() == GRANADA_VERDE_CODE)
-        return protocol.enviarTrayectoriaDeGranadaVerde(std::dynamic_pointer_cast<GranadaVerde>(d), was_closed);
+    else if (d->return_code() == PROYECTILES_CODE)
+        return protocol.enviarProyectiles(std::dynamic_pointer_cast<Proyectiles>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

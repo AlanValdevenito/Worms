@@ -45,8 +45,10 @@ include_directories(common/Dtos)
 include_directories(common)
 include_directories(client)
 include_directories(client/vista)
+include_directories(client/vista/armas)
 include_directories(client/vista/data)
 include_directories(server)
+include_directories(server/fisicas)
 
 # ...
 add_subdirectory(gtest)
@@ -57,6 +59,7 @@ add_subdirectory(gtest)
 find_package(Qt5Widgets REQUIRED)
 find_package(SDL2pp REQUIRED)
 find_package(box2d REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 # Esta macro toma cada uno los parámetros y ejecuta *uic* sobre ellos
 # La aplicacion uic genera headers con la definición de los widgets
@@ -74,10 +77,13 @@ set(CMAKE_AUTORCC ON)
 # Agregamos una definicion de preprocesador al proyecto. DEfinimos la macro llamada "DATA_PATH" que apunta
 # al directorio "data" en el directorio fuente del proyecto.
 add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/client/vista/data")
+# Agregamos el YAML
+configure_file(configuracion.yml ${CMAKE_CURRENT_BINATY_DIR}/configuracion.yml COPYONLY)
 # Incluimos los directorios de encabezado necesarios.
 # EN este caso, incluimos los directorios de encabezado de SDL2pp, que se definen en "SDL2PP_INCLUDE_DIRS"
 include_directories(${SDL2PP_INCLUDE_DIRS})
 include_directories(${PROJECT_BINARY_DIR}) # Para Qt
+include_directories(${YAML_CPP_INCLUDE_DIR}) # Para YAML
 
 # Se utilizan para buscar archivos y almacenarlos en variables. 
 # Se buscan archivos con extensiones .cpp y .h en los directorios common, client y server, y se almacenan en las variables correspondientes.
@@ -91,15 +97,20 @@ file(GLOB CLIENT_SOURCES client/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS client/*.h)
 file(GLOB CLIENT_SOURCES_VISTA client/vista/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS_VISTA client/vista/*.h)
+file(GLOB CLIENT_SOURCES_ARMAS client/vista/armas/*.cpp *.$(extension))
+file(GLOB CLIENT_HEADERS_ARMAS client/vista/armas/*.h)
 
 file(GLOB SERVER_SOURCES server/*.cpp *.$(extension))
 file(GLOB SERVER_HEADERS server/*.h)
 
+file(GLOB FISICAS_SOURCES server/fisicas/*.cpp *.$(extension))
+file(GLOB FISICAS_HEADERS server/fisicas/*.h)
+
 # Define los ejecutables que se compilarán. 
 # Se utilizan las variables que contienen las listas de archivos .cpp y .h en los directorios common, client y server para definir los objetivos.
-add_executable(client ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} )
-add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${SERVER_SOURCES})
+add_executable(client ${CLIENT_SOURCES_ARMAS} ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_ARMAS} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} )
+add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${FISICAS_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${SERVER_SOURCES} ${FISICAS_SOURCES})
 
 # Enlaza las bibliotecas a los ejecutables. En este caso, se enlazan las bibliotecas definidas en LINK_LIBS.
-target_link_libraries(client ${LINK_LIBS} SDL2pp::SDL2pp Qt5::Widgets Qt5::Core)
-target_link_libraries(server ${LINK_LIBS} box2d)
+target_link_libraries(client ${LINK_LIBS} SDL2pp::SDL2pp Qt5::Widgets Qt5::Core yaml-cpp)
+target_link_libraries(server ${LINK_LIBS} box2d yaml-cpp)

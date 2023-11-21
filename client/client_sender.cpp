@@ -37,11 +37,27 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
     else if (d->return_code() == FINALIZAR_CODE)
         return protocol.enviarFinDePartida(d, was_closed);
     else if (d->return_code() == SALTAR_CODE)
-        return protocol.saltar(d, was_closed);
+        return protocol.saltar(std::dynamic_pointer_cast<Saltar>(d), was_closed);
     else if (d->return_code() == NUEVA_PARTIDA_CODE)
         return protocol.enviarNuevaPartida(std::dynamic_pointer_cast<NuevaPartida>(d), was_closed);
     else if (d->return_code() == GRANADA_VERDE_CODE)
         return protocol.enviarAtaqueConGranadaVerde(std::dynamic_pointer_cast<GranadaVerde>(d), was_closed);
+    else if (d->return_code() == BAZUKA_CODE)
+        return protocol.enviarAtaqueConBazuka(std::dynamic_pointer_cast<Bazuka>(d), was_closed);
+    else if (d->return_code() == GRANADA_BANANA_CODE)
+        return protocol.enviarAtaqueConGranadaBanana(std::dynamic_pointer_cast<GranadaBanana>(d), was_closed);
+    else if (d->return_code() == GRANADA_SANTA_CODE)
+        return protocol.enviarAtaqueConGranadaSanta(std::dynamic_pointer_cast<GranadaSanta>(d), was_closed);
+    else if (d->return_code() == GRANADA_ROJA_CODE)
+        return protocol.enviarAtaqueConGranadaRoja(std::dynamic_pointer_cast<GranadaRoja>(d), was_closed);
+    else if (d->return_code() == DINAMITA_CODE)
+        return protocol.enviarAtaqueConDinamita(std::dynamic_pointer_cast<Dinamita>(d), was_closed);
+    else if (d->return_code() == TELETRANSPORTAR_CODE)
+        return protocol.enviarTeletrasnportacion(std::dynamic_pointer_cast<Teletransportar>(d), was_closed);
+    else if (d->return_code() == ATAQUE_AEREO_CODE)
+        return protocol.enviarAtaqueaereo(std::dynamic_pointer_cast<Misil>(d), was_closed);
+    else if (d->return_code() == MORTERO_CODE)
+        return protocol.enviarAtaqueConMortero(std::dynamic_pointer_cast<Mortero>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

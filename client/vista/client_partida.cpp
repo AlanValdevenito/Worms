@@ -6,7 +6,7 @@
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
-Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 12), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
+Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 12), temporizador({60000, 0, 0, 0}), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
 
 int Partida::iniciar()
 {
@@ -19,6 +19,8 @@ int Partida::iniciar()
                   ANCHO_VENTANA, ALTO_VENTANA,
                   SDL_WINDOW_RESIZABLE);
 
+    // Window& SetIcon(const Surface& icon);
+
     Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     /******************** TEXTURAS Y COLORES ********************/
@@ -30,12 +32,12 @@ int Partida::iniciar()
 
     guardar_vigas();
     guardar_worms(renderer, colores);
-    this->granada = new Granada(renderer);
+
+    // this->proyectil = new AnimacionProyectil(renderer);
 
     /******************** GAME LOOP ********************/
 
-    this->tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
-    unsigned int cuentaRegresiva = 61000;        // 60 segundos en milisegundos
+    this->temporizador.tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
 
     auto t1 = SDL_GetTicks();
     int it = 0;            // Registro del numero de iteraciones
@@ -46,13 +48,13 @@ int Partida::iniciar()
     {
         t1 = SDL_GetTicks(); // Inicializamos 't1' con el tiempo actual en milisegundos
 
-        this->tiempoActual = SDL_GetTicks();
-        unsigned int tiempoTranscurrido = this->tiempoActual - this->tiempoInicial;
-        this->tiempoRestante = cuentaRegresiva - tiempoTranscurrido;
+        this->temporizador.tiempoActual = SDL_GetTicks();
+        unsigned int tiempoTranscurrido = this->temporizador.tiempoActual - this->temporizador.tiempoInicial;
+        this->temporizador.tiempoRestante = this->temporizador.cuentaRegresiva - tiempoTranscurrido;
 
-        if (tiempoTranscurrido > cuentaRegresiva)
+        if (tiempoTranscurrido > this->temporizador.cuentaRegresiva)
         {
-            this->tiempoInicial = this->tiempoActual;
+            this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
         }
 
         if (handleEvents(renderer))
@@ -160,7 +162,7 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
         this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
     }
 
-    camara.seguirWorm(*this->worms[this->id_gusano_actual]);
+    camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
 
     // delete dto;
 }
@@ -172,20 +174,23 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
     // Procesamiento de evento
     SDL_Event event;
 
-    std::string ruta;
-
     // Revisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
     while (SDL_PollEvent(&event))
     {
+        switch (event.type) {
 
-        // Si la ventana se cierra terminamos la ejecucion
-        if (event.type == SDL_QUIT)
-        {
-            return true;
-
-            // Si se hace click ...
+            // Si la ventana se cierra terminamos la ejecucion
+            case SDL_QUIT:
+                return true;
+            
+            case SDL_WINDOWEVENT:
+                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    this->camara.setDimensiones(renderer.GetOutputWidth(), renderer.GetOutputHeight());
+                }
         }
-        else if (event.type == SDL_MOUSEBUTTONDOWN)
+
+        // Si se hace click ...
+        if (event.type == SDL_MOUSEBUTTONDOWN)
         {
 
             switch (event.button.button)
@@ -193,12 +198,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se hace click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
-                std::cout << "Click derecho" << std::endl;
                 break;
 
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
-                std::cout << "Click izquierdo" << std::endl;
+                this->x = event.button.x;
+                this->y = renderer.GetOutputHeight() - event.button.y;
                 break;
             }
 
@@ -217,9 +222,13 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
-                this->worms[this->id_gusano_actual]->mirar_derecha();
 
-                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->mirar_derecha();
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->mirar_derecha();
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                     cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 } 
 
@@ -227,9 +236,13 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
-                this->worms[this->id_gusano_actual]->mirar_izquierda();
 
-                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->mirar_izquierda();
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->mirar_izquierda();
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                     cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 } 
 
@@ -237,50 +250,42 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se presiona la flecha hacia ariba el gusano direcciona su arma
             case SDLK_UP:
-
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->worms[this->id_gusano_actual]->aumentar_angulo();
-                }
-
+                this->worms[this->id_gusano_actual]->aumentar_angulo();
                 break;
 
             // Si se presiona la flecha hacia abajo el gusano direcciona su arma
             case SDLK_DOWN:
-
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->worms[this->id_gusano_actual]->decrementar_angulo();
-                }
-
+                this->worms[this->id_gusano_actual]->decrementar_angulo();
                 break;
 
             // Si se presiona la tecla de enter el gusano salta hacia adelante
             case SDLK_RETURN:
                 
-                if (not this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id));
+                if (this->worms[this->id_gusano_actual]->get_estado() != APUNTANDO) {
+                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id, SALTO_ADELANTE));
                 } 
                 
                 break;
 
             // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
             case SDLK_SPACE:
-
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->worms[this->id_gusano_actual]->aumentar_potencia();
-                }
-
+                this->worms[this->id_gusano_actual]->aumentar_potencia();
                 break;
 
-            // Si se presiona la tecla de retroceso el gusano cambia su direccion (se da la vuelta)
+            // Si se presiona la tecla de retroceso el gusano salta hacia atras
             case SDLK_BACKSPACE:
-                // ...
+
+                if (this->worms[this->id_gusano_actual]->get_estado() != APUNTANDO) {
+                    cliente.send_queue.push(std::make_shared<Saltar>(this->cliente.id, SALTO_ATRAS));
+                } 
+
                 break;
 
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_1:
                 
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->set_tiempo(1);
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->set_tiempo(1);
                 }
 
                 break;
@@ -288,8 +293,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_2:
                 
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->set_tiempo(2);
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->set_tiempo(2);
                 }
 
                 break;
@@ -297,8 +302,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_3:
                 
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->set_tiempo(3);
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->set_tiempo(3);
                 }
 
                 break;
@@ -306,8 +311,20 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_4:
 
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->granada->set_tiempo(4);
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->set_tiempo(4);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F7 el worm se equipa un arma
+            case SDLK_F1:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BATE);
                 }
 
                 break;
@@ -315,32 +332,119 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla de F2 el worm se equipa un arma
             case SDLK_F2:
 
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                 
                 } else {
-                    ruta = "/wgrnlnk.png";
-                    this->worms[this->id_gusano_actual]->equipar_arma(GRANADA_VERDE, ruta);
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_VERDE);
                 }
 
                 break;
 
-            // Si se presiona la tecla de F7 el worm se equipa un arma
-            case SDLK_F7:
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F3:
 
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
-                    this->worms[this->id_gusano_actual]->desequipar_arma();
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                 
                 } else {
-                    ruta = "/wbsblnk.png";
-                    this->worms[this->id_gusano_actual]->equipar_arma(BATE, ruta);
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BAZOOKA);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F4:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BANANA);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F5:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_SANTA);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F6:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, DINAMITA);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F7:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, TELETRANSPORTACION);
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F8:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                
+                } else {
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, ATAQUE_AEREO);
+                }
+
+                break;
+
+            }
+
+        }
+
+        // Si se suelta un click
+        else if (event.type == SDL_MOUSEBUTTONUP)
+        {
+
+            switch (event.button.button)
+            {
+
+            // Si se hace click derecho se muestra el menu de armas
+            case SDL_BUTTON_RIGHT:
+                std::cout << "Click derecho se suelta: " << std::endl;
+                break;
+
+            // Si se hace click izquierdo...
+            case SDL_BUTTON_LEFT:
+                std::cout << "Click izquierdo se suelta: " << std::endl;
+                
+                if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
+                    enviarAtaque();
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                 }
 
                 break;
             }
 
-            // Si se suelta alguna tecla...
+            // Si se presiona alguna tecla...
         }
+
+        // Si se suelta alguna tecla...
         else if (event.type == SDL_KEYUP)
         {
 
@@ -373,12 +477,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
 
-                if (this->worms[this->id_gusano_actual]->arma_equipada()) {
+                if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     enviarAtaque();
-                    this->worms[this->id_gusano_actual]->desequipar_arma();
-                    this->tiempoInicial = this->tiempoActual;
-
-                    this->granada->update(320, this->worms[this->id_gusano_actual]->get_y());
+                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                 }
                 
                 break;
@@ -406,67 +507,136 @@ void Partida::enviarAtaque() {
         cliente.send_queue.push(std::make_shared<Batear>(this->cliente.id, this->worms[this->id_gusano_actual]->get_angulo()));
     
     } else if (armaEquipada == GRANADA_VERDE) {
-        this->granada->lanzarGranada();
         cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->granada->get_tiempo()));
+                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+    
+    } else if (armaEquipada == BAZOOKA) {
+        cliente.send_queue.push(std::make_shared<Bazuka>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(), false));
+    
+    } else if (armaEquipada == BANANA) {
+        cliente.send_queue.push(std::make_shared<GranadaBanana>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(),
+                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+    
+    } else if (armaEquipada == GRANADA_SANTA) {
+        cliente.send_queue.push(std::make_shared<GranadaSanta>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(),
+                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+    
+    } else if (armaEquipada == DINAMITA) {
+        cliente.send_queue.push(std::make_shared<Dinamita>(this->cliente.id, this->worms[this->id_gusano_actual]->get_tiempo(), false));
+    
+    } else if (armaEquipada == TELETRANSPORTACION) {
+        int xCentimetros = metros_a_centimetros(pixeles_a_metros(this->x) + this->camara.getLimiteIzquierdo());
+        int yCentimetros = metros_a_centimetros(pixeles_a_metros(this->y) - this->camara.getLimiteSuperior());
+        cliente.send_queue.push(std::make_shared<Teletransportar>(this->cliente.id, xCentimetros, yCentimetros));
+    
+    } else if (armaEquipada == ATAQUE_AEREO) {
+        int xCentimetros = metros_a_centimetros(pixeles_a_metros(this->x) + this->camara.getLimiteIzquierdo());
+        int yCentimetros = metros_a_centimetros(pixeles_a_metros(this->y) - this->camara.getLimiteSuperior());
+        cliente.send_queue.push(std::make_shared<Misil>(this->cliente.id, xCentimetros, yCentimetros, false));
     
     } else {
         std::cerr << "El numero recibido no esta asociado a ningun arma\n";
     }
 }
 
-/******************** ACTUALIZACION Y RENDERIZADO ********************/
+/******************** ACTUALIZACION ********************/
 
 bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 {
-    // std::shared_ptr<Gusanos> dto = std::dynamic_pointer_cast<Gusanos>(cliente.recv_queue.pop());
-
-    std::shared_ptr<Dto> dead = cliente.recv_queue.pop();
+    float altura = renderer.GetOutputHeight();
+    std::shared_ptr<Dto> dto = cliente.recv_queue.pop();
     
-    if(not dead->is_alive())
+    if(not dto->is_alive())
         return false;
 
-    std::shared_ptr<Gusanos> dto  = std::dynamic_pointer_cast<Gusanos>(dead);
+    std::shared_ptr<Gusanos> gusanos  = std::dynamic_pointer_cast<Gusanos>(dto);
 
-    
-    int id_gusano_siguiente = dto->get_gusano_de_turno();
+    /***** ACTUALIZAMOS LA POSICION DEL PROYECTIL (SI ES QUE HAY) *****/
 
-    if (id_gusano_siguiente != this->id_gusano_actual) {
-        this->worms[this->id_gusano_actual]->cambiar_turno(); // Le aviso al Worm del turno anterior que ya no es mas su turno
-        this->id_gusano_actual = id_gusano_siguiente;
-        this->worms[this->id_gusano_actual]->turno_actual(); // Le aviso al Worm del turno actual que es su turno
-    
-    } else {
-        this->id_gusano_actual = id_gusano_siguiente;
-        this->worms[this->id_gusano_actual]->turno_actual(); // Le aviso al Worm del turno actual que es su turno
-    }
+    /*this->worms[this->id_gusano_actual]->set_flag_proyectil((int) gusanos->get_flag_proyectil());
 
-    float altura = renderer.GetOutputHeight();
-
-    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
-    // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
-    int cantidad = dto->cantidad();
-    for (int i = 0; i < cantidad; i++)
-    {
-        std::shared_ptr<Gusano> gusano = dto->popGusano(i);
-
-        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[gusano->get_id()]->update(it, metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos())), nuevoY, (int)gusano->get_vida());
-    }
-
-    this->granada->set_flag((int) dto->get_flag_proyectil());
-    if(this->granada->get_flag()) {
-        std::shared_ptr<GranadaVerde> granada = std::dynamic_pointer_cast<GranadaVerde>(cliente.recv_queue.pop());
+    if (this->worms[this->id_gusano_actual]->get_flag_proyectil()) {
+        std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
+        std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(0);
         
-        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)granada->y_pos()));
-        this->granada->update(metros_a_pixeles(centimetros_a_metros((int)granada->x_pos())), nuevoY);
+        // std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
+
+        float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
+        this->worms[this->id_gusano_actual]->update_proyectil(0, nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
+    }*/
+    
+    int flag = (int) gusanos->get_flag_proyectil();
+
+    std::cout << flag << std::endl;
+
+    if (flag) {
+        std::cout << "\nEntro a recibir proyectiles\n";
+        std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
+    
+        int cantidad = proyectiles->cantidad();
+        std::cout << "Cantidad de proyectiles: " << cantidad << std::endl;
+        for (int i = 0; i < cantidad; i++) {
+            std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(i);
+
+            std::cout << "Proyectil: " << (int) proyectil->get_id() << " " << (int) proyectil->get_exploto() << std::endl;
+
+            float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
+            float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
+            this->worms[this->id_gusano_actual]->update_proyectil(renderer, (int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
+        }
+
+        std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;
     }
 
-    camara.seguirWorm(*this->worms[this->id_gusano_actual]);
+    /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/
 
+    int id_gusano_siguiente = gusanos->get_gusano_de_turno();
+
+    if (this->id_gusano_actual != id_gusano_siguiente) {
+        this->worms[this->id_gusano_actual]->desactivar_turno(); // Le aviso al Worm del turno anterior que ya no es mas su turno
+        this->id_gusano_actual = id_gusano_siguiente;
+        this->worms[this->id_gusano_actual]->activar_turno(); // Le aviso al Worm del turno actual que es su turno
+        this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
+    }
+
+    /***** ACTUALIZAMOS LA POSICION DE CADA WORM *****/
+
+    int cantidad = gusanos->cantidad();
+    for (int i = 0; i < cantidad; i++) {
+        std::shared_ptr<Gusano> gusano = gusanos->popGusano(i);
+
+        int nuevoEstado = (int) gusano->get_estado();
+
+        // if (nuevoEstado == MUERTO) {
+        //     this->worms.erase(gusano->get_id());
+        //     continue;
+        // }
+
+        float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
+        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida());
+
+        if (this->worms[gusano->get_id()]->get_estado() != nuevoEstado) {
+
+            if ((this->worms[gusano->get_id()]->get_estado() != EQUIPANDO_ARMA) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
+                this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado);
+            }
+
+        }
+    }
+
+    /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/
+
+    camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
     return true;
 }
+
+/******************** RENDERIZADO ********************/
 
 void Partida::renderizar(SDL2pp::Renderer &renderer)
 {
@@ -498,24 +668,11 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-        if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), ancho, alto)) {
-            renderer.Copy(
-                *this->texturas[2],
-                Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x - ancho/2) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y - alto/2)),
-                metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
-        }
-    }
-
-    if((this->camara.comprobarRenderizado(this->granada->get_x() / 24, this->granada->get_y() / 24, 1, 1)) && (this->granada->seLanzoGranada())) {
-
-        if (this->granada->get_flag() == 1) {
-            this->granada->render(renderer, this->camara.getLimiteIzquierdo() * 24);
-
-        } else if (this->granada->get_flag() == 0) {
-            this->granada->explotar(renderer, this->camara.getLimiteIzquierdo() * 24);
-        }
-
+        renderer.Copy(
+            *this->texturas[2],
+            Rect(0, 0, 50, 50),
+            Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()) - 70, altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()) - 10,
+            metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
     }
 }
 
@@ -523,19 +680,13 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
     for (const auto &elemento : this->worms)
     {
-
-        if (elemento.first == this->id_gusano_actual) {
-            elemento.second->render(renderer);
-        
-        } else if (this->camara.comprobarRenderizado(elemento.second->get_x() / 24, elemento.second->get_y() / 24, 1, 1)) {
-            elemento.second->render_camara(renderer, this->camara.getLimiteIzquierdo() * 24);
-        }
+        elemento.second->render(renderer, this->camara, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
     }
 }
 
 void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
 {
-    int altura = renderer.GetOutputHeight(); // 480
+    int altura = renderer.GetOutputHeight();
 
     Rect borde(5, altura - 42, 65, 36);
     Color blanco(255, 255, 255, 255);
@@ -547,7 +698,7 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
     renderer.SetDrawColor(negro);
     renderer.FillRect(contenedor);
 
-    Surface surface = this->fuente.RenderText_Solid(std::to_string((int) (this->tiempoRestante * 0.001)), blanco);
+    Surface surface = this->fuente.RenderText_Solid(std::to_string((int) (this->temporizador.tiempoRestante * 0.001)), blanco);
     Texture texture(renderer, surface);
 
     Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
@@ -564,6 +715,16 @@ float Partida::metros_a_pixeles(float metros)
 float Partida::centimetros_a_metros(float centimetros)
 {
     return centimetros / 100;
+}
+
+float Partida::pixeles_a_metros(float pixeles)
+{
+    return pixeles / 24;
+}
+
+float Partida::metros_a_centimetros(float metros)
+{
+    return metros * 100;
 }
 
 /******************** MEMORIA ********************/

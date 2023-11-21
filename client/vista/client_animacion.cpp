@@ -7,27 +7,52 @@
 
 #include "client_animacion.h"
 
-Animation::Animation(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
-                                               currentFrame(0),
-                                               numFrames(this->texture.GetHeight() / this->texture.GetWidth()),
-                                               size(this->texture.GetWidth()) {
+Animation::Animation(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion): textura(textura),
+                                                                                       currentFrame(0),
+                                                                                       numFrames(this->textura->GetHeight() / this->textura->GetWidth()),
+                                                                                       size(this->textura->GetWidth()), repetirAnimacion(repetirAnimacion) {
     assert(this->numFrames > 0);
     assert(this->size > 0);
 }
 
 void Animation::update(int it) {
-    this->currentFrame = it;
-    this->currentFrame = this->currentFrame % this->numFrames; 
+
+    if (this->repetirAnimacion) {
+            this->currentFrame = it;
+            this->currentFrame = this->currentFrame % this->numFrames; 
+    
+    } else if (this->currentFrame < this->numFrames - 1) {
+        this->currentFrame++;
+    }
 }
 
-void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
-
+void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType, int angulo) {
     renderer.Copy(
-            texture,
+            *textura,
             SDL2pp::Rect(0, (this->size) * this->currentFrame, this->size, this->size),
             dst,
-            0.0,                // don't rotate
-            SDL2pp::NullOpt,    // rotation center - not needed
+            angulo,
+            SDL2pp::NullOpt,
             flipType
         );
+}
+
+void Animation::cambiar(std::shared_ptr<SDL2pp::Texture> nuevaTextura) {
+    this->textura = nuevaTextura;
+    this->currentFrame = 0;
+    this->numFrames = this->textura->GetHeight() / this->textura->GetWidth();
+    this->size = this->textura->GetWidth();
+    this->repetirAnimacion = true;
+}
+
+void Animation::no_repetir_animacion() {
+    this->repetirAnimacion = false;
+}
+
+bool Animation::completa() {
+    return (this->currentFrame == this->numFrames - 1);
+}
+
+void Animation::set_current_frame(int nuevoCurrentFrame) {
+    this->currentFrame = nuevoCurrentFrame;
 }

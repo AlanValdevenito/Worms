@@ -11,15 +11,22 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "client_camara.h"
-#include "client_granada.h"
 #include "client_worm.h"
 #include "client.h"
 #include "viga.h"
 #include "mover.h"
 #include "dto.h"
 
-const int BATE = 1;
-const int GRANADA_VERDE = 2;
+const int SALTO_ADELANTE = 0;
+const int SALTO_ATRAS = 1;
+
+struct Temporizador {
+    unsigned int cuentaRegresiva;
+
+    unsigned int tiempoInicial;
+    unsigned int tiempoActual;  
+    unsigned int tiempoRestante; 
+};
 
 using namespace SDL2pp;
 
@@ -32,20 +39,16 @@ private:
 
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
-    // std::vector<Granada> granadas;
-    Granada *granada; // Si no es un puntero le molesta ya que no lo inicializo
-    
     int id_gusano_actual;
-
-    unsigned int tiempoInicial;
-    unsigned int tiempoActual;  
-    unsigned int tiempoRestante; 
 
     std::map<int, SDL2pp::Texture *> texturas;
     std::map<int, SDL2pp::Color> colores;
     Font fuente;
     
+    Temporizador temporizador;
     Camara camara;
+
+    int x,y; // Enteros que almacenan la posicion del click en la ventana
 
 public:
     Partida(Client &cliente);
@@ -70,6 +73,8 @@ public:
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);
+    float pixeles_a_metros(float pixeles);
+    float metros_a_centimetros(float metros);
 
     void liberar_memoria();
 };

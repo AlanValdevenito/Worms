@@ -12,11 +12,12 @@ class Saltar : public Dto
 {
 private:
     uint8_t id_gusano;
+    uint8_t direccion;
 
 public:
-    Saltar(uint8_t id);
+    Saltar(uint8_t id, uint8_t direccion);
     ~Saltar();
     bool is_alive() override;
-    // uint8_t get_id();
+    uint8_t get_direccion();
 };
 #endif

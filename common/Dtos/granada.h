@@ -6,26 +6,28 @@
 #include <vector>
 
 #include "dto.h"
+#include "proyectil.h"
 #include "constantes.h"
 
-class GranadaVerde : public Dto
+// class GranadaVerde : public Dto
+class GranadaVerde : public Proyectil
 {
 private:
     uint8_t potencia;
-    uint8_t angulo;
-    uint8_t tiempo;
     uint16_t x;
     uint16_t y;
+    uint8_t angulo;
+    uint8_t tiempo;
 
 public:
-    GranadaVerde(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo);
-    GranadaVerde(uint16_t x, uint16_t y);
+    GranadaVerde(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo, bool exploto);
+    GranadaVerde(uint16_t x, uint16_t y, uint8_t angulo, bool exploto);
+    GranadaVerde(uint16_t x, uint16_t y, bool exploto);
     ~GranadaVerde();
-    bool is_alive() override;
-    uint8_t get_angulo();
-    uint8_t get_potencia();
-    uint8_t get_tiempo();
-    uint16_t x_pos();
-    uint16_t y_pos();
+    uint8_t get_angulo() override;
+    uint8_t get_potencia() override;
+    uint8_t get_tiempo() override;
+    uint16_t x_pos() override;
+    uint16_t y_pos() override;
 };
 #endif
