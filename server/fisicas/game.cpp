@@ -126,6 +126,7 @@ void Game::createPlayers() {
     }
 
     actualWormId = players[indexOfActualPlayer].actualWormId;
+    numberOfAlivePlayers = numberOfPlayers;
 }
 
 void Game::run()
@@ -176,23 +177,34 @@ void Game::passTurn() {
         // cuando al gusano se le termina el turno, le saco el arma.
         world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
         updateWorms();
+        updatePlayers();
         wormAttacked = false;
         
         
         std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
         std::cout << "turno actual = " << idTurn << "\n";
-        begin = std::chrono::steady_clock::now();
-        if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
-            indexOfActualPlayer = 0;
-        } else {
-            indexOfActualPlayer++;
+        
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
+                indexOfActualPlayer = 0;
+            } else {
+                indexOfActualPlayer++;
+            }
+            if (players[indexOfActualPlayer].isAlive) {
+                idTurn = idPlayers[indexOfActualPlayer];
+                players[indexOfActualPlayer].changeActualWorm();
+                actualWormId = players[indexOfActualPlayer].actualWormId;
+                world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+                begin = std::chrono::steady_clock::now();
+                return;
+            }
         }
-        idTurn = idPlayers[indexOfActualPlayer];
-        std::cout << "En Gamme::passTurn antes del llamado a changeActualWorm" << std::endl;
-        players[indexOfActualPlayer].changeActualWorm();
-        std::cout << "En Gamme::passTurn despues del llamado a changeActualWorm" << std::endl;
-        actualWormId = players[indexOfActualPlayer].actualWormId;
-        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+        // si no hay jugadores para elegir ==> cierro.
+        broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE,1));
+        broadcaster.deleteAllQueues(); // aviso a los demas que cierren
+        stop();
+        return;
+        
     }
 }
 
@@ -225,21 +237,24 @@ void Game::updateWorms() {
         if (not world.anyMovement()) {
             worm->makeDamage();
             if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive) {
-                // cambio de turno
                 players[worm->playerId - 1].markWormAsDead(worm->getId());
-                if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
-                    indexOfActualPlayer = 0;
-                } else {
-                    indexOfActualPlayer++;
+                // cambio de turno
+                
+                for (int i = 0; i < numberOfPlayers; i++) {
+                    if (indexOfActualPlayer == (int)idPlayers.size() - 1) {
+                        indexOfActualPlayer = 0;
+                    } else {
+                        indexOfActualPlayer++;
+                    }
+                    if (players[indexOfActualPlayer].isAlive) {
+                        idTurn = idPlayers[indexOfActualPlayer];
+                        players[indexOfActualPlayer].changeActualWorm();
+                        actualWormId = players[indexOfActualPlayer].actualWormId;
+                        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+                        begin = std::chrono::steady_clock::now();
+                        break;
+                    }
                 }
-                idTurn = idPlayers[indexOfActualPlayer];
-                std::cout << "updateWorms antes de changeActualWorm\n";
-;                players[indexOfActualPlayer].changeActualWorm();
-                std::cout << "updateWorms antes de changeActualWorm\n";
-                actualWormId = players[indexOfActualPlayer].actualWormId;
-                world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
-                std::cout << "murio el worm de id " << (int)worm->getId() << "\n";
-                continue;
             }
         }
         if (worm->numberOfContacts == 0) {
@@ -257,7 +272,13 @@ void Game::updateWorms() {
 void Game::updatePlayers() {
     // actualizo los players
     for (int i = 0; i < numberOfPlayers; i++) {
-        if (players[i].numberOfAliveWorms == 0) {
+        
+        if (players[i].numberOfAliveWorms == 0 && players[i].isAlive) {
+            players[i].isAlive = false;
+            numberOfAlivePlayers--;
+        }
+        if (numberOfAlivePlayers <= 1) {
+            std::cout << "updatePlayers():: No hay jugadores, cierro\n";
             broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE,1));
             broadcaster.deleteAllQueues(); // aviso a los demas que cierren
             stop();
@@ -303,6 +324,7 @@ void Game::update()
     updateWorms();
     std::cout << "worms updated\n";
     updatePlayers();
+    if (game_finished) return;
     std::cout << "players updated\n";
     updateBombs();
     sendWorms();

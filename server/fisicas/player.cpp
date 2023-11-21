@@ -7,7 +7,11 @@ Player::Player(int playerId, int teamNumber, std::vector<int> wormIds) :
     actualWormId(wormIds[0]),
     wormIds(wormIds),
     indexOfActualWorm(0),
-    numberOfAliveWorms((int)wormIds.size()) {}
+    numberOfAliveWorms((int)wormIds.size()) {
+        for (int wormId : wormIds) {
+            wormIsDeadById[wormId] = false;
+        }
+    }
 
 
 int Player::getId() {
@@ -19,24 +23,21 @@ int Player::getActualWormId() {
 }
 
 void Player::changeActualWorm() {
-    // std::cout << "Player::changeActualWorm()\n";
-
-    // std::cout << "wormIds = [";
-    // for (int i = 0; i < (int)wormIds.size(); i++) {
-        // std::cout << (int)wormIds[i] << ", ";
-    // }
-    // std::cout << "]\n";
-
-    if (indexOfActualWorm == (int)wormIds.size() - 1) {
-        indexOfActualWorm = 0;
-    } else {
-        indexOfActualWorm++;
+    std::cout << "wormIds = [";
+    for (int i = 0; i < (int)wormIds.size(); i++) {
+        std::cout << (int)wormIds[i] << ", ";
     }
-    actualWormId = wormIds[indexOfActualWorm];
-    for (int wormId : idsOfDeadWorms) {
-        if (wormId == actualWormId) changeActualWorm();
+    std::cout << "]\n";
+    std::cout << "Player::changeActualWorm, numberOfAliveWorms = " << numberOfAliveWorms << "\n";
+    for (int i = 0; i < (int)wormIds.size(); i++) {
+        if (indexOfActualWorm == (int)wormIds.size() - 1) {
+            indexOfActualWorm = 0;
+        } else {
+            indexOfActualWorm++;
+        }
+        actualWormId = wormIds[indexOfActualWorm];
+        if (not wormIsDeadById[actualWormId]) return;
     }
-    // std::cout << "actualWormId = " << actualWormId << "\n";
 }
 
 int Player::getTeamNumber() {
@@ -45,6 +46,5 @@ int Player::getTeamNumber() {
 
 
 void Player::markWormAsDead(int wormId) {
-    std::cout << "wormId " << wormId << " is dead\n";  
-    idsOfDeadWorms.push_back(wormId);
+    wormIsDeadById[wormId] = true;
 }
