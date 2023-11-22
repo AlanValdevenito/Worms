@@ -3,9 +3,6 @@
 #define ANCHO_SPRITE 60
 #define ALTO_SPRITE 60
 
-#define DERECHA 0
-#define IZQUIERDA 1
-
 #define OFFSET 30 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                   // tienen el (0,0) de los cuerpos en el centro
 
@@ -34,15 +31,6 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDi
     if ((nuevoX != this->x) || (nuevoY != this->y)) {
 
         this->animacion.update(it);
-
-
-        if (nuevoX > this->x) {
-            // mirar_derecha();
-        
-        } else if (nuevoX < this->x) {
-            // mirar_izquierda();
-        }
-
         this->x = nuevoX;
         this->y = nuevoY;
         
@@ -64,6 +52,7 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     else if (nuevoEstado == SALTANDO_ADELANTE) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wjump.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
+        this->animacion.no_repetir_animacion();
     }
 
     else if (nuevoEstado == SALTANDO_ATRAS) {

@@ -165,7 +165,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("flag: %u turno:%u cant: %u\n",flag, turno, cant);
+    // printf("flag: %u turno:%u cant: %u\n",flag, turno, cant);
 
     std::vector<std::shared_ptr<Gusano>> lista;
     for (int i = 0; i < cant; i++)
@@ -221,7 +221,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
         return std::make_shared<DeadDto>();
 
     // printf("Cliente ---> id:%u   vida:%u color:%u estado:%u arma:%u dir: %u\n", id, vida, color, estado, arma, direccion);
-    printf("id:%u\n", id);
+    // printf("id:%u\n", id);
 
     return std::make_shared<Gusano>(id, x, y, vida, color, estado, arma, direccion);
 }
@@ -245,7 +245,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_cl
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("Trayectoria ---> x:%u y:%u exploto: %u\n", x, y, exploto);
+    // printf("Trayectoria ---> x:%u y:%u exploto: %u\n", x, y, exploto);
 
     return std::make_shared<GranadaVerde>(x, y, angulo, exploto);
 }
@@ -683,7 +683,7 @@ bool ClientProtocol::enviarEquipadoDeArma(std::shared_ptr<EquiparArma> e, bool &
         return false;
 
     uint8_t arma = e->get_arma();
-    printf("Envio ---> arma:%u\n", arma);
+    // printf("Envio ---> arma:%u\n", arma);
     skt.sendall(&arma, sizeof(arma), &was_closed);
     if (was_closed)
         return false;

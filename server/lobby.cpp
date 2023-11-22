@@ -4,9 +4,9 @@
 Lobby::Lobby() : mapId(0), id_cliente(0)
 {
     Partida *p1 = new Partida(1, 2);
-    Partida *p2 = new Partida(2, 1);
+    // Partida *p2 = new Partida(2, 1);
     partidas.push_back(p1);
-    partidas.push_back(p2);
+    // partidas.push_back(p2);
 }
 
 Lobby::~Lobby() {}

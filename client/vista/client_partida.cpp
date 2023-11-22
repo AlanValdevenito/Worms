@@ -33,8 +33,6 @@ int Partida::iniciar()
     guardar_vigas();
     guardar_worms(renderer, colores);
 
-    // this->proyectil = new AnimacionProyectil(renderer);
-
     /******************** GAME LOOP ********************/
 
     this->temporizador.tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
@@ -65,7 +63,6 @@ int Partida::iniciar()
         }
 
         if (not actualizar(renderer, it)) {
-            std::cout << "Se fue" << std::endl;
             cliente.elOtroSeFue();
             liberar_memoria();
             return 0;
@@ -138,7 +135,6 @@ void Partida::guardar_vigas()
     for (int i = 0; i < cantidad; i++)
     {
         std::shared_ptr<Viga> viga = std::dynamic_pointer_cast<Vigas>(dto)->popViga(i);
-        // std::cout << "Agregando viga" << std::endl;
         this->vigas.push_back(viga);
     }
 }
@@ -159,13 +155,10 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
-        // std::cout << "Agregando worm" << std::endl;
         this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
     }
 
     camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
-
-    // delete dto;
 }
 
 /******************** HANDLER DE EVENTOS ********************/
@@ -205,6 +198,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDL_BUTTON_LEFT:
                 this->x = event.button.x;
                 this->y = renderer.GetOutputHeight() - event.button.y;
+
+                // std::cout << pixeles_a_metros(event.button.x) + this->camara.getLimiteIzquierdo() << std::endl;
+
                 break;
             }
 
@@ -452,12 +448,10 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se hace click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
-                std::cout << "Click derecho se suelta: " << std::endl;
                 break;
 
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
-                std::cout << "Click izquierdo se suelta: " << std::endl;
                 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     enviarAtaque();
@@ -673,28 +667,33 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
         // Debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
-        // tienen el (0,0) de los cuerpos en el centro y ademas el (0,0) del mapa se ubica 
+        // tienen el (0,0) de los cuerpos en el centro de masa y ademas el (0,0) del mapa se ubica 
         // en la esquina inferior izquierda y no en la esquina superior izquierda como ocurre en SDL
-        float x = this->vigas[i]->x_pos();
-        float y = this->vigas[i]->y_pos();
+
+        // Por ejemplo, si nos llega una viga larga en la posicion (5,5) siendo esta la posicon del centro de masa:
+            // Al no hacer este corrimiento se graficara desde el (5,5) hasta el (11,5)
+            // Al hacer este corrimiento se graficara desde el (2,5) hasta el (8,5) 
+        
+        float x = this->vigas[i]->x_pos() - (this->vigas[i]->return_ancho() / 2);
+        float y = this->vigas[i]->y_pos() + (this->vigas[i]->return_alto() / 2);
         float ancho = this->vigas[i]->return_ancho();
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-       if (ancho == 300) {
-            renderer.Copy(
-                *this->texturas[3],
-                Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()) - 70, altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()) - 10,
-                metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
-
-       } else if (ancho == 600) {
+        if (ancho == 600) {
             renderer.Copy(
                 *this->texturas[2],
                 Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()) - 70, altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()) - 10,
+                Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()) ,
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
-       }
+        
+        } else if (ancho == 300) {
+            renderer.Copy(
+                *this->texturas[3],
+                Rect(0, 0, 50, 50),
+                Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()),
+                metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+        }
     }
 }
 
@@ -754,17 +753,14 @@ float Partida::metros_a_centimetros(float metros)
 void Partida::liberar_memoria()
 {
 
-    for (int i = 0; i < (int)this->vigas.size(); i++)
+    for (int i = 0; i < (int)this->texturas.size(); i++)
     {
-        std::shared_ptr<Viga> viga = this->vigas[i];
-        // std::cout << "Eliminando viga" << std::endl;
-        // delete viga;
+        delete this->texturas[i];
     }
 
     for (int i = 0; i < (int)this->worms.size(); i++)
     {
         Worm *worm = this->worms[i];
-        // std::cout << "Eliminando worm" << std::endl;
         delete worm;
     }
 }
