@@ -6,11 +6,9 @@ AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer): Arma(ARM
                                                                           apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0))), 
                                                                           tiempo(5) 
 {
-
     for (int i = 1; i <= 6; i++){
         this->fragmentos[i] = std::make_shared<AnimacionFragmento>(renderer);
     }
-
 }
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/

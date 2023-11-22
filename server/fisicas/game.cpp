@@ -611,6 +611,16 @@ void Game::sendWorms()
             std::shared_ptr<Mortero> mortero = std::make_shared<Mortero>((uint16_t)(morteroRocket->getXCoordinate() * 100), (uint16_t)(morteroRocket->getYCoordinate() * 100), (uint16_t)(morteroRocket->getAngle()), morteroRocket->dir, morteroRocket->exploded);
             proyectiles.push_back(mortero);
             if (morteroRocket->exploded) {
+                float x = morteroRocket->getXCoordinate();
+                float y = morteroRocket->getYCoordinate();
+                Direction direction;
+                int j = 0;
+                for (int i = 0; i < 6; i++) {
+                    redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
+                    direction = (i < 3) ? LEFT : RIGHT;
+                    if (i == 3) {j = 0};
+                    redGrenadeFragments[i]->shoot(direction, 15*j, 1);
+                }
                 morteroRocket = NULL;
             }
         }
@@ -758,7 +768,7 @@ void Game::shootBazooka(float angle, int power) {
                                     actualWorm->getYCoordinate(), angle, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     bazookaRocket->shoot(direction, angle, power);
-
+    
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
 }
@@ -771,7 +781,7 @@ void Game::shootMortero(float angle, int power) {
                                     actualWorm->getYCoordinate(), angle, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     morteroRocket->shoot(direction, angle, power);
-
+    redGrenadeFragments.clear();
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
 }

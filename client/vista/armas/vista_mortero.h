@@ -5,6 +5,8 @@
 
 #include "vista_arma.h"
 #include "client_apuntado.h"
+#include "vista_fragmento.h"
+#include <map>
 
 class AnimacionMortero: public Arma
 {
@@ -13,6 +15,8 @@ private:
     Animation movimiento;
     Explosion explosion;
     Apuntado apuntado;
+
+    std::map<int, std::shared_ptr<AnimacionFragmento>> fragmentos;
 
     int angulo;
     int direccion;
