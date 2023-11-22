@@ -5,7 +5,8 @@
 
 
 Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds,
-               std::map<std::string, int>& config) : maxDamage(config["bananaDamage"]),
+               std::map<std::string, int>& config) : Entity(),
+                                                     maxDamage(config["bananaDamage"]),
                                                      explosionRadius(config["bananaRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;

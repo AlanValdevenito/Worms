@@ -7,7 +7,7 @@
 
 Dynamite::Dynamite(b2World *world, float x, float y,
                     int timeToExplotionInSeconds,
-                    std::map<std::string, int>& config) : maxDamage(config["dynamiteDamage"]),
+                    std::map<std::string, int>& config) : Entity(),maxDamage(config["dynamiteDamage"]),
                                                           explosionRadius(config["dynamiteRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;

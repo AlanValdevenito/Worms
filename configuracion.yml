@@ -1,11 +1,11 @@
 # Archivo YAML
 
-map: 2
+map: 3
 
 cantidad_de_worms: 2
 
 worm:
-  hp: 10
+  hp: 100
   speed: 2
 
 turn_duration: 60

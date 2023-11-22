@@ -3,7 +3,7 @@
 
 
 RedGrenadeFragment::RedGrenadeFragment(b2World *world, float x, float y,
-                             std::map<std::string, int>& config) : maxDamage(config["greenGrenadeDamage"]),
+                             std::map<std::string, int>& config) : Entity(),maxDamage(config["greenGrenadeDamage"]),
                                                                    explosionRadius(config["greenGrenadeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;

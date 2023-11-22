@@ -76,7 +76,7 @@ public:
     Dynamite *dynamite = NULL;
     RedGrenade *redGrenade = NULL;
     std::vector<RedGrenadeFragment*> redGrenadeFragments;
-    std::list<AirStrikeRocket*> airStrike;
+    std::vector<AirStrikeRocket*> airStrike;
 
     int idTurn;
     bool game_finished;

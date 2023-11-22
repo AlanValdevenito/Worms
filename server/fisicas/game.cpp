@@ -619,17 +619,20 @@ void Game::sendWorms()
 
         
         int id_proyectil = 1;
-        for (AirStrikeRocket *rocket : airStrike) {
-            if (rocket != NULL) {
-                std::shared_ptr<Misil> misil = std::make_shared<Misil>(id_proyectil, (uint16_t)(rocket->getXCoordinate() * 100), (uint16_t)(rocket->getYCoordinate() * 100), rocket->exploded);
+        for (int i = 0; i < (int)airStrike.size(); i++) {
+            if (airStrike[i] != NULL) {
+                std::shared_ptr<Misil> misil = std::make_shared<Misil>(id_proyectil, (uint16_t)(airStrike[i]->getXCoordinate() * 100), (uint16_t)(airStrike[i]->getYCoordinate() * 100), airStrike[i]->exploded);
                 proyectiles.push_back(misil);
+                if (airStrike[i]->exploded) {
+                    //delete rocket;
+                    airStrike[i]->destroy();
+                    airStrike[i] = NULL;
+                }
             }
             id_proyectil++;
-
-            if (rocket->exploded) {
-                rocket = NULL;
-            }
         }
+
+
 
         if (proyectiles.size() > 0) {
             std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);    
@@ -822,7 +825,7 @@ void Game::shootAirStrike(float x, float y) {
     airStrike.clear();
     for (int i = 0; i < 6; i++) {
         std::cout<<"cohete +1\n";
-        airStrike.push_back(new AirStrikeRocket(&world.world, x + 2*i, y, config));
+        airStrike.push_back(new AirStrikeRocket(&world.world, x + 3*i - 7.5f, y + 40 + 2*i, config));
         //airStrike[i]->shoot();
     }
     
