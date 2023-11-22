@@ -4,16 +4,29 @@ AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer): Arma(ARM
                                                                           movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/cluster.png").SetColorKey(true, 0))), 
                                                                           explosion(renderer), 
                                                                           apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0))), 
-                                                                          tiempo(5) {}
+                                                                          tiempo(5) 
+{
+
+    for (int i = 1; i <= 6; i++){
+        this->fragmentos[i] = std::make_shared<AnimacionFragmento>(renderer);
+    }
+
+}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
 void AnimacionGranadaRoja::update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo, int nuevaDireccion, int nuevoTiempo, int id) {
-    this->x = nuevoX;
-    this->y = nuevoY;
-    this->estado = nuevoEstado;
-    this->angulo = nuevoAngulo;
-    this->tiempo = nuevoTiempo;
+
+    if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
+        this->fragmentos[id]->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo);
+    } else {
+        this->x = nuevoX;
+        this->y = nuevoY;
+        this->estado = nuevoEstado;
+        this->angulo = nuevoAngulo;
+        this->tiempo = nuevoTiempo;
+    }
+
 }
 
 void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
@@ -34,6 +47,16 @@ void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, float camaraLimite
         } else {
             this->explosion.update();
         }
+
+    }
+    
+    if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
+
+        for (auto &elemento : this->fragmentos)
+        {
+            (elemento.second)->render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
+        }
+
     }
 
 }

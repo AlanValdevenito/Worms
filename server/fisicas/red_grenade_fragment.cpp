@@ -12,7 +12,7 @@ RedGrenadeFragment::RedGrenadeFragment(b2World *world, float x, float y,
 	body = world->CreateBody(&bodyDef);
 
     b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(0.005f, 0.005f);
+	dynamicBox.SetAsBox(0.010f, 0.010f);
     b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
@@ -56,8 +56,8 @@ float RedGrenadeFragment::getYCoordinate() {
 
 void RedGrenadeFragment::shoot(Direction direction, float angle, int power) {
     
-    float xComponent = (float(power) / 10.0f ) * cos(angle);
-    float yComponent = (float(power) / 10.0f ) * sin(angle);
+    float xComponent = (float(power) / 60.0f ) * cos(angle);
+    float yComponent = (float(power) / 60.0f ) * sin(angle);
     if (direction == LEFT) {
         body->ApplyLinearImpulseToCenter(b2Vec2(-xComponent, yComponent), true);
     } else if (direction == RIGHT) {

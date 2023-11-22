@@ -32,6 +32,7 @@
 #include "ataque_aereo.h"
 #include "bazuka.h"
 #include "ganador.h"
+#include "fragmento.h"
 #include "equipar_arma.h"
 #include "socket.h"
 #include "socket_interface.h"
@@ -58,6 +59,7 @@ public:
     bool enviarTrayectoriaDeGranadaSanta(std::shared_ptr<GranadaSanta> g, bool &was_closed);
     bool enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bool &was_closed);
     bool enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &was_closed);
+    bool enviarTrayectoriaDeFragmento(std::shared_ptr<Fragmento> g, bool &was_closed);
 
     bool enviarProyectiles(std::shared_ptr<Proyectiles> proyectiles, bool &was_closed);
     bool enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_closed);

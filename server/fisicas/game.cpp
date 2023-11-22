@@ -466,10 +466,8 @@ void Game::updateBombs() {
 void Game::update()
 {   
     updateWorms();
-    std::cout << "worms updated\n";
     updatePlayers();
     if (game_finished) return;
-    std::cout << "players updated\n";
     updateBombs();
     sendWorms();
     passTurn();
@@ -560,16 +558,16 @@ void Game::sendWorms()
             proyectiles.push_back(granadaRoja);
 
             if (redGrenade->exploded) {
-                /*
+                
                 float x = redGrenade->getXCoordinate();
                 float y = redGrenade->getYCoordinate();
                 Direction direction;
                 for (int i = 0; i < 6; i++) {
                     redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
                     direction = (i < 3) ? LEFT : RIGHT;
-                    redGrenadeFragments[i]->shoot(direction, 30*i, 4);
+                    redGrenadeFragments[i]->shoot(direction, 15*i, 1);
                 }
-                */
+                
                 redGrenade = NULL;
                 // falta enviar los fragmentos
             }
@@ -631,7 +629,19 @@ void Game::sendWorms()
             }
             id_proyectil++;
         }
-
+        
+        int id_fragmento = 1;
+        for (int i = 0; i < (int)redGrenadeFragments.size(); i++) {
+            if (redGrenadeFragments[i] != NULL) {
+                std::shared_ptr<Fragmento> fragmento = std::make_shared<Fragmento>(id_fragmento, (uint16_t)(redGrenadeFragments[i]->getXCoordinate() * 100), (uint16_t)(redGrenadeFragments[i]->getYCoordinate() * 100), 0, redGrenadeFragments[i]->exploded);
+                proyectiles.push_back(fragmento);
+                if (redGrenadeFragments[i]->exploded) {
+                    //redGrenadeFragments[i]->destroy();
+                    redGrenadeFragments[i] = NULL;
+                }
+            }
+            id_fragmento++;
+        }
 
 
         if (proyectiles.size() > 0) {
@@ -725,6 +735,7 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion) {
 
 void Game::throwRedGrenade(float angle, int power, int timeToExplotion) {
     if (wormAttacked) return;
+
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     redGrenade = new RedGrenade(&world.world, actualWorm->getXCoordinate(), 
@@ -732,7 +743,7 @@ void Game::throwRedGrenade(float angle, int power, int timeToExplotion) {
                                     timeToExplotion, config);
     Direction direction = (actualWorm->facingRight) ? RIGHT : LEFT;
     redGrenade->shoot(direction, angle, power);
-
+    redGrenadeFragments.clear();
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
 }

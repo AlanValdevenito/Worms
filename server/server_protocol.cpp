@@ -230,7 +230,7 @@ bool ServerProtocol::enviarGranada(std::shared_ptr<Proyectil> dto, bool &was_clo
     if (was_closed)
         return false;
 
-    // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+    printf("Trayectoria enviada granada ---> x:%u y:%u angulo:%u exploto: %u\n", dto->x_pos(), dto->y_pos(), angulo, exploto);
     return true;
 }
 
@@ -285,6 +285,34 @@ bool ServerProtocol::enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &wa
         return false;
 
     // printf("Trayectoria enviada misil ---> id:%u x:%u y:%u \n", id, g->x_pos(), g->y_pos());
+
+    return true;
+}
+
+bool ServerProtocol::enviarTrayectoriaDeFragmento(std::shared_ptr<Fragmento> f, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(f, was_closed))
+        return false;
+
+    uint8_t id = f->get_id();
+    skt->sendall(&(id), sizeof(id), &was_closed);
+    if (was_closed)
+        return false;
+
+    if (not enviarPosicionDelElemento(f, was_closed))
+        return false;
+
+    uint8_t angulo = f->get_angulo();
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t exploto = f->get_exploto();
+    skt->sendall(&(exploto), sizeof(exploto), &was_closed);
+    if (was_closed)
+        return false;
+
+    printf("Trayectoria enviada fragmento ---> id:%u x:%u y:%u angulo:%u exploto: %u\n", id, f->x_pos(), f->y_pos(), angulo, exploto);
 
     return true;
 }
@@ -360,6 +388,8 @@ bool ServerProtocol::enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_clo
         return enviarTrayectoriaDeDinamita(std::dynamic_pointer_cast<Dinamita>(p), was_closed);
     else if (code == ATAQUE_AEREO_CODE)
         return enviarTrayectoriaDeMisil(std::dynamic_pointer_cast<Misil>(p), was_closed);
+    else if (code == FRAGMENTO_CODE)
+        return enviarTrayectoriaDeFragmento(std::dynamic_pointer_cast<Fragmento>(p), was_closed);
 
     return false;
 }

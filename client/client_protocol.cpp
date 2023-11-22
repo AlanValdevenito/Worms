@@ -317,13 +317,13 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaRoja(bool &was_clo
     skt.recvall(&angulo, sizeof(angulo), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
-    // printf("Trayectoria ---> x:%u y:%u \n", x, y);
 
     uint8_t exploto;
     skt.recvall(&exploto, sizeof(exploto), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    printf("GRANADA ROJA---> x:%u y:%u angulo:%u exploto: %u\n", x, y, angulo, exploto);
     return std::make_shared<GranadaRoja>(x, y, angulo, exploto);
 }
 
@@ -424,6 +424,34 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaMisil(bool &was_closed)
     return std::make_shared<Misil>(id, x, y, exploto);
 }
 
+std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaFragmento(bool &was_closed)
+{
+    uint16_t x;
+    uint16_t y;
+    uint8_t id;
+    uint8_t angulo;
+    uint8_t exploto;
+
+    skt.recvall(&id, sizeof(id), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    if (not recibirPosicion(x, y, was_closed))
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    skt.recvall(&exploto, sizeof(exploto), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    printf("Trayectoria fragmento---> id:%u x:%u y:%u angulo: %u exploto: %u\n", id,x, y, angulo,exploto);
+
+    return std::make_shared<Fragmento>(id, x, y, angulo,exploto);
+}
+
 std::shared_ptr<Dto> ClientProtocol::recibirProyectil(bool &was_closed)
 {
 
@@ -449,6 +477,8 @@ std::shared_ptr<Dto> ClientProtocol::recibirProyectil(bool &was_closed)
         return recibirTrayectoriaMisil(was_closed);
     else if (code == MORTERO_CODE)
         return recibirTrayectoriaMortero(was_closed);
+    else if (code == FRAGMENTO_CODE)
+        return recibirTrayectoriaFragmento(was_closed);
 
     return std::make_shared<DeadDto>();
 }
