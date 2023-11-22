@@ -1,13 +1,12 @@
 # Archivo YAML
 
-map: 1      # map puede tomar valores 1 o 2     
-            # siendo 1 = mapa_jaula,
-            #        2 = mapa_rampa (vigas inclinadas)
-            #        3 = mapa_puente
+map: 2
+
+cantidad_de_worms: 4
+
 worm:
   hp: 100
   speed: 2
-
 
 turn_duration: 60
 time_left_after_attack: 3

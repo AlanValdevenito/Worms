@@ -19,9 +19,11 @@ private:
     uint8_t vida;
     uint8_t color;
     uint8_t estado;
+    uint8_t arma;
+    uint8_t direccion;
 
 public:
-    Gusano(uint8_t id, uint16_t x, uint16_t y, uint8_t vida, uint8_t color, uint8_t estado);
+    Gusano(uint8_t id, uint16_t x, uint16_t y, uint8_t vida, uint8_t color, uint8_t estado, uint8_t arma, uint8_t dir);
     ~Gusano();
     bool is_alive() override;
     uint16_t x_pos() override;
@@ -30,6 +32,8 @@ public:
     uint8_t get_vida();
     uint8_t get_color();
     uint8_t get_estado();
+    uint8_t get_arma();
+    uint8_t get_direccion();
 };
 
 class Gusanos : public Dto

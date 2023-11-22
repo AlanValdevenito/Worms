@@ -23,7 +23,8 @@ const uint8_t ATAQUE_AEREO_CODE = 18;
 const uint8_t MISIL_CODE = 19;
 const uint8_t GRANADA_ROJA_CODE = 20;
 const uint8_t MORTERO_CODE = 21;
-const uint8_t PROYECTILES_CODE = 22;
+const uint8_t EQUIPAR_ARMA_CODE = 22;
+const uint8_t PROYECTILES_CODE = 23;
 
 
 const int MOVIENDOSE = 0;

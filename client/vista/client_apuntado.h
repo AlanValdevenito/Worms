@@ -31,7 +31,7 @@ public:
     void aumentar_angulo();
     void decrementar_angulo();
 
-    void render(SDL2pp::Renderer &renderer, float x, float y, bool mirandoIzquierda); // Renderiza el arma.
+    void render(SDL2pp::Renderer &renderer, float x, float y, int direccion); // Renderiza el arma.
 
     int get_angulo();
     int get_potencia();

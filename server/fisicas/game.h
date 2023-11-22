@@ -57,12 +57,14 @@ private:
     int numberOfWormsMoving = 0;
     int actualWormId;
     int indexOfActualPlayer = 0;
+    int numberOfAlivePlayers;
     //std::chrono::steady_clock::time_point t1;
     //std::chrono::steady_clock::time_point t2;
     // std::map<int, LISTA DE WORMS>;
-    void mapa_rampa();
+    void mapa();
     void mapa_jaula();
     void mapa_puente();
+    void mapa_vigas_inclinadas();
 
 public:
     

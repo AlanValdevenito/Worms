@@ -95,6 +95,8 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint8_t vida = g->get_vida();
     uint8_t color = g->get_color();
     uint8_t estado = g->get_estado();
+    uint8_t arma = g->get_arma();
+    uint8_t direccion = g->get_direccion();
 
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
@@ -112,6 +114,14 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
         return false;
 
     skt->sendall(&(estado), sizeof(estado), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(arma), sizeof(arma), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(direccion), sizeof(direccion), &was_closed);
     if (was_closed)
         return false;
 
@@ -139,6 +149,7 @@ bool ServerProtocol::enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was
     skt->sendall(&(flag), sizeof(flag), &was_closed); // especifico la cantidad que llegara
     if (was_closed)
         return false;
+    //printf("flag: %u",flag);
 
     for (int i = 0; i < cant; i++)
     {
@@ -545,6 +556,17 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueAereo(uint8_t id, bool &was_cl
     return std::make_shared<Misil>(id, x, y, false);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recibirEquipadoDeArma(uint8_t id, bool &was_closed)
+{
+    uint8_t arma;
+    skt->recvall(&arma, sizeof(arma), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("recibir pos ataque: %u %u %u\n", id, x, y);
+    return std::make_shared<EquiparArma>(id, arma);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
 {
     uint8_t id;
@@ -585,6 +607,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return recibirTeletransportacion(id, was_closed);
     else if (code == ATAQUE_AEREO_CODE)
         return recibirAtaqueAereo(id, was_closed);
+    else if (code == EQUIPAR_ARMA_CODE)
+        return recibirEquipadoDeArma(id, was_closed);
     else if (esGranada(code))
         return recibirAtaqueConGranada(code, id, was_closed);
 

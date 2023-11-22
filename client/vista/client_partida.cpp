@@ -33,8 +33,6 @@ int Partida::iniciar()
     guardar_vigas();
     guardar_worms(renderer, colores);
 
-    // this->proyectil = new AnimacionProyectil(renderer);
-
     /******************** GAME LOOP ********************/
 
     this->temporizador.tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
@@ -65,7 +63,6 @@ int Partida::iniciar()
         }
 
         if (not actualizar(renderer, it)) {
-            std::cout << "Se fue" << std::endl;
             cliente.elOtroSeFue();
             liberar_memoria();
             return 0;
@@ -117,6 +114,7 @@ void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
     this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
     this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
     this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
+    this->texturas[3] = new Texture(renderer, Surface(DATA_PATH "/grds4.png").SetColorKey(true, 0xff));
 }
 
 void Partida::inicializar_colores() {
@@ -137,7 +135,6 @@ void Partida::guardar_vigas()
     for (int i = 0; i < cantidad; i++)
     {
         std::shared_ptr<Viga> viga = std::dynamic_pointer_cast<Vigas>(dto)->popViga(i);
-        // std::cout << "Agregando viga" << std::endl;
         this->vigas.push_back(viga);
     }
 }
@@ -158,13 +155,10 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
-        // std::cout << "Agregando worm" << std::endl;
-        this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida());
+        this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
     }
 
     camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
-
-    // delete dto;
 }
 
 /******************** HANDLER DE EVENTOS ********************/
@@ -204,6 +198,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDL_BUTTON_LEFT:
                 this->x = event.button.x;
                 this->y = renderer.GetOutputHeight() - event.button.y;
+
+                // std::cout << pixeles_a_metros(event.button.x) + this->camara.getLimiteIzquierdo() << std::endl;
+
                 break;
             }
 
@@ -222,30 +219,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
-
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->mirar_derecha();
-                
-                } else {
-                    this->worms[this->id_gusano_actual]->mirar_derecha();
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
-                    cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
-                } 
-
+                cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 break;
 
             // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
-
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->mirar_izquierda();
-                
-                } else {
-                    this->worms[this->id_gusano_actual]->mirar_izquierda();
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
-                    cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
-                } 
-
+                cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 break;
 
             // Si se presiona la flecha hacia ariba el gusano direcciona su arma
@@ -317,14 +296,24 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
+            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
+            case SDLK_5:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                    this->worms[this->id_gusano_actual]->set_tiempo(5);
+                }
+
+                break;
+
             // Si se presiona la tecla de F7 el worm se equipa un arma
             case SDLK_F1:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BATE));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BATE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BATE));
                 }
 
                 break;
@@ -333,10 +322,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F2:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_VERDE));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_VERDE);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_VERDE));
                 }
 
                 break;
@@ -345,10 +335,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F3:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
-                
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BAZOOKA));
+
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BAZOOKA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BAZOOKA));
                 }
 
                 break;
@@ -357,10 +348,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F4:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BANANA));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, BANANA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BANANA));
                 }
 
                 break;
@@ -369,10 +361,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F5:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_SANTA));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, GRANADA_SANTA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_SANTA));
                 }
 
                 break;
@@ -381,10 +374,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F6:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, DINAMITA));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, DINAMITA);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, DINAMITA));
                 }
 
                 break;
@@ -393,10 +387,11 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F7:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, TELETRANSPORTACION));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, TELETRANSPORTACION);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, TELETRANSPORTACION));
                 }
 
                 break;
@@ -405,10 +400,37 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_F8:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, ATAQUE_AEREO));
                 
                 } else {
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, EQUIPANDO_ARMA, ATAQUE_AEREO);
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, ATAQUE_AEREO));
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F9:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_ROJA));
+                
+                } else {
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_ROJA));
+                }
+
+                break;
+
+            // Si se presiona la tecla de F1 el worm se equipa un arma
+            case SDLK_F10:
+
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
+                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, MORTERO));
+                
+                } else {
+                    cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, MORTERO));
                 }
 
                 break;
@@ -426,16 +448,13 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se hace click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
-                std::cout << "Click derecho se suelta: " << std::endl;
                 break;
 
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
-                std::cout << "Click izquierdo se suelta: " << std::endl;
                 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     enviarAtaque();
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                 }
 
                 break;
@@ -479,7 +498,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     enviarAtaque();
-                    this->worms[this->id_gusano_actual]->update_estado(renderer, MOVIENDOSE);
                 }
                 
                 break;
@@ -538,6 +556,15 @@ void Partida::enviarAtaque() {
         int yCentimetros = metros_a_centimetros(pixeles_a_metros(this->y) - this->camara.getLimiteSuperior());
         cliente.send_queue.push(std::make_shared<Misil>(this->cliente.id, xCentimetros, yCentimetros, false));
     
+    } else if (armaEquipada == GRANADA_ROJA) {
+        cliente.send_queue.push(std::make_shared<GranadaRoja>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(),
+                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+    
+    } else if (armaEquipada == MORTERO) {
+        cliente.send_queue.push(std::make_shared<Mortero>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
+                                                               this->worms[this->id_gusano_actual]->get_angulo(), false));
+    
     } else {
         std::cerr << "El numero recibido no esta asociado a ningun arma\n";
     }
@@ -554,44 +581,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         return false;
 
     std::shared_ptr<Gusanos> gusanos  = std::dynamic_pointer_cast<Gusanos>(dto);
-
-    /***** ACTUALIZAMOS LA POSICION DEL PROYECTIL (SI ES QUE HAY) *****/
-
-    /*this->worms[this->id_gusano_actual]->set_flag_proyectil((int) gusanos->get_flag_proyectil());
-
-    if (this->worms[this->id_gusano_actual]->get_flag_proyectil()) {
-        std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
-        std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(0);
-        
-        // std::shared_ptr<Proyectil> proyectil = std::dynamic_pointer_cast<Proyectil>(cliente.recv_queue.pop());
-
-        float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
-        float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-        this->worms[this->id_gusano_actual]->update_proyectil(0, nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion());
-    }*/
-    
-    int flag = (int) gusanos->get_flag_proyectil();
-
-    std::cout << flag << std::endl;
-
-    if (flag) {
-        std::cout << "\nEntro a recibir proyectiles\n";
-        std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
-    
-        int cantidad = proyectiles->cantidad();
-        std::cout << "Cantidad de proyectiles: " << cantidad << std::endl;
-        for (int i = 0; i < cantidad; i++) {
-            std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(i);
-
-            std::cout << "Proyectil: " << (int) proyectil->get_id() << " " << (int) proyectil->get_exploto() << std::endl;
-
-            float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
-            float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-            this->worms[this->id_gusano_actual]->update_proyectil(renderer, (int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
-        }
-
-        std::cout << "Salgo de recibir proyectiles\n\n" << std::endl;
-    }
 
     /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/
 
@@ -611,22 +600,40 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         std::shared_ptr<Gusano> gusano = gusanos->popGusano(i);
 
         int nuevoEstado = (int) gusano->get_estado();
+        int tipoDeArma = (int) gusano->get_arma();
 
-        // if (nuevoEstado == MUERTO) {
-        //     this->worms.erase(gusano->get_id());
-        //     continue;
-        // }
+        if (nuevoEstado == MUERTO) {
+            this->worms.erase(gusano->get_id());
+            continue;
+        }
 
         float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida());
+        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion());
 
-        if (this->worms[gusano->get_id()]->get_estado() != nuevoEstado) {
+        if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
+            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        }
 
-            if ((this->worms[gusano->get_id()]->get_estado() != EQUIPANDO_ARMA) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
-                this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado);
-            }
+        else if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (tipoDeArma == 10) && (this->worms[gusano->get_id()]->get_estado() == APUNTANDO)) {
+            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        }
+    }
 
+    /***** ACTUALIZAMOS LA POSICION DEL PROYECTIL (SI ES QUE HAY) *****/
+    
+    int flag = (int) gusanos->get_flag_proyectil();
+
+    if (flag) {
+        std::shared_ptr<Proyectiles> proyectiles = std::dynamic_pointer_cast<Proyectiles>(cliente.recv_queue.pop());
+    
+        int cantidad = proyectiles->cantidad();
+        for (int i = 0; i < cantidad; i++) {
+            std::shared_ptr<Proyectil> proyectil = proyectiles->popProyectil(i);
+
+            float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
+            float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
+            this->worms[this->id_gusano_actual]->update_proyectil(renderer, (int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
         }
     }
 
@@ -660,19 +667,33 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
         // Debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
-        // tienen el (0,0) de los cuerpos en el centro y ademas el (0,0) del mapa se ubica 
+        // tienen el (0,0) de los cuerpos en el centro de masa y ademas el (0,0) del mapa se ubica 
         // en la esquina inferior izquierda y no en la esquina superior izquierda como ocurre en SDL
-        float x = this->vigas[i]->x_pos();
-        float y = this->vigas[i]->y_pos();
+
+        // Por ejemplo, si nos llega una viga larga en la posicion (5,5) siendo esta la posicon del centro de masa:
+            // Al no hacer este corrimiento se graficara desde el (5,5) hasta el (11,5)
+            // Al hacer este corrimiento se graficara desde el (2,5) hasta el (8,5) 
+        
+        float x = this->vigas[i]->x_pos() - (this->vigas[i]->return_ancho() / 2);
+        float y = this->vigas[i]->y_pos() + (this->vigas[i]->return_alto() / 2);
         float ancho = this->vigas[i]->return_ancho();
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-        renderer.Copy(
-            *this->texturas[2],
-            Rect(0, 0, 50, 50),
-            Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()) - 70, altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()) - 10,
-            metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+        if (ancho == 600) {
+            renderer.Copy(
+                *this->texturas[2],
+                Rect(0, 0, 50, 50),
+                Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()) ,
+                metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+        
+        } else if (ancho == 300) {
+            renderer.Copy(
+                *this->texturas[3],
+                Rect(0, 0, 50, 50),
+                Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()),
+                metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+        }
     }
 }
 
@@ -732,17 +753,14 @@ float Partida::metros_a_centimetros(float metros)
 void Partida::liberar_memoria()
 {
 
-    for (int i = 0; i < (int)this->vigas.size(); i++)
+    for (int i = 0; i < (int)this->texturas.size(); i++)
     {
-        std::shared_ptr<Viga> viga = this->vigas[i];
-        // std::cout << "Eliminando viga" << std::endl;
-        // delete viga;
+        delete this->texturas[i];
     }
 
     for (int i = 0; i < (int)this->worms.size(); i++)
     {
         Worm *worm = this->worms[i];
-        // std::cout << "Eliminando worm" << std::endl;
         delete worm;
     }
 }

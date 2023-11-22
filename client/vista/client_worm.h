@@ -14,6 +14,8 @@
 #include "vista_granada_santa.h"
 #include "vista_dinamita.h"
 #include "vista_ataque_aereo.h"
+#include "vista_granada_roja.h"
+#include "vista_mortero.h"
 
 const int BATE = 7;
 const int GRANADA_VERDE = 2;
@@ -23,6 +25,8 @@ const int GRANADA_SANTA = 5;
 const int DINAMITA = 6;
 const int TELETRANSPORTACION = 9;
 const int ATAQUE_AEREO = 8;
+const int GRANADA_ROJA = 3;
+const int MORTERO = 1;
 
 #include "yaml-cpp/yaml.h"
 
@@ -41,17 +45,17 @@ private:
     float x;
     float y;
     int vida;
+    int direccion; // 0 izquierda y 1 derecha
 
     bool turno;
-    bool mirandoIzquierda;
 
     SDL2pp::Color &color;
     YAML::Node configuraciones;
 
 public:
-    Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida);
+    Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida, int direccion);
 
-    void update(int it, float nuevoX, float nuevoY, int vida); // Actualiza el Worm en funcion del tiempo transcurrido.
+    void update(int it, float nuevoX, float nuevoY, int vida, int direccion); // Actualiza el Worm en funcion del tiempo transcurrido.
     void update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int arma = 0);
 
     void equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma);
@@ -61,9 +65,6 @@ public:
 
     void desactivar_turno();
     void activar_turno();
-
-    void mirar_derecha();
-    void mirar_izquierda();
 
     int get_tipo_de_arma();
 

@@ -5,15 +5,12 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 		   std::map<std::string, int>& config) : Entity(),
 												hp(config["wormHp"]), 
 												id(id), 
-												//configuraciones(YAML::LoadFile("/configuracion.yml")),
 												numberOfContacts(0),
 												speed(config["wormSpeed"]),
-												
-												
 												facingRight(false), 
 												is_alive(true), 
-												isRunning(false)
-												//speed(config["wormSpeed"])
+												isRunning(false),
+												direction(LEFT)
 												{
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -89,26 +86,32 @@ uint8_t Worm::getId()
 }
 
 void Worm::moveLeft() {
-	//std::cout << "worm -> moveLeft\n";
 	if (numberOfContacts == 0) return;
+	if (actualWeapon == NO_WEAPON) {
+		isRunning = true;
+		body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
+		state = MOVING;
+	}
 	facingRight = false;
-	isRunning = true;
-	body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
-	state = MOVING;
+	direction = LEFT;
 }
 
 void Worm::moveRight()
 {	
-	//std::cout << "worm -> moveRight\n";
 	if (numberOfContacts == 0) return;
+	// si no tiene arma, que se mueva
+	// si tiene arma, cambia la direccion a la derecha pero no se mueve
+	if (actualWeapon == NO_WEAPON) {
+		isRunning = true;
+		body->SetLinearVelocity(b2Vec2(speed, 0.0f));
+		state = MOVING;
+	}
 	facingRight = true;
-	isRunning = true;
-    body->SetLinearVelocity(b2Vec2(speed, 0.0f));
-	state = MOVING;
+	direction = RIGHT;
 }
 
 void Worm::jump() {
-	if (numberOfContacts == 0) return;
+	if (numberOfContacts == 0 || jumpTimeout > 0) return;
 	float xComponent; float yComponent;
 	if (facingRight) {
 		xComponent = 2.0f;
@@ -118,6 +121,7 @@ void Worm::jump() {
 	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 	state = JUMPING_FORWARD;
+	jumpTimeout = 5;
 }
 
 void Worm::jumpBackward() {
@@ -156,7 +160,6 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 }
 
 void Worm::makeDamage() {
-	//std::cout << "Worm::makeDamage\n";
 	if (hp <= damageTaken) {
 		hp = 0;
 		state = DEAD;
@@ -165,7 +168,6 @@ void Worm::makeDamage() {
 		hp -= damageTaken;
 	}
 	damageTaken = 0;
-	//std::cout << "Worm::makeDamage, hp = " << (int)hp << "\n";
 	
 }
 
@@ -213,8 +215,27 @@ void Worm::startContact() {
 	if (fallDistance > 2.0f) {
 		takeDamage(std::min((int)fallDistance, 25));
 	}
-	std::cout << "fallDistance = " << fallDistance << "\n";
 	highestYCoordinateReached = body->GetPosition().y;
+}
+
+void Worm::equipWeapon(uint8_t weapon) {
+	std::cout << "worm equip weapon\n";
+	if (weapon == actualWeapon || weapon == NO_WEAPON) {
+		actualWeapon = NO_WEAPON;
+		state = MOVING;
+	} else {
+		actualWeapon = weapon;
+		state = EQUIPING_WEAPON;
+		//state = AIMING;
+	}
+}
+
+uint8_t Worm::getWeapon() {
+	return actualWeapon;
+}
+
+uint8_t Worm::getDirection() {
+	return direction;
 }
 
 void Worm::endContact() {
