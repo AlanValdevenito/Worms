@@ -81,6 +81,7 @@ void Dynamite::explode() {
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);
                     worm->takeDamage(damage);
+                    worm->state = FLYING;
                 }
             }
             xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;

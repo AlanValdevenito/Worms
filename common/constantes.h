@@ -36,5 +36,6 @@ const int EQUIPANDO_ARMA = 3;
 const int APUNTANDO = 4;
 const int MUERTO = 5;
 const int USAR = 6;
+const int GOLPEADO = 7;
 
 #endif

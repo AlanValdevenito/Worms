@@ -97,6 +97,7 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint8_t estado = g->get_estado();
     uint8_t arma = g->get_arma();
     uint8_t direccion = g->get_direccion();
+    uint8_t angulo = g->get_angulo();
 
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
@@ -122,6 +123,10 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
         return false;
 
     skt->sendall(&(direccion), sizeof(direccion), &was_closed);
+    if (was_closed)
+        return false;
+
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
     if (was_closed)
         return false;
 
@@ -230,7 +235,7 @@ bool ServerProtocol::enviarGranada(std::shared_ptr<Proyectil> dto, bool &was_clo
     if (was_closed)
         return false;
 
-    printf("Trayectoria enviada granada ---> x:%u y:%u angulo:%u exploto: %u\n", dto->x_pos(), dto->y_pos(), angulo, exploto);
+    // printf("Trayectoria enviada granada ---> x:%u y:%u angulo:%u exploto: %u\n", dto->x_pos(), dto->y_pos(), angulo, exploto);
     return true;
 }
 
@@ -312,7 +317,7 @@ bool ServerProtocol::enviarTrayectoriaDeFragmento(std::shared_ptr<Fragmento> f, 
     if (was_closed)
         return false;
 
-    printf("Trayectoria enviada fragmento ---> id:%u x:%u y:%u angulo:%u exploto: %u\n", id, f->x_pos(), f->y_pos(), angulo, exploto);
+    // printf("Trayectoria enviada fragmento ---> id:%u x:%u y:%u angulo:%u exploto: %u\n", id, f->x_pos(), f->y_pos(), angulo, exploto);
 
     return true;
 }

@@ -2,7 +2,7 @@
 #define CONTACT_LISTENER_H
 
 #include "box2d/box2d.h"
-
+#include "worm.h"
 
 class ContactListener : public b2ContactListener {
     void BeginContact(b2Contact* contact) {

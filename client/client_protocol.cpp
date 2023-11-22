@@ -203,6 +203,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     uint8_t estado;
     uint8_t arma;
     uint8_t direccion;
+    uint8_t angulo;
 
     skt.recvall(&id, sizeof(id), &was_closed);
     if (was_closed)
@@ -231,10 +232,14 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusano(bool &was_closed)
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    skt.recvall(&angulo, sizeof(angulo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
     // printf("Cliente ---> id:%u   vida:%u color:%u estado:%u arma:%u dir: %u\n", id, vida, color, estado, arma, direccion);
     // printf("id:%u\n", id);
 
-    return std::make_shared<Gusano>(id, x, y, vida, color, estado, arma, direccion);
+    return std::make_shared<Gusano>(id, x, y, vida, color, estado, arma, direccion, angulo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_closed)

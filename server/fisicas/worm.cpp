@@ -155,6 +155,7 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 			yComponent = 40.0f*sin(angleInRadians);
 			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 			worm->takeDamage(10); // Sacarle la vida cuando se deje de mover
+			worm->state = FLYING;
 		}
 	}
 }
@@ -208,8 +209,17 @@ uint8_t Worm::getTeamNumber() {
 	return teamNumber;
 }
 
+void Worm::updateAngle() {
+    angle = atan2(body->GetLinearVelocity().x, body->GetLinearVelocity().y);
+}
+
+float Worm::getAngle() {
+	return angle * 180.0f / 3.14f;
+}
+
 void Worm::startContact() {
 	numberOfContacts++;
+	angle = 0;
 	state = MOVING;
 	float fallDistance = highestYCoordinateReached - body->GetPosition().y;
 	if (fallDistance > 2.0f) {

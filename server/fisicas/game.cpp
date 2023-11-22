@@ -399,6 +399,9 @@ void Game::updateWorms() {
             worm->takeDamage(worm->getHp());
         }*/
         if (worm->jumpTimeout > 0) worm->jumpTimeout--;
+        if (worm->state == FLYING) {
+            worm->updateAngle();
+        }
     }
 }
 
@@ -519,7 +522,8 @@ void Game::sendWorms()
                                                     w->getTeamNumber(),
                                                     w->getState(),
                                                     w->getWeapon(),
-                                                    w->getDirection()
+                                                    w->getDirection(),
+                                                    (uint8_t)w->getAngle()
                                                     );
             vectorGusanos.push_back(g);
         }
@@ -618,7 +622,7 @@ void Game::sendWorms()
                 for (int i = 0; i < 6; i++) {
                     redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
                     direction = (i < 3) ? LEFT : RIGHT;
-                    if (i == 3) {j = 0};
+                    if (i == 3) {j = 0;}
                     redGrenadeFragments[i]->shoot(direction, 15*j, 1);
                 }
                 morteroRocket = NULL;
