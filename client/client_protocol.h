@@ -32,6 +32,7 @@
 #include "teletransportar.h"
 #include "bazuka.h"
 #include "proyectil.h"
+#include "ganador.h"
 #include "ataque_aereo.h"
 #include "partidas_lista.h"
 #include "nueva_partida.h"
@@ -69,6 +70,7 @@ private:
     std::shared_ptr<Dto> recibirGusano(bool &was_closed);
     std::shared_ptr<Dto> recibirGusanos(bool &was_closed);
     std::shared_ptr<Dto> recibirPartidas(bool &was_closed);
+    std::shared_ptr<Dto> recibirGanador(bool &was_closed);
     std::shared_ptr<Dto> recibirId(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaGranadaVerde(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaGranadaSanta(bool &was_closed);

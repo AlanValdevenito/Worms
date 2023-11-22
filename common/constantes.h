@@ -25,6 +25,7 @@ const uint8_t GRANADA_ROJA_CODE = 20;
 const uint8_t MORTERO_CODE = 21;
 const uint8_t EQUIPAR_ARMA_CODE = 22;
 const uint8_t PROYECTILES_CODE = 23;
+const uint8_t GANADOR_CODE = 24;
 
 
 const int MOVIENDOSE = 0;

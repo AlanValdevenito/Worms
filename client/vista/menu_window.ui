@@ -87,7 +87,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/client/vista/data/background1.jpg</pixmap>
+        <pixmap>../client/vista/data/background1.jpg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>

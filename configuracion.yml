@@ -2,10 +2,10 @@
 
 map: 2
 
-cantidad_de_worms: 4
+cantidad_de_worms: 2
 
 worm:
-  hp: 100
+  hp: 10
   speed: 2
 
 turn_duration: 60

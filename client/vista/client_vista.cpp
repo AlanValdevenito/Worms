@@ -1,14 +1,9 @@
 #include "client_vista.h"
 
-// #include "yaml-cpp/yaml.h"
-
 Vista::Vista(Client &cliente) : cliente(cliente), menu(cliente), partida(cliente) {}
 
 int Vista::iniciar(int argc, char* argv[])
 {
-    // YAML::Node nodo = YAML::LoadFile("/configuracion.yml");
-    // std::string nombreArma = nodo["armas"][0]["nombre"].as<std::string>();
-    // std::cout << nombreArma << std::endl;
 
     /******************** MENU DE PARTIDAS ********************/
 
@@ -33,7 +28,9 @@ int Vista::iniciar(int argc, char* argv[])
 
     partida.iniciar();
 
-    // Falta enviarle un mensaje al cliente para que termine su ejecucion
+    /******************** FINALIZACION DE LA PARTIDA ********************/
+
+    // ...
 
     return 0;
 }

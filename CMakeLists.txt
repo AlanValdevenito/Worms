@@ -67,7 +67,7 @@ find_package(yaml-cpp REQUIRED)
 # Los nombres de los headers generados se guardan en la variable pasada
 # como primer parámetro.
 # No, no los genera con la carpeta como prefijo.
-qt5_wrap_ui(UIS_HEADERS client/vista/mainwindow.ui) # Generamos encabezados de UI a partir del archivo de diseño de la interfaz grafica (.ui).
+qt5_wrap_ui(UIS_HEADERS client/vista/menu_window.ui) # Generamos encabezados de UI a partir del archivo de diseño de la interfaz grafica (.ui).
 
 # Habilito el automoc para poder hacer autoconnect de señales
 set(CMAKE_AUTOMOC on)
@@ -108,7 +108,7 @@ file(GLOB FISICAS_HEADERS server/fisicas/*.h)
 
 # Define los ejecutables que se compilarán. 
 # Se utilizan las variables que contienen las listas de archivos .cpp y .h en los directorios common, client y server para definir los objetivos.
-add_executable(client ${CLIENT_SOURCES_ARMAS} ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_ARMAS} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} )
+add_executable(client ${CLIENT_SOURCES_ARMAS} ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_ARMAS} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} ${UIS_HEADERS_DOS})
 add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${FISICAS_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${SERVER_SOURCES} ${FISICAS_SOURCES})
 
 # Enlaza las bibliotecas a los ejecutables. En este caso, se enlazan las bibliotecas definidas en LINK_LIBS.

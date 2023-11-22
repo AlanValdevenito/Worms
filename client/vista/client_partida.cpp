@@ -580,6 +580,18 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     if(not dto->is_alive())
         return false;
 
+    if (dto->return_code() == GANADOR_CODE) {
+        bool gano = ((int) dto->get_cliente_id() == (int) cliente.id);
+
+        if (gano) {
+            std::cout << "Ganaste\n";
+        } else {
+            std::cout << "Perdiste\n";
+        }
+
+        return false;
+    }
+
     std::shared_ptr<Gusanos> gusanos  = std::dynamic_pointer_cast<Gusanos>(dto);
 
     /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/

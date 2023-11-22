@@ -411,6 +411,17 @@ void Game::updatePlayers() {
             numberOfAlivePlayers--;
         }
         if (numberOfAlivePlayers <= 1) {
+            uint8_t winnerId;
+            for (Player player : players) {
+                // el player vivo es el ganador
+                if (player.isAlive) {
+                    winnerId = player.getId();
+                    // notifico el ganador
+                    std::shared_ptr<Ganador> ganador = std::make_shared<Ganador>(winnerId);
+                    broadcaster.AddDtoToQueues(ganador);
+                    break;
+                }
+            }
             std::cout << "updatePlayers():: No hay jugadores, cierro\n";
             broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE,1));
             broadcaster.deleteAllQueues(); // aviso a los demas que cierren

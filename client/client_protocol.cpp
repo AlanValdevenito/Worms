@@ -30,6 +30,8 @@ std::shared_ptr<Dto> ClientProtocol::receive(bool &was_closed)
         return std::make_shared<DeadDto>();
     else if (code == PROYECTILES_CODE)
         return recibirProyectiles(was_closed);
+    else if (code == GANADOR_CODE)
+        return recibirGanador(was_closed);
     else
         std::cerr << "Codigo recibido sin identificar\n";
 
@@ -100,6 +102,15 @@ bool ClientProtocol::recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed)
     // printf("%u %u\n", posicion_x, posicion_y);
 
     return true;
+}
+
+std::shared_ptr<Dto> ClientProtocol::recibirGanador(bool &was_closed){
+    uint8_t id;
+    skt.recvall(&id, sizeof(id), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    return std::make_shared<Ganador>(id);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirVigas(bool &was_closed)

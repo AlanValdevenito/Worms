@@ -45,6 +45,8 @@ bool Sender::send(std::shared_ptr<Dto> d)
         return protocol.enviarFinalizarPartida(d, was_closed);
     else if (d->return_code() == PROYECTILES_CODE)
         return protocol.enviarProyectiles(std::dynamic_pointer_cast<Proyectiles>(d), was_closed);
+    else if (d->return_code() == GANADOR_CODE)
+        return protocol.enviarGanador(d, was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;

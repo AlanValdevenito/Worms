@@ -199,6 +199,19 @@ bool ServerProtocol::enviarFinalizarPartida(std::shared_ptr<Dto> dto, bool &was_
     return enviarCodigoDeElemento(dto, was_closed);
 }
 
+bool ServerProtocol::enviarGanador(std::shared_ptr<Dto> dto, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(dto, was_closed))
+        return false;
+    
+    uint8_t id = dto->get_cliente_id();
+    skt->sendall(&(id), sizeof(id), &was_closed);
+    if (was_closed)
+        return false;
+
+    return true;
+}
+
 bool ServerProtocol::enviarGranada(std::shared_ptr<Proyectil> dto, bool &was_closed)
 {
     if (not enviarCodigoDeElemento(dto, was_closed))

@@ -1,5 +1,5 @@
-#ifndef VENTANA_H
-#define VENTANA_H
+#ifndef VENTANA_MENU_H
+#define VENTANA_MENU_H
 
 #include <QApplication>
 #include <QMainWindow>
@@ -13,7 +13,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow: public QMainWindow {
+class MenuWindow: public QMainWindow {
     Q_OBJECT
 
 protected:
@@ -33,8 +33,8 @@ private:
 
 public:
     // Metodo constructor donde se configura la interfaz de usuario creada en QtDesigner
-    MainWindow(Client &cliente, QWidget *parent = nullptr);
-    ~MainWindow();
+    MenuWindow(Client &cliente, QWidget *parent = nullptr);
+    ~MenuWindow();
 };
 
 #endif
