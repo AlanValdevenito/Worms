@@ -121,7 +121,7 @@ void Worm::jump() {
 	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 	state = JUMPING_FORWARD;
-	jumpTimeout = 5;
+	jumpTimeout = 42;
 }
 
 void Worm::jumpBackward() {
