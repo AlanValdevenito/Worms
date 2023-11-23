@@ -2,6 +2,13 @@
 
 World::World(std::map<std::string, int>& config) : config(config), world(b2Vec2(0, -10)) {
     world.SetContactListener(&contactListener);
+    createStaticBody(-500, 400, 10, 1000); // pared izquierda
+    createStaticBody(500, 400, 10, 1000); // pared derecha
+    createStaticBody(0, 900, 1000, 10);   // techo
+    createStaticBody(0, -100, 1000, 10); // piso 
+
+    //createStaticBody(0, 0, 6500, 10);
+
 }
 
 b2Body *World::createStaticBody(float x, float y, float width, float height)
