@@ -214,7 +214,7 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
 
         renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
     
-    } else if ((this->vida < 100) && (this->vida > 10)) {
+    } else if ((this->vida < 100) && (this->vida >= 10)) {
         SDL2pp::Rect mensaje(this->turno ? (camaraCentroX + 17 - OFFSET) : (this->x - 11 - camaraLimiteIzquierdo),
                             this->turno ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                             surface.GetWidth(), surface.GetHeight());

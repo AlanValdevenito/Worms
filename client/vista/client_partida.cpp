@@ -6,7 +6,7 @@
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
-Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 12), temporizador({60000, 0, 0, 0}), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
+Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 18), temporizador({60000, 0, 0, 0}), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
 
 int Partida::iniciar()
 {
@@ -584,12 +584,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     if (dto->return_code() == GANADOR_CODE) {
         bool gano = ((int) dto->get_cliente_id() == (int) cliente.id);
 
-        if (gano) {
-            std::cout << "Ganaste\n";
-        } else {
-            std::cout << "Perdiste\n";
-        }
-
+        renderizar_resultado(renderer, gano);
         return false;
     }
 
@@ -633,7 +628,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         }
 
         else if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (tipoDeArma == 10) && (this->worms[gusano->get_id()]->get_estado() == APUNTANDO)) {
-            std::cout << "HOLAAAAAAAAAAAA" << std::endl;
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
     }
@@ -662,6 +656,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
 void Partida::renderizar(SDL2pp::Renderer &renderer)
 {
+    renderer.SetDrawColor(0,0,0,255);
     renderer.Clear();
 
     renderizar_mapa(renderer);
@@ -754,8 +749,36 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
     Surface surface = this->fuente.RenderText_Solid(std::to_string((int) (this->temporizador.tiempoRestante * 0.001)), blanco);
     Texture texture(renderer, surface);
 
-    Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
+    Rect nombre(24, altura - 34, surface.GetWidth(), surface.GetHeight());
     renderer.Copy(texture, NullOpt, nombre);
+}
+
+void Partida::renderizar_resultado(SDL2pp::Renderer &renderer, bool resultado) {
+    renderer.SetDrawColor(0,0,0,255);
+    renderer.Clear();
+
+    /*Texture logo(renderer, Surface(DATA_PATH "/background1.jpg").SetColorKey(true, 0xff));
+    renderer.Copy(
+        logo, 
+        NullOpt, 
+        Rect(10, 10, logo.GetWidth(), logo.GetHeight())
+    );*/
+
+    std::string mensaje = resultado ? ("Ganaste") : ("Perdiste");
+
+    int alto = renderer.GetOutputHeight();
+    int ancho = renderer.GetOutputWidth();
+
+    Color blanco(255, 255, 255, 255);
+    Surface surface = this->fuente.RenderText_Solid(mensaje, blanco);
+    Texture texture(renderer, surface);
+
+    Rect nombre((ancho/2) - 35, (alto/2) - 35, surface.GetWidth(), surface.GetHeight());
+    renderer.Copy(texture, NullOpt, nombre);
+    
+    renderer.Present();
+
+    SDL_Delay(5000);
 }
 
 /******************** CONVERSIONES ********************/
