@@ -92,6 +92,13 @@ void Dynamite::explode() {
     exploded = true;
 }
 
+int Dynamite::getTimeLeftToExplode() {
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    int timePassed = std::chrono::duration_cast<std::chrono::seconds> (now - spawnTime).count();
+    return timeToExplotion - timePassed;
+}
+
+
 void Dynamite::update() {
     if (not exploded) {
         std::chrono::steady_clock::time_point now;

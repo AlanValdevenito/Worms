@@ -12,7 +12,7 @@ void AnimacionMisil::update(float nuevoX, float nuevoY, int nuevoEstado, int nue
     this->estado = nuevoEstado;
 }
 
-void AnimacionMisil::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionMisil::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_MOVIENDOSE) {
         SDL_RendererFlip flip = SDL_FLIP_NONE;

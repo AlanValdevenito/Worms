@@ -235,7 +235,12 @@ bool ServerProtocol::enviarGranada(std::shared_ptr<Proyectil> dto, bool &was_clo
     if (was_closed)
         return false;
 
-    // printf("Trayectoria enviada granada ---> x:%u y:%u angulo:%u exploto: %u\n", dto->x_pos(), dto->y_pos(), angulo, exploto);
+    uint8_t tiempo = dto->get_tiempo();
+    skt->sendall(&(tiempo), sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria enviada granada ---> x:%u y:%u angulo:%u exploto: %u tiempo: %u\n", dto->x_pos(), dto->y_pos(), angulo, exploto, tiempo);
     return true;
 }
 
@@ -264,6 +269,11 @@ bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bo
 
     uint8_t exploto = g->get_exploto();
     skt->sendall(&(exploto), sizeof(exploto), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t tiempo = g->get_tiempo();
+    skt->sendall(&(tiempo), sizeof(tiempo), &was_closed);
     if (was_closed)
         return false;
     // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
@@ -495,6 +505,8 @@ bool ServerProtocol::recibirGranada(uint8_t &potencia, uint8_t &angulo, uint8_t 
     angulo = angulo_recibido;
     tiempo = tiempo_recibido;
 
+    // printf("RECIBIR ---> angulo:%u pot: %u tiempo: %u\n", angulo, potencia, tiempo);
+    
     return true;
 }
 
@@ -509,13 +521,13 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranada(uint8_t code, uint8
 
     // printf("angulo recibido: %u\n", angulo);
     if (code == GRANADA_BANANA_CODE)
-        return std::make_shared<GranadaBanana>(id, potencia, angulo, tiempo, false);
+        return std::make_shared<GranadaBanana>(id, potencia, angulo, tiempo);
     else if (code == GRANADA_SANTA_CODE)
-        return std::make_shared<GranadaSanta>(id, potencia, angulo, tiempo, false);
+        return std::make_shared<GranadaSanta>(id, potencia, angulo, tiempo);
     else if (code == GRANADA_VERDE_CODE)
-        return std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo, false);
+        return std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo);
     else if (code == GRANADA_ROJA_CODE)
-        return std::make_shared<GranadaRoja>(id, potencia, angulo, tiempo, false);
+        return std::make_shared<GranadaRoja>(id, potencia, angulo, tiempo);
 
     return std::make_shared<DeadDto>();
 }

@@ -13,7 +13,7 @@ void AnimacionFragmento::update(float nuevoX, float nuevoY, int nuevoEstado, int
     this->angulo = nuevoAngulo;
 }
 
-void AnimacionFragmento::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionFragmento::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_MOVIENDOSE) {
         SDL_RendererFlip flip = SDL_FLIP_NONE;

@@ -69,7 +69,7 @@ public:
 
     int get_tipo_de_arma();
 
-    void update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoFlag);
+    void update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoFlag, int nuevoTiempo);
     void set_tiempo(int tiempo);
     int get_tiempo();
 

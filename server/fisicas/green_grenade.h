@@ -29,6 +29,7 @@ public:
     void update();
     void destroy();
     float getAngle();
+    int getTimeLeftToExplode();
     void startContact() override;
     void endContact() override;
     ~GreenGrenade();

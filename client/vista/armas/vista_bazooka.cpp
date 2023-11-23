@@ -15,7 +15,7 @@ void AnimacionBazooka::update(float nuevoX, float nuevoY, int nuevoEstado, int n
     this->direccion = nuevaDireccion;
 }
 
-void AnimacionBazooka::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionBazooka::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_APUNTANDO) {
         this->apuntado.render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);

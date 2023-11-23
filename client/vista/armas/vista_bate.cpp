@@ -12,7 +12,7 @@ void AnimacionBateDeBaseball::update(float nuevoX, float nuevoY, int nuevoEstado
     this->angulo = nuevoAngulo;
 }
 
-void AnimacionBateDeBaseball::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionBateDeBaseball::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_APUNTANDO) {
         this->apuntado.render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);

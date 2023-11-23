@@ -24,7 +24,7 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
     circleShape.m_p.Set(0, 0); 
     circleShape.m_radius = 0.5f; 
     fixtureDef.shape = &circleShape; 
-    fixtureDef.restitution = 0.0f;
+    fixtureDef.restitution = 0.3f;
     fixtureDef.density = 1.0f;
     fixtureDef.friction = 0.7f;
     fixtureDef.filter.categoryBits = 0x02;

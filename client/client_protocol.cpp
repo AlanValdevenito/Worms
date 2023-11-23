@@ -261,9 +261,14 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaVerde(bool &was_cl
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("Trayectoria ---> x:%u y:%u exploto: %u\n", x, y, exploto);
+    uint8_t tiempo;
+    skt.recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
 
-    return std::make_shared<GranadaVerde>(x, y, angulo, exploto);
+    // printf("Trayectoria ---> x:%u y:%u exploto: %u tiempo: %u\n", x, y, exploto, tiempo);
+
+    return std::make_shared<GranadaVerde>(x, y, angulo, exploto, tiempo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaBanana(bool &was_closed)
@@ -285,7 +290,13 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaBanana(bool &was_c
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    return std::make_shared<GranadaBanana>(x, y, angulo, exploto);
+    uint8_t tiempo;
+    skt.recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("Trayectoria ---> x:%u y:%u exploto: %u tiempo: %u\n", x, y, exploto, tiempo);
+    return std::make_shared<GranadaBanana>(x, y, angulo, exploto, tiempo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaSanta(bool &was_closed)
@@ -307,7 +318,13 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaSanta(bool &was_cl
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    return std::make_shared<GranadaSanta>(x, y, angulo, exploto);
+    uint8_t tiempo;
+    skt.recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("Trayectoria ---> x:%u y:%u exploto: %u tiempo: %u\n", x, y, exploto, tiempo);
+    return std::make_shared<GranadaSanta>(x, y, angulo, exploto, tiempo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaRoja(bool &was_closed)
@@ -328,8 +345,13 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaGranadaRoja(bool &was_clo
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("GRANADA ROJA---> x:%u y:%u angulo:%u exploto: %u\n", x, y, angulo, exploto);
-    return std::make_shared<GranadaRoja>(x, y, angulo, exploto);
+    uint8_t tiempo;
+    skt.recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("GRANADA ROJA---> x:%u y:%u angulo:%u exploto: %u tiempo: %u\n", x, y, angulo, exploto, tiempo);
+    return std::make_shared<GranadaRoja>(x, y, angulo, exploto, tiempo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaDinamita(bool &was_closed)
@@ -345,9 +367,14 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaDinamita(bool &was_closed
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("Trayectoria ---> x:%u y:%u \n", x, y);
+    uint8_t tiempo;
+    skt.recvall(&tiempo, sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
 
-    return std::make_shared<Dinamita>(x, y, exploto);
+    // printf("Trayectoria ---> x:%u y:%u tiempo: %u\n", x, y, tiempo);
+
+    return std::make_shared<Dinamita>(x, y, exploto, tiempo);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaBazuka(bool &was_closed)
@@ -452,7 +479,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaFragmento(bool &was_close
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    printf("Trayectoria fragmento---> id:%u x:%u y:%u angulo: %u exploto: %u\n", id,x, y, angulo,exploto);
+    // printf("Trayectoria fragmento---> id:%u x:%u y:%u angulo: %u exploto: %u\n", id,x, y, angulo,exploto);
 
     return std::make_shared<Fragmento>(id, x, y, angulo,exploto);
 }
@@ -648,6 +675,8 @@ bool ClientProtocol::enviarAtaqueConGranada(std::shared_ptr<Proyectil> g, bool &
     skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
     if (was_closed)
         return false;
+
+    // printf("ENVIAAAAAAAAAAAAAAAAAAR ------------_> angulo :%u pot: %u tiemp: %u\n", g->get_angulo(), g->get_potencia(), g->get_tiempo());
 
     return true;
 }

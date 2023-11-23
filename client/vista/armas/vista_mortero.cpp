@@ -26,7 +26,7 @@ void AnimacionMortero::update(float nuevoX, float nuevoY, int nuevoEstado, int n
 
 }
 
-void AnimacionMortero::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionMortero::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_APUNTANDO) {
         this->apuntado.render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
@@ -51,7 +51,7 @@ void AnimacionMortero::render(SDL2pp::Renderer &renderer, float camaraLimiteIzqu
 
         for (auto &elemento : this->fragmentos)
         {
-            (elemento.second)->render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
+            (elemento.second)->render(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
         }
 
     }

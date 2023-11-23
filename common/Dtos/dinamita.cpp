@@ -2,7 +2,7 @@
 
 Dinamita::Dinamita(uint8_t id, uint8_t tiempo, bool exploto) : Proyectil(DINAMITA_CODE, id,exploto), tiempo(tiempo) {}
 
-Dinamita::Dinamita(uint16_t x, uint16_t y, bool exploto) : Proyectil(DINAMITA_CODE,exploto), x(x), y(y) {}
+Dinamita::Dinamita(uint16_t x, uint16_t y, bool exploto, uint8_t tiempo) : Proyectil(DINAMITA_CODE,exploto), x(x), y(y), tiempo(tiempo) {}
 
 Dinamita::~Dinamita() {}
 
