@@ -85,7 +85,7 @@ void AirStrikeRocket::explode() {
                     worm->takeDamage(damage);
                     xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
                     yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
-                    b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+                    worm->applyImpulse(xComponent, yComponent);
                 }
             } 
             

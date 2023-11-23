@@ -242,8 +242,8 @@ void Worm::equipWeapon(uint8_t weapon) {
 }
 
 void Worm::applyImpulse(float x, float y) {
-	std::cout << "worm apply Impulse, playerId = " << playerId << "\n";
 	body->ApplyLinearImpulseToCenter(b2Vec2(x, y), true);
+	state = FLYING;
 }
 
 uint8_t Worm::getWeapon() {
