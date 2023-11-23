@@ -46,6 +46,7 @@ private:
     float y;
     int vida;
     int direccion; // 0 izquierda y 1 derecha
+    int angulo;
 
     bool turno;
 
@@ -55,7 +56,7 @@ private:
 public:
     Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida, int direccion);
 
-    void update(int it, float nuevoX, float nuevoY, int vida, int direccion); // Actualiza el Worm en funcion del tiempo transcurrido.
+    void update(int it, float nuevoX, float nuevoY, int vida, int direccion, int angulo); // Actualiza el Worm en funcion del tiempo transcurrido.
     void update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int arma = 0);
 
     void equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma);

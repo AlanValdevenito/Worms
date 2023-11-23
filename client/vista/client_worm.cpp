@@ -12,6 +12,7 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, i
                                                                                           y(y), 
                                                                                           vida(vida),
                                                                                           direccion(direccion),
+                                                                                          angulo(0),
                                                                                           turno(false), 
                                                                                           color(color),
                                                                                           configuraciones(YAML::LoadFile("/configuracion.yml")) {}
@@ -20,7 +21,7 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, i
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
-void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDireccion)
+void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDireccion, int nuevoAngulo)
 {
 
     if (this->estado == EQUIPANDO_ARMA) {
@@ -30,7 +31,10 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDi
     // if (this->estado == MOVIENDOSE) {
     if ((nuevoX != this->x) || (nuevoY != this->y)) {
 
-        this->animacion.update(it);
+        if (this->estado != GOLPEADO) {
+            this->animacion.update(it);
+        }
+
         this->x = nuevoX;
         this->y = nuevoY;
         
@@ -38,6 +42,7 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDi
 
     this->vida = nuevaVida;
     this->direccion = nuevaDireccion;
+    this->angulo = nuevoAngulo;
 }
 
 void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
@@ -50,8 +55,6 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     }
 
     else if (nuevoEstado == SALTANDO_ADELANTE) {
-        // std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wjump.png").SetColorKey(true, 0));
-        
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wflylnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
         this->animacion.no_repetir_animacion();
@@ -164,7 +167,7 @@ void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentro
         this->arma->render(renderer, posicionX, posicionY, this->direccion);
 
     } else {
-        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
+        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip, this->angulo);
     }
 
     if ((this->estado == EQUIPANDO_ARMA) && (this->animacion.completa())) {

@@ -112,7 +112,8 @@ int Partida::iniciar()
 
 void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
     this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
-    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
+    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/blue00.png").SetColorKey(true, 0));
+    // this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0));
     this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
     this->texturas[3] = new Texture(renderer, Surface(DATA_PATH "/grds4.png").SetColorKey(true, 0xff));
 }
@@ -605,23 +606,29 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
     }
 
+    /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/
+
+    camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
+
     /***** ACTUALIZAMOS LA POSICION DE CADA WORM *****/
 
     int cantidad = gusanos->cantidad();
     for (int i = 0; i < cantidad; i++) {
         std::shared_ptr<Gusano> gusano = gusanos->popGusano(i);
+        std::cout << "Entrando a gusano: " << (int) gusano->get_id() << std::endl;
 
         int nuevoEstado = (int) gusano->get_estado();
         int tipoDeArma = (int) gusano->get_arma();
 
         if (nuevoEstado == MUERTO) {
+            std::cout << "Eliminando gusano: " << (int) gusano->get_id() << std::endl;
             this->worms.erase(gusano->get_id());
             continue;
         }
 
         float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion());
+        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo());
 
         if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
@@ -631,6 +638,8 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
     }
+
+    std::cout << "Saliendo del for" << std::endl;
 
     /***** ACTUALIZAMOS LA POSICION DEL PROYECTIL (SI ES QUE HAY) *****/
     
@@ -649,9 +658,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         }
     }
 
-    /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/
-
-    camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
     return true;
 }
 
@@ -672,9 +678,21 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 {
 
     renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
-    renderer.Copy(*this->texturas[1], NullOpt, NullOpt);
+    // renderer.Copy(*this->texturas[1], NullOpt, NullOpt);
 
     float altura = renderer.GetOutputHeight();
+    float ancho = renderer.GetOutputWidth();
+
+    int j = -(ancho/2);
+    for (int i = 0; i < 15; i++) {
+        renderer.Copy(
+            *this->texturas[1], 
+            NullOpt, 
+            Rect(j - (metros_a_pixeles(this->camara.getLimiteIzquierdo())),altura - metros_a_pixeles(this->camara.getLimiteSuperior()), 128, 24)
+        );
+
+        j += 128;
+    }
 
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
@@ -691,6 +709,11 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         float ancho = this->vigas[i]->return_ancho();
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
+
+
+        if (angulo == -90) {
+            continue;
+        }
 
         if (ancho == 600) {
             renderer.Copy(

@@ -4,6 +4,7 @@
 
 #define TURN_DURATION 60
 #define TIME_LEFT_AFTER_ATTACK 2
+#define WATER_POSITION 0
 
 std::map<std::string, int> loadConfig(const std::string configFileName) {
     YAML::Node yaml = YAML::LoadFile(configFileName);
@@ -196,7 +197,7 @@ void Game::mapa_puente() {
 
     /******************** VIGAS ********************/
 
-    world.addBeam(2.4f, 8.4f, 90, LONG);
+    // world.addBeam(2.4f, 8.4f, 90, LONG);
 
     world.addBeam(5, 5, 0, LONG); // 2 3 4 5 6 7 8
     world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
@@ -205,13 +206,13 @@ void Game::mapa_puente() {
     world.addBeam(29, 5, 0, LONG);
     world.addBeam(34, 5, 0, LONG);
 
-    world.addBeam(36.6f, 8.4f, 90, LONG);
+    // world.addBeam(36.6f, 8.4f, 90, LONG);
 
     /******************** WORMS ********************/
 
     int x = 3;
     for (int i = 0; i < config["cantidad_de_worms"]; i++) {
-        world.addWorm(x, 14);
+        world.addWorm(x, 7);
         x += 2;
     }
 
@@ -364,8 +365,13 @@ void Game::updateWorms() {
 
             players[worm->playerId - 1].numberOfAliveWorms--;
             players[worm->playerId - 1].markWormAsDead(worm->getId());
-            
-            
+
+        }
+         if (worm->getYCoordinate() <= WATER_POSITION && worm->is_alive) {
+            worm->takeDamage(worm->getHp());
+            //worm->makeDamage();
+            worm->getBody()->SetLinearVelocity(b2Vec2(0,0));
+            worm->getBody()->SetTransform(b2Vec2(worm->getXCoordinate(), worm->getYCoordinate()),true);
         }
         if (not world.anyMovement()) {
             worm->makeDamage();
@@ -390,14 +396,13 @@ void Game::updateWorms() {
                 }
             }
         }
+       
         if (worm->numberOfContacts == 0) {
             if (worm->getYCoordinate() > worm->highestYCoordinateReached) {
                 worm->highestYCoordinateReached = worm->getYCoordinate();
             }
         }
-        /*if (worm->getYCoordinate() <= 0) {
-            worm->takeDamage(worm->getHp());
-        }*/
+        
         if (worm->jumpTimeout > 0) worm->jumpTimeout--;
         if (worm->state == FLYING) {
             worm->updateAngle();
