@@ -24,6 +24,7 @@ public:
     void explode();
     void endContact() override;
     void updateAngle();
+    void destroy();
     // devuelve el angulo en grados
     float getAngle();
     ~MorteroRocket();

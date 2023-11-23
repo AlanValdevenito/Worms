@@ -7,7 +7,7 @@
 
 Dynamite::Dynamite(b2World *world, float x, float y,
                     int timeToExplotionInSeconds,
-                    std::map<std::string, int>& config) : Entity(),maxDamage(config["dynamiteDamage"]),
+                    std::map<std::string, int>& config) : Entity(DYNAMITE),maxDamage(config["dynamiteDamage"]),
                                                           explosionRadius(config["dynamiteRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -105,6 +105,11 @@ void Dynamite::update() {
 float Dynamite::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
 }
+
+void Dynamite::destroy() {
+    body->GetWorld()->DestroyBody(body);
+}
+
 
 void Dynamite::startContact() {}
     

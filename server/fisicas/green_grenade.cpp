@@ -6,7 +6,7 @@
 
 GreenGrenade::GreenGrenade(b2World *world, float x, float y,
                            int timeToExplotionInSeconds,
-                           std::map<std::string, int>& config) : Entity(),maxDamage(config["greenGrenadeDamage"]), 
+                           std::map<std::string, int>& config) : Entity(GREEN_GRENADE),maxDamage(config["greenGrenadeDamage"]), 
                                                                  explosionRadius(config["greenGrenadeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -56,7 +56,6 @@ void GreenGrenade::shoot(Direction direction, float angle, int power) {
     
     float xComponent = (float(power) / 40.0f ) * cos(angle);
     float yComponent = (float(power) / 40.0f ) * sin(angle);
-    std::cout << "xComponent = " << xComponent << " yComponent = " << yComponent << "\n";
     if (direction == LEFT) {
         body->ApplyLinearImpulse(b2Vec2(-xComponent, yComponent), b2Vec2(0.025f, 0.025f), true);
     } else if (direction == RIGHT) {
@@ -107,6 +106,9 @@ void GreenGrenade::update() {
     }
 }
 
+void GreenGrenade::destroy() {
+    body->GetWorld()->DestroyBody(body);
+}
 
 void GreenGrenade::startContact() {}
     

@@ -5,7 +5,7 @@
 
 
 Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds,
-               std::map<std::string, int>& config) : Entity(),
+               std::map<std::string, int>& config) : Entity(BANANA),
                                                      maxDamage(config["bananaDamage"]),
                                                      explosionRadius(config["bananaRadius"]) {
     b2BodyDef bodyDef;
@@ -91,7 +91,6 @@ void Banana::explode() {
         }
     }
     exploded = true;
-    body->GetWorld()->DestroyBody(body);
 }
 
 void Banana::update() {
@@ -106,6 +105,10 @@ void Banana::update() {
 
 float Banana::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
+}
+
+void Banana::destroy() {
+    body->GetWorld()->DestroyBody(body);
 }
 
 void Banana::startContact() {}

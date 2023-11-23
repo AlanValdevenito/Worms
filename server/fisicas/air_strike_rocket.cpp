@@ -3,7 +3,7 @@
 
 
 AirStrikeRocket::AirStrikeRocket(b2World *world, float x, float y,
-                                std::map<std::string, int>& config) : Entity(),
+                                std::map<std::string, int>& config) : Entity(AIR_STRIKE_ROCKET),
                                                                       maxDamage(config["airStrikeDamage"]),
                                                                       explosionRadius(config["airStrikeRadius"]) {
     b2BodyDef bodyDef;

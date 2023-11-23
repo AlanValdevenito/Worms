@@ -3,7 +3,7 @@
 
 
 MorteroRocket::MorteroRocket(b2World *world, float x, float y, float angle,
-                             std::map<std::string, int>& config) : Entity(),maxDamage(config["bazookaDamage"]),
+                             std::map<std::string, int>& config) : Entity(BAZOOKA_ROCKET),maxDamage(config["bazookaDamage"]),
                                                                    explosionRadius(config["bazookaRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -113,6 +113,10 @@ float MorteroRocket::getAngle() {
 void MorteroRocket::updateAngle() {
     float angle = atan2(body->GetLinearVelocity().x, body->GetLinearVelocity().y);
     body->SetTransform(body->GetPosition(), angle);
+}
+
+void MorteroRocket::destroy() {
+    body->GetWorld()->DestroyBody(body);
 }
 
 MorteroRocket::~MorteroRocket() {}

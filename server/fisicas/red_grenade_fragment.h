@@ -23,6 +23,7 @@ public:
     void startContact() override;
     void explode();
     void endContact() override;
+    void destroy();
     // devuelve el angulo en grados
     float getAngle();
     ~RedGrenadeFragment();

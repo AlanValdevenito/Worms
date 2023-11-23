@@ -77,7 +77,7 @@ public:
     RedGrenade *redGrenade = NULL;
     std::vector<RedGrenadeFragment*> redGrenadeFragments;
     std::vector<AirStrikeRocket*> airStrike;
-
+    std::vector<int> explodedFragmentIds;
     int idTurn;
     bool game_finished;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);

@@ -72,6 +72,7 @@ public:
     void setPlayerId(uint8_t id);
     void setTeamNumber(uint8_t number);
     void equipWeapon(uint8_t weapon);
+    void applyImpulse(float x, float y);
     uint8_t getWeapon();
     uint8_t getTeamNumber();
     uint8_t getDirection();

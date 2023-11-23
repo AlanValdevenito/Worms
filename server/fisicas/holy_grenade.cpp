@@ -5,7 +5,7 @@
 
 
 HolyGrenade::HolyGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds,
-                        std::map<std::string, int>& config) : Entity(),maxDamage(config["holyGrenadeDamage"]),
+                        std::map<std::string, int>& config) : Entity(HOLY_GRENADE),maxDamage(config["holyGrenadeDamage"]),
                                                               explosionRadius(config["holyGrenadeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -105,6 +105,10 @@ void HolyGrenade::update() {
 
 float HolyGrenade::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
+}
+
+void HolyGrenade::destroy() {
+    body->GetWorld()->DestroyBody(body);
 }
 
 void HolyGrenade::startContact() {}

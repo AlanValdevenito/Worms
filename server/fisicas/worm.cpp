@@ -2,7 +2,7 @@
 #include <iostream>
 
 Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
-		   std::map<std::string, int>& config) : Entity(),
+		   std::map<std::string, int>& config) : Entity(WORM),
 												hp(config["wormHp"]), 
 												id(id), 
 												numberOfContacts(0),
@@ -190,6 +190,7 @@ bool Worm::isMoving() {
 }
 
 void Worm::takeDamage(uint8_t damage) {
+	std::cout << "Worm:: takeDamage()\n";
 	damageTaken += damage;
 }
 
@@ -229,7 +230,7 @@ void Worm::startContact() {
 }
 
 void Worm::equipWeapon(uint8_t weapon) {
-	std::cout << "worm equip weapon\n";
+	
 	if (weapon == actualWeapon || weapon == NO_WEAPON) {
 		actualWeapon = NO_WEAPON;
 		state = MOVING;
@@ -238,6 +239,11 @@ void Worm::equipWeapon(uint8_t weapon) {
 		state = EQUIPING_WEAPON;
 		//state = AIMING;
 	}
+}
+
+void Worm::applyImpulse(float x, float y) {
+	std::cout << "worm apply Impulse, playerId = " << playerId << "\n";
+	body->ApplyLinearImpulseToCenter(b2Vec2(x, y), true);
 }
 
 uint8_t Worm::getWeapon() {

@@ -28,6 +28,7 @@ public:
     void explode();
     void update();
     float getAngle();
+    void destroy();
     void startContact() override;
     void endContact() override;
     ~RedGrenade();

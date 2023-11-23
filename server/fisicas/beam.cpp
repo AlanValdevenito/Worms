@@ -1,7 +1,7 @@
 #include "beam.h"
 
 Beam::Beam(b2World *world, float x, float y, float angle, BeamType type)
-    : x(x), y(y), angle(angle), type(type) {
+    : Entity(BEAM), x(x), y(y), angle(angle), type(type) {
     if (type == SHORT) {
       width = SHORT_BEAM_WIDTH;
     } else if (type == LONG) {

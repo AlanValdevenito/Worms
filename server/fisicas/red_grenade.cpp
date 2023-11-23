@@ -6,7 +6,7 @@
 
 RedGrenade::RedGrenade(b2World *world, float x, float y,
                            int timeToExplotionInSeconds,
-                           std::map<std::string, int>& config) : Entity(),maxDamage(config["greenGrenadeDamage"]), 
+                           std::map<std::string, int>& config) : Entity(RED_GRENADE),maxDamage(config["greenGrenadeDamage"]), 
                                                                  explosionRadius(config["greenGrenadeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -91,6 +91,10 @@ void RedGrenade::update() {
             explode();
         }
     }
+}
+
+void RedGrenade::destroy() {
+    body->GetWorld()->DestroyBody(body);
 }
 
 
