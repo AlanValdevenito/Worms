@@ -29,8 +29,6 @@
 #include "mortero_rocket.h"
 #include "entity.h"
 
-
-
 class Game : public Thread
 {
 private:
@@ -38,7 +36,7 @@ private:
     Broadcaster &broadcaster;
     std::map<std::string, int> config;
     World world;
-    
+
     std::vector<uint8_t> idPlayers;
     std::vector<Player> players;
     std::chrono::steady_clock::time_point begin;
@@ -46,28 +44,29 @@ private:
     std::chrono::steady_clock::time_point timeOfAttack;
     std::chrono::steady_clock::time_point t1;
     std::chrono::steady_clock::time_point t2;
-    
-    float rate = 1000000000.0f/ 30.0f; // en nanoseconds
+
+    float rate = 1000000000.0f / 30.0f; // en nanoseconds
     int rest = 0;
     int lost = 0;
     float timeStep = 1.0f / 30.0f;
-    
+
     bool wormAttacked;
     int numberOfPlayers;
     int numberOfWormsMoving = 0;
     int actualWormId;
     int indexOfActualPlayer = 0;
     int numberOfAlivePlayers;
-    //std::chrono::steady_clock::time_point t1;
-    //std::chrono::steady_clock::time_point t2;
-    // std::map<int, LISTA DE WORMS>;
+    int jugadores_en_partida;
+    // std::chrono::steady_clock::time_point t1;
+    // std::chrono::steady_clock::time_point t2;
+    //  std::map<int, LISTA DE WORMS>;
     void mapa();
     void mapa_jaula();
     void mapa_puente();
     void mapa_vigas_inclinadas();
+    void finalizar_juego(std::shared_ptr<Dto> dto);
 
 public:
-    
     GreenGrenade *greenGrenade = NULL;
     BazookaRocket *bazookaRocket = NULL;
     MorteroRocket *morteroRocket = NULL;
@@ -75,12 +74,12 @@ public:
     HolyGrenade *holyGrenade = NULL;
     Dynamite *dynamite = NULL;
     RedGrenade *redGrenade = NULL;
-    std::vector<RedGrenadeFragment*> redGrenadeFragments;
-    std::vector<AirStrikeRocket*> airStrike;
+    std::vector<RedGrenadeFragment *> redGrenadeFragments;
+    std::vector<AirStrikeRocket *> airStrike;
     std::vector<int> explodedFragmentIds;
     int idTurn;
     bool game_finished;
-    Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster);
+    Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad);
     void update();
     void updateWorms();
     void updatePlayers();
