@@ -104,7 +104,8 @@ bool ClientProtocol::recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed)
     return true;
 }
 
-std::shared_ptr<Dto> ClientProtocol::recibirGanador(bool &was_closed){
+std::shared_ptr<Dto> ClientProtocol::recibirGanador(bool &was_closed)
+{
     uint8_t id;
     skt.recvall(&id, sizeof(id), &was_closed);
     if (was_closed)
@@ -182,9 +183,6 @@ std::shared_ptr<Dto> ClientProtocol::recibirGusanos(bool &was_closed)
     for (int i = 0; i < cant; i++)
     {
         std::shared_ptr<Gusano> g = std::dynamic_pointer_cast<Gusano>(recibirGusano(was_closed));
-
-        // printf("gusano %d)  id:%u  x:%u  y:%u \n", i, g->get_id(), g->x_pos(), g->y_pos());
-
         lista.push_back(g);
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(lista);
@@ -481,7 +479,7 @@ std::shared_ptr<Dto> ClientProtocol::recibirTrayectoriaFragmento(bool &was_close
 
     // printf("Trayectoria fragmento---> id:%u x:%u y:%u angulo: %u exploto: %u\n", id,x, y, angulo,exploto);
 
-    return std::make_shared<Fragmento>(id, x, y, angulo,exploto);
+    return std::make_shared<Fragmento>(id, x, y, angulo, exploto);
 }
 
 std::shared_ptr<Dto> ClientProtocol::recibirProyectil(bool &was_closed)

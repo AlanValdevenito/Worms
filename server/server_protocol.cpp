@@ -130,8 +130,8 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     if (was_closed)
         return false;
 
-    printf("id:%u  x:%u  y:%u vida:%u color:%u\n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida(), g->get_color());
-    printf("estado: %u\n", g->get_estado());
+    // printf("id:%u  x:%u  y:%u vida:%u color:%u\n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida(), g->get_color());
+    // printf("estado: %u\n", g->get_estado());
     return true;
 }
 
@@ -154,7 +154,7 @@ bool ServerProtocol::enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was
     skt->sendall(&(flag), sizeof(flag), &was_closed); // especifico la cantidad que llegara
     if (was_closed)
         return false;
-    //printf("flag: %u",flag);
+    // printf("flag: %u",flag);
 
     for (int i = 0; i < cant; i++)
     {
@@ -208,7 +208,7 @@ bool ServerProtocol::enviarGanador(std::shared_ptr<Dto> dto, bool &was_closed)
 {
     if (not enviarCodigoDeElemento(dto, was_closed))
         return false;
-    
+
     uint8_t id = dto->get_cliente_id();
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
@@ -506,7 +506,7 @@ bool ServerProtocol::recibirGranada(uint8_t &potencia, uint8_t &angulo, uint8_t 
     tiempo = tiempo_recibido;
 
     // printf("RECIBIR ---> angulo:%u pot: %u tiempo: %u\n", angulo, potencia, tiempo);
-    
+
     return true;
 }
 
