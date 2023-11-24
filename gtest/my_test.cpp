@@ -986,8 +986,10 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Gusano)
     uint8_t vida = 85;
     uint8_t color = 3;
     uint8_t estado = 3;
+    uint8_t direccion = 1;
+    uint8_t arma = 1;
 
-    std::shared_ptr<Gusano> gusano = std::make_shared<Gusano>(id, x, y, vida, color, estado, 1, 1);
+    std::shared_ptr<Gusano> gusano = std::make_shared<Gusano>(id, x, y, vida, color, estado, arma, direccion);
 
     sp.enviarGusano(gusano, was_closed);
 
@@ -1018,6 +1020,8 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
     bool was_closed = false;
+    uint8_t direccion = 1;
+    uint8_t arma = 1;
 
     uint8_t id_enviada1 = 2;
     uint16_t x_enviada1 = 20;
@@ -1025,7 +1029,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada1 = 85;
     uint8_t color_enviada1 = 3;
     uint8_t estado_enviada1 = 3;
-    std::shared_ptr<Gusano> gusano1 = std::make_shared<Gusano>(id_enviada1, x_enviada1, y_enviada1, vida_enviada1, color_enviada1, estado_enviada1, 1, 1);
+    std::shared_ptr<Gusano> gusano1 = std::make_shared<Gusano>(id_enviada1, x_enviada1, y_enviada1, vida_enviada1, color_enviada1, estado_enviada1, arma, direccion);
 
     uint8_t id_enviada2 = 3;
     uint16_t x_enviada2 = 24;
@@ -1033,7 +1037,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada2 = 86;
     uint8_t color_enviada2 = 10;
     uint8_t estado_enviada2 = 3;
-    std::shared_ptr<Gusano> gusano2 = std::make_shared<Gusano>(id_enviada2, x_enviada2, y_enviada2, vida_enviada2, color_enviada2, estado_enviada2, 1, 1);
+    std::shared_ptr<Gusano> gusano2 = std::make_shared<Gusano>(id_enviada2, x_enviada2, y_enviada2, vida_enviada2, color_enviada2, estado_enviada2, arma, direccion);
 
     uint8_t id_enviada3 = 6;
     uint16_t x_enviada3 = 54;
@@ -1041,7 +1045,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada3 = 16;
     uint8_t color_enviada3 = 11;
     uint8_t estado_enviada3 = 3;
-    std::shared_ptr<Gusano> gusano3 = std::make_shared<Gusano>(id_enviada3, x_enviada3, y_enviada3, vida_enviada3, color_enviada3, estado_enviada3, 1, 1);
+    std::shared_ptr<Gusano> gusano3 = std::make_shared<Gusano>(id_enviada3, x_enviada3, y_enviada3, vida_enviada3, color_enviada3, estado_enviada3, arma, direccion);
 
     std::vector<std::shared_ptr<Gusano>> lista;
     lista.push_back(gusano1);
@@ -1192,11 +1196,12 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaVerde)
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
     bool was_closed = false;
+    bool exploto = false;
 
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
     uint16_t angulo_enviado = 19;
-    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(x_enviada, y_enviada, angulo_enviado, false);
+    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(x_enviada, y_enviada, angulo_enviado, exploto);
 
     sp.enviarTrayectoriaDeGranadaVerde(g, was_closed);
 
