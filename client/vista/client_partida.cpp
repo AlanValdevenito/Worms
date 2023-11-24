@@ -660,6 +660,7 @@ void Partida::renderizar(SDL2pp::Renderer &renderer)
     renderer.Clear();
 
     renderizar_mapa(renderer);
+    renderizar_agua(renderer);
     renderizar_temporizador(renderer);
     renderizar_worms(renderer);
 
@@ -669,22 +670,9 @@ void Partida::renderizar(SDL2pp::Renderer &renderer)
 void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 {
 
-    renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
-    // renderer.Copy(*this->texturas[1], NullOpt, NullOpt);
-
     float altura = renderer.GetOutputHeight();
-    float ancho = renderer.GetOutputWidth();
 
-    int j = -(ancho/2);
-    for (int i = 0; i < 15; i++) {
-        renderer.Copy(
-            *this->texturas[1], 
-            NullOpt, 
-            Rect(j - (metros_a_pixeles(this->camara.getLimiteIzquierdo())),altura - metros_a_pixeles(this->camara.getLimiteSuperior()), 128, 24)
-        );
-
-        j += 128;
-    }
+    renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
 
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
@@ -702,11 +690,6 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-
-        if (angulo == -90) {
-            continue;
-        }
-
         if (ancho == 600) {
             renderer.Copy(
                 *this->texturas[2],
@@ -721,6 +704,63 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
                 Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()),
                 metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
         }
+    }
+}
+
+void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
+    Texture fondo(renderer, Surface(DATA_PATH "/back.png").SetColorKey(true, 0xff));
+
+    float altura = renderer.GetOutputHeight();
+    float ancho = renderer.GetOutputWidth();
+
+    /***** Fondo *****/
+
+    int i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
+    int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
+
+    renderer.Copy(
+        fondo, 
+        NullOpt, 
+        Rect(i,j + fondo.GetHeight(), (ancho + metros_a_pixeles(this->camara.getLimiteDerecho())), altura + metros_a_pixeles(this->camara.getLimiteInferior()))
+    );
+
+    /*int i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
+    while (i < (ancho + metros_a_pixeles(this->camara.getLimiteDerecho()))) {
+
+        int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
+        j += fondo.GetHeight();
+
+        while (j < (altura + metros_a_pixeles(this->camara.getLimiteInferior()))) {
+            renderer.Copy(
+                fondo, 
+                NullOpt, 
+                Rect(i,j, fondo.GetWidth(), fondo.GetHeight())
+            );
+
+            j += fondo.GetHeight();
+        }
+
+        i += fondo.GetWidth();
+    }*/
+
+    /***** Olas *****/
+
+    i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
+    while (i < (ancho + metros_a_pixeles(this->camara.getLimiteDerecho()))) {
+
+        int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
+
+        for(int x = 0; x < 3; x++) {
+            renderer.Copy(
+                *this->texturas[1], 
+                NullOpt, 
+                Rect(i,j, this->texturas[1]->GetWidth(), this->texturas[1]->GetHeight())
+            );
+
+            j += this->texturas[1]->GetHeight();
+        }
+
+        i += this->texturas[1]->GetWidth();
     }
 }
 

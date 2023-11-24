@@ -2,11 +2,11 @@
 
 #include <cmath>
 
-#define OFFSET 16
+#define OFFSET 17
 
 #define RADIO 176
 
-Mira::Mira(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/mira.png").SetColorKey(true, 0))),
+Mira::Mira(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/crshairr.png").SetColorKey(true, 0))),
                                         size(this->texture.GetWidth()), 
                                         angulo(0) {}
 
@@ -14,9 +14,9 @@ void Mira::render(SDL2pp::Renderer &renderer, float x, float y, int direccion) {
 
     renderer.Copy(
         texture,
-        SDL2pp::NullOpt,
+        SDL2pp::Rect(0, (this->size) * 0, this->size, this->size),
         SDL2pp::Rect(x + OFFSET + ((direccion ? RADIO : -RADIO) * cos(this->angulo * (M_PI / 180))), 
-                        y + OFFSET - (RADIO * sin(this->angulo * (M_PI / 180))), this->size, this->size)
+                        y + 3 - (RADIO * sin(this->angulo * (M_PI / 180))), this->size, this->size)
     );
 }
 

@@ -220,7 +220,7 @@ void Game::mapa_puente()
 
     /******************** VIGAS ********************/
 
-    // world.addBeam(2.4f, 8.4f, 90, LONG);
+    world.addBeam(2.4f, 8.4f, 90, LONG);
 
     world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
     world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
@@ -229,7 +229,7 @@ void Game::mapa_puente()
     world.addBeam(29, 5, 0, LONG);
     world.addBeam(34, 5, 0, LONG);
 
-    // world.addBeam(36.6f, 8.4f, 90, LONG);
+    world.addBeam(36.6f, 8.4f, 90, LONG);
 
     /******************** WORMS ********************/
 

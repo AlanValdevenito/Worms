@@ -17,8 +17,10 @@ public:
     void seguirWorm(float nuevoX, float nuevoY); // Actualiza la posicion de la camara para seguir al Worm
     bool comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto);
 
+    float getLimiteDerecho();
     float getLimiteIzquierdo();
     float getLimiteSuperior();
+    float getLimiteInferior();
     float getCentroX();
 
     void setDimensiones(float ventanaAncho, float ventanaAlto);

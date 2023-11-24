@@ -67,8 +67,9 @@ public:
     bool actualizar(SDL2pp::Renderer &renderer, int it);
 
     void renderizar(SDL2pp::Renderer &renderer);
-    void renderizar_temporizador(SDL2pp::Renderer &renderer);
+    void renderizar_agua(SDL2pp::Renderer &renderer);
     void renderizar_mapa(SDL2pp::Renderer &renderer);
+    void renderizar_temporizador(SDL2pp::Renderer &renderer);
     void renderizar_worms(SDL2pp::Renderer &renderer);
     void renderizar_resultado(SDL2pp::Renderer &renderer, bool resultado);
 
