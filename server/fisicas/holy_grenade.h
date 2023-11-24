@@ -26,6 +26,7 @@ public:
     void explode();
     void update();
     void destroy();
+    int getTimeLeftToExplode();
     float getAngle();
     void startContact() override;
     void endContact() override;

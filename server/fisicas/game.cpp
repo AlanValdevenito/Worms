@@ -563,7 +563,7 @@ void Game::sendWorms()
         }
 
         if (redGrenade != NULL) {
-            std::shared_ptr<GranadaRoja> granadaRoja = std::make_shared<GranadaRoja>((uint16_t)(redGrenade->getXCoordinate() * 100), (uint16_t)(redGrenade->getYCoordinate() * 100), (uint8_t)(redGrenade->getAngle()), redGrenade->exploded, redGrenade->timeToExplotion);
+            std::shared_ptr<GranadaRoja> granadaRoja = std::make_shared<GranadaRoja>((uint16_t)(redGrenade->getXCoordinate() * 100), (uint16_t)(redGrenade->getYCoordinate() * 100), (uint8_t)(redGrenade->getAngle()), redGrenade->exploded, redGrenade->getTimeLeftToExplode());
             proyectiles.push_back(granadaRoja);
 
             if (redGrenade->exploded) {
@@ -592,7 +592,7 @@ void Game::sendWorms()
         }
         
         if (banana != NULL) {
-            std::shared_ptr<GranadaBanana> granadaBanana = std::make_shared<GranadaBanana>((uint16_t)(banana->getXCoordinate() * 100), (uint16_t)(banana->getYCoordinate() * 100), (uint8_t)(banana->getAngle()), banana->exploded, banana->timeToExplotion);
+            std::shared_ptr<GranadaBanana> granadaBanana = std::make_shared<GranadaBanana>((uint16_t)(banana->getXCoordinate() * 100), (uint16_t)(banana->getYCoordinate() * 100), (uint8_t)(banana->getAngle()), banana->exploded, banana->getTimeLeftToExplode());
             proyectiles.push_back(granadaBanana);
             if (banana->exploded) {
                 banana = NULL;
@@ -600,7 +600,7 @@ void Game::sendWorms()
         }
         
         if (holyGrenade != NULL) {
-            std::shared_ptr<GranadaSanta> granadaSanta = std::make_shared<GranadaSanta>((uint16_t)(holyGrenade->getXCoordinate() * 100), (uint16_t)(holyGrenade->getYCoordinate() * 100), (uint8_t)holyGrenade->getAngle(), holyGrenade->exploded, holyGrenade->timeToExplotion);
+            std::shared_ptr<GranadaSanta> granadaSanta = std::make_shared<GranadaSanta>((uint16_t)(holyGrenade->getXCoordinate() * 100), (uint16_t)(holyGrenade->getYCoordinate() * 100), (uint8_t)holyGrenade->getAngle(), holyGrenade->exploded, holyGrenade->getTimeLeftToExplode());
             proyectiles.push_back(granadaSanta);
             if (holyGrenade->exploded) {
                 holyGrenade = NULL;

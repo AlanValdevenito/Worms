@@ -95,6 +95,12 @@ void RedGrenade::update() {
     }
 }
 
+int RedGrenade::getTimeLeftToExplode() {
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    int timePassed = std::chrono::duration_cast<std::chrono::seconds> (now - spawnTime).count();
+    return timeToExplotion - timePassed;
+}
+
 void RedGrenade::destroy() {
     body->GetWorld()->DestroyBody(body);
 }

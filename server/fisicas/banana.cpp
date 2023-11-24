@@ -109,6 +109,12 @@ float Banana::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
 }
 
+int Banana::getTimeLeftToExplode() {
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    int timePassed = std::chrono::duration_cast<std::chrono::seconds> (now - spawnTime).count();
+    return timeToExplotion - timePassed;
+}
+
 void Banana::destroy() {
     body->GetWorld()->DestroyBody(body);
 }
