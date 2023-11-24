@@ -24,7 +24,7 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
     circleShape.m_p.Set(0, 0); 
     circleShape.m_radius = 0.5f; 
     fixtureDef.shape = &circleShape; 
-    fixtureDef.restitution = 0.3f;
+    fixtureDef.restitution = 0.0f;
     fixtureDef.density = 1.0f;
     fixtureDef.friction = 0.7f;
     fixtureDef.filter.categoryBits = 0x02;
@@ -87,9 +87,45 @@ uint8_t Worm::getId()
 
 void Worm::moveLeft() {
 	if (numberOfContacts == 0) return;
+	b2RayCastInput input;
+	input.p1 = body->GetPosition();
+	input.p2 = b2Vec2(body->GetPosition().x - 1, body->GetPosition().y - 1);
+	input.maxFraction = 0.75;
+	b2Vec2 normal(0, 0);
+	int minFraction = 10;
+	//check every fixture of every body to find closest
+	//float closestFraction = 1; //start with end of line as p2
+	b2Vec2 intersectionNormal(0,0);
+	for (b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext()) {
+		if (b->GetType() == b2_staticBody) {
+			//std::cout << "staticBody\n";
+			b2Fixture* f = b->GetFixtureList();
+			//for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext()) {
+				
+			b2RayCastOutput output;
+			if (f->RayCast( &output, input, 1)) {
+				//normal = output.normal;
+				if (output.fraction <= minFraction) {
+					std::cout << "fraction = " << output.fraction << "\n";
+					minFraction = output.fraction;
+					normal = output.normal;
+				}
+				//break;
+				//std::cout << "normal -> x = " << output.normal.x << ", y = " << output.normal.y << "\n";
+			}		
+		}
+	}
+	float theta = 3.14f / 2.0f;
+	b2Vec2 velocity = b2Vec2(std::min(0.0f, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
+							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
+
+	std::cout << "velocity = (" << velocity.x << ", " << velocity.y << ")\n";
+
 	if (actualWeapon == NO_WEAPON) {
 		isRunning = true;
-		body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
+		if (velocity == b2Vec2(0.0f,0.0f)) velocity = b2Vec2(-speed, 0.0f);
+		body->SetLinearVelocity(velocity);
+		//body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
 		state = MOVING;
 	}
 	facingRight = false;
@@ -99,11 +135,47 @@ void Worm::moveLeft() {
 void Worm::moveRight()
 {	
 	if (numberOfContacts == 0) return;
+	b2RayCastInput input;
+	input.p1 = body->GetPosition();
+	input.p2 = b2Vec2(body->GetPosition().x + 1, body->GetPosition().y - 1);
+	input.maxFraction = 0.75f;
+	b2Vec2 normal(0, 0);
+	int minFraction = 10;
+	//check every fixture of every body to find closest
+	//float closestFraction = 1; //start with end of line as p2
+	b2Vec2 intersectionNormal(0,0);
+	for (b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext()) {
+		if (b->GetType() == b2_staticBody) {
+			//std::cout << "staticBody\n";
+			b2Fixture* f = b->GetFixtureList();
+			//for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext()) {
+				
+			b2RayCastOutput output;
+			if (f->RayCast( &output, input, 1)) {
+				if (output.fraction <= minFraction) {
+					std::cout << "fraction = " << output.fraction << "\n";
+					minFraction = output.fraction;
+					normal = output.normal;
+				}
+				//normal = output.normal;
+				//break;
+				//std::cout << "normal -> x = " << output.normal.x << ", y = " << output.normal.y << "\n";
+			}		
+		}
+	}
+	float theta = -3.14f / 2.0f;
+	b2Vec2 velocity = b2Vec2(std::max((float)speed, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
+							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
+	
+	std::cout << "velocity = (" << velocity.x << ", " << velocity.y << ")\n";
+
 	// si no tiene arma, que se mueva
 	// si tiene arma, cambia la direccion a la derecha pero no se mueve
 	if (actualWeapon == NO_WEAPON) {
 		isRunning = true;
-		body->SetLinearVelocity(b2Vec2(speed, 0.0f));
+		if (velocity == b2Vec2(0.0f,0.0f)) velocity = b2Vec2(speed, 0.0f);
+		body->SetLinearVelocity(velocity);
+		//body->SetLinearVelocity(b2Vec2(speed, 0.0f));
 		state = MOVING;
 	}
 	facingRight = true;
