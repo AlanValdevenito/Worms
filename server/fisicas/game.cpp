@@ -558,6 +558,7 @@ void Game::sendWorms()
             proyectiles.push_back(granada);
 
             if (greenGrenade->exploded) {
+                greenGrenade->destroy();
                 greenGrenade = NULL;
             }
         }
@@ -576,7 +577,7 @@ void Game::sendWorms()
                     direction = (i < 3) ? LEFT : RIGHT;
                     redGrenadeFragments[i]->shoot(direction, 15*i, 1);
                 }
-                
+                redGrenade->destroy();
                 redGrenade = NULL;
                 // falta enviar los fragmentos
             }
@@ -587,6 +588,7 @@ void Game::sendWorms()
 
             proyectiles.push_back(bazooka);
             if (bazookaRocket->exploded) {
+                bazookaRocket->destroy();
                 bazookaRocket = NULL;
             }
         }
@@ -595,6 +597,7 @@ void Game::sendWorms()
             std::shared_ptr<GranadaBanana> granadaBanana = std::make_shared<GranadaBanana>((uint16_t)(banana->getXCoordinate() * 100), (uint16_t)(banana->getYCoordinate() * 100), (uint8_t)(banana->getAngle()), banana->exploded, banana->getTimeLeftToExplode());
             proyectiles.push_back(granadaBanana);
             if (banana->exploded) {
+                banana->destroy();
                 banana = NULL;
             }
         }
@@ -603,6 +606,7 @@ void Game::sendWorms()
             std::shared_ptr<GranadaSanta> granadaSanta = std::make_shared<GranadaSanta>((uint16_t)(holyGrenade->getXCoordinate() * 100), (uint16_t)(holyGrenade->getYCoordinate() * 100), (uint8_t)holyGrenade->getAngle(), holyGrenade->exploded, holyGrenade->getTimeLeftToExplode());
             proyectiles.push_back(granadaSanta);
             if (holyGrenade->exploded) {
+                holyGrenade->destroy();
                 holyGrenade = NULL;
             }
         }
@@ -612,6 +616,7 @@ void Game::sendWorms()
             
             proyectiles.push_back(dinamita);
             if (dynamite->exploded) {
+                dynamite->destroy();
                 dynamite = NULL;
             }
         }
@@ -630,6 +635,7 @@ void Game::sendWorms()
                     if (i == 3) {j = 0;}
                     redGrenadeFragments[i]->shoot(direction, 15*j, 1);
                 }
+                morteroRocket->destroy();
                 morteroRocket = NULL;
             }
         }
@@ -655,7 +661,7 @@ void Game::sendWorms()
                 std::shared_ptr<Fragmento> fragmento = std::make_shared<Fragmento>(id_fragmento, (uint16_t)(redGrenadeFragments[i]->getXCoordinate() * 100), (uint16_t)(redGrenadeFragments[i]->getYCoordinate() * 100), 0, redGrenadeFragments[i]->exploded);
                 proyectiles.push_back(fragmento);
                 if (redGrenadeFragments[i]->exploded) {
-                    //redGrenadeFragments[i]->destroy();
+                    redGrenadeFragments[i]->destroy();
                     redGrenadeFragments[i] = NULL;
                 }
             }
