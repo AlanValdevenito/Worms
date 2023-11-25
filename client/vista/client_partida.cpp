@@ -6,7 +6,7 @@
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
-Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 12), temporizador({60000, 0, 0, 0}), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
+Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 18), temporizador({60000, 0, 0, 0}), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
 
 int Partida::iniciar()
 {
@@ -112,17 +112,21 @@ int Partida::iniciar()
 
 void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
     this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
-    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0xff));
+    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/blue00.png").SetColorKey(true, 0));
+    // this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0));
     this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
     this->texturas[3] = new Texture(renderer, Surface(DATA_PATH "/grds4.png").SetColorKey(true, 0xff));
 }
 
 void Partida::inicializar_colores() {
-    this->colores[0] = SDL2pp::Color(255,0,0); // Rojo
-    this->colores[1] = SDL2pp::Color(0,0,255); // Azul
-    this->colores[2] = SDL2pp::Color(0,255,0); // Verde
-    this->colores[3] = SDL2pp::Color(255,255,255); // Blanco
-    this->colores[4] = SDL2pp::Color(0,0,0); // Negro
+    this->colores[0] = SDL2pp::Color(255,80,80); // Rojo
+    this->colores[1] = SDL2pp::Color(80,80,255); // Azul
+    this->colores[2] = SDL2pp::Color(80,255,80); // Verde
+    this->colores[3] = SDL2pp::Color(0,255,255); // Celeste
+    this->colores[4] = SDL2pp::Color(255,128,192); // Rosa
+    this->colores[5] = SDL2pp::Color(255,255,80); // Amarillo
+    this->colores[6] = SDL2pp::Color(255,255,255); // Blanco
+    this->colores[7] = SDL2pp::Color(0,0,0); // Negro
 }
 
 void Partida::guardar_vigas()
@@ -527,7 +531,7 @@ void Partida::enviarAtaque() {
     } else if (armaEquipada == GRANADA_VERDE) {
         cliente.send_queue.push(std::make_shared<GranadaVerde>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+                                                               this->worms[this->id_gusano_actual]->get_tiempo()));
     
     } else if (armaEquipada == BAZOOKA) {
         cliente.send_queue.push(std::make_shared<Bazuka>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
@@ -536,12 +540,12 @@ void Partida::enviarAtaque() {
     } else if (armaEquipada == BANANA) {
         cliente.send_queue.push(std::make_shared<GranadaBanana>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+                                                               this->worms[this->id_gusano_actual]->get_tiempo()));
     
     } else if (armaEquipada == GRANADA_SANTA) {
         cliente.send_queue.push(std::make_shared<GranadaSanta>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+                                                               this->worms[this->id_gusano_actual]->get_tiempo()));
     
     } else if (armaEquipada == DINAMITA) {
         cliente.send_queue.push(std::make_shared<Dinamita>(this->cliente.id, this->worms[this->id_gusano_actual]->get_tiempo(), false));
@@ -559,7 +563,7 @@ void Partida::enviarAtaque() {
     } else if (armaEquipada == GRANADA_ROJA) {
         cliente.send_queue.push(std::make_shared<GranadaRoja>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
                                                                this->worms[this->id_gusano_actual]->get_angulo(),
-                                                               this->worms[this->id_gusano_actual]->get_tiempo(), false));
+                                                               this->worms[this->id_gusano_actual]->get_tiempo()));
     
     } else if (armaEquipada == MORTERO) {
         cliente.send_queue.push(std::make_shared<Mortero>(this->cliente.id, this->worms[this->id_gusano_actual]->get_potencia(),
@@ -583,12 +587,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     if (dto->return_code() == GANADOR_CODE) {
         bool gano = ((int) dto->get_cliente_id() == (int) cliente.id);
 
-        if (gano) {
-            std::cout << "Ganaste\n";
-        } else {
-            std::cout << "Perdiste\n";
-        }
-
+        renderizar_resultado(renderer, gano);
         return false;
     }
 
@@ -604,6 +603,10 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         this->worms[this->id_gusano_actual]->activar_turno(); // Le aviso al Worm del turno actual que es su turno
         this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
     }
+
+    /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/
+
+    camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
 
     /***** ACTUALIZAMOS LA POSICION DE CADA WORM *****/
 
@@ -621,7 +624,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
         float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion());
+        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo());
 
         if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
@@ -645,13 +648,10 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
             float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
             float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
-            this->worms[this->id_gusano_actual]->update_proyectil(renderer, (int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto());
+            this->worms[this->id_gusano_actual]->update_proyectil(renderer, (int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto(), (int) proyectil->get_tiempo());
         }
     }
 
-    /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/
-
-    camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
     return true;
 }
 
@@ -659,9 +659,11 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
 void Partida::renderizar(SDL2pp::Renderer &renderer)
 {
+    renderer.SetDrawColor(0,0,0,255);
     renderer.Clear();
 
     renderizar_mapa(renderer);
+    renderizar_agua(renderer);
     renderizar_temporizador(renderer);
     renderizar_worms(renderer);
 
@@ -671,10 +673,9 @@ void Partida::renderizar(SDL2pp::Renderer &renderer)
 void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 {
 
-    renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
-    renderer.Copy(*this->texturas[1], NullOpt, NullOpt);
-
     float altura = renderer.GetOutputHeight();
+
+    renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
 
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
@@ -709,6 +710,63 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
     }
 }
 
+void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
+    Texture fondo(renderer, Surface(DATA_PATH "/back.png").SetColorKey(true, 0xff));
+
+    float altura = renderer.GetOutputHeight();
+    float ancho = renderer.GetOutputWidth();
+
+    /***** Fondo *****/
+
+    int i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
+    int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
+
+    renderer.Copy(
+        fondo, 
+        NullOpt, 
+        Rect(i,j + fondo.GetHeight(), (ancho + metros_a_pixeles(this->camara.getLimiteDerecho())), altura + metros_a_pixeles(this->camara.getLimiteInferior()))
+    );
+
+    /*int i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
+    while (i < (ancho + metros_a_pixeles(this->camara.getLimiteDerecho()))) {
+
+        int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
+        j += fondo.GetHeight();
+
+        while (j < (altura + metros_a_pixeles(this->camara.getLimiteInferior()))) {
+            renderer.Copy(
+                fondo, 
+                NullOpt, 
+                Rect(i,j, fondo.GetWidth(), fondo.GetHeight())
+            );
+
+            j += fondo.GetHeight();
+        }
+
+        i += fondo.GetWidth();
+    }*/
+
+    /***** Olas *****/
+
+    i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
+    while (i < (ancho + metros_a_pixeles(this->camara.getLimiteDerecho()))) {
+
+        int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
+
+        for(int x = 0; x < 5; x++) {
+            renderer.Copy(
+                *this->texturas[1], 
+                NullOpt, 
+                Rect(i,j, this->texturas[1]->GetWidth(), this->texturas[1]->GetHeight())
+            );
+
+            j += this->texturas[1]->GetHeight();
+        }
+
+        i += this->texturas[1]->GetWidth();
+    }
+}
+
 void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
     for (const auto &elemento : this->worms)
@@ -734,8 +792,111 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
     Surface surface = this->fuente.RenderText_Solid(std::to_string((int) (this->temporizador.tiempoRestante * 0.001)), blanco);
     Texture texture(renderer, surface);
 
-    Rect nombre(24, altura - 34, surface.GetWidth() + 5, surface.GetHeight() + 5);
+    Rect nombre(24, altura - 34, surface.GetWidth(), surface.GetHeight());
     renderer.Copy(texture, NullOpt, nombre);
+}
+
+void Partida::renderizar_resultado(SDL2pp::Renderer &renderer, bool resultado) {
+
+    int currentFrame = 0;
+
+    while (true)
+    {
+
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type) {
+
+                case SDL_QUIT:
+                    return;
+
+            }
+
+            if (event.type == SDL_KEYDOWN)
+            {
+
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_ESCAPE:
+                case SDLK_q:
+                case SDLK_RETURN:
+                    return;
+
+            }
+
+            }
+
+        }
+
+        renderer.SetDrawColor(0,0,0,255);
+        renderer.Clear();
+
+        int alto = renderer.GetOutputHeight();
+        int ancho = renderer.GetOutputWidth();
+
+        /********** LOGO **********/
+
+        Texture logo(renderer, Surface(DATA_PATH "/background1.jpg").SetColorKey(true, 0xff));
+        renderer.Copy(
+            logo, 
+            NullOpt, 
+            Rect((ancho/2) - 212.5f, 10, 425, 240)
+        );
+
+        /********** WORM **********/
+
+        if (resultado) {
+            Texture worm_winner(renderer, Surface(DATA_PATH "/wwinner.png").SetColorKey(true, 0xff));
+
+            int size = worm_winner.GetWidth();
+
+            renderer.Copy(
+                worm_winner, 
+                SDL2pp::Rect(0, (size) * currentFrame, size, size), 
+                Rect((ancho/2) - 30, (alto/2) - 20, size, size)
+            );
+
+            currentFrame++;
+            currentFrame = currentFrame % (worm_winner.GetHeight() / worm_winner.GetWidth());
+
+        } else {
+            Texture worm_loser(renderer, Surface(DATA_PATH "/wloser.png").SetColorKey(true, 0xff));
+
+            int size = worm_loser.GetWidth();
+
+            renderer.Copy(
+                worm_loser, 
+                SDL2pp::Rect(0, (size) * currentFrame, size, size), 
+                Rect((ancho/2) - 30, (alto/2) - 20, size, size)
+            );
+
+            currentFrame++;
+            currentFrame = currentFrame % (worm_loser.GetHeight() / worm_loser.GetWidth());
+        }
+
+        /********** RESULTADO **********/
+
+        std::string mensaje_resultado = resultado ? ("Ganaste") : ("Perdiste");
+
+        Color blanco(255, 255, 255, 255);
+        Surface surface_resultado = this->fuente.RenderText_Solid(mensaje_resultado, blanco);
+        Texture texture_resultado(renderer, surface_resultado);
+
+        Rect recta_resultado((ancho/2) - 35, (alto/2) + 65, surface_resultado.GetWidth(), surface_resultado.GetHeight());
+        renderer.Copy(texture_resultado, NullOpt, recta_resultado);
+
+        /********** MENSAJE DE SALIDA **********/
+
+        Surface surface_salir = this->fuente.RenderText_Solid("Presione ENTER para salir", blanco);
+        Texture texture_salir(renderer, surface_salir);
+
+        Rect recta_salir((ancho/2) - 110, (alto/2) + 120, surface_salir.GetWidth(), surface_salir.GetHeight());
+        renderer.Copy(texture_salir, NullOpt, recta_salir);
+        
+        renderer.Present(); 
+
+    }
 }
 
 /******************** CONVERSIONES ********************/

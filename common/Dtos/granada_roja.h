@@ -19,8 +19,8 @@ private:
     uint8_t tiempo;
 
 public:
-    GranadaRoja(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo, bool exploto);
-    GranadaRoja(uint16_t x, uint16_t y, uint8_t angulo, bool exploto);
+    GranadaRoja(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo);
+    GranadaRoja(uint16_t x, uint16_t y, uint8_t angulo, bool exploto, uint8_t tiempo);
     ~GranadaRoja();
     uint8_t get_angulo() override;
     uint8_t get_potencia() override;

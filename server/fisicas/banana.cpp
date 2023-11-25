@@ -5,7 +5,8 @@
 
 
 Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds,
-               std::map<std::string, int>& config) : maxDamage(config["bananaDamage"]),
+               std::map<std::string, int>& config) : Entity(BANANA),
+                                                     maxDamage(config["bananaDamage"]),
                                                      explosionRadius(config["bananaRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -82,15 +83,16 @@ void Banana::explode() {
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);
                     worm->takeDamage(damage);
+                    xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
+                    yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
+                    worm->applyImpulse(xComponent, yComponent);
+                    //b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
                 }
             } 
-            xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
-            yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
-            b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+            
         }
     }
     exploded = true;
-    body->GetWorld()->DestroyBody(body);
 }
 
 void Banana::update() {
@@ -105,6 +107,16 @@ void Banana::update() {
 
 float Banana::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
+}
+
+int Banana::getTimeLeftToExplode() {
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    int timePassed = std::chrono::duration_cast<std::chrono::seconds> (now - spawnTime).count();
+    return timeToExplotion - timePassed;
+}
+
+void Banana::destroy() {
+    body->GetWorld()->DestroyBody(body);
 }
 
 void Banana::startContact() {}

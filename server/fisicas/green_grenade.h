@@ -27,7 +27,9 @@ public:
     void shoot(Direction direction, float angle, int power); 
     void explode();
     void update();
+    void destroy();
     float getAngle();
+    int getTimeLeftToExplode();
     void startContact() override;
     void endContact() override;
     ~GreenGrenade();

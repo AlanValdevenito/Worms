@@ -5,6 +5,8 @@
 
 #include "vista_arma.h"
 #include "client_apuntado.h"
+#include "vista_fragmento.h"
+#include <map>
 
 class AnimacionGranadaRoja: public Arma
 {
@@ -14,6 +16,8 @@ private:
     Explosion explosion;
     Apuntado apuntado;
 
+    std::map<int, std::shared_ptr<AnimacionFragmento>> fragmentos;
+
     int angulo;
     int tiempo;
 
@@ -22,8 +26,8 @@ public:
 
     void update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo = 0, int nuevaDireccion = 0, int nuevoTiempo = 0, int id = 0) override;
     
-    void render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) override;
-    void renderizar_tiempo(SDL2pp::Renderer &renderer);
+    void render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) override;
+    void renderizar_tiempo(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
     void set_tiempo(int tiempoElegido) override;
     int get_tiempo() override;

@@ -14,11 +14,11 @@ void AnimacionAtaqueAereo::update(float nuevoX, float nuevoY, int nuevoEstado, i
     this->misiles[id]->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, nuevoTiempo);
 }
 
-void AnimacionAtaqueAereo::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionAtaqueAereo::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     for (auto &elemento : this->misiles)
     {
-        (elemento.second)->render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
+        (elemento.second)->render(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
     }
 
 }

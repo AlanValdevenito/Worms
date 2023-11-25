@@ -2,7 +2,7 @@
 #include <iostream>
 
 Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
-		   std::map<std::string, int>& config) : Entity(),
+		   std::map<std::string, int>& config) : Entity(WORM),
 												hp(config["wormHp"]), 
 												id(id), 
 												numberOfContacts(0),
@@ -87,9 +87,45 @@ uint8_t Worm::getId()
 
 void Worm::moveLeft() {
 	if (numberOfContacts == 0) return;
+	b2RayCastInput input;
+	input.p1 = body->GetPosition();
+	input.p2 = b2Vec2(body->GetPosition().x - 1, body->GetPosition().y - 1);
+	input.maxFraction = 0.75;
+	b2Vec2 normal(0, 0);
+	int minFraction = 10;
+	//check every fixture of every body to find closest
+	//float closestFraction = 1; //start with end of line as p2
+	b2Vec2 intersectionNormal(0,0);
+	for (b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext()) {
+		if (b->GetType() == b2_staticBody) {
+			//std::cout << "staticBody\n";
+			b2Fixture* f = b->GetFixtureList();
+			//for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext()) {
+				
+			b2RayCastOutput output;
+			if (f->RayCast( &output, input, 1)) {
+				//normal = output.normal;
+				if (output.fraction <= minFraction) {
+					std::cout << "fraction = " << output.fraction << "\n";
+					minFraction = output.fraction;
+					normal = output.normal;
+				}
+				//break;
+				//std::cout << "normal -> x = " << output.normal.x << ", y = " << output.normal.y << "\n";
+			}		
+		}
+	}
+	float theta = 3.14f / 2.0f;
+	b2Vec2 velocity = b2Vec2(std::min(0.0f, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
+							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
+
+	std::cout << "velocity = (" << velocity.x << ", " << velocity.y << ")\n";
+
 	if (actualWeapon == NO_WEAPON) {
 		isRunning = true;
-		body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
+		if (velocity == b2Vec2(0.0f,0.0f)) velocity = b2Vec2(-speed, 0.0f);
+		body->SetLinearVelocity(velocity);
+		//body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
 		state = MOVING;
 	}
 	facingRight = false;
@@ -99,11 +135,47 @@ void Worm::moveLeft() {
 void Worm::moveRight()
 {	
 	if (numberOfContacts == 0) return;
+	b2RayCastInput input;
+	input.p1 = body->GetPosition();
+	input.p2 = b2Vec2(body->GetPosition().x + 1, body->GetPosition().y - 1);
+	input.maxFraction = 0.75f;
+	b2Vec2 normal(0, 0);
+	int minFraction = 10;
+	//check every fixture of every body to find closest
+	//float closestFraction = 1; //start with end of line as p2
+	b2Vec2 intersectionNormal(0,0);
+	for (b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext()) {
+		if (b->GetType() == b2_staticBody) {
+			//std::cout << "staticBody\n";
+			b2Fixture* f = b->GetFixtureList();
+			//for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext()) {
+				
+			b2RayCastOutput output;
+			if (f->RayCast( &output, input, 1)) {
+				if (output.fraction <= minFraction) {
+					std::cout << "fraction = " << output.fraction << "\n";
+					minFraction = output.fraction;
+					normal = output.normal;
+				}
+				//normal = output.normal;
+				//break;
+				//std::cout << "normal -> x = " << output.normal.x << ", y = " << output.normal.y << "\n";
+			}		
+		}
+	}
+	float theta = -3.14f / 2.0f;
+	b2Vec2 velocity = b2Vec2(std::max((float)speed, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
+							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
+	
+	std::cout << "velocity = (" << velocity.x << ", " << velocity.y << ")\n";
+
 	// si no tiene arma, que se mueva
 	// si tiene arma, cambia la direccion a la derecha pero no se mueve
 	if (actualWeapon == NO_WEAPON) {
 		isRunning = true;
-		body->SetLinearVelocity(b2Vec2(speed, 0.0f));
+		if (velocity == b2Vec2(0.0f,0.0f)) velocity = b2Vec2(speed, 0.0f);
+		body->SetLinearVelocity(velocity);
+		//body->SetLinearVelocity(b2Vec2(speed, 0.0f));
 		state = MOVING;
 	}
 	facingRight = true;
@@ -121,7 +193,7 @@ void Worm::jump() {
 	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 	state = JUMPING_FORWARD;
-	jumpTimeout = 5;
+	jumpTimeout = 42;
 }
 
 void Worm::jumpBackward() {
@@ -155,6 +227,7 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 			yComponent = 40.0f*sin(angleInRadians);
 			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 			worm->takeDamage(10); // Sacarle la vida cuando se deje de mover
+			worm->state = FLYING;
 		}
 	}
 }
@@ -189,6 +262,7 @@ bool Worm::isMoving() {
 }
 
 void Worm::takeDamage(uint8_t damage) {
+	std::cout << "Worm:: takeDamage()\n";
 	damageTaken += damage;
 }
 
@@ -208,8 +282,17 @@ uint8_t Worm::getTeamNumber() {
 	return teamNumber;
 }
 
+void Worm::updateAngle() {
+    angle = atan2(body->GetLinearVelocity().x, body->GetLinearVelocity().y);
+}
+
+float Worm::getAngle() {
+	return angle * 180.0f / 3.14f;
+}
+
 void Worm::startContact() {
 	numberOfContacts++;
+	angle = 0;
 	state = MOVING;
 	float fallDistance = highestYCoordinateReached - body->GetPosition().y;
 	if (fallDistance > 2.0f) {
@@ -219,7 +302,7 @@ void Worm::startContact() {
 }
 
 void Worm::equipWeapon(uint8_t weapon) {
-	std::cout << "worm equip weapon\n";
+	
 	if (weapon == actualWeapon || weapon == NO_WEAPON) {
 		actualWeapon = NO_WEAPON;
 		state = MOVING;
@@ -228,6 +311,11 @@ void Worm::equipWeapon(uint8_t weapon) {
 		state = EQUIPING_WEAPON;
 		//state = AIMING;
 	}
+}
+
+void Worm::applyImpulse(float x, float y) {
+	body->ApplyLinearImpulseToCenter(b2Vec2(x, y), true);
+	state = FLYING;
 }
 
 uint8_t Worm::getWeapon() {

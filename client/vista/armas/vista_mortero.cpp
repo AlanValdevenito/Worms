@@ -3,19 +3,30 @@
 AnimacionMortero::AnimacionMortero(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
                                                                 movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/mortar.png").SetColorKey(true, 0))), 
                                                                 explosion(renderer), 
-                                                                apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbaz.png").SetColorKey(true, 0))) {}
+                                                                apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbaz.png").SetColorKey(true, 0))) 
+{
+    for (int i = 1; i <= 6; i++){
+        this->fragmentos[i] = std::make_shared<AnimacionFragmento>(renderer);
+    }
+}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
 void AnimacionMortero::update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo, int nuevaDireccion, int nuevoTiempo, int id) {
-    this->x = nuevoX;
-    this->y = nuevoY;
-    this->estado = nuevoEstado;
-    this->angulo = nuevoAngulo;
-    this->direccion = nuevaDireccion;
+
+    if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
+        this->fragmentos[id]->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo);
+    } else {
+        this->x = nuevoX;
+        this->y = nuevoY;
+        this->estado = nuevoEstado;
+        this->angulo = nuevoAngulo;
+        this->direccion = nuevaDireccion;
+    }
+
 }
 
-void AnimacionMortero::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionMortero::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_APUNTANDO) {
         this->apuntado.render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
@@ -34,6 +45,15 @@ void AnimacionMortero::render(SDL2pp::Renderer &renderer, float camaraLimiteIzqu
         } else {
             this->explosion.update();
         }
+    }
+
+    if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
+
+        for (auto &elemento : this->fragmentos)
+        {
+            (elemento.second)->render(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
+        }
+
     }
 
 }

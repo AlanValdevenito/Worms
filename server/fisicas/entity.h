@@ -7,6 +7,7 @@ enum EntityType {WORM, BEAM, GREEN_GRENADE, BAZOOKA_ROCKET, BANANA, HOLY_GRENADE
 
 class Entity {
 public:
+    Entity(EntityType type) : entityType(type) {}
     EntityType entityType;
     virtual void startContact() = 0;
     virtual void endContact() = 0;

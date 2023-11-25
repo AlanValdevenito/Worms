@@ -26,6 +26,7 @@ const uint8_t MORTERO_CODE = 21;
 const uint8_t EQUIPAR_ARMA_CODE = 22;
 const uint8_t PROYECTILES_CODE = 23;
 const uint8_t GANADOR_CODE = 24;
+const uint8_t FRAGMENTO_CODE = 25;
 
 
 const int MOVIENDOSE = 0;
@@ -35,5 +36,6 @@ const int EQUIPANDO_ARMA = 3;
 const int APUNTANDO = 4;
 const int MUERTO = 5;
 const int USAR = 6;
+const int GOLPEADO = 7;
 
 #endif

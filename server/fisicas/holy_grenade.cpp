@@ -5,7 +5,7 @@
 
 
 HolyGrenade::HolyGrenade(b2World *world, float x, float y, int timeToExplotionInSeconds,
-                        std::map<std::string, int>& config) : maxDamage(config["holyGrenadeDamage"]),
+                        std::map<std::string, int>& config) : Entity(HOLY_GRENADE),maxDamage(config["holyGrenadeDamage"]),
                                                               explosionRadius(config["holyGrenadeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -82,11 +82,13 @@ void HolyGrenade::explode() {
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);
                     worm->takeDamage(damage);
+                    xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
+                    yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
+                    //b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+                    worm->applyImpulse(xComponent, yComponent);
                 }
             } 
-            xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
-            yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
-            b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+            
         }
     }
     exploded = true;
@@ -105,6 +107,16 @@ void HolyGrenade::update() {
 
 float HolyGrenade::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
+}
+
+int HolyGrenade::getTimeLeftToExplode() {
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    int timePassed = std::chrono::duration_cast<std::chrono::seconds> (now - spawnTime).count();
+    return timeToExplotion - timePassed;
+}
+
+void HolyGrenade::destroy() {
+    body->GetWorld()->DestroyBody(body);
 }
 
 void HolyGrenade::startContact() {}

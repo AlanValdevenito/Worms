@@ -189,7 +189,7 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaVerde)
     uint8_t potencia = 20;
     uint8_t angulo = 28;
     uint8_t tiempo = 5;
-    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo, false);
+    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo);
 
     cp.enviarAtaqueConGranadaVerde(g, was_closed);
 
@@ -198,13 +198,11 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaVerde)
     uint8_t potencia_recibida;
     uint8_t angulo_recibido;
     uint8_t tiempo_recibido;
-    uint8_t exploto;
     skt.recvall(&id_recibido, sizeof(id_recibido), &was_closed);
     skt.recvall(&codigo_recibido, sizeof(codigo_recibido), &was_closed);
     skt.recvall(&potencia_recibida, sizeof(potencia_recibida), &was_closed);
     skt.recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
     skt.recvall(&tiempo_recibido, sizeof(tiempo_recibido), &was_closed);
-    skt.recvall(&exploto, sizeof(exploto), &was_closed);
 
     // printf("%u %u\n", id_recibido, codigo_recibido);
 
@@ -213,7 +211,6 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaVerde)
     ASSERT_TRUE(potencia_recibida == potencia);
     ASSERT_TRUE(angulo_recibido == angulo);
     ASSERT_TRUE(tiempo_recibido == tiempo);
-    ASSERT_TRUE(exploto == false);
 }
 
 TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaBanana)
@@ -227,7 +224,7 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaBanana)
     uint8_t potencia = 20;
     uint8_t angulo = 28;
     uint8_t tiempo = 5;
-    std::shared_ptr<GranadaBanana> g = std::make_shared<GranadaBanana>(id, potencia, angulo, tiempo, false);
+    std::shared_ptr<GranadaBanana> g = std::make_shared<GranadaBanana>(id, potencia, angulo, tiempo);
 
     cp.enviarAtaqueConGranadaBanana(g, was_closed);
 
@@ -242,8 +239,6 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaBanana)
     skt.recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
     skt.recvall(&tiempo_recibido, sizeof(tiempo_recibido), &was_closed);
 
-    uint8_t exploto;
-    skt.recvall(&exploto, sizeof(exploto), &was_closed);
     // printf("%u %u\n", id_recibido, codigo_recibido);
 
     ASSERT_TRUE(id_recibido == id);
@@ -251,7 +246,6 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaBanana)
     ASSERT_TRUE(potencia_recibida == potencia);
     ASSERT_TRUE(angulo_recibido == angulo);
     ASSERT_TRUE(tiempo_recibido == tiempo);
-    ASSERT_TRUE(exploto == false);
 }
 
 TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaSanta)
@@ -265,7 +259,7 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaSanta)
     uint8_t potencia = 20;
     uint8_t angulo = 28;
     uint8_t tiempo = 5;
-    std::shared_ptr<GranadaSanta> g = std::make_shared<GranadaSanta>(id, potencia, angulo, tiempo, false);
+    std::shared_ptr<GranadaSanta> g = std::make_shared<GranadaSanta>(id, potencia, angulo, tiempo);
 
     cp.enviarAtaqueConGranadaSanta(g, was_closed);
 
@@ -280,8 +274,6 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaSanta)
     skt.recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
     skt.recvall(&tiempo_recibido, sizeof(tiempo_recibido), &was_closed);
 
-    uint8_t exploto;
-    skt.recvall(&exploto, sizeof(exploto), &was_closed);
     // printf("%u %u\n", id_recibido, codigo_recibido);
 
     ASSERT_TRUE(id_recibido == id);
@@ -289,7 +281,6 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaSanta)
     ASSERT_TRUE(potencia_recibida == potencia);
     ASSERT_TRUE(angulo_recibido == angulo);
     ASSERT_TRUE(tiempo_recibido == tiempo);
-    ASSERT_TRUE(exploto == false);
 }
 
 TEST(PROTOCOLOCLIENTE__ENVIO, __Dinamita)
@@ -580,6 +571,7 @@ void enviar_gusano_con_parametros(SocketMock &skt, uint8_t id, uint16_t x, uint1
     uint8_t estado_a_enviar = estado;
     uint8_t arma_a_enviar = 1;
     uint8_t direc_a_enviar = 1;
+    uint8_t angulo_a_enviar = 1;
 
     // printf("%u %u\n", x, y);
     // printf("%u %u\n", x_a_enviar, y_a_enviar);
@@ -592,6 +584,7 @@ void enviar_gusano_con_parametros(SocketMock &skt, uint8_t id, uint16_t x, uint1
     skt.sendall(&estado_a_enviar, sizeof(estado_a_enviar), &was_closed);
     skt.sendall(&arma_a_enviar, sizeof(arma_a_enviar), &was_closed);
     skt.sendall(&direc_a_enviar, sizeof(direc_a_enviar), &was_closed);
+    skt.sendall(&angulo_a_enviar, sizeof(angulo_a_enviar), &was_closed);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __Gusano)
@@ -701,12 +694,17 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaVerde)
     uint8_t exploto = 0;
     skt.sendall(&exploto, sizeof(exploto), &was_closed);
 
+    uint8_t tiempo = 5;
+    skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
+
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_angulo() == angulo);
+    ASSERT_TRUE(rta->get_tiempo() == tiempo);
+    ASSERT_TRUE(rta->get_exploto() == exploto);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaBanana)
@@ -736,12 +734,17 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaBanana)
     uint8_t exploto = 0;
     skt.sendall(&exploto, sizeof(exploto), &was_closed);
 
+    uint8_t tiempo = 1;
+    skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
+
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_angulo() == angulo);
+    ASSERT_TRUE(rta->get_tiempo() == tiempo);
+    ASSERT_TRUE(rta->get_exploto() == exploto);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaSanta)
@@ -768,8 +771,11 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaSanta)
     uint8_t angulo = 15;
     skt.sendall(&angulo, sizeof(angulo), &was_closed);
 
-    uint8_t exploto = 0;
+    uint8_t exploto = 1;
     skt.sendall(&exploto, sizeof(exploto), &was_closed);
+
+    uint8_t tiempo = 1;
+    skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
 
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
@@ -777,6 +783,8 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaSanta)
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_angulo() == angulo);
+    ASSERT_TRUE(rta->get_exploto() == exploto);
+    ASSERT_TRUE(rta->get_tiempo() == tiempo);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __Dinamita)
@@ -803,11 +811,16 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Dinamita)
     uint8_t exploto = 0;
     skt.sendall(&exploto, sizeof(exploto), &was_closed);
 
+    uint8_t tiempo = 5;
+    skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
+
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    ASSERT_TRUE(rta->get_exploto() == exploto);
+    ASSERT_TRUE(rta->get_tiempo() == tiempo);
 }
 
 TEST(PROTOCOLOCLIENTE__RECIBIR, __Bazooka)
@@ -955,6 +968,7 @@ void recibir_parametros_del_gusano(SocketMock *skt, uint8_t &id, uint16_t &x, ui
     uint8_t estado_recibido;
     uint8_t arma_recibido;
     uint8_t direc_recibido;
+    uint8_t angulo_recibido;
 
     skt->recvall(&id_recibido, sizeof(id_recibido), &was_closed);
     skt->recvall(&x_recibido, sizeof(x_recibido), &was_closed);
@@ -964,6 +978,7 @@ void recibir_parametros_del_gusano(SocketMock *skt, uint8_t &id, uint16_t &x, ui
     skt->recvall(&estado_recibido, sizeof(estado_recibido), &was_closed);
     skt->recvall(&arma_recibido, sizeof(arma_recibido), &was_closed);
     skt->recvall(&direc_recibido, sizeof(direc_recibido), &was_closed);
+    skt->recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
 
     id = id_recibido;
     x = ntohs(x_recibido);
@@ -989,7 +1004,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Gusano)
     uint8_t direccion = 1;
     uint8_t arma = 1;
 
-    std::shared_ptr<Gusano> gusano = std::make_shared<Gusano>(id, x, y, vida, color, estado, arma, direccion);
+    std::shared_ptr<Gusano> gusano = std::make_shared<Gusano>(id, x, y, vida, color, estado, 1, 1, 1);
 
     sp.enviarGusano(gusano, was_closed);
 
@@ -1029,7 +1044,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada1 = 85;
     uint8_t color_enviada1 = 3;
     uint8_t estado_enviada1 = 3;
-    std::shared_ptr<Gusano> gusano1 = std::make_shared<Gusano>(id_enviada1, x_enviada1, y_enviada1, vida_enviada1, color_enviada1, estado_enviada1, arma, direccion);
+    std::shared_ptr<Gusano> gusano1 = std::make_shared<Gusano>(id_enviada1, x_enviada1, y_enviada1, vida_enviada1, color_enviada1, estado_enviada1, 1, 1, 45);
 
     uint8_t id_enviada2 = 3;
     uint16_t x_enviada2 = 24;
@@ -1037,7 +1052,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada2 = 86;
     uint8_t color_enviada2 = 10;
     uint8_t estado_enviada2 = 3;
-    std::shared_ptr<Gusano> gusano2 = std::make_shared<Gusano>(id_enviada2, x_enviada2, y_enviada2, vida_enviada2, color_enviada2, estado_enviada2, arma, direccion);
+    std::shared_ptr<Gusano> gusano2 = std::make_shared<Gusano>(id_enviada2, x_enviada2, y_enviada2, vida_enviada2, color_enviada2, estado_enviada2, 1, 1, 45);
 
     uint8_t id_enviada3 = 6;
     uint16_t x_enviada3 = 54;
@@ -1045,7 +1060,7 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     uint8_t vida_enviada3 = 16;
     uint8_t color_enviada3 = 11;
     uint8_t estado_enviada3 = 3;
-    std::shared_ptr<Gusano> gusano3 = std::make_shared<Gusano>(id_enviada3, x_enviada3, y_enviada3, vida_enviada3, color_enviada3, estado_enviada3, arma, direccion);
+    std::shared_ptr<Gusano> gusano3 = std::make_shared<Gusano>(id_enviada3, x_enviada3, y_enviada3, vida_enviada3, color_enviada3, estado_enviada3, 1, 1, 54);
 
     std::vector<std::shared_ptr<Gusano>> lista;
     lista.push_back(gusano1);
@@ -1196,14 +1211,24 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaVerde)
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
     bool was_closed = false;
-    bool exploto = false;
+    std::vector<std::shared_ptr<Proyectil>> proyectiles;
 
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
     uint16_t angulo_enviado = 19;
-    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(x_enviada, y_enviada, angulo_enviado, exploto);
+    uint16_t tiempo_enviado = 5;
+    std::shared_ptr<GranadaVerde> g = std::make_shared<GranadaVerde>(x_enviada, y_enviada, angulo_enviado, false, tiempo_enviado);
+    proyectiles.push_back(g);
 
-    sp.enviarTrayectoriaDeGranadaVerde(g, was_closed);
+    std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);
+
+    sp.enviarProyectiles(ps, was_closed);
+
+    uint8_t code_ps;
+    skt->recvall(&code_ps, sizeof(code_ps), &was_closed);
+
+    uint8_t cantidad_proyectiles;
+    skt->recvall(&cantidad_proyectiles, sizeof(cantidad_proyectiles), &was_closed);
 
     uint8_t code;
     skt->recvall(&code, sizeof(code), &was_closed);
@@ -1219,11 +1244,20 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaVerde)
     uint8_t angulo;
     skt->recvall(&angulo, sizeof(angulo), &was_closed);
 
+    uint8_t exploto;
+    skt->recvall(&exploto, sizeof(exploto), &was_closed);
+
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+
     delete skt;
+    ASSERT_TRUE(cantidad_proyectiles == 1);
     ASSERT_TRUE(code == GRANADA_VERDE_CODE);
     ASSERT_TRUE(x == x_enviada);
     ASSERT_TRUE(y == y_enviada);
     ASSERT_TRUE(angulo == angulo_enviado);
+    ASSERT_TRUE(exploto == false);
+    ASSERT_TRUE(tiempo == tiempo_enviado);
 }
 
 TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaBanana)
@@ -1231,13 +1265,24 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaBanana)
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
     bool was_closed = false;
+    std::vector<std::shared_ptr<Proyectil>> proyectiles;
 
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
-    uint8_t angulo_enviado = 11;
-    std::shared_ptr<GranadaBanana> g = std::make_shared<GranadaBanana>(x_enviada, y_enviada, angulo_enviado, false);
+    uint16_t angulo_enviado = 19;
+    uint16_t tiempo_enviado = 5;
+    std::shared_ptr<GranadaBanana> g = std::make_shared<GranadaBanana>(x_enviada, y_enviada, angulo_enviado, false, tiempo_enviado);
+    proyectiles.push_back(g);
 
-    sp.enviarTrayectoriaDeGranadaBanana(g, was_closed);
+    std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);
+
+    sp.enviarProyectiles(ps, was_closed);
+
+    uint8_t code_ps;
+    skt->recvall(&code_ps, sizeof(code_ps), &was_closed);
+
+    uint8_t cantidad_proyectiles;
+    skt->recvall(&cantidad_proyectiles, sizeof(cantidad_proyectiles), &was_closed);
 
     uint8_t code;
     skt->recvall(&code, sizeof(code), &was_closed);
@@ -1253,11 +1298,20 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaBanana)
     uint8_t angulo;
     skt->recvall(&angulo, sizeof(angulo), &was_closed);
 
+    uint8_t exploto;
+    skt->recvall(&exploto, sizeof(exploto), &was_closed);
+
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+
     delete skt;
+    ASSERT_TRUE(cantidad_proyectiles == 1);
     ASSERT_TRUE(code == GRANADA_BANANA_CODE);
     ASSERT_TRUE(x == x_enviada);
     ASSERT_TRUE(y == y_enviada);
     ASSERT_TRUE(angulo == angulo_enviado);
+    ASSERT_TRUE(exploto == false);
+    ASSERT_TRUE(tiempo == tiempo_enviado);
 }
 
 TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaSanta)
@@ -1265,13 +1319,24 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaSanta)
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
     bool was_closed = false;
+    std::vector<std::shared_ptr<Proyectil>> proyectiles;
 
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
-    uint8_t angulo_enviado = 11;
-    std::shared_ptr<GranadaSanta> g = std::make_shared<GranadaSanta>(x_enviada, y_enviada, angulo_enviado, false);
+    uint16_t angulo_enviado = 19;
+    uint16_t tiempo_enviado = 5;
+    std::shared_ptr<GranadaSanta> g = std::make_shared<GranadaSanta>(x_enviada, y_enviada, angulo_enviado, false, tiempo_enviado);
+    proyectiles.push_back(g);
 
-    sp.enviarTrayectoriaDeGranadaSanta(g, was_closed);
+    std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);
+
+    sp.enviarProyectiles(ps, was_closed);
+
+    uint8_t code_ps;
+    skt->recvall(&code_ps, sizeof(code_ps), &was_closed);
+
+    uint8_t cantidad_proyectiles;
+    skt->recvall(&cantidad_proyectiles, sizeof(cantidad_proyectiles), &was_closed);
 
     uint8_t code;
     skt->recvall(&code, sizeof(code), &was_closed);
@@ -1287,24 +1352,52 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaSanta)
     uint8_t angulo;
     skt->recvall(&angulo, sizeof(angulo), &was_closed);
 
+    uint8_t exploto;
+    skt->recvall(&exploto, sizeof(exploto), &was_closed);
+
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+
     delete skt;
+    ASSERT_TRUE(cantidad_proyectiles == 1);
     ASSERT_TRUE(code == GRANADA_SANTA_CODE);
     ASSERT_TRUE(x == x_enviada);
     ASSERT_TRUE(y == y_enviada);
     ASSERT_TRUE(angulo == angulo_enviado);
+    ASSERT_TRUE(exploto == false);
+    ASSERT_TRUE(tiempo == tiempo_enviado);
 }
 
-TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaDinamita)
+TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaGranadaRoja)
 {
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
     bool was_closed = false;
+    std::vector<std::shared_ptr<Proyectil>> proyectiles;
 
     uint16_t x_enviada = 20;
     uint16_t y_enviada = 11;
-    std::shared_ptr<Dinamita> g = std::make_shared<Dinamita>(x_enviada, y_enviada, false);
+    uint16_t angulo_enviado = 19;
+    uint16_t tiempo_enviado = 5;
+    std::shared_ptr<GranadaRoja> g = std::make_shared<GranadaRoja>(x_enviada, y_enviada, angulo_enviado, false, tiempo_enviado);
+    proyectiles.push_back(g);
 
-    sp.enviarTrayectoriaDeDinamita(g, was_closed);
+    uint16_t x_enviada_2 = 20;
+    uint16_t y_enviada_2 = 11;
+    uint16_t angulo_enviado_2 = 19;
+    uint16_t tiempo_enviado_2 = 5;
+    std::shared_ptr<GranadaRoja> g_2 = std::make_shared<GranadaRoja>(x_enviada_2, y_enviada_2, angulo_enviado_2, true, tiempo_enviado_2);
+    proyectiles.push_back(g_2);
+
+    std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);
+
+    sp.enviarProyectiles(ps, was_closed);
+
+    uint8_t code_ps;
+    skt->recvall(&code_ps, sizeof(code_ps), &was_closed);
+
+    uint8_t cantidad_proyectiles;
+    skt->recvall(&cantidad_proyectiles, sizeof(cantidad_proyectiles), &was_closed);
 
     uint8_t code;
     skt->recvall(&code, sizeof(code), &was_closed);
@@ -1317,10 +1410,97 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaDinamita)
     skt->recvall(&y, sizeof(y), &was_closed);
     y = ntohs(y);
 
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+
+    uint8_t exploto;
+    skt->recvall(&exploto, sizeof(exploto), &was_closed);
+
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+
+    uint8_t code_2;
+    skt->recvall(&code_2, sizeof(code_2), &was_closed);
+
+    uint16_t x_2;
+    skt->recvall(&x_2, sizeof(x_2), &was_closed);
+    x_2 = ntohs(x_2);
+
+    uint16_t y_2;
+    skt->recvall(&y_2, sizeof(y_2), &was_closed);
+    y_2 = ntohs(y_2);
+
+    uint8_t angulo_2;
+    skt->recvall(&angulo_2, sizeof(angulo_2), &was_closed);
+
+    uint8_t exploto_2;
+    skt->recvall(&exploto_2, sizeof(exploto_2), &was_closed);
+
+    uint8_t tiempo_2;
+    skt->recvall(&tiempo_2, sizeof(tiempo_2), &was_closed);
+
     delete skt;
+    ASSERT_TRUE(code == GRANADA_ROJA_CODE);
+    ASSERT_TRUE(cantidad_proyectiles == 2);
+    ASSERT_TRUE(x == x_enviada);
+    ASSERT_TRUE(y == y_enviada);
+    ASSERT_TRUE(angulo == angulo_enviado);
+    ASSERT_TRUE(exploto == false);
+    ASSERT_TRUE(tiempo == tiempo_enviado);
+    ASSERT_TRUE(x_2 == x_enviada_2);
+    ASSERT_TRUE(y_2 == y_enviada_2);
+    ASSERT_TRUE(angulo_2 == angulo_enviado_2);
+    ASSERT_TRUE(exploto_2 == true);
+    ASSERT_TRUE(tiempo_2 == tiempo_enviado_2);
+}
+
+TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaDinamita)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+    std::vector<std::shared_ptr<Proyectil>> proyectiles;
+
+    uint16_t x_enviada = 20;
+    uint16_t y_enviada = 11;
+    uint16_t tiempo_enviado = 5;
+    std::shared_ptr<Dinamita> g = std::make_shared<Dinamita>(x_enviada, y_enviada, false, tiempo_enviado);
+    proyectiles.push_back(g);
+
+    std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);
+
+    sp.enviarProyectiles(ps, was_closed);
+
+    uint8_t code_ps;
+    skt->recvall(&code_ps, sizeof(code_ps), &was_closed);
+
+    uint8_t cantidad_proyectiles;
+    skt->recvall(&cantidad_proyectiles, sizeof(cantidad_proyectiles), &was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint16_t x;
+    skt->recvall(&x, sizeof(x), &was_closed);
+    x = ntohs(x);
+
+    uint16_t y;
+    skt->recvall(&y, sizeof(y), &was_closed);
+    y = ntohs(y);
+
+    uint8_t exploto;
+    skt->recvall(&exploto, sizeof(exploto), &was_closed);
+
+    uint8_t tiempo;
+    skt->recvall(&tiempo, sizeof(tiempo), &was_closed);
+
+    delete skt;
+    ASSERT_TRUE(cantidad_proyectiles == 1);
     ASSERT_TRUE(code == DINAMITA_CODE);
     ASSERT_TRUE(x == x_enviada);
     ASSERT_TRUE(y == y_enviada);
+    ASSERT_TRUE(exploto == false);
+    ASSERT_TRUE(tiempo == tiempo_enviado);
 }
 
 TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaBazooka)

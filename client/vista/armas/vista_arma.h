@@ -30,7 +30,7 @@ public:
     // Se declaran en la clase base pero no se definen, dejando su implementacion a las clases derivadas
     // Las clases derivadas estan obligadas a implementar estos metodos
     virtual void update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo = 0, int nuevaDireccion = 0, int nuevoTiempo = 0, int id = 0) = 0;
-    virtual void render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion = 0) = 0;
+    virtual void render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion = 0) = 0;
 
     // Metodos virtuales (palabra clave 'virtual')
     // Se declaran en la clase base y se implementan tambien en la base

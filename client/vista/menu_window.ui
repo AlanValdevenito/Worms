@@ -347,11 +347,6 @@ QComboBox::item:hover {
          <string>2</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>3</string>
-        </property>
-       </item>
       </widget>
       <widget class="QComboBox" name="mapaComboBox">
        <property name="geometry">

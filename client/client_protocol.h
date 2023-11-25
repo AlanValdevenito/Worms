@@ -33,6 +33,7 @@
 #include "bazuka.h"
 #include "proyectil.h"
 #include "ganador.h"
+#include "fragmento.h"
 #include "ataque_aereo.h"
 #include "partidas_lista.h"
 #include "nueva_partida.h"
@@ -80,6 +81,7 @@ private:
     std::shared_ptr<Dto> recibirTrayectoriaBazuka(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaMortero(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaMisil(bool &was_closed);
+    std::shared_ptr<Dto> recibirTrayectoriaFragmento(bool &was_closed);
     bool enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarAnguloYPotenciaDeProyectil(std::shared_ptr<Proyectil> dto, bool &was_closed);
     bool enviarAtaqueConGranada(std::shared_ptr<Proyectil> g, bool &was_closed);

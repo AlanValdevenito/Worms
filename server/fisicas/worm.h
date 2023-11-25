@@ -16,6 +16,7 @@ const int EQUIPING_WEAPON = 3;
 const int AIMING = 4;
 const int DEAD = 5;
 const int NO_WEAPON = 10;
+const int FLYING = 7;
 
 
 
@@ -53,6 +54,7 @@ public:
     int jumpTimeout = 0;
     int actualWeapon = NO_WEAPON;
     uint8_t direction;
+    float angle = 0;
     Worm(b2World *b2world, float x, float y, uint8_t id, std::map<std::string, int>& config);
     float getXCoordinate();
     float getYCoordinate();
@@ -70,9 +72,12 @@ public:
     void setPlayerId(uint8_t id);
     void setTeamNumber(uint8_t number);
     void equipWeapon(uint8_t weapon);
+    void applyImpulse(float x, float y);
     uint8_t getWeapon();
     uint8_t getTeamNumber();
     uint8_t getDirection();
+    float getAngle();
+    void updateAngle();
     void jump();
     void jumpBackward();
     void startContact() override;

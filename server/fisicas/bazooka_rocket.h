@@ -22,6 +22,7 @@ public:
     void shoot(Direction direction, float angle, int power); 
     void startContact() override;
     void explode();
+    void destroy();
     void endContact() override;
     void updateAngle();
     // devuelve el angulo en grados

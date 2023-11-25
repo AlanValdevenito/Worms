@@ -3,7 +3,7 @@
 
 
 MorteroRocket::MorteroRocket(b2World *world, float x, float y, float angle,
-                             std::map<std::string, int>& config) : maxDamage(config["bazookaDamage"]),
+                             std::map<std::string, int>& config) : Entity(BAZOOKA_ROCKET),maxDamage(config["bazookaDamage"]),
                                                                    explosionRadius(config["bazookaRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -94,11 +94,13 @@ void MorteroRocket::explode() {
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);
                     worm->takeDamage(damage);
+                    xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
+                    yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
+                    worm->applyImpulse(xComponent, yComponent);
+                    //b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
                 }
             } 
-            xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
-            yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
-            b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+
         }
     }
     exploded = true;
@@ -113,6 +115,10 @@ float MorteroRocket::getAngle() {
 void MorteroRocket::updateAngle() {
     float angle = atan2(body->GetLinearVelocity().x, body->GetLinearVelocity().y);
     body->SetTransform(body->GetPosition(), angle);
+}
+
+void MorteroRocket::destroy() {
+    body->GetWorld()->DestroyBody(body);
 }
 
 MorteroRocket::~MorteroRocket() {}

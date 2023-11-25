@@ -4,19 +4,30 @@ AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer): Arma(ARM
                                                                           movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/cluster.png").SetColorKey(true, 0))), 
                                                                           explosion(renderer), 
                                                                           apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0))), 
-                                                                          tiempo(5) {}
+                                                                          tiempo(5) 
+{
+    for (int i = 1; i <= 6; i++){
+        this->fragmentos[i] = std::make_shared<AnimacionFragmento>(renderer);
+    }
+}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
 void AnimacionGranadaRoja::update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo, int nuevaDireccion, int nuevoTiempo, int id) {
-    this->x = nuevoX;
-    this->y = nuevoY;
-    this->estado = nuevoEstado;
-    this->angulo = nuevoAngulo;
-    this->tiempo = nuevoTiempo;
+
+    if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
+        this->fragmentos[id]->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo);
+    } else {
+        this->x = nuevoX;
+        this->y = nuevoY;
+        this->estado = nuevoEstado;
+        this->angulo = nuevoAngulo;
+        this->tiempo = nuevoTiempo;
+    }
+
 }
 
-void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_APUNTANDO) {
         this->apuntado.render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
@@ -25,7 +36,8 @@ void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, float camaraLimite
     else if (this->estado == ARMA_MOVIENDOSE) {
         SDL_RendererFlip flip = SDL_FLIP_NONE;
         this->movimiento.render(renderer, SDL2pp::Rect(this->x - (30) - camaraLimiteIzquierdo, this->y - (30) - camaraLimiteSuperior, 60, 60), flip, this->angulo);
-    
+        renderizar_tiempo(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior);
+
     } else if (this->estado == ARMA_EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
         
@@ -34,12 +46,44 @@ void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, float camaraLimite
         } else {
             this->explosion.update();
         }
+
+    }
+    
+    if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
+
+        for (auto &elemento : this->fragmentos)
+        {
+            (elemento.second)->render(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
+        }
+
     }
 
 }
 
-void AnimacionGranadaRoja::renderizar_tiempo(SDL2pp::Renderer &renderer) {
+void AnimacionGranadaRoja::renderizar_tiempo(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+    SDL2pp::Font font(DATA_PATH "/Vera.ttf", 18);
+    SDL2pp::Color blanco(255, 255, 255, 255); 
+    SDL2pp::Color negro(0, 0, 0, 0);
 
+    SDL2pp::Texture borde(renderer, SDL2pp::Surface(DATA_PATH "/borde.png").SetColorKey(true, 0));
+
+    renderer.Copy(
+        borde,
+        SDL2pp::NullOpt,
+        SDL2pp::Rect(this->x - 19 - camaraLimiteIzquierdo, this->y - 40 - camaraLimiteSuperior, 35, 25)
+    );
+
+    SDL2pp::Rect contenedor(this->x - 16 - camaraLimiteIzquierdo, this->y - 37 - camaraLimiteSuperior, 28, 18);
+
+	renderer.SetDrawColor(negro); 
+	renderer.FillRect(contenedor);
+
+	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->tiempo), color);
+	SDL2pp::Texture texture(renderer, surface);
+
+    SDL2pp::Rect mensaje(this->x - 8 - camaraLimiteIzquierdo, this->y - 39 - camaraLimiteSuperior, surface.GetWidth(), surface.GetHeight());
+
+	renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
 }
 
 /******************** TIEMPO ********************/

@@ -3,7 +3,8 @@
 
 
 AirStrikeRocket::AirStrikeRocket(b2World *world, float x, float y,
-                                std::map<std::string, int>& config) : maxDamage(config["airStrikeDamage"]),
+                                std::map<std::string, int>& config) : Entity(AIR_STRIKE_ROCKET),
+                                                                      maxDamage(config["airStrikeDamage"]),
                                                                       explosionRadius(config["airStrikeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -82,16 +83,19 @@ void AirStrikeRocket::explode() {
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);
                     worm->takeDamage(damage);
+                    xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
+                    yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
+                    worm->applyImpulse(xComponent, yComponent);
                 }
             } 
-            xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
-            yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
-            b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+            
         }
     }
     exploded = true;
 }
 
-
+void AirStrikeRocket::destroy() {
+    body->GetWorld()->DestroyBody(body);
+}
 
 AirStrikeRocket::~AirStrikeRocket() {}

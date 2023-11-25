@@ -7,7 +7,7 @@
 
 Dynamite::Dynamite(b2World *world, float x, float y,
                     int timeToExplotionInSeconds,
-                    std::map<std::string, int>& config) : maxDamage(config["dynamiteDamage"]),
+                    std::map<std::string, int>& config) : Entity(DYNAMITE),maxDamage(config["dynamiteDamage"]),
                                                           explosionRadius(config["dynamiteRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -81,15 +81,23 @@ void Dynamite::explode() {
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);
                     worm->takeDamage(damage);
+                    xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
+                    yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
+                    worm->applyImpulse(xComponent, yComponent);
                 }
             }
-            xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
-            yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
-            b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+            
         }
     }
     exploded = true;
 }
+
+int Dynamite::getTimeLeftToExplode() {
+    std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+    int timePassed = std::chrono::duration_cast<std::chrono::seconds> (now - spawnTime).count();
+    return timeToExplotion - timePassed;
+}
+
 
 void Dynamite::update() {
     if (not exploded) {
@@ -104,6 +112,11 @@ void Dynamite::update() {
 float Dynamite::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
 }
+
+void Dynamite::destroy() {
+    body->GetWorld()->DestroyBody(body);
+}
+
 
 void Dynamite::startContact() {}
     

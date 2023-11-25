@@ -3,7 +3,7 @@
 
 
 RedGrenadeFragment::RedGrenadeFragment(b2World *world, float x, float y,
-                             std::map<std::string, int>& config) : maxDamage(config["greenGrenadeDamage"]),
+                             std::map<std::string, int>& config) : Entity(FRAGMENT),maxDamage(config["greenGrenadeDamage"]),
                                                                    explosionRadius(config["greenGrenadeRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -12,7 +12,7 @@ RedGrenadeFragment::RedGrenadeFragment(b2World *world, float x, float y,
 	body = world->CreateBody(&bodyDef);
 
     b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(0.005f, 0.005f);
+	dynamicBox.SetAsBox(0.025f, 0.025f);
     b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
@@ -34,7 +34,7 @@ RedGrenadeFragment::RedGrenadeFragment(b2World *world, float x, float y,
     // sensor
     b2FixtureDef sensorFixtureDef;
 	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox(0.006f, 0.006f);
+	polygonShape.SetAsBox(0.026f, 0.026f);
 
 	sensorFixtureDef.isSensor = true;
 	sensorFixtureDef.shape = &polygonShape;
@@ -56,8 +56,8 @@ float RedGrenadeFragment::getYCoordinate() {
 
 void RedGrenadeFragment::shoot(Direction direction, float angle, int power) {
     
-    float xComponent = (float(power) / 10.0f ) * cos(angle);
-    float yComponent = (float(power) / 10.0f ) * sin(angle);
+    float xComponent = (float(power) / 120.0f ) * cos(angle);
+    float yComponent = (float(power) / 120.0f ) * sin(angle);
     if (direction == LEFT) {
         body->ApplyLinearImpulseToCenter(b2Vec2(-xComponent, yComponent), true);
     } else if (direction == RIGHT) {
@@ -88,15 +88,18 @@ void RedGrenadeFragment::explode() {
             Entity *entity = (Entity*)b->GetUserData().pointer;
 	  
             if (entity != NULL) {
+                std::cout << "entityType = " << (int)entity->entityType << "\n";
                 if ((entity->entityType == WORM)) {;
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);
                     worm->takeDamage(damage);
+                    xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
+                    yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
+                    worm->applyImpulse(xComponent, yComponent);
+                    ///b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
                 }
             } 
-            xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
-            yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
-            b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
+            
         }
     }
     exploded = true;
@@ -107,5 +110,8 @@ float RedGrenadeFragment::getAngle() {
     return body->GetAngle() * 180.0f / 3.14f;
 }
 
+void RedGrenadeFragment::destroy() {
+    body->GetWorld()->DestroyBody(body);
+}
 
 RedGrenadeFragment::~RedGrenadeFragment() {}

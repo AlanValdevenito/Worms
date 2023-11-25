@@ -97,6 +97,7 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     uint8_t estado = g->get_estado();
     uint8_t arma = g->get_arma();
     uint8_t direccion = g->get_direccion();
+    uint8_t angulo = g->get_angulo();
 
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
@@ -125,8 +126,12 @@ bool ServerProtocol::enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_c
     if (was_closed)
         return false;
 
-    // printf("estado: %u\n", g->get_estado());
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
     // printf("id:%u  x:%u  y:%u vida:%u color:%u\n", g->get_id(), g->x_pos(), g->y_pos(), g->get_vida(), g->get_color());
+    // printf("estado: %u\n", g->get_estado());
     return true;
 }
 
@@ -149,7 +154,7 @@ bool ServerProtocol::enviarListaDeGusanos(std::shared_ptr<Gusanos> gs, bool &was
     skt->sendall(&(flag), sizeof(flag), &was_closed); // especifico la cantidad que llegara
     if (was_closed)
         return false;
-    //printf("flag: %u",flag);
+    // printf("flag: %u",flag);
 
     for (int i = 0; i < cant; i++)
     {
@@ -203,7 +208,7 @@ bool ServerProtocol::enviarGanador(std::shared_ptr<Dto> dto, bool &was_closed)
 {
     if (not enviarCodigoDeElemento(dto, was_closed))
         return false;
-    
+
     uint8_t id = dto->get_cliente_id();
     skt->sendall(&(id), sizeof(id), &was_closed);
     if (was_closed)
@@ -230,7 +235,12 @@ bool ServerProtocol::enviarGranada(std::shared_ptr<Proyectil> dto, bool &was_clo
     if (was_closed)
         return false;
 
-    // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
+    uint8_t tiempo = dto->get_tiempo();
+    skt->sendall(&(tiempo), sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria enviada granada ---> x:%u y:%u angulo:%u exploto: %u tiempo: %u\n", dto->x_pos(), dto->y_pos(), angulo, exploto, tiempo);
     return true;
 }
 
@@ -261,6 +271,11 @@ bool ServerProtocol::enviarTrayectoriaDeDinamita(std::shared_ptr<Dinamita> g, bo
     skt->sendall(&(exploto), sizeof(exploto), &was_closed);
     if (was_closed)
         return false;
+
+    uint8_t tiempo = g->get_tiempo();
+    skt->sendall(&(tiempo), sizeof(tiempo), &was_closed);
+    if (was_closed)
+        return false;
     // printf("Trayectoria ---> x:%u y:%u \n", g->x_pos(), g->y_pos());
 
     return true;
@@ -285,6 +300,34 @@ bool ServerProtocol::enviarTrayectoriaDeMisil(std::shared_ptr<Misil> g, bool &wa
         return false;
 
     // printf("Trayectoria enviada misil ---> id:%u x:%u y:%u \n", id, g->x_pos(), g->y_pos());
+
+    return true;
+}
+
+bool ServerProtocol::enviarTrayectoriaDeFragmento(std::shared_ptr<Fragmento> f, bool &was_closed)
+{
+    if (not enviarCodigoDeElemento(f, was_closed))
+        return false;
+
+    uint8_t id = f->get_id();
+    skt->sendall(&(id), sizeof(id), &was_closed);
+    if (was_closed)
+        return false;
+
+    if (not enviarPosicionDelElemento(f, was_closed))
+        return false;
+
+    uint8_t angulo = f->get_angulo();
+    skt->sendall(&(angulo), sizeof(angulo), &was_closed);
+    if (was_closed)
+        return false;
+
+    uint8_t exploto = f->get_exploto();
+    skt->sendall(&(exploto), sizeof(exploto), &was_closed);
+    if (was_closed)
+        return false;
+
+    // printf("Trayectoria enviada fragmento ---> id:%u x:%u y:%u angulo:%u exploto: %u\n", id, f->x_pos(), f->y_pos(), angulo, exploto);
 
     return true;
 }
@@ -360,6 +403,8 @@ bool ServerProtocol::enviarProyectil(std::shared_ptr<Proyectil> p, bool &was_clo
         return enviarTrayectoriaDeDinamita(std::dynamic_pointer_cast<Dinamita>(p), was_closed);
     else if (code == ATAQUE_AEREO_CODE)
         return enviarTrayectoriaDeMisil(std::dynamic_pointer_cast<Misil>(p), was_closed);
+    else if (code == FRAGMENTO_CODE)
+        return enviarTrayectoriaDeFragmento(std::dynamic_pointer_cast<Fragmento>(p), was_closed);
 
     return false;
 }
@@ -460,6 +505,8 @@ bool ServerProtocol::recibirGranada(uint8_t &potencia, uint8_t &angulo, uint8_t 
     angulo = angulo_recibido;
     tiempo = tiempo_recibido;
 
+    // printf("RECIBIR ---> angulo:%u pot: %u tiempo: %u\n", angulo, potencia, tiempo);
+
     return true;
 }
 
@@ -474,13 +521,13 @@ std::shared_ptr<Dto> ServerProtocol::recibirAtaqueConGranada(uint8_t code, uint8
 
     // printf("angulo recibido: %u\n", angulo);
     if (code == GRANADA_BANANA_CODE)
-        return std::make_shared<GranadaBanana>(id, potencia, angulo, tiempo, false);
+        return std::make_shared<GranadaBanana>(id, potencia, angulo, tiempo);
     else if (code == GRANADA_SANTA_CODE)
-        return std::make_shared<GranadaSanta>(id, potencia, angulo, tiempo, false);
+        return std::make_shared<GranadaSanta>(id, potencia, angulo, tiempo);
     else if (code == GRANADA_VERDE_CODE)
-        return std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo, false);
+        return std::make_shared<GranadaVerde>(id, potencia, angulo, tiempo);
     else if (code == GRANADA_ROJA_CODE)
-        return std::make_shared<GranadaRoja>(id, potencia, angulo, tiempo, false);
+        return std::make_shared<GranadaRoja>(id, potencia, angulo, tiempo);
 
     return std::make_shared<DeadDto>();
 }

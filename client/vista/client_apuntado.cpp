@@ -2,13 +2,6 @@
 
 #include <cmath>
 
-Apuntado::Apuntado(SDL2pp::Renderer &renderer): texture(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0))), 
-                                        mira(renderer),
-                                        potencia(renderer),
-                                        numFrames(this->texture->GetHeight() / this->texture->GetWidth()),
-                                        currentFrame(0), 
-                                        size(this->texture->GetWidth()) {}
-
 Apuntado::Apuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura): texture(textura), 
                                         mira(renderer),
                                         potencia(renderer),

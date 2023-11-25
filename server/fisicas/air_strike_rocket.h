@@ -22,6 +22,7 @@ public:
     void shoot(); 
     void startContact() override;
     void explode();
+    void destroy();
     void endContact() override;
     // devuelve el angulo en grados
     ~AirStrikeRocket();
