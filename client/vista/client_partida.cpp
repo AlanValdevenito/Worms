@@ -159,7 +159,7 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
-        this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
+        this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], (int) gusano->get_color(), metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
     }
 
     camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
@@ -666,6 +666,7 @@ void Partida::renderizar(SDL2pp::Renderer &renderer)
     renderizar_agua(renderer);
     renderizar_temporizador(renderer);
     renderizar_worms(renderer);
+    renderizar_vidas_totales(renderer);
 
     renderer.Present();
 }
@@ -772,6 +773,38 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
     for (const auto &elemento : this->worms)
     {
         elemento.second->render(renderer, this->camara, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
+    }
+}
+
+void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {
+
+    std::map<int, int> vida_total;
+
+    for (const auto &elemento : this->worms)
+    {
+        vida_total[elemento.second->get_color()] += elemento.second->get_vida();
+    }
+
+    int offset = 0;
+    for (const auto &elemento : vida_total) {
+
+        /********** BORDE **********/
+
+        SDL2pp::Texture borde(renderer, SDL2pp::Surface(DATA_PATH "/borde.png").SetColorKey(true, 0));
+
+        renderer.Copy(
+            borde,
+            SDL2pp::NullOpt,
+            SDL2pp::Rect((renderer.GetOutputWidth() / 2) - 100 - 5, offset + (renderer.GetOutputHeight() - 30) - 5, (elemento.second) + 10, 18 + 10)
+        );
+
+        /********** VIDA **********/
+
+        SDL2pp::Rect contenedor((renderer.GetOutputWidth() / 2) - 100, offset + (renderer.GetOutputHeight() - 30), elemento.second, 18);
+        renderer.SetDrawColor(this->colores[elemento.first]); 
+        renderer.FillRect(contenedor);
+
+        offset -= 30;
     }
 }
 

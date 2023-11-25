@@ -71,6 +71,7 @@ public:
     void renderizar_mapa(SDL2pp::Renderer &renderer);
     void renderizar_temporizador(SDL2pp::Renderer &renderer);
     void renderizar_worms(SDL2pp::Renderer &renderer);
+    void renderizar_vidas_totales(SDL2pp::Renderer &renderer);
     void renderizar_resultado(SDL2pp::Renderer &renderer, bool resultado);
 
     float metros_a_pixeles(float metros);

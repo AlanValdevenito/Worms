@@ -6,7 +6,7 @@
 #define OFFSET 30 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                   // tienen el (0,0) de los cuerpos en el centro
 
-Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida, int direccion): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
+Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
                                                                                           estado(MOVIENDOSE),
                                                                                           x(x), 
                                                                                           y(y), 
@@ -14,6 +14,7 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, i
                                                                                           direccion(direccion),
                                                                                           angulo(0),
                                                                                           turno(false), 
+                                                                                          numeroColor(numeroColor),
                                                                                           color(color),
                                                                                           configuraciones(YAML::LoadFile("/configuracion.yml")) {}
 
@@ -188,6 +189,8 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
     SDL2pp::Font font(DATA_PATH "/Vera.ttf", 18);
     SDL2pp::Color blanco(255, 255, 255, 255); 
 
+    /********** BORDE **********/
+
     SDL2pp::Texture borde(renderer, SDL2pp::Surface(DATA_PATH "/borde.png").SetColorKey(true, 0));
 
     renderer.Copy(
@@ -198,11 +201,15 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
                      41, 29)
     );
 
+    /********** CONTENEDOR **********/
+
     SDL2pp::Rect contenedor(this->turno ? (camaraCentroX + 13 - OFFSET) : (this->x - 16 - camaraLimiteIzquierdo),
                             this->turno ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                             34, 22);
 	renderer.SetDrawColor(this->color); 
 	renderer.FillRect(contenedor);
+
+    /********** VIDA **********/
 
 	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), blanco);
 	SDL2pp::Texture texture(renderer, surface);
@@ -311,4 +318,8 @@ float Worm::get_y() {
 
 int Worm::get_estado() {
     return this->estado;
+}
+
+int Worm::get_color() {
+    return this->numeroColor;
 }

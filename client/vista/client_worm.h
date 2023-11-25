@@ -49,12 +49,13 @@ private:
     int angulo;
 
     bool turno;
+    int numeroColor;
 
     SDL2pp::Color &color;
     YAML::Node configuraciones;
 
 public:
-    Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, float x, float y, int vida, int direccion);
+    Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion);
 
     void update(int it, float nuevoX, float nuevoY, int vida, int direccion, int angulo); // Actualiza el Worm en funcion del tiempo transcurrido.
     void update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int arma = 0);
@@ -84,6 +85,7 @@ public:
     float get_y();
     int get_vida();
     int get_estado();
+    int get_color();
 };
 
 #endif // __WORM_H_
