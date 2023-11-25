@@ -6,6 +6,8 @@
 #include <QKeyEvent>
 
 #include "client.h"
+#include "elegir_partida.h"
+#include "crear_partida.h"
 
 // La clase MainWindow es la ventana principal de la aplicacion y hereda de QMainWindow
 
@@ -23,9 +25,6 @@ private:
     Ui::MainWindow *ui;
     Client &cliente;
 
-    // Agregamos las opciones de partida al QComboBox
-    void addItems();
-    uint8_t obtener_id(std::string &opcion);
     // Conectamos la señal clicked() de los botones a una ranura
     void connectEvents();
     void elegirPartida();

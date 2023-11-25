@@ -68,6 +68,8 @@ find_package(yaml-cpp REQUIRED)
 # como primer parámetro.
 # No, no los genera con la carpeta como prefijo.
 qt5_wrap_ui(UIS_HEADERS client/vista/menu_window.ui) # Generamos encabezados de UI a partir del archivo de diseño de la interfaz grafica (.ui).
+qt5_wrap_ui(UIS_HEADERS client/vista/elegir_partida.ui)
+qt5_wrap_ui(UIS_HEADERS client/vista/crear_partida.ui)
 
 # Habilito el automoc para poder hacer autoconnect de señales
 set(CMAKE_AUTOMOC on)
