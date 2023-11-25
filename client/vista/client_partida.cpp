@@ -122,8 +122,11 @@ void Partida::inicializar_colores() {
     this->colores[0] = SDL2pp::Color(255,80,80); // Rojo
     this->colores[1] = SDL2pp::Color(80,80,255); // Azul
     this->colores[2] = SDL2pp::Color(80,255,80); // Verde
-    this->colores[3] = SDL2pp::Color(255,255,255); // Blanco
-    this->colores[4] = SDL2pp::Color(0,0,0); // Negro
+    this->colores[3] = SDL2pp::Color(0,255,255); // Celeste
+    this->colores[4] = SDL2pp::Color(255,128,192); // Rosa
+    this->colores[5] = SDL2pp::Color(255,255,80); // Amarillo
+    this->colores[6] = SDL2pp::Color(255,255,255); // Blanco
+    this->colores[7] = SDL2pp::Color(0,0,0); // Negro
 }
 
 void Partida::guardar_vigas()
@@ -750,7 +753,7 @@ void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
 
         int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
 
-        for(int x = 0; x < 3; x++) {
+        for(int x = 0; x < 5; x++) {
             renderer.Copy(
                 *this->texturas[1], 
                 NullOpt, 
@@ -794,31 +797,106 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
 }
 
 void Partida::renderizar_resultado(SDL2pp::Renderer &renderer, bool resultado) {
-    renderer.SetDrawColor(0,0,0,255);
-    renderer.Clear();
 
-    /*Texture logo(renderer, Surface(DATA_PATH "/background1.jpg").SetColorKey(true, 0xff));
-    renderer.Copy(
-        logo, 
-        NullOpt, 
-        Rect(10, 10, logo.GetWidth(), logo.GetHeight())
-    );*/
+    int currentFrame = 0;
 
-    std::string mensaje = resultado ? ("Ganaste") : ("Perdiste");
+    while (true)
+    {
 
-    int alto = renderer.GetOutputHeight();
-    int ancho = renderer.GetOutputWidth();
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type) {
 
-    Color blanco(255, 255, 255, 255);
-    Surface surface = this->fuente.RenderText_Solid(mensaje, blanco);
-    Texture texture(renderer, surface);
+                case SDL_QUIT:
+                    return;
 
-    Rect nombre((ancho/2) - 35, (alto/2) - 35, surface.GetWidth(), surface.GetHeight());
-    renderer.Copy(texture, NullOpt, nombre);
-    
-    renderer.Present();
+            }
 
-    SDL_Delay(5000);
+            if (event.type == SDL_KEYDOWN)
+            {
+
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_ESCAPE:
+                case SDLK_q:
+                case SDLK_RETURN:
+                    return;
+
+            }
+
+            }
+
+        }
+
+        renderer.SetDrawColor(0,0,0,255);
+        renderer.Clear();
+
+        int alto = renderer.GetOutputHeight();
+        int ancho = renderer.GetOutputWidth();
+
+        /********** LOGO **********/
+
+        Texture logo(renderer, Surface(DATA_PATH "/background1.jpg").SetColorKey(true, 0xff));
+        renderer.Copy(
+            logo, 
+            NullOpt, 
+            Rect((ancho/2) - 212.5f, 10, 425, 240)
+        );
+
+        /********** WORM **********/
+
+        if (resultado) {
+            Texture worm_winner(renderer, Surface(DATA_PATH "/wwinner.png").SetColorKey(true, 0xff));
+
+            int size = worm_winner.GetWidth();
+
+            renderer.Copy(
+                worm_winner, 
+                SDL2pp::Rect(0, (size) * currentFrame, size, size), 
+                Rect((ancho/2) - 30, (alto/2) - 20, size, size)
+            );
+
+            currentFrame++;
+            currentFrame = currentFrame % (worm_winner.GetHeight() / worm_winner.GetWidth());
+
+        } else {
+            Texture worm_loser(renderer, Surface(DATA_PATH "/wloser.png").SetColorKey(true, 0xff));
+
+            int size = worm_loser.GetWidth();
+
+            renderer.Copy(
+                worm_loser, 
+                SDL2pp::Rect(0, (size) * currentFrame, size, size), 
+                Rect((ancho/2) - 30, (alto/2) - 20, size, size)
+            );
+
+            currentFrame++;
+            currentFrame = currentFrame % (worm_loser.GetHeight() / worm_loser.GetWidth());
+        }
+
+        /********** RESULTADO **********/
+
+        std::string mensaje_resultado = resultado ? ("Ganaste") : ("Perdiste");
+
+        Color blanco(255, 255, 255, 255);
+        Surface surface_resultado = this->fuente.RenderText_Solid(mensaje_resultado, blanco);
+        Texture texture_resultado(renderer, surface_resultado);
+
+        Rect recta_resultado((ancho/2) - 35, (alto/2) + 65, surface_resultado.GetWidth(), surface_resultado.GetHeight());
+        renderer.Copy(texture_resultado, NullOpt, recta_resultado);
+
+        /********** MENSAJE DE SALIDA **********/
+
+        Surface surface_salir = this->fuente.RenderText_Solid("Presione ENTER para salir", blanco);
+        Texture texture_salir(renderer, surface_salir);
+
+        Rect recta_salir((ancho/2) - 110, (alto/2) + 120, surface_salir.GetWidth(), surface_salir.GetHeight());
+        renderer.Copy(texture_salir, NullOpt, recta_salir);
+        
+        renderer.Present(); 
+
+    }
 }
 
 /******************** CONVERSIONES ********************/
