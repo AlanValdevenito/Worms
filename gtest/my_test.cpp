@@ -1001,8 +1001,6 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Gusano)
     uint8_t vida = 85;
     uint8_t color = 3;
     uint8_t estado = 3;
-    uint8_t direccion = 1;
-    uint8_t arma = 1;
 
     std::shared_ptr<Gusano> gusano = std::make_shared<Gusano>(id, x, y, vida, color, estado, 1, 1, 1);
 
@@ -1035,8 +1033,6 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, __Multiples_gusanos)
     SocketMock *skt = new SocketMock();
     ServerProtocol sp(skt);
     bool was_closed = false;
-    uint8_t direccion = 1;
-    uint8_t arma = 1;
 
     uint8_t id_enviada1 = 2;
     uint16_t x_enviada1 = 20;
