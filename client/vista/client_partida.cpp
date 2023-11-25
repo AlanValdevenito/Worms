@@ -779,14 +779,18 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {
 
     std::map<int, int> vida_total;
+    std::map<int, int> cantidad_worms;
 
     for (const auto &elemento : this->worms)
     {
         vida_total[elemento.second->get_color()] += elemento.second->get_vida();
+        cantidad_worms[elemento.second->get_color()] += 1;
     }
 
     int offset = 0;
     for (const auto &elemento : vida_total) {
+        int ancho = (elemento.second * 200 / (100 * cantidad_worms[elemento.first]));
+        std::cout << ancho << std::endl;
 
         /********** BORDE **********/
 
@@ -795,12 +799,12 @@ void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {
         renderer.Copy(
             borde,
             SDL2pp::NullOpt,
-            SDL2pp::Rect((renderer.GetOutputWidth() / 2) - 100 - 5, offset + (renderer.GetOutputHeight() - 30) - 5, (elemento.second) + 10, 18 + 10)
+            SDL2pp::Rect((renderer.GetOutputWidth() / 2) - (ancho/2) - 5, offset + (renderer.GetOutputHeight() - 30) - 5, (ancho) + 10, 18 + 10)
         );
 
         /********** VIDA **********/
 
-        SDL2pp::Rect contenedor((renderer.GetOutputWidth() / 2) - 100, offset + (renderer.GetOutputHeight() - 30), elemento.second, 18);
+        SDL2pp::Rect contenedor((renderer.GetOutputWidth() / 2) - (ancho/2), offset + (renderer.GetOutputHeight() - 30), ancho, 18);
         renderer.SetDrawColor(this->colores[elemento.first]); 
         renderer.FillRect(contenedor);
 
