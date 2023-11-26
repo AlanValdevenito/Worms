@@ -299,7 +299,7 @@ void Worm::startContact() {
 	if (fallDistance > 2.0f) {
 		takeDamage(std::min((int)fallDistance, 25));
 	}
-	highestYCoordinateReached = body->GetPosition().y;
+	highestYCoordinateReached = 0;
 }
 
 void Worm::equipWeapon(uint8_t weapon) {
