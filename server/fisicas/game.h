@@ -89,6 +89,7 @@ public:
     void stop() override;
     void sendMap();
     void sendWorms();
+    void sendBombs();
     bool hayBombas();
     void moveWormLeft();
     void moveWormRight();

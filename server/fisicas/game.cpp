@@ -553,44 +553,103 @@ void Game::updatePlayers()
 
 void Game::updateBombs()
 {
-    if (greenGrenade != NULL)
-    {
-        greenGrenade->update();
+    if (greenGrenade != NULL) {
+        if (greenGrenade->exploded) {
+            greenGrenade->destroy();
+            greenGrenade = NULL;
+        } else {
+            greenGrenade->update();
+        }
+        
     }
 
     if (bazookaRocket != NULL)
     {
-        if (not bazookaRocket->exploded)
-        {
+        if (bazookaRocket->exploded) { 
+            bazookaRocket->destroy();
+            bazookaRocket = NULL;
+        } else {
             bazookaRocket->updateAngle();
         }
     }
 
     if (banana != NULL)
     {
-        banana->update();
+        if (banana->exploded) {
+            banana->destroy();
+            banana = NULL;
+        } else {
+            banana->update();
+        }
     }
 
     if (holyGrenade != NULL)
-    {
-        holyGrenade->update();
+    {   
+        if (holyGrenade->exploded)
+        {
+            holyGrenade->destroy();
+            holyGrenade = NULL;
+        } else {
+            holyGrenade->update();
+        }
+        
     }
 
     if (dynamite != NULL)
-    {
-        dynamite->update();
-    }
-    if (redGrenade != NULL)
-    {
-        redGrenade->update();
-    }
-    if (morteroRocket != NULL)
-    {
-        if (not morteroRocket->exploded)
+    {   
+        if (dynamite->exploded)
         {
+            dynamite->destroy();
+            dynamite = NULL;
+        } else {
+            dynamite->update();
+        }
+        
+    }
+    if (redGrenade != NULL) {
+        if (redGrenade->exploded) {
+            float x = redGrenade->getXCoordinate();
+            float y = redGrenade->getYCoordinate() + 1;
+            throwFragments(x, y);
+            redGrenade->destroy();
+            redGrenade = NULL;
+        } else {
+            redGrenade->update();
+        }
+        
+    }
+    if (morteroRocket != NULL) {   
+        if (morteroRocket->exploded) {   
+            float x = morteroRocket->getXCoordinate();
+            float y = morteroRocket->getYCoordinate() + 1;
+            throwFragments(x, y);
+            morteroRocket->destroy();
+            morteroRocket = NULL;
+        } else {
             morteroRocket->updateAngle();
         }
     }
+
+    for (int i = 0; i < (int)redGrenadeFragments.size(); i++) {
+        if (redGrenadeFragments[i] != NULL) {
+            if (redGrenadeFragments[i]->exploded) {   
+                redGrenadeFragments[i]->destroy();
+                redGrenadeFragments[i] = NULL;
+            }
+        }
+    }
+
+    for (int i = 0; i < (int)airStrike.size(); i++) {
+        if (airStrike[i] != NULL) {
+            if (airStrike[i]->exploded) {
+                airStrike[i]->destroy();
+                airStrike[i] = NULL;
+            }
+        }
+        
+    }
+
+
 }
 
 void Game::update()
@@ -599,8 +658,9 @@ void Game::update()
     updatePlayers();
     if (game_finished)
         return;
-    updateBombs();
+    
     sendWorms();
+    updateBombs();
     passTurn();
 }
 
@@ -675,7 +735,7 @@ void Game::sendWorms()
     gusanos->set_gusano_de_turno(id);
 
     // SI HAY GRANADA
-    std::vector<std::shared_ptr<Proyectil>> proyectiles;
+    
     if (hayBombas())
     {
         gusanos->set_flag_proyectil(true);
@@ -683,139 +743,82 @@ void Game::sendWorms()
 
     broadcaster.AddDtoToQueues(gusanos);
     // crear granada
-    if (hayBombas())
-    {
-        if (greenGrenade != NULL)
-        {
-            std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100), (uint8_t)(greenGrenade->getAngle()), greenGrenade->exploded, greenGrenade->getTimeLeftToExplode());
-            proyectiles.push_back(granada);
-
-            if (greenGrenade->exploded)
-            {
-                greenGrenade->destroy();
-                greenGrenade = NULL;
-            }
-        }
-
-        if (redGrenade != NULL)
-        {
-            std::shared_ptr<GranadaRoja> granadaRoja = std::make_shared<GranadaRoja>((uint16_t)(redGrenade->getXCoordinate() * 100), (uint16_t)(redGrenade->getYCoordinate() * 100), (uint8_t)(redGrenade->getAngle()), redGrenade->exploded, redGrenade->getTimeLeftToExplode());
-            proyectiles.push_back(granadaRoja);
-
-            if (redGrenade->exploded)
-            {
-
-                float x = redGrenade->getXCoordinate();
-                float y = redGrenade->getYCoordinate() + 1;
-                throwFragments(x, y);
-                redGrenade->destroy();
-                redGrenade = NULL;
-                // falta enviar los fragmentos
-            }
-        }
-
-        if (bazookaRocket != NULL)
-        {
-            std::shared_ptr<Bazuka> bazooka = std::make_shared<Bazuka>((uint16_t)(bazookaRocket->getXCoordinate() * 100), (uint16_t)(bazookaRocket->getYCoordinate() * 100), (uint16_t)(bazookaRocket->getAngle()), bazookaRocket->dir, bazookaRocket->exploded);
-
-            proyectiles.push_back(bazooka);
-            if (bazookaRocket->exploded)
-            {
-                bazookaRocket->destroy();
-                bazookaRocket = NULL;
-            }
-        }
-
-        if (banana != NULL)
-        {
-            std::shared_ptr<GranadaBanana> granadaBanana = std::make_shared<GranadaBanana>((uint16_t)(banana->getXCoordinate() * 100), (uint16_t)(banana->getYCoordinate() * 100), (uint8_t)(banana->getAngle()), banana->exploded, banana->getTimeLeftToExplode());
-            proyectiles.push_back(granadaBanana);
-            if (banana->exploded)
-            {
-                banana->destroy();
-                banana = NULL;
-            }
-        }
-
-        if (holyGrenade != NULL)
-        {
-            std::shared_ptr<GranadaSanta> granadaSanta = std::make_shared<GranadaSanta>((uint16_t)(holyGrenade->getXCoordinate() * 100), (uint16_t)(holyGrenade->getYCoordinate() * 100), (uint8_t)holyGrenade->getAngle(), holyGrenade->exploded, holyGrenade->getTimeLeftToExplode());
-            proyectiles.push_back(granadaSanta);
-            if (holyGrenade->exploded)
-            {
-                holyGrenade->destroy();
-                holyGrenade = NULL;
-            }
-        }
-
-        if (dynamite != NULL)
-        {
-            std::shared_ptr<Dinamita> dinamita = std::make_shared<Dinamita>((uint16_t)(dynamite->getXCoordinate() * 100), (uint16_t)(dynamite->getYCoordinate() * 100), dynamite->exploded, dynamite->getTimeLeftToExplode());
-
-            proyectiles.push_back(dinamita);
-            if (dynamite->exploded)
-            {
-                dynamite->destroy();
-                dynamite = NULL;
-            }
-        }
-
-        if (morteroRocket != NULL)
-        {
-            std::shared_ptr<Mortero> mortero = std::make_shared<Mortero>((uint16_t)(morteroRocket->getXCoordinate() * 100), (uint16_t)(morteroRocket->getYCoordinate() * 100), (uint16_t)(morteroRocket->getAngle()), morteroRocket->dir, morteroRocket->exploded);
-            proyectiles.push_back(mortero);
-            if (morteroRocket->exploded)
-            {   
-                float x = morteroRocket->getXCoordinate();
-                float y = morteroRocket->getYCoordinate() + 1;
-                throwFragments(x, y);
-                morteroRocket->destroy();
-                morteroRocket = NULL;
-            }
-        }
-
-        int id_proyectil = 1;
-        for (int i = 0; i < (int)airStrike.size(); i++)
-        {
-            if (airStrike[i] != NULL)
-            {
-                std::shared_ptr<Misil> misil = std::make_shared<Misil>(id_proyectil, (uint16_t)(airStrike[i]->getXCoordinate() * 100), (uint16_t)(airStrike[i]->getYCoordinate() * 100), airStrike[i]->exploded);
-                proyectiles.push_back(misil);
-                if (airStrike[i]->exploded)
-                {
-                    // delete rocket;
-                    airStrike[i]->destroy();
-                    airStrike[i] = NULL;
-                }
-            }
-            id_proyectil++;
-        }
-
-        int id_fragmento = 1;
-        for (int i = 0; i < (int)redGrenadeFragments.size(); i++)
-        {
-            if (redGrenadeFragments[i] != NULL)
-            {   
-                //std::cout << "enviando fragmento de id = " << id_fragmento << ", x = " << redGrenadeFragments[i]->getXCoordinate() << ",y = " << redGrenadeFragments[i]->getYCoordinate() << "\n";
-                std::shared_ptr<Fragmento> fragmento = std::make_shared<Fragmento>(id_fragmento, (uint16_t)(redGrenadeFragments[i]->getXCoordinate() * 100), (uint16_t)(redGrenadeFragments[i]->getYCoordinate() * 100), 0, redGrenadeFragments[i]->exploded);
-                proyectiles.push_back(fragmento);
-                if (redGrenadeFragments[i]->exploded)
-                {   
-                    std::cout << "explota fragmento de id = " << id_fragmento <<  ", x = " << redGrenadeFragments[i]->getXCoordinate() << ",y = " << redGrenadeFragments[i]->getYCoordinate() <<  "\n";
-                    redGrenadeFragments[i]->destroy();
-                    redGrenadeFragments[i] = NULL;
-                }
-            }
-            id_fragmento++;
-        }
-
-        if (proyectiles.size() > 0)
-        {
-            std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);
-            broadcaster.AddDtoToQueues(ps);
-        }
+    if (hayBombas()) {
+        sendBombs();
     }
 }
+
+void Game::sendBombs() {
+    std::vector<std::shared_ptr<Proyectil>> proyectiles;
+    if (greenGrenade != NULL) {
+        std::shared_ptr<GranadaVerde> granada = std::make_shared<GranadaVerde>((uint16_t)(greenGrenade->getXCoordinate() * 100), (uint16_t)(greenGrenade->getYCoordinate() * 100), (uint8_t)(greenGrenade->getAngle()), greenGrenade->exploded, greenGrenade->getTimeLeftToExplode());
+        proyectiles.push_back(granada);
+    }
+
+    if (redGrenade != NULL) {
+        std::shared_ptr<GranadaRoja> granadaRoja = std::make_shared<GranadaRoja>((uint16_t)(redGrenade->getXCoordinate() * 100), (uint16_t)(redGrenade->getYCoordinate() * 100), (uint8_t)(redGrenade->getAngle()), redGrenade->exploded, redGrenade->getTimeLeftToExplode());
+        proyectiles.push_back(granadaRoja);
+    }
+
+    if (bazookaRocket != NULL) {
+        std::shared_ptr<Bazuka> bazooka = std::make_shared<Bazuka>((uint16_t)(bazookaRocket->getXCoordinate() * 100), (uint16_t)(bazookaRocket->getYCoordinate() * 100), (uint16_t)(bazookaRocket->getAngle()), bazookaRocket->dir, bazookaRocket->exploded);
+        proyectiles.push_back(bazooka);
+    }
+
+    if (banana != NULL)
+    {
+        std::shared_ptr<GranadaBanana> granadaBanana = std::make_shared<GranadaBanana>((uint16_t)(banana->getXCoordinate() * 100), (uint16_t)(banana->getYCoordinate() * 100), (uint8_t)(banana->getAngle()), banana->exploded, banana->getTimeLeftToExplode());
+        proyectiles.push_back(granadaBanana);
+    }
+
+    if (holyGrenade != NULL)
+    {
+        std::shared_ptr<GranadaSanta> granadaSanta = std::make_shared<GranadaSanta>((uint16_t)(holyGrenade->getXCoordinate() * 100), (uint16_t)(holyGrenade->getYCoordinate() * 100), (uint8_t)holyGrenade->getAngle(), holyGrenade->exploded, holyGrenade->getTimeLeftToExplode());
+        proyectiles.push_back(granadaSanta);
+    }
+
+    if (dynamite != NULL)
+    {
+        std::shared_ptr<Dinamita> dinamita = std::make_shared<Dinamita>((uint16_t)(dynamite->getXCoordinate() * 100), (uint16_t)(dynamite->getYCoordinate() * 100), dynamite->exploded, dynamite->getTimeLeftToExplode());
+        proyectiles.push_back(dinamita);
+    }
+
+    if (morteroRocket != NULL)
+    {
+        std::shared_ptr<Mortero> mortero = std::make_shared<Mortero>((uint16_t)(morteroRocket->getXCoordinate() * 100), (uint16_t)(morteroRocket->getYCoordinate() * 100), (uint16_t)(morteroRocket->getAngle()), morteroRocket->dir, morteroRocket->exploded);
+        proyectiles.push_back(mortero);
+    }
+
+    int id_proyectil = 1;
+    for (int i = 0; i < (int)airStrike.size(); i++)
+    {
+        if (airStrike[i] != NULL)
+        {
+            std::shared_ptr<Misil> misil = std::make_shared<Misil>(id_proyectil, (uint16_t)(airStrike[i]->getXCoordinate() * 100), (uint16_t)(airStrike[i]->getYCoordinate() * 100), airStrike[i]->exploded);
+            proyectiles.push_back(misil);
+        }
+        id_proyectil++;
+    }
+
+    int id_fragmento = 1;
+    for (int i = 0; i < (int)redGrenadeFragments.size(); i++)
+    {
+        if (redGrenadeFragments[i] != NULL)
+        {   
+            //std::cout << "enviando fragmento de id = " << id_fragmento << ", x = " << redGrenadeFragments[i]->getXCoordinate() << ",y = " << redGrenadeFragments[i]->getYCoordinate() << "\n";
+            std::shared_ptr<Fragmento> fragmento = std::make_shared<Fragmento>(id_fragmento, (uint16_t)(redGrenadeFragments[i]->getXCoordinate() * 100), (uint16_t)(redGrenadeFragments[i]->getYCoordinate() * 100), 0, redGrenadeFragments[i]->exploded);
+            proyectiles.push_back(fragmento);
+        }
+        id_fragmento++;
+    }
+
+    if (proyectiles.size() > 0)
+    {
+        std::shared_ptr<Proyectiles> ps = std::make_shared<Proyectiles>(proyectiles);
+        broadcaster.AddDtoToQueues(ps);
+    }
+}
+
 
 void Game::sendMap()
 {
