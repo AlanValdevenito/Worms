@@ -164,7 +164,7 @@ void Worm::moveRight()
 		}
 	}
 	float theta = -3.14f / 2.0f;
-	b2Vec2 velocity = b2Vec2(std::max((float)speed, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
+	b2Vec2 velocity = b2Vec2(std::max(0.0f, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
 							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
 	
 	std::cout << "velocity = (" << velocity.x << ", " << velocity.y << ")\n";
@@ -173,9 +173,10 @@ void Worm::moveRight()
 	// si tiene arma, cambia la direccion a la derecha pero no se mueve
 	if (actualWeapon == NO_WEAPON) {
 		isRunning = true;
-		if (velocity == b2Vec2(0.0f,0.0f)) velocity = b2Vec2(speed, 0.0f);
+		if (velocity == b2Vec2(0.0f, 0.0f) || velocity.x == 0) {
+			velocity = b2Vec2(speed, 0.0f);
+		}
 		body->SetLinearVelocity(velocity);
-		//body->SetLinearVelocity(b2Vec2(speed, 0.0f));
 		state = MOVING;
 	}
 	facingRight = true;
