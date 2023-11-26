@@ -3,6 +3,7 @@
 
 #include "box2d/box2d.h"
 #include "worm.h"
+#include "red_grenade_fragment.h"
 
 class ContactListener : public b2ContactListener {
     void BeginContact(b2Contact* contact) {
@@ -15,7 +16,11 @@ class ContactListener : public b2ContactListener {
                     std::cout << "A: contact entity type = " << entity->entityType << "\n";
                     Worm *worm = (Worm*)entity;
                     worm->startContact();
-                } else if (entity->entityType >= 2) {
+                } else if (entity->entityType == FRAGMENT) {
+                    RedGrenadeFragment *fragment = (RedGrenadeFragment*)entity;
+                    fragment->startContact();
+                    std::cout << "ContactListener -> fragmento explota en x = " << fragment->getXCoordinate() << ", y = " << fragment->getYCoordinate() <<  "\n";
+                } else if (entity->entityType >= 2 && entity->entityType != FRAGMENT) {
                     //std::cout << "A: contact entity type = " << (int)entity->entityType << "\n";
                     entity->startContact();
                     //BazookaRocket *bazookaRocket = (BazookaRocket*)entity;
@@ -32,7 +37,11 @@ class ContactListener : public b2ContactListener {
                     //std::cout << "B: contact entity type = " << entity->entityType << "\n";
                     Worm *worm = (Worm*)entity;
                     worm->startContact();
-                } else if (entity->entityType >= 2) {
+                } else if (entity->entityType == FRAGMENT) {
+                    RedGrenadeFragment *fragment = (RedGrenadeFragment*)entity;
+                    fragment->startContact();
+                    std::cout << "ContactListener -> fragmento explota en x = " << fragment->getXCoordinate() << ", y = " << fragment->getYCoordinate() <<  "\n";
+                } else if (entity->entityType >= 2 && entity->entityType != FRAGMENT) {
                     //std::cout << "A: contact entity type = " << (int)entity->entityType << "\n";
                     entity->startContact();
                     //BazookaRocket *bazookaRocket = (BazookaRocket*)entity;

@@ -706,13 +706,22 @@ void Game::sendWorms()
             {
 
                 float x = redGrenade->getXCoordinate();
-                float y = redGrenade->getYCoordinate();
+                float y = redGrenade->getYCoordinate() + 1;
                 Direction direction;
+                int j = 0;
+                float angleInRadians;
+                int angle;
                 for (int i = 0; i < 6; i++)
                 {
                     redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
                     direction = (i < 3) ? LEFT : RIGHT;
-                    redGrenadeFragments[i]->shoot(direction, 15 * i, 1);
+                    if (j == 3) {j = 0;}
+                    angle  = 65 + 15*j;
+                    angleInRadians = angle * 3.14f / 180.0f;
+                    std::cout << "angle = " << angle << "\n";
+                    std::cout << "angleInRadians = " << angleInRadians << "\n";
+                    redGrenadeFragments[i]->shoot(direction, angleInRadians, 1);
+                    j++;
                 }
                 redGrenade->destroy();
                 redGrenade = NULL;
@@ -771,20 +780,24 @@ void Game::sendWorms()
             std::shared_ptr<Mortero> mortero = std::make_shared<Mortero>((uint16_t)(morteroRocket->getXCoordinate() * 100), (uint16_t)(morteroRocket->getYCoordinate() * 100), (uint16_t)(morteroRocket->getAngle()), morteroRocket->dir, morteroRocket->exploded);
             proyectiles.push_back(mortero);
             if (morteroRocket->exploded)
-            {
+            {   
                 float x = morteroRocket->getXCoordinate();
-                float y = morteroRocket->getYCoordinate();
+                float y = morteroRocket->getYCoordinate() + 1;
                 Direction direction;
                 int j = 0;
+                float angleInRadians;
+                int angle;
                 for (int i = 0; i < 6; i++)
                 {
                     redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
                     direction = (i < 3) ? LEFT : RIGHT;
-                    if (i == 3)
-                    {
-                        j = 0;
-                    }
-                    redGrenadeFragments[i]->shoot(direction, 15 * j, 1);
+                    if (j == 3) {j = 0;}
+                    angle  = 65 + 15*j;
+                    angleInRadians = angle * 3.14f / 180.0f;
+                    std::cout << "angle = " << angle << "\n";
+                    std::cout << "angleInRadians = " << angleInRadians << "\n";
+                    redGrenadeFragments[i]->shoot(direction, angleInRadians, 1);
+                    j++;
                 }
                 morteroRocket->destroy();
                 morteroRocket = NULL;
@@ -812,11 +825,13 @@ void Game::sendWorms()
         for (int i = 0; i < (int)redGrenadeFragments.size(); i++)
         {
             if (redGrenadeFragments[i] != NULL)
-            {
+            {   
+                //std::cout << "enviando fragmento de id = " << id_fragmento << ", x = " << redGrenadeFragments[i]->getXCoordinate() << ",y = " << redGrenadeFragments[i]->getYCoordinate() << "\n";
                 std::shared_ptr<Fragmento> fragmento = std::make_shared<Fragmento>(id_fragmento, (uint16_t)(redGrenadeFragments[i]->getXCoordinate() * 100), (uint16_t)(redGrenadeFragments[i]->getYCoordinate() * 100), 0, redGrenadeFragments[i]->exploded);
                 proyectiles.push_back(fragmento);
                 if (redGrenadeFragments[i]->exploded)
-                {
+                {   
+                    std::cout << "explota fragmento de id = " << id_fragmento <<  ", x = " << redGrenadeFragments[i]->getXCoordinate() << ",y = " << redGrenadeFragments[i]->getYCoordinate() <<  "\n";
                     redGrenadeFragments[i]->destroy();
                     redGrenadeFragments[i] = NULL;
                 }

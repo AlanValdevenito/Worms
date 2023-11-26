@@ -56,8 +56,8 @@ float RedGrenadeFragment::getYCoordinate() {
 
 void RedGrenadeFragment::shoot(Direction direction, float angle, int power) {
     
-    float xComponent = (float(power) / 120.0f ) * cos(angle);
-    float yComponent = (float(power) / 120.0f ) * sin(angle);
+    float xComponent = (float(power) / 60.0f ) * cos(angle);
+    float yComponent = (float(power) / 60.0f ) * sin(angle);
     if (direction == LEFT) {
         body->ApplyLinearImpulseToCenter(b2Vec2(-xComponent, yComponent), true);
     } else if (direction == RIGHT) {

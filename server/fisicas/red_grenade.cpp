@@ -64,7 +64,7 @@ void RedGrenade::explode() {
             Entity *entity = (Entity*)b->GetUserData().pointer;
 	  
             if (entity != NULL) {
-                if ((entity->entityType == WORM)) {;
+                if ((entity->entityType == WORM)) {
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);
                     worm->takeDamage(damage);
