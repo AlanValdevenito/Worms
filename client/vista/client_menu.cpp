@@ -1,5 +1,5 @@
 #include "client_menu.h"
-#include "menu_window.h"
+#include "menu_principal.h"
 
 #include <QApplication>
 #include <QLabel>
@@ -16,7 +16,7 @@ int Menu::iniciar(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
     // Creamos una ventana
-    MenuWindow w(this->cliente);
+    MenuPrincipal w(this->cliente);
 
     // Mostramos la ventana
     w.show();

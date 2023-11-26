@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>MenuPrincipal</class>
+ <widget class="QMainWindow" name="MenuPrincipal">
   <property name="enabled">
    <bool>true</bool>
   </property>
@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Worms 2D</string>
+   <string>Worms 2D - Menu principal</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: black;</string>
@@ -51,123 +51,6 @@
     <enum>Qt::PreventContextMenu</enum>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <widget class="QFrame" name="frame">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>640</width>
-        <height>240</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>640</width>
-        <height>240</height>
-       </size>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QPushButton" name="elegirPartidaButton">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>50</y>
-         <width>150</width>
-         <height>40</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>300</width>
-         <height>300</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	background-color: white;
-	border-style: outset;
-	border-width: 2px;
-	border-radius: 10px;
-	font: bold 14px;
-}
-
-QPushButton:hover {
-	background: grey;
-}
-
-QPushButton:pressed {
-	background-color: grey;
-	border-style: inset;
-}</string>
-       </property>
-       <property name="text">
-        <string>Elegir partida</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="nuevaPartidaButton">
-       <property name="geometry">
-        <rect>
-         <x>370</x>
-         <y>50</y>
-         <width>150</width>
-         <height>40</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>300</width>
-         <height>300</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	background-color: white;
-	border-style: outset;
-	border-width: 2px;
-	border-radius: 10px;
-	font: bold 14px;
-}
-
-QPushButton:hover {
-	background: grey;
-}
-
-QPushButton:pressed {
-	background-color: grey;
-	border-style: inset;
-}</string>
-       </property>
-       <property name="text">
-        <string>Nueva partida</string>
-       </property>
-      </widget>
-     </widget>
-    </item>
     <item row="0" column="0">
      <widget class="QFrame" name="frame_2">
       <property name="minimumSize">
@@ -210,6 +93,151 @@ QPushButton:pressed {
         <bool>true</bool>
        </property>
       </widget>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QFrame" name="frame">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>640</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>640</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QPushButton" name="partidasButton">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>10</y>
+         <width>260</width>
+         <height>160</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>300</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-image: url(../client/vista/data/network.png);
+	border-style: outset;
+	border-width: 2px;
+	border-radius: 10px;
+	font: bold 14px;
+}
+
+QPushButton:pressed {
+	background-color: grey;
+	border-style: inset;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="opcionesButton">
+       <property name="geometry">
+        <rect>
+         <x>350</x>
+         <y>10</y>
+         <width>260</width>
+         <height>160</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>300</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-image: url(../client/vista/data/options.png);
+	border-style: outset;
+	border-width: 2px;
+	border-radius: 10px;
+	font: bold 14px;
+}
+
+QPushButton:pressed {
+	background-color: grey;
+	border-style: inset;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="partidasLabel">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>190</y>
+         <width>291</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Acceder al menu de partidas multijugador</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>190</y>
+         <width>201</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Acceder al menu de opciones</string>
+       </property>
+      </widget>
+      <zorder>opcionesButton</zorder>
+      <zorder>partidasButton</zorder>
+      <zorder>partidasLabel</zorder>
+      <zorder>label</zorder>
      </widget>
     </item>
    </layout>

@@ -4,29 +4,34 @@
 #include <QMainWindow>
 
 #include "client.h"
+#include "menu_crear_partida.h"
 
 namespace Ui {
-class ElegirPartida;
+class MenuPartidas;
 }
 
-class ElegirPartida : public QMainWindow
+class MenuPartidas : public QMainWindow
 {
     Q_OBJECT
 
 private:
-    Ui::ElegirPartida *ui;
+    Ui::MenuPartidas *ui;
     Client &cliente;
+
+    std::string partidaSeleccionada;
 
     // Agregamos las opciones de partida al QComboBox
     void addItems();
     uint8_t obtener_id(std::string &opcion);
     // Conectamos la señal clicked() de los botones a una ranura
     void connectEvents();
+    void seleccionarPartida();
     void elegirPartida();
+    void menuCrearPartida();
 
 public:
-    ElegirPartida(Client &cliente, QWidget *parent = nullptr);
-    ~ElegirPartida();
+    MenuPartidas(Client &cliente, QWidget *parent = nullptr);
+    ~MenuPartidas();
 };
 
 #endif // ELEGIR_PARTIDA_H

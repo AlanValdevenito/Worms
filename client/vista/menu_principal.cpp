@@ -1,5 +1,5 @@
-#include "ui_menu_window.h"
-#include "menu_window.h"
+#include "ui_menu_principal.h"
+#include "menu_principal.h"
 
 #include <QApplication>
 #include <QMainWindow>
@@ -9,7 +9,7 @@
 #include <QSizePolicy>
 #include <QPalette>
 
-MenuWindow::MenuWindow(Client &cliente, QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow), cliente(cliente) {
+MenuPrincipal::MenuPrincipal(Client &cliente, QWidget *parent): QMainWindow(parent), ui(new Ui::MenuPrincipal), cliente(cliente) {
 
     // Inicializamos la interfaz definida en el archivo .ui
     ui->setupUi(this); 
@@ -18,29 +18,27 @@ MenuWindow::MenuWindow(Client &cliente, QWidget *parent): QMainWindow(parent), u
 }
 
 
-void MenuWindow::connectEvents() {
+void MenuPrincipal::connectEvents() {
     // connect(Puntero al boton, Señal que se conectara, Objeto actual, Ranura que se conectara)
 
-    connect(ui->elegirPartidaButton, &QPushButton::clicked, this, &MenuWindow::elegirPartida);
-    connect(ui->nuevaPartidaButton, &QPushButton::clicked, this, &MenuWindow::nuevaPartida);
+    connect(ui->partidasButton, &QPushButton::clicked, this, &MenuPrincipal::menuPartidas);
+    connect(ui->opcionesButton, &QPushButton::clicked, this, &MenuPrincipal::menuOpciones);
 
     // Utilizamos la funcion connect() de Qt para establecer una conexion entre una señal y una ranura.
     // Cuando el boton elegirPartida es clickeado se emite la señal "clicked" y se llama a la ranura MainWindow::elegirPartida.
 }
 
-void MenuWindow::elegirPartida() {
-    ElegirPartida *w = new ElegirPartida(this->cliente, this);
+void MenuPrincipal::menuPartidas() {
+    MenuPartidas *w = new MenuPartidas(this->cliente, this);
     w->show();
     hide();
 }
 
-void MenuWindow::nuevaPartida() {
-    CrearPartida *w = new CrearPartida(this->cliente, this);
-    w->show();
-    hide();
+void MenuPrincipal::menuOpciones() {
+    // ...
 }
 
-void MenuWindow::keyPressEvent(QKeyEvent *event) {
+void MenuPrincipal::keyPressEvent(QKeyEvent *event) {
 
     if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
         qApp->quit();
@@ -74,6 +72,6 @@ void MenuWindow::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-MenuWindow::~MenuWindow() {
+MenuPrincipal::~MenuPrincipal() {
     delete ui;
 }
