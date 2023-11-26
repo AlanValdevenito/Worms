@@ -15,6 +15,7 @@ void MenuCrearPartida::connectEvents() {
     // connect(Puntero al boton, Señal que se conectara, Objeto actual, Ranura que se conectara)
 
     connect(ui->nuevaPartidaButton, &QPushButton::clicked, this, &MenuCrearPartida::crearPartida);
+    connect(ui->volverAtrasButton, &QPushButton::clicked, this, &MenuCrearPartida::menuPrincipal);
 
     // Utilizamos la funcion connect() de Qt para establecer una conexion entre una señal y una ranura.
     // Cuando el boton elegirPartida es clickeado se emite la señal "clicked" y se llama a la ranura MainWindow::elegirPartida.
@@ -32,6 +33,12 @@ void MenuCrearPartida::crearPartida() {
 
         qApp->quit();
     }
+}
+
+void MenuCrearPartida::menuPrincipal() {
+    MenuPrincipal *w = qobject_cast<MenuPrincipal*>(parent());
+    w->show();
+    close();
 }
 
 MenuCrearPartida::~MenuCrearPartida()

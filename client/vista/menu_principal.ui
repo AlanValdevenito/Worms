@@ -163,7 +163,7 @@ QPushButton:pressed {
         <string/>
        </property>
       </widget>
-      <widget class="QPushButton" name="opcionesButton">
+      <widget class="QPushButton" name="crearPartidaButton">
        <property name="geometry">
         <rect>
          <x>350</x>
@@ -186,7 +186,7 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-	background-image: url(../client/vista/data/options.png);
+	background-image: url(../client/vista/data/multiplayer.png);
 	border-style: outset;
 	border-width: 2px;
 	border-radius: 10px;
@@ -221,9 +221,9 @@ QPushButton:pressed {
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>380</x>
+         <x>370</x>
          <y>190</y>
-         <width>201</width>
+         <width>231</width>
          <height>17</height>
         </rect>
        </property>
@@ -231,10 +231,10 @@ QPushButton:pressed {
         <string notr="true">color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
-        <string>Acceder al menu de opciones</string>
+        <string>Acceder al menu de crear partidas</string>
        </property>
       </widget>
-      <zorder>opcionesButton</zorder>
+      <zorder>crearPartidaButton</zorder>
       <zorder>partidasButton</zorder>
       <zorder>partidasLabel</zorder>
       <zorder>label</zorder>

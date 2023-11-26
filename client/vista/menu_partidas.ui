@@ -143,7 +143,7 @@ QPushButton:pressed {
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QPushButton" name="crearPartidaButton">
+      <widget class="QPushButton" name="volverAtrasButton">
        <property name="geometry">
         <rect>
          <x>86</x>
@@ -183,7 +183,7 @@ QPushButton:pressed {
 }</string>
        </property>
        <property name="text">
-        <string>Crear partida</string>
+        <string>Volver atras</string>
        </property>
       </widget>
      </widget>

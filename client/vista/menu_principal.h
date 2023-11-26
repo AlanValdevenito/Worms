@@ -7,6 +7,7 @@
 
 #include "client.h"
 #include "menu_partidas.h"
+#include "menu_crear_partida.h"
 
 // La clase MainWindow es la ventana principal de la aplicacion y hereda de QMainWindow
 
@@ -23,11 +24,12 @@ protected:
 private:
     Ui::MenuPrincipal *ui;
     Client &cliente;
+    std::list<uint8_t> partidas;
 
     // Conectamos la señal clicked() de los botones a una ranura
     void connectEvents();
     void menuPartidas();
-    void menuOpciones();
+    void menuCrearPartida();
 
 public:
     // Metodo constructor donde se configura la interfaz de usuario creada en QtDesigner

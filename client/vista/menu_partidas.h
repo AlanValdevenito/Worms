@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 #include "client.h"
-#include "menu_crear_partida.h"
+#include "menu_principal.h"
 
 namespace Ui {
 class MenuPartidas;
@@ -17,6 +17,7 @@ class MenuPartidas : public QMainWindow
 private:
     Ui::MenuPartidas *ui;
     Client &cliente;
+    std::list<uint8_t> &partidas;
 
     std::string partidaSeleccionada;
 
@@ -27,10 +28,10 @@ private:
     void connectEvents();
     void seleccionarPartida();
     void elegirPartida();
-    void menuCrearPartida();
+    void menuPrincipal();
 
 public:
-    MenuPartidas(Client &cliente, QWidget *parent = nullptr);
+    MenuPartidas(Client &cliente, std::list<uint8_t> &partidas, QWidget *parent = nullptr);
     ~MenuPartidas();
 };
 
