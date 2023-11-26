@@ -263,7 +263,7 @@ void Game::mapa_vigas_inclinadas()
         x += 2;
     }
 }
-
+/*
 void Game::createPlayers()
 {
     int numberOfWorms = (int)world.getWorms().size();
@@ -271,7 +271,6 @@ void Game::createPlayers()
     int teamNumber = 0;
     numberOfPlayers = (int)idPlayers.size();
     idTurn = idPlayers[indexOfActualPlayer];
-
     for (int playerId : idPlayers)
     {
         std::vector<int> wormIds;
@@ -285,10 +284,55 @@ void Game::createPlayers()
         players.push_back(Player(playerId, teamNumber, wormIds));
         teamNumber++;
     }
-
+    
     actualWormId = players[indexOfActualPlayer].actualWormId;
     numberOfAlivePlayers = numberOfPlayers;
 }
+*/
+
+void Game::createPlayers()
+{
+    //creo jugadores
+    
+
+    int playerIndex = 0;
+    int wormId = 1;
+    int numberOfWorms = (int)world.getWorms().size();
+    std::map<int, std::vector<int>> wormIdsByPlayerId;
+    for(int i = 0; i < numberOfWorms; i++) {
+        if(playerIndex == (int)idPlayers.size())
+            playerIndex = 0;
+
+        world.getWormsById()[wormId]->setPlayerId(idPlayers[playerIndex]);
+        world.getWormsById()[wormId]->setTeamNumber(playerIndex);
+        wormIdsByPlayerId[idPlayers[playerIndex]].push_back(wormId);
+        std::cout << "worm de id " << wormId << " pertenece a player de id " << (int)idPlayers[playerIndex] << "\n";
+        wormId++;    
+        playerIndex++;
+    }
+
+
+    int teamNumber = 0;
+    for(int playerId : idPlayers) {
+        players.push_back(Player(playerId, teamNumber, wormIdsByPlayerId[playerId]));
+        teamNumber++;
+    }
+
+    for (Player player : players) {
+        std::cout << "player id = " << player.getId() << " teamNumber = " << player.getTeamNumber() << ", worms = [";
+        for (int wormId : player.wormIds) {
+            std::cout << (int)wormId << ", ";
+        }
+        std::cout << "]\n";
+    }
+
+    idTurn = idPlayers[indexOfActualPlayer];
+    actualWormId = players[indexOfActualPlayer].actualWormId;
+    numberOfPlayers = (int)idPlayers.size();
+    numberOfAlivePlayers = numberOfPlayers;
+    std::cout << "numberOfAlivePlayers = " << numberOfAlivePlayers << "\n";
+}
+
 
 void Game::finalizar_juego(std::shared_ptr<Dto> dto)
 {

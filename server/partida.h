@@ -35,6 +35,7 @@ public:
     void forceFinish();
     uint8_t getId();
     bool is_dead();
+    bool esta_completa();
     void join();
 
 private:

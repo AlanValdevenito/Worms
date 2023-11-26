@@ -6,7 +6,7 @@ Partida::~Partida() {}
 
 void Partida::start()
 {
-    if (jugadores > conectados)
+    if (jugadores > conectados) // si hay igual cantidad de conectados que de esperados, empieza
         return;
 
     // emepzo la partida
@@ -83,6 +83,8 @@ void Partida::finish()
 }
 
 bool Partida::is_dead() { return game.game_finished; }
+
+bool Partida::esta_completa() { return partida_empezada; }
 
 void Partida::join()
 {

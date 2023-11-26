@@ -31,8 +31,10 @@ void Lobby::sendMatchList(ServerClient *c)
     std::shared_ptr<ListaDePartidas> partidas_disponibles = std::make_shared<ListaDePartidas>();
     for (Partida *p : partidas)
     {
-        printf("id partida: %u\n", p->getId());
-        partidas_disponibles->addOption(p->getId());
+        if(not p->esta_completa()) // si no esta completa es porque se puede unir
+            partidas_disponibles->addOption(p->getId());
+
+        // printf("id partida: %u\n", p->getId());
     }
 
     c->sender_queue.push(partidas_disponibles); // le envio la lista al cliente
@@ -42,13 +44,13 @@ void Lobby::sendMatchList(ServerClient *c)
     if (respuesta->return_code() == LISTA_DE_PARTIDAS_CODE)
     {
         std::shared_ptr<ListaDePartidas> partida = std::dynamic_pointer_cast<ListaDePartidas>(respuesta);
-        printf("select: %u\n", partida->seleccionada);
+        // printf("select: %u\n", partida->seleccionada);
         agregarClienteAPartida(c, partida);
     }
     else
     {
         std::shared_ptr<NuevaPartida> nueva_partida = std::dynamic_pointer_cast<NuevaPartida>(respuesta);
-        printf("Nueva Partida con cant de jugadores: %u\n", nueva_partida->get_cantidad_de_jugadores());
+        // printf("Nueva Partida con cant de jugadores: %u\n", nueva_partida->get_cantidad_de_jugadores());
         Partida *p = new Partida(3, nueva_partida->get_cantidad_de_jugadores());
         partidas.push_back(p);
         p->sendMapTo(c);
