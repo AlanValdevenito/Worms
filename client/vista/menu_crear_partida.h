@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "client.h"
+#include "menu_principal.h"
 
 namespace Ui {
 class MenuCrearPartida;
@@ -19,6 +20,7 @@ private:
 
     void connectEvents();
     void crearPartida();
+    void menuPrincipal();
 
 public:
     MenuCrearPartida(Client &cliente, QWidget *parent = nullptr);

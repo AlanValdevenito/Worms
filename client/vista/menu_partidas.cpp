@@ -3,10 +3,11 @@
 
 #include <QPushButton>
 
-MenuPartidas::MenuPartidas(Client &cliente, QWidget *parent) :
+MenuPartidas::MenuPartidas(Client &cliente, std::list<uint8_t> &partidas, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MenuPartidas),
     cliente(cliente),
+    partidas(partidas),
     partidaSeleccionada("")
 {
     ui->setupUi(this);
@@ -15,12 +16,9 @@ MenuPartidas::MenuPartidas(Client &cliente, QWidget *parent) :
 }
 
 void MenuPartidas::addItems() {
-    std::shared_ptr<ListaDePartidas> l = std::dynamic_pointer_cast<ListaDePartidas>(cliente.recv_queue.pop());
-
-    std::list<uint8_t> lista = l->return_list();
 
     QVBoxLayout *layout = new QVBoxLayout();
-    for (uint8_t id : lista) {
+    for (uint8_t id : this->partidas) {
         QString partida = QString::fromStdString("Partida " + std::to_string((int) id));
 
         QPushButton *partidaButton = new QPushButton(partida, this);
@@ -48,7 +46,7 @@ void MenuPartidas::connectEvents() {
     // connect(Puntero al boton, Señal que se conectara, Objeto actual, Ranura que se conectara)
 
     connect(ui->elegirPartidaButton, &QPushButton::clicked, this, &MenuPartidas::elegirPartida);
-    connect(ui->crearPartidaButton, &QPushButton::clicked, this, &MenuPartidas::menuCrearPartida);
+    connect(ui->volverAtrasButton, &QPushButton::clicked, this, &MenuPartidas::menuPrincipal);
 
     for (QObject *child: ui->scrollContentsPartida->children()) {
         QPushButton *partidaButton = qobject_cast<QPushButton*>(child);
@@ -89,10 +87,10 @@ void MenuPartidas::elegirPartida() {
     }
 }
 
-void MenuPartidas::menuCrearPartida() {
-    MenuCrearPartida *w = new MenuCrearPartida(this->cliente, this);
+void MenuPartidas::menuPrincipal() {
+    MenuPrincipal *w = qobject_cast<MenuPrincipal*>(parent());
     w->show();
-    hide();
+    close();
 }
 
 MenuPartidas::~MenuPartidas()
