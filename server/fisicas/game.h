@@ -110,6 +110,7 @@ public:
     bool anyWormMoving();
     void shootBazooka(float angle, int power);
     void shootMortero(float angle, int power);
+    void throwFragments(float x, float y);
     ~Game();
 };
 #endif

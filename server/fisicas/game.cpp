@@ -707,22 +707,7 @@ void Game::sendWorms()
 
                 float x = redGrenade->getXCoordinate();
                 float y = redGrenade->getYCoordinate() + 1;
-                Direction direction;
-                int j = 0;
-                float angleInRadians;
-                int angle;
-                for (int i = 0; i < 6; i++)
-                {
-                    redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
-                    direction = (i < 3) ? LEFT : RIGHT;
-                    if (j == 3) {j = 0;}
-                    angle  = 65 + 15*j;
-                    angleInRadians = angle * 3.14f / 180.0f;
-                    std::cout << "angle = " << angle << "\n";
-                    std::cout << "angleInRadians = " << angleInRadians << "\n";
-                    redGrenadeFragments[i]->shoot(direction, angleInRadians, 1);
-                    j++;
-                }
+                throwFragments(x, y);
                 redGrenade->destroy();
                 redGrenade = NULL;
                 // falta enviar los fragmentos
@@ -783,22 +768,7 @@ void Game::sendWorms()
             {   
                 float x = morteroRocket->getXCoordinate();
                 float y = morteroRocket->getYCoordinate() + 1;
-                Direction direction;
-                int j = 0;
-                float angleInRadians;
-                int angle;
-                for (int i = 0; i < 6; i++)
-                {
-                    redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
-                    direction = (i < 3) ? LEFT : RIGHT;
-                    if (j == 3) {j = 0;}
-                    angle  = 65 + 15*j;
-                    angleInRadians = angle * 3.14f / 180.0f;
-                    std::cout << "angle = " << angle << "\n";
-                    std::cout << "angleInRadians = " << angleInRadians << "\n";
-                    redGrenadeFragments[i]->shoot(direction, angleInRadians, 1);
-                    j++;
-                }
+                throwFragments(x, y);
                 morteroRocket->destroy();
                 morteroRocket = NULL;
             }
@@ -1059,6 +1029,25 @@ void Game::shootAirStrike(float x, float y)
     timeOfAttack = std::chrono::steady_clock::now();
     wormAttacked = true;
 }
+
+
+void Game::throwFragments(float x, float y) {
+    Direction direction;
+    int j = 0;
+    float angleInRadians;
+    int angle;
+    for (int i = 0; i < 6; i++)
+    {
+        redGrenadeFragments.push_back(new RedGrenadeFragment(&world.world, x, y, config));
+        direction = (i < 3) ? LEFT : RIGHT;
+        if (j == 3) {j = 0;}
+        angle  = 65 + 15*j;
+        angleInRadians = angle * 3.14f / 180.0f;
+        redGrenadeFragments[i]->shoot(direction, angleInRadians, 1);
+        j++;
+    }
+}
+
 
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
