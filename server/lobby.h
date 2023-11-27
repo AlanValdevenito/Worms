@@ -37,11 +37,9 @@ public:
     void newClient(Socket *s);
 
 private:
-    std::list<ServerClient *> clients;
     Queue<std::shared_ptr<Dto>> lobby_queue;
     uint8_t mapId;
     std::list<Partida *> partidas;
-    Broadcaster broadcaster;
     uint8_t id_cliente;
     int partida_id;
 

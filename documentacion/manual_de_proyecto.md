@@ -61,7 +61,7 @@ propuestos por la catedra tal cual los marcaba en la documentacion.
 El proyecto fue dividido en tres categorias: 
 * Vista
 * Logica del juego y fisicas
-* Comunicacion y ... 
+* Comunicacion, Concurrencia y Estructura del juego
 
 El alumno responsable en llevar a cabo la logica del juego y parte fisica fue Mateo Julian Rico. En particular
 se encargo de:
@@ -70,7 +70,7 @@ se encargo de:
 * Ejecutar las fisicas de cada accion del juego segun corresponda.
 * Utilizacion de Box2D para la parte fisica.
 
-El alumno responsable en llevar a cabo la logica de la Comunicacion y .... fue Federico Solari Vazquez. En
+El alumno responsable en llevar a cabo la logica de la Comunicacion, Concurrencia y Estructura del juego fue Federico Solari Vazquez. En
 particular se encargo de:
 
 * Implementar los protocolos del comunicacion del servidor.
