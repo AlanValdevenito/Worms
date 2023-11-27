@@ -380,12 +380,45 @@ void Game::addPlayerId(uint8_t id)
     idPlayers.push_back(id);
 }
 
+bool Game::timeIsUp() {
+    end = std::chrono::steady_clock::now();
+    int timeSinceTurnStarted = std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
+    int timeSinceWormAttacked = std::chrono::duration_cast<std::chrono::seconds>(end - timeOfAttack).count();
+    return timeSinceTurnStarted >= config["turnDuration"] ||
+           (wormAttacked && timeSinceWormAttacked >= config["timeLeftAfterAttack"]);
+}
+
+void Game::beginNextTurn() {
+    world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+    for (int i = 0; i < numberOfPlayers; i++)
+    {
+        if (indexOfActualPlayer == (int)idPlayers.size() - 1)
+        {
+            indexOfActualPlayer = 0;
+        }
+        else
+        {
+            indexOfActualPlayer++;
+        }
+        if (players[indexOfActualPlayer].isAlive)
+        {
+            idTurn = idPlayers[indexOfActualPlayer];
+            players[indexOfActualPlayer].changeActualWorm();
+            actualWormId = players[indexOfActualPlayer].actualWormId;
+            world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+            begin = std::chrono::steady_clock::now();
+            return;
+        }
+    }
+    // si no hay un player
+    idTurn = -1;
+}
+
 void Game::passTurn()
 {
     // cambio de turno
-    end = std::chrono::steady_clock::now();
-    if (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() >= config["turnDuration"] ||
-        (wormAttacked && std::chrono::duration_cast<std::chrono::seconds>(end - timeOfAttack).count() >= config["timeLeftAfterAttack"]))
+    
+    if (timeIsUp())
     {
         if (world.anyMovement() || hayBombas())
         {
@@ -394,39 +427,19 @@ void Game::passTurn()
             return;
         }
         // cuando al gusano se le termina el turno, le saco el arma.
-        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+        
         updateWorms();
         updatePlayers();
         wormAttacked = false;
 
-        std::cout << "pasaron " << TURN_DURATION << " segundos, cambio de turno\n";
-        std::cout << "turno actual = " << idTurn << "\n";
-
-        for (int i = 0; i < numberOfPlayers; i++)
-        {
-            if (indexOfActualPlayer == (int)idPlayers.size() - 1)
-            {
-                indexOfActualPlayer = 0;
-            }
-            else
-            {
-                indexOfActualPlayer++;
-            }
-            if (players[indexOfActualPlayer].isAlive)
-            {
-                idTurn = idPlayers[indexOfActualPlayer];
-                players[indexOfActualPlayer].changeActualWorm();
-                actualWormId = players[indexOfActualPlayer].actualWormId;
-                world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
-                begin = std::chrono::steady_clock::now();
-                return;
-            }
+        beginNextTurn();
+        if (idTurn == -1) {
+            // si no hay jugadores para elegir ==> cierro.
+            broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE, 1));
+            broadcaster.deleteAllQueues(); // aviso a los demas que cierren
+            stop();
+            return;
         }
-        // si no hay jugadores para elegir ==> cierro.
-        broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE, 1));
-        broadcaster.deleteAllQueues(); // aviso a los demas que cierren
-        stop();
-        return;
     }
 }
 
@@ -461,10 +474,13 @@ void Game::updateWorms()
             players[worm->playerId - 1].numberOfAliveWorms--;
             players[worm->playerId - 1].markWormAsDead(worm->getId());
         }
+        if (worm->getId() == actualWormId && not wormAttacked && worm->damageTaken > 0) {
+            beginNextTurn();
+        }
+
         if (worm->getYCoordinate() <= WATER_POSITION && worm->is_alive)
         {
             worm->takeDamage(worm->getHp());
-            // worm->makeDamage();
             worm->getBody()->SetLinearVelocity(b2Vec2(0, 0));
             worm->getBody()->SetTransform(b2Vec2(worm->getXCoordinate(), worm->getYCoordinate()), true);
         }
@@ -474,28 +490,7 @@ void Game::updateWorms()
             if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive)
             {
                 players[worm->playerId - 1].markWormAsDead(worm->getId());
-                // cambio de turno
-
-                for (int i = 0; i < numberOfPlayers; i++)
-                {
-                    if (indexOfActualPlayer == (int)idPlayers.size() - 1)
-                    {
-                        indexOfActualPlayer = 0;
-                    }
-                    else
-                    {
-                        indexOfActualPlayer++;
-                    }
-                    if (players[indexOfActualPlayer].isAlive)
-                    {
-                        idTurn = idPlayers[indexOfActualPlayer];
-                        players[indexOfActualPlayer].changeActualWorm();
-                        actualWormId = players[indexOfActualPlayer].actualWormId;
-                        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
-                        begin = std::chrono::steady_clock::now();
-                        break;
-                    }
-                }
+                beginNextTurn();
             }
         }
 

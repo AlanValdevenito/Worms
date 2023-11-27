@@ -65,7 +65,8 @@ private:
     void mapa_puente();
     void mapa_vigas_inclinadas();
     void finalizar_juego(std::shared_ptr<Dto> dto);
-
+    bool timeIsUp();
+    void beginNextTurn();
 public:
     GreenGrenade *greenGrenade = NULL;
     BazookaRocket *bazookaRocket = NULL;
