@@ -55,6 +55,7 @@ public:
     int actualWeapon = NO_WEAPON;
     uint8_t direction;
     float angle = 0;
+    bool firstTimeFalling = true;
     Worm(b2World *b2world, float x, float y, uint8_t id, std::map<std::string, int>& config);
     float getXCoordinate();
     float getYCoordinate();

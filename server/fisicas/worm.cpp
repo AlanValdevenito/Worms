@@ -296,10 +296,11 @@ void Worm::startContact() {
 	angle = 0;
 	state = MOVING;
 	float fallDistance = highestYCoordinateReached - body->GetPosition().y;
-	if (fallDistance > 2.0f) {
+	if (fallDistance > 2.0f && not firstTimeFalling) {
 		takeDamage(std::min((int)fallDistance, 25));
 	}
 	highestYCoordinateReached = 0;
+	if (firstTimeFalling) {firstTimeFalling = false;}
 }
 
 void Worm::equipWeapon(uint8_t weapon) {
