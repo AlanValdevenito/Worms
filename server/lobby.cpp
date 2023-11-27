@@ -1,12 +1,11 @@
 #include "lobby.h"
 
 // crear una nueva instancia de game cuando creo una partida y pasarselo a la partida
-Lobby::Lobby() : mapId(0), id_cliente(0)
+Lobby::Lobby() : mapId(0), id_cliente(0), partida_id(1)
 {
-    Partida *p1 = new Partida(1, 2);
-    // Partida *p2 = new Partida(2, 1);
+    Partida *p1 = new Partida(partida_id, 2);
     partidas.push_back(p1);
-    // partidas.push_back(p2);
+    partida_id++;
 }
 
 Lobby::~Lobby() {}
@@ -18,7 +17,7 @@ void Lobby::agregarClienteAPartida(ServerClient *c, std::shared_ptr<ListaDeParti
     {
         if (p->getId() == partida->seleccionada)
         {
-            printf("Entro a la partida: %u\n", p->getId());
+            printf("CLIENTE AGREGADO A PARTIDA: %u\n", p->getId());
             p->sendMapTo(c);
             p->start();
         }
@@ -31,10 +30,10 @@ void Lobby::sendMatchList(ServerClient *c)
     std::shared_ptr<ListaDePartidas> partidas_disponibles = std::make_shared<ListaDePartidas>();
     for (Partida *p : partidas)
     {
-        if(not p->esta_completa()) // si no esta completa es porque se puede unir
+        if(not p->esta_completa()) {// si no esta completa es porque se puede unir
             partidas_disponibles->addOption(p->getId());
-
-        // printf("id partida: %u\n", p->getId());
+            printf("id disponible: %u\n", p->getId());
+        }
     }
 
     c->sender_queue.push(partidas_disponibles); // le envio la lista al cliente
@@ -44,30 +43,27 @@ void Lobby::sendMatchList(ServerClient *c)
     if (respuesta->return_code() == LISTA_DE_PARTIDAS_CODE)
     {
         std::shared_ptr<ListaDePartidas> partida = std::dynamic_pointer_cast<ListaDePartidas>(respuesta);
-        // printf("select: %u\n", partida->seleccionada);
+        printf("PARTIDA SELECCIONADA: %u\n", partida->seleccionada);
         agregarClienteAPartida(c, partida);
     }
     else
     {
         std::shared_ptr<NuevaPartida> nueva_partida = std::dynamic_pointer_cast<NuevaPartida>(respuesta);
         // printf("Nueva Partida con cant de jugadores: %u\n", nueva_partida->get_cantidad_de_jugadores());
-        Partida *p = new Partida(3, nueva_partida->get_cantidad_de_jugadores());
+        Partida *p = new Partida(partida_id, nueva_partida->get_cantidad_de_jugadores());
         partidas.push_back(p);
         p->sendMapTo(c);
         p->start();
+        partida_id++;
     }
 }
 
-// void Lobby::newClient(Socket &&s)
 void Lobby::newClient(Socket *s)
 {
     id_cliente++;
 
-    // ServerClient *c = new ServerClient(std::move(s), &lobby_queue, id_cliente);
     ServerClient *c = new ServerClient(s, &lobby_queue, id_cliente);
     c->start();
-
-    // reap_dead();
 
     sendMatchList(c);
 }
