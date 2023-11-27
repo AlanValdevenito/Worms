@@ -205,7 +205,7 @@ void Worm::jumpBackward() {
 	} else {
 		xComponent = 2.0f;
 	}
-	yComponent = 7.0f;
+	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 	state = JUMPING_BACKWARD;
 }
