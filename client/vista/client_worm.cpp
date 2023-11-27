@@ -74,6 +74,11 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfly1.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
     }
+
+    else if (nuevoEstado == MUERTO) {
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grave1.png").SetColorKey(true, 0));
+        this->animacion.cambiar(nuevaTextura);
+    }
 }
 
 void Worm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
@@ -162,7 +167,10 @@ void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentro
 {
     SDL_RendererFlip flip = this->direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
-    if (this->estado == APUNTANDO) {
+    if (this->estado == MUERTO) {
+        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
+    
+    } else if (this->estado == APUNTANDO) {
         int posicionX = this->turno ? (camaraCentroX - OFFSET) : (x - OFFSET - camaraLimiteIzquierdo);
         int posicionY = this->turno ? (y - OFFSET - camaraLimiteSuperior) : (y - OFFSET - camaraLimiteSuperior);
         this->arma->render(renderer, this->color, posicionX, posicionY, this->direccion);
@@ -182,7 +190,9 @@ void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentro
         this->arma->render(renderer, this->color, camara.getLimiteIzquierdo() * 24, camara.getLimiteSuperior() * 24);
     }
 
-    this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
+    if (this->estado != MUERTO) {
+        this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
+    }
 }
 
 void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {

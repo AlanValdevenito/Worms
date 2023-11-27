@@ -12,7 +12,7 @@ int Partida::iniciar()
 {
     /******************** INICIAR SDL ********************/
 
-    SDL sdl(SDL_INIT_VIDEO);
+    SDL sdl(SDL_INIT_VIDEO); 
 
     Window window(TITULO,
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -22,6 +22,16 @@ int Partida::iniciar()
     // Window& SetIcon(const Surface& icon);
 
     Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    /******************** INICIALIZAR MUSICA AMBIENTE ********************/
+
+    Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+
+    Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
+
+    sound.SetVolume(SDL_MIX_MAXVOLUME / 8); // Ajustamos el nivel de volumen
+
+    mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
 
     /******************** TEXTURAS Y COLORES ********************/
 
@@ -618,7 +628,8 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         int tipoDeArma = (int) gusano->get_arma();
 
         if (nuevoEstado == MUERTO) {
-            this->worms.erase(gusano->get_id());
+            // this->worms.erase(gusano->get_id());
+            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
             continue;
         }
 
@@ -728,25 +739,6 @@ void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
         Rect(i,j + fondo.GetHeight(), (ancho + metros_a_pixeles(this->camara.getLimiteDerecho())), altura + metros_a_pixeles(this->camara.getLimiteInferior()))
     );
 
-    /*int i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
-    while (i < (ancho + metros_a_pixeles(this->camara.getLimiteDerecho()))) {
-
-        int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
-        j += fondo.GetHeight();
-
-        while (j < (altura + metros_a_pixeles(this->camara.getLimiteInferior()))) {
-            renderer.Copy(
-                fondo, 
-                NullOpt, 
-                Rect(i,j, fondo.GetWidth(), fondo.GetHeight())
-            );
-
-            j += fondo.GetHeight();
-        }
-
-        i += fondo.GetWidth();
-    }*/
-
     /***** Olas *****/
 
     i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
@@ -790,7 +782,6 @@ void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {
     int offset = 0;
     for (const auto &elemento : vida_total) {
         int ancho = (elemento.second * 200 / (100 * cantidad_worms[elemento.first]));
-        std::cout << ancho << std::endl;
 
         /********** BORDE **********/
 
