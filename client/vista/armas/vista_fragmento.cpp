@@ -2,7 +2,7 @@
 
 AnimacionFragmento::AnimacionFragmento(SDL2pp::Renderer &renderer): Arma(ARMA_MOVIENDOSE), 
                                                                     movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/clustlet.png").SetColorKey(true, 0))), 
-                                                                    explosion(renderer) {}
+                                                                    explosion(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exfoom.png").SetColorKey(true, 0))) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 

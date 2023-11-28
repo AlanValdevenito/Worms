@@ -2,7 +2,7 @@
 
 AnimacionDinamita::AnimacionDinamita(SDL2pp::Renderer &renderer): Arma(ARMA_MOVIENDOSE), 
                                                                   movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/dynamite.png").SetColorKey(true, 0)), false), 
-                                                                  explosion(renderer), 
+                                                                  explosion(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0))), 
                                                                   tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/

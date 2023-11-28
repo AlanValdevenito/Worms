@@ -11,7 +11,7 @@ class Explosion
 private:
     std::shared_ptr<SDL2pp::Texture> texture; // Atributo que almacena la textura de la animacion
 
-    Animation biff;
+    Animation ex;
     Animation circulo;
     Animation elipse;
     Animation fuego;
@@ -19,7 +19,7 @@ private:
     int movimientoFuego;
 
 public:
-    Explosion(SDL2pp::Renderer &renderer);
+    Explosion(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> ex);
 
     void update();
     void render(SDL2pp::Renderer &renderer, float x, float y, float camaraLimiteIzquierdo, float camaraLimiteSuperior); // Renderiza el arma.

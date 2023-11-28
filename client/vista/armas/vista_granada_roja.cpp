@@ -2,7 +2,7 @@
 
 AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
                                                                           movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/cluster.png").SetColorKey(true, 0))), 
-                                                                          explosion(renderer), 
+                                                                          explosion(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0))), 
                                                                           apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0))), 
                                                                           tiempo(5) 
 {

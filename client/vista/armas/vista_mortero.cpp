@@ -2,7 +2,7 @@
 
 AnimacionMortero::AnimacionMortero(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
                                                                 movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/mortar.png").SetColorKey(true, 0))), 
-                                                                explosion(renderer), 
+                                                                explosion(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0))), 
                                                                 apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbaz.png").SetColorKey(true, 0))) 
 {
     for (int i = 1; i <= 6; i++){

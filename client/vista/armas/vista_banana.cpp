@@ -2,7 +2,8 @@
 
 AnimacionBanana::AnimacionBanana(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
                                                               movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/banana.png").SetColorKey(true, 0))), 
-                                                              explosion(renderer), apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrban.png").SetColorKey(true, 0))), 
+                                                              explosion(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/expow.png").SetColorKey(true, 0))), 
+                                                              apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrban.png").SetColorKey(true, 0))), 
                                                               tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
