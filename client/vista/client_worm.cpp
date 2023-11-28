@@ -7,7 +7,7 @@
                   // tienen el (0,0) de los cuerpos en el centro
 
 Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
-                                                                                          estado(QUIETO),
+                                                                                          estado(MOVIENDOSE),
                                                                                           x(x), 
                                                                                           y(y), 
                                                                                           vida(vida),

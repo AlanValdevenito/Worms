@@ -15,11 +15,12 @@ private:
     float ancho, alto;
 
 public:
+    bool moverCamara;
     Camara(float ventanaAncho, float ventanaAlto);
 
     void seguirWorm(std::map<int, Worm *> &worms);
     void seguir(float nuevoX, float nuevoY); // Actualiza la posicion de la camara para seguir al Worm
-    bool comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto);
+    void mover(float moverX, float moverY);
 
     float getLimiteDerecho();
     float getLimiteIzquierdo();
@@ -28,6 +29,7 @@ public:
     float getCentroX();
 
     void setDimensiones(float ventanaAncho, float ventanaAlto);
+    void setMoverCamara(bool nuevoMover);
 };
 
 #endif // _CAMARA_H

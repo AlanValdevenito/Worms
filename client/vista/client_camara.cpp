@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Camara::Camara(float ventanaAncho, float ventanaAlto): x(0), y(0), ancho(ventanaAncho), alto(ventanaAlto) {}
+Camara::Camara(float ventanaAncho, float ventanaAlto): x(0), y(0), ancho(ventanaAncho), alto(ventanaAlto), moverCamara(false) {}
 
 void Camara::seguirWorm(std::map<int, Worm *> &worms) {
 
@@ -13,7 +13,7 @@ void Camara::seguirWorm(std::map<int, Worm *> &worms) {
         // int estado = elemento.second->get_estado();
         bool turno = elemento.second->get_turno();
 
-        if (turno) {
+        if (turno && not this->moverCamara) {
             seguir(elemento.second->get_x(), elemento.second->get_y());
             elemento.second->set_camara(true);
         }
@@ -26,15 +26,12 @@ void Camara::seguir(float nuevoX, float nuevoY) {
     this->y = nuevoY / 24;
 }
 
-bool Camara::comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto) {
+void Camara::mover(float moverX, float moverY) {
 
-    // Calculamos los limites de la camara
-    float derecha = this->x + ((this->ancho/2) / 24);
-    float izquierda = this->x - ((this->ancho/2) / 24);
-    float superior = this->y - ((this->alto/2) / 24);
-    float inferior = this->y + ((this->alto/2) / 24);
-
-    return ((objetoX - objetoAncho/2 <= derecha) && (objetoX + objetoAncho/2 >= izquierda) && (objetoY - objetoAlto/2 <= inferior) && (objetoY + objetoAlto/2 >= superior));
+    if (this->moverCamara) {
+        this->x += moverX;
+        this->y += moverY;
+    }
 }
 
 float Camara::getLimiteDerecho() {
@@ -61,3 +58,8 @@ void Camara::setDimensiones(float ventanaAncho, float ventanaAlto) {
     this->ancho = ventanaAncho;
     this->alto = ventanaAlto;
 }
+
+void Camara::setMoverCamara(bool nuevoMover) {
+    this->moverCamara = nuevoMover;
+}
+ 

@@ -193,6 +193,14 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                     this->camara.setDimensiones(renderer.GetOutputWidth(), renderer.GetOutputHeight());
                 }
+
+            case SDL_MOUSEMOTION:
+                float x = -(event.motion.xrel);
+                float y = -(event.motion.yrel);
+
+                if ((x <= 1) && (x >= -1) && (y <= 1) && (y >= -1)) {
+                    this->camara.mover(x, y);
+                }
         }
 
         // Si se hace click ...
@@ -209,10 +217,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
                 this->x = event.button.x;
-                this->y = renderer.GetOutputHeight() - event.button.y;
+                this->y = (renderer.GetOutputHeight()) - event.button.y;
 
-                // std::cout << pixeles_a_metros(event.button.x) + this->camara.getLimiteIzquierdo() << std::endl;
-
+                this->camara.setMoverCamara(true);
                 break;
             }
 
@@ -469,6 +476,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                     enviarAtaque();
                 }
 
+                this->camara.setMoverCamara(false);
                 break;
             }
 
