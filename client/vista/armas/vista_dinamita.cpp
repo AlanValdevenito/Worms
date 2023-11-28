@@ -1,7 +1,7 @@
 #include "vista_dinamita.h"
 
 AnimacionDinamita::AnimacionDinamita(SDL2pp::Renderer &renderer): Arma(ARMA_MOVIENDOSE), 
-                                                                  movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/dynamite.png").SetColorKey(true, 0))), 
+                                                                  movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/dynamite.png").SetColorKey(true, 0)), false), 
                                                                   explosion(renderer), 
                                                                   tiempo(5) {}
 
@@ -17,8 +17,10 @@ void AnimacionDinamita::update(float nuevoX, float nuevoY, int nuevoEstado, int 
 void AnimacionDinamita::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_MOVIENDOSE) {
+        this->movimiento.update();
+
         SDL_RendererFlip flip = SDL_FLIP_NONE;
-        this->movimiento.render(renderer, SDL2pp::Rect(this->x - (30) - camaraLimiteIzquierdo, this->y - (30) - camaraLimiteSuperior, 60, 60), flip, 0);
+        this->movimiento.render(renderer, SDL2pp::Rect(this->x - (30) - camaraLimiteIzquierdo, this->y - (38) - camaraLimiteSuperior, 60, 60), flip, 0);
         renderizar_tiempo(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior);
 
     } else if (this->estado == ARMA_EXPLOTAR) {
@@ -43,10 +45,10 @@ void AnimacionDinamita::renderizar_tiempo(SDL2pp::Renderer &renderer, SDL2pp::Co
     renderer.Copy(
         borde,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(this->x - 19 - camaraLimiteIzquierdo, this->y - 40 - camaraLimiteSuperior, 35, 25)
+        SDL2pp::Rect(this->x - 19 - camaraLimiteIzquierdo, this->y - 48 - camaraLimiteSuperior, 35, 25)
     );
 
-    SDL2pp::Rect contenedor(this->x - 16 - camaraLimiteIzquierdo, this->y - 37 - camaraLimiteSuperior, 28, 18);
+    SDL2pp::Rect contenedor(this->x - 16 - camaraLimiteIzquierdo, this->y - 45 - camaraLimiteSuperior, 28, 18);
 
 	renderer.SetDrawColor(negro); 
 	renderer.FillRect(contenedor);
@@ -54,7 +56,7 @@ void AnimacionDinamita::renderizar_tiempo(SDL2pp::Renderer &renderer, SDL2pp::Co
 	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->tiempo), color);
 	SDL2pp::Texture texture(renderer, surface);
 
-    SDL2pp::Rect mensaje(this->x - 8 - camaraLimiteIzquierdo, this->y - 39 - camaraLimiteSuperior, surface.GetWidth(), surface.GetHeight());
+    SDL2pp::Rect mensaje(this->x - 8 - camaraLimiteIzquierdo, this->y - 47 - camaraLimiteSuperior, surface.GetWidth(), surface.GetHeight());
 
 	renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
 }

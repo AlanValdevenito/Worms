@@ -23,7 +23,7 @@ private:
 public:
     Animation(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion = true);
 
-    void update(int it); // Actualiza la animacion. 
+    void update(int it = 0); // Actualiza la animacion. 
     void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType, int angulo = 0); // Renderiza la animacion en el area especificada. El ultimo parametro se utiliza para controlar el volteo de la imagen.
 
     void cambiar(std::shared_ptr<SDL2pp::Texture> nuevaTextura);

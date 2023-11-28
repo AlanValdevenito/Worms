@@ -282,7 +282,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_1:
                 
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     this->worms[this->id_gusano_actual]->set_tiempo(1);
                 }
 
@@ -291,7 +291,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_2:
                 
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     this->worms[this->id_gusano_actual]->set_tiempo(2);
                 }
 
@@ -300,7 +300,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_3:
                 
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     this->worms[this->id_gusano_actual]->set_tiempo(3);
                 }
 
@@ -309,7 +309,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_4:
 
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     this->worms[this->id_gusano_actual]->set_tiempo(4);
                 }
 
@@ -318,7 +318,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_5:
 
-                if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
+                if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     this->worms[this->id_gusano_actual]->set_tiempo(5);
                 }
 
