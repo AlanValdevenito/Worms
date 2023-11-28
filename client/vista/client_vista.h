@@ -3,6 +3,7 @@
 
 #include "client_menu.h"
 #include "client_partida.h"
+#include "client_finalizar.h"
 
 class Vista
 {
@@ -11,6 +12,7 @@ private:
 
     Menu menu;
     Partida partida;
+    Finalizar finalizar;
 
 public:
     Vista(Client &cliente);

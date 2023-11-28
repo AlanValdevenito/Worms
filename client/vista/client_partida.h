@@ -36,6 +36,7 @@ private:
     SDLTTF ttf;
 
     Client &cliente;
+    int resultado;
 
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
@@ -72,7 +73,6 @@ public:
     void renderizar_temporizador(SDL2pp::Renderer &renderer);
     void renderizar_worms(SDL2pp::Renderer &renderer);
     void renderizar_vidas_totales(SDL2pp::Renderer &renderer);
-    void renderizar_resultado(SDL2pp::Renderer &renderer, bool resultado);
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);

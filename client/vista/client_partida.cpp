@@ -75,7 +75,7 @@ int Partida::iniciar()
         if (not actualizar(renderer, it)) {
             cliente.elOtroSeFue();
             liberar_memoria();
-            return 0;
+            return this->resultado;
         }
 
         renderizar(renderer);
@@ -599,9 +599,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         return false;
 
     if (dto->return_code() == GANADOR_CODE) {
-        bool gano = ((int) dto->get_cliente_id() == (int) cliente.id);
-
-        renderizar_resultado(renderer, gano);
+        this->resultado = ((int) dto->get_cliente_id() == (int) cliente.id);
         return false;
     }
 
@@ -837,109 +835,6 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
 
     Rect nombre(24, altura - 34, surface.GetWidth(), surface.GetHeight());
     renderer.Copy(texture, NullOpt, nombre);
-}
-
-void Partida::renderizar_resultado(SDL2pp::Renderer &renderer, bool resultado) {
-
-    int currentFrame = 0;
-
-    while (true)
-    {
-
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type) {
-
-                case SDL_QUIT:
-                    return;
-
-            }
-
-            if (event.type == SDL_KEYDOWN)
-            {
-
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_ESCAPE:
-                case SDLK_q:
-                case SDLK_RETURN:
-                    return;
-
-            }
-
-            }
-
-        }
-
-        renderer.SetDrawColor(0,0,0,255);
-        renderer.Clear();
-
-        int alto = renderer.GetOutputHeight();
-        int ancho = renderer.GetOutputWidth();
-
-        /********** LOGO **********/
-
-        Texture logo(renderer, Surface(DATA_PATH "/background1.jpg").SetColorKey(true, 0xff));
-        renderer.Copy(
-            logo, 
-            NullOpt, 
-            Rect((ancho/2) - 212.5f, 10, 425, 240)
-        );
-
-        /********** WORM **********/
-
-        if (resultado) {
-            Texture worm_winner(renderer, Surface(DATA_PATH "/wwinner.png").SetColorKey(true, 0xff));
-
-            int size = worm_winner.GetWidth();
-
-            renderer.Copy(
-                worm_winner, 
-                SDL2pp::Rect(0, (size) * currentFrame, size, size), 
-                Rect((ancho/2) - 30, (alto/2) - 20, size, size)
-            );
-
-            currentFrame++;
-            currentFrame = currentFrame % (worm_winner.GetHeight() / worm_winner.GetWidth());
-
-        } else {
-            Texture worm_loser(renderer, Surface(DATA_PATH "/wloser.png").SetColorKey(true, 0xff));
-
-            int size = worm_loser.GetWidth();
-
-            renderer.Copy(
-                worm_loser, 
-                SDL2pp::Rect(0, (size) * currentFrame, size, size), 
-                Rect((ancho/2) - 30, (alto/2) - 20, size, size)
-            );
-
-            currentFrame++;
-            currentFrame = currentFrame % (worm_loser.GetHeight() / worm_loser.GetWidth());
-        }
-
-        /********** RESULTADO **********/
-
-        std::string mensaje_resultado = resultado ? ("Ganaste") : ("Perdiste");
-
-        Color blanco(255, 255, 255, 255);
-        Surface surface_resultado = this->fuente.RenderText_Solid(mensaje_resultado, blanco);
-        Texture texture_resultado(renderer, surface_resultado);
-
-        Rect recta_resultado((ancho/2) - 35, (alto/2) + 65, surface_resultado.GetWidth(), surface_resultado.GetHeight());
-        renderer.Copy(texture_resultado, NullOpt, recta_resultado);
-
-        /********** MENSAJE DE SALIDA **********/
-
-        Surface surface_salir = this->fuente.RenderText_Solid("Presione ENTER para salir", blanco);
-        Texture texture_salir(renderer, surface_salir);
-
-        Rect recta_salir((ancho/2) - 110, (alto/2) + 120, surface_salir.GetWidth(), surface_salir.GetHeight());
-        renderer.Copy(texture_salir, NullOpt, recta_salir);
-        
-        renderer.Present(); 
-
-    }
 }
 
 /******************** CONVERSIONES ********************/

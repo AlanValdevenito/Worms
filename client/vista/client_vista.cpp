@@ -1,10 +1,9 @@
 #include "client_vista.h"
 
-Vista::Vista(Client &cliente) : cliente(cliente), menu(cliente), partida(cliente) {}
+Vista::Vista(Client &cliente) : cliente(cliente), menu(cliente), partida(cliente), finalizar(cliente) {}
 
 int Vista::iniciar(int argc, char* argv[])
 {
-
     /******************** MENU DE PARTIDAS ********************/
 
     menu.iniciar(argc, argv);
@@ -26,11 +25,11 @@ int Vista::iniciar(int argc, char* argv[])
 
     /******************** PARTIDA ********************/
 
-    partida.iniciar();
+    int resultado = partida.iniciar();
 
     /******************** FINALIZACION DE LA PARTIDA ********************/
 
-    // ...
+    finalizar.iniciar(argc, argv, resultado);
 
     return 0;
 }

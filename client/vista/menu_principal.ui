@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Worms 2D - Menu principal</string>
+   <string>Worms 2D</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: black;</string>
