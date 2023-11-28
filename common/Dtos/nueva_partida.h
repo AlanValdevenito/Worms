@@ -12,11 +12,13 @@ class NuevaPartida : public Dto
 {
 private:
     uint8_t jugadores;
+    uint8_t mapa;
 
 public:
-    NuevaPartida(uint8_t cantidad);
+    NuevaPartida(uint8_t cantidad, uint8_t mapa);
     ~NuevaPartida();
     bool is_alive() override;
     uint8_t get_cantidad_de_jugadores();
+    uint8_t get_mapa();
 };
 #endif

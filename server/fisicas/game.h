@@ -80,7 +80,7 @@ public:
     std::vector<int> explodedFragmentIds;
     int idTurn;
     bool game_finished;
-    Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad);
+    Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad, int map);
     void update();
     void updateWorms();
     void updatePlayers();

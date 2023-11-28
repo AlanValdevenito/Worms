@@ -1,7 +1,7 @@
 #include "partida.h"
 #include <unistd.h>
 
-Partida::Partida(uint8_t id, int cant) : game(common_queue, broadcaster, cant), id(id), jugadores(cant), conectados(0), partida_empezada(false) {}
+Partida::Partida(uint8_t id, int cant, uint8_t mapa) : game(common_queue, broadcaster, cant, mapa), id(id), jugadores(cant), conectados(0), partida_empezada(false) {}
 Partida::~Partida() {}
 
 void Partida::start()

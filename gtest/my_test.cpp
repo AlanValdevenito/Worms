@@ -162,20 +162,23 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __Peticion_de_nueva_partida)
 
     bool was_closed = false;
     uint8_t cantidad_de_jugadores = 4;
-    std::shared_ptr<NuevaPartida> nueva_partida = std::make_shared<NuevaPartida>(cantidad_de_jugadores);
+    uint8_t mapa = 1;
+    std::shared_ptr<NuevaPartida> nueva_partida = std::make_shared<NuevaPartida>(cantidad_de_jugadores, mapa);
 
     cp.enviarNuevaPartida(nueva_partida, was_closed);
 
     uint8_t id_recibido;
     uint8_t codigo_recibido;
     uint8_t cantidad_recibida;
+    uint8_t mapa_recibido;
     skt.recvall(&id_recibido, sizeof(id_recibido), &was_closed);
     skt.recvall(&codigo_recibido, sizeof(codigo_recibido), &was_closed);
     skt.recvall(&cantidad_recibida, sizeof(cantidad_recibida), &was_closed);
+    skt.recvall(&mapa_recibido, sizeof(mapa_recibido), &was_closed);
 
     // printf("%u %u\n", id_recibido, codigo_recibido);
 
-    ASSERT_TRUE(id_recibido == 0 && codigo_recibido == NUEVA_PARTIDA_CODE && cantidad_recibida == cantidad_de_jugadores);
+    ASSERT_TRUE(id_recibido == 0 && codigo_recibido == NUEVA_PARTIDA_CODE && cantidad_recibida == cantidad_de_jugadores && mapa == mapa_recibido);
 }
 
 TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaVerde)
@@ -1633,11 +1636,15 @@ TEST(PROTOCOLOSERVIDOR__RECIBIR, __NuevaPartida)
     uint8_t jugadores = 4;
     skt->sendall(&jugadores, sizeof(jugadores), &was_closed);
 
+    uint8_t mapa = 1;
+    skt->sendall(&mapa, sizeof(mapa), &was_closed);
+
     std::shared_ptr<NuevaPartida> rta = std::dynamic_pointer_cast<NuevaPartida>(sp.recibirActividad(was_closed));
 
     delete skt;
     ASSERT_TRUE(code == rta->return_code());
     ASSERT_TRUE(jugadores == rta->get_cantidad_de_jugadores());
+    ASSERT_TRUE(mapa == rta->get_mapa());
 }
 
 TEST(PROTOCOLOSERVIDOR__RECIBIR, __Salto)

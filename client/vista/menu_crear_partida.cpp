@@ -24,11 +24,13 @@ void MenuCrearPartida::connectEvents() {
 void MenuCrearPartida::crearPartida() {
 
     std::string cantidadJugadores = (ui->jugadoresComboBox->currentText()).toStdString();
-    std::string mapa = (ui->mapaComboBox->currentText()).toStdString();
+    int mapa = (ui->mapaComboBox->currentIndex());
 
-    if ((cantidadJugadores != "Seleccione una opcion") && (mapa != "Seleccione una opcion")) {
+    std::cout << mapa << std::endl;
 
-        std::shared_ptr<NuevaPartida> partida = std::make_shared<NuevaPartida>(std::stoi(cantidadJugadores));
+    if ((cantidadJugadores != "Seleccione una opcion") && (mapa > 0)) {
+
+        std::shared_ptr<NuevaPartida> partida = std::make_shared<NuevaPartida>(std::stoi(cantidadJugadores), mapa);
         cliente.send_queue.push(partida);
 
         qApp->quit();

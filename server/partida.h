@@ -27,7 +27,7 @@
 class Partida
 {
 public:
-    Partida(uint8_t id, int cant);
+    Partida(uint8_t id, int cant, uint8_t mapa);
     ~Partida();
     void start();
     void sendMapTo(ServerClient *c);

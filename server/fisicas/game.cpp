@@ -31,22 +31,22 @@ std::map<std::string, int> loadConfig(const std::string configFileName)
     return config;
 }
 
-Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad) : common_queue(queue),
+Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad, int map) : common_queue(queue),
                                                                                          broadcaster(broadcaster),
                                                                                          config(loadConfig("/configuracion.yml")),
                                                                                          world(World(config)),
                                                                                          jugadores_en_partida(cantidad),
                                                                                          game_finished(false)
-{
-    if (config["map"] == 1)
+{   
+    if (map == 1)
     {
         mapa();
     }
-    else if (config["map"] == 2)
+    else if (map == 2)
     {
         mapa_jaula();
     }
-    else if (config["map"] == 3)
+    else if (map == 3)
     {
         mapa_puente();
     }

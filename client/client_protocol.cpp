@@ -601,6 +601,9 @@ bool ClientProtocol::enviarNuevaPartida(std::shared_ptr<NuevaPartida> n, bool &w
 
     uint8_t cantidad_de_jugadores = n->get_cantidad_de_jugadores();
     skt.sendall(&cantidad_de_jugadores, sizeof(cantidad_de_jugadores), &was_closed);
+
+    uint8_t mapa = n->get_mapa();
+    skt.sendall(&mapa, sizeof(mapa), &was_closed);
     // printf("jugadores: %u\n", cantidad_de_jugadores);
 
     if (was_closed)

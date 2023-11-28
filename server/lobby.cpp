@@ -3,7 +3,7 @@
 // crear una nueva instancia de game cuando creo una partida y pasarselo a la partida
 Lobby::Lobby() : mapId(0), id_cliente(0), partida_id(1)
 {
-    Partida *p1 = new Partida(partida_id, 2);
+    Partida *p1 = new Partida(partida_id, 2,1);
     partidas.push_back(p1);
     partida_id++;
 }
@@ -49,7 +49,7 @@ void Lobby::sendMatchList(ServerClient *c)
     {
         std::shared_ptr<NuevaPartida> nueva_partida = std::dynamic_pointer_cast<NuevaPartida>(respuesta);
         // printf("Nueva Partida con cant de jugadores: %u\n", nueva_partida->get_cantidad_de_jugadores());
-        Partida *p = new Partida(partida_id, nueva_partida->get_cantidad_de_jugadores());
+        Partida *p = new Partida(partida_id, nueva_partida->get_cantidad_de_jugadores(), nueva_partida->get_mapa());
         partidas.push_back(p);
         p->sendMapTo(c);
         p->start();

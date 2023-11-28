@@ -582,8 +582,13 @@ std::shared_ptr<Dto> ServerProtocol::recibirParametrosDeLaPartida(bool &was_clos
     if (was_closed)
         return std::make_shared<DeadDto>();
 
+    uint8_t mapa;
+    skt->recvall(&mapa, sizeof(mapa), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
     // printf("jugadores recibido: %u\n", cantidad_de_jugadores);
-    return std::make_shared<NuevaPartida>(cantidad_de_jugadores);
+    return std::make_shared<NuevaPartida>(cantidad_de_jugadores, mapa);
 }
 
 std::shared_ptr<Dto> ServerProtocol::recibirSalto(uint8_t id, bool &was_closed)
