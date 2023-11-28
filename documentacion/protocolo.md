@@ -46,26 +46,23 @@
 * Se recibe un entero sin signo de 8 bits que representa la cantida de proyectiles que se enviaron.
 * Se recibe un entero sin signo de 8 bits que representa el codigo del proyectil que se envio.
 ##### Codigos
->* Bazooka = **16**
+> Bazooka = **16**
 
->* Granada Verde = **17**
+> Granada Verde = **17**
 
->* Granada Banana = **18**
+> Granada Banana = **18**
 
->* Granada Santa = **19**
+> Granada Santa = **19**
 
->* Granada Roja = **20**
+> Granada Roja = **20**
 
->* Dinamita = **21**
+> Dinamita = **21**
 
->* Ataque aereo = **22**
+> Ataque aereo = **22**
 
->* Mortero = **23**
+> Mortero = **23**
 
->* Fragmento = **24**
-
->   * Fragmento = **24**
-    * Fragmento = **24**
+> Fragmento = **24**
 
 >**Segun sea el codigo recibido se recibiran:**
 
