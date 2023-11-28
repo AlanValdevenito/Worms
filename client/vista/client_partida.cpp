@@ -465,14 +465,14 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             switch (event.button.button)
             {
 
-            // Si se hace click derecho se muestra el menu de armas
+            // Si se suelta el click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
                 break;
 
-            // Si se hace click izquierdo...
+            // Si se suelta el click izquierdo...
             case SDL_BUTTON_LEFT:
                 
-                if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
+                if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
                     enviarAtaque();
                 }
 
