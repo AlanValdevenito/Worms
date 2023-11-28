@@ -46,15 +46,26 @@
 * Se recibe un entero sin signo de 8 bits que representa la cantida de proyectiles que se enviaron.
 * Se recibe un entero sin signo de 8 bits que representa el codigo del proyectil que se envio.
 ##### Codigos
->* Bazooka = 16
->* Granada Verde = 17
->* Granada Banana = 18
->* Granada Santa = 19
->* Granada Roja = 20
->* Dinamita = 21
->* Ataque aereo = 22
->* Mortero = 23
->* Fragmento = 24
+>* Bazooka = **16**
+
+>* Granada Verde = **17**
+
+>* Granada Banana = **18**
+
+>* Granada Santa = **19**
+
+>* Granada Roja = **20**
+
+>* Dinamita = **21**
+
+>* Ataque aereo = **22**
+
+>* Mortero = **23**
+
+>* Fragmento = **24**
+
+>   * Fragmento = **24**
+    * Fragmento = **24**
 
 >**Segun sea el codigo recibido se recibiran:**
 
@@ -155,10 +166,15 @@
 * Se envia un entero sin signo de 8 bits que representa el id del cliente que esta enviando el mensaje.
 * Se envia un entero sin signo de 8 bits que representa el codigo  lanzamiento de el tipo de granada. 
 > Dependiendo el tipo de granada el codigo sera:
-> Granada Verde ------> codigo = 17
-> Granada Banana ------> codigo = 18
-> Granada Santa ------> codigo = 19
-> Granada Roja ------> codigo = 20
+
+> **Granada Verde** => codigo = **17**
+
+> **Granada Banana** => codigo = **18**
+
+> **Granada Santa** => codigo = **19**
+
+> **Granada Roja** => codigo = **20**
+
 * Se envia un entero sin signo de 8 bits que representa la potencia con la que es lanzado el proyectil.
 * Se envia un entero sin signo de 8 bits que representa el angulo con el que es lanzado el proyectil.
 * Se envia un entero sin signo de 8 bits que representa el tiempo seleccionado que debe transcurrir hasta que explote la granada.
@@ -191,22 +207,22 @@
 * Se envia un entero sin signo de 8 bits que representa el arma a equipar.
 > Dependiendo el numero, se equipara un arma u otra:
 
-> 0 => Bazooka
+> **0** => Bazooka
 
-> 1 => Mortero
+> **1** => Mortero
 
-> 2 => Granada Verde
+> **2** => Granada Verde
 
-> 3 => Granada Roja
+> **3** => Granada Roja
 
-> 4 => Granada Banana
+> **4** => Granada Banana
 
-> 5 => Granada Santa
+> **5** => Granada Santa
 
-> 6 => Dinamita
+> **6** => Dinamita
 
-> 7 => Bate de Beisball
+> **7** => Bate de Beisball
 
-> 8 => Ataque Aereo
+> **8** => Ataque Aereo
 
-> 9 => Teletransportacion
+> **9** => Teletransportacion
