@@ -1,20 +1,20 @@
 Los protocolos de cada elemento recibido estaran ordenados segun el orden de llegada esperado, tanto para el cliente como para el servidor. Es decir, si se esperan dos uints de 8 bits se detallaria de la siguiente manera:
-se recibe un uint de 8 bits que que representa la entero1
-se recibe un uint de 8 bits que que representa la entero2
+* se recibe un uint de 8 bits que que representa la entero1
+* se recibe un uint de 8 bits que que representa la entero2
 
 # Protocolo Cliente
 
 ## Recibir
 
 ### Id de cliente
-se recibe un entero sin signo de 8 bits que representa el numero de id con el que sera identificado el cliente en el servidor.
+* se recibe un entero sin signo de 8 bits que representa el numero de id con el que sera identificado el cliente en el servidor.
 
 ### Ganador
-se recibe un entero sin signo de 8 bits que representa el numero de id del cliente que gano la partida.
+* se recibe un entero sin signo de 8 bits que representa el numero de id del cliente que gano la partida.
 
 ### Lista de Partidas
-Se recibe un entero sin signo de 8 bits la cantidad de partidas enviadas ( la longitud de la lista)
-Se recibe una secuencia de enteros sin signo de 8 bits donde cada entero representa el id de la partida
+* Se recibe un entero sin signo de 8 bits la cantidad de partidas enviadas ( la longitud de la lista)
+* Se recibe una secuencia de enteros sin signo de 8 bits donde cada entero representa el id de la partida
 
 ### Vigas
 Se recibe un entero sin signo de 8 bits la cantidad de vigas enviadas ( la longitud de la lista)
