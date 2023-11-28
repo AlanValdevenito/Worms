@@ -190,7 +190,7 @@
 * Se envia un entero sin signo de 8 bits que representa el codigo  de que el gusano se va a equipar un arma. 
 * Se envia un entero sin signo de 8 bits que representa el arma a equipar.
 > Dependiendo el numero, se equipara un arma u otra:
-> Arma = 0 --------------> Bazooka
+> Arma = 0 --------------> Bazooka\n
 > Arma = 1 --------------> Mortero
 > Arma = 2 --------------> Granada Verde
 > Arma = 3 --------------> Granada Roja
