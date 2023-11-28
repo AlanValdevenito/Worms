@@ -195,8 +195,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 }
 
             case SDL_MOUSEMOTION:
-                float x = -(event.motion.xrel);
-                float y = -(event.motion.yrel);
+                float x = -(event.motion.xrel) * 0.1;
+                float y = -(event.motion.yrel) * 0.1;
 
                 if ((x <= 1) && (x >= -1) && (y <= 1) && (y >= -1)) {
                     this->camara.mover(x, y);
