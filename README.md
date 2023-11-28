@@ -16,9 +16,9 @@ Trabajo final que consiste en la remake del icónico Worms
 
 ## Documentacion requerida
 
-* [Manual de usuario](documentacion/Manual%20de%20usuario.pdf)
+* [Manual de usuario](documentacion/manual_de_usuario.md)
 * Documentacion tecnica: Debe contener la información necesaria para que otro desarrollador puede entender la arquitectura e incluso continuar con el desarrollo del proyecto.
-* Manual de proyecto: Documentación corta para indicar en que trabajó cada integrante del equipo, como se organizaron por semana y cuanto difirió del plan inicial.
+* [Manual de proyecto](documentacion/manual_de_proyecto.md): Documentación corta para indicar en que trabajó cada integrante del equipo, como se organizaron por semana y cuanto difirió del plan inicial.
 
 ## Licencia
 
