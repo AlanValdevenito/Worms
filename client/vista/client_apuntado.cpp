@@ -45,8 +45,8 @@ void Apuntado::render(SDL2pp::Renderer &renderer, float x, float y, int direccio
         flipType
     );
 
-    this->mira.render(renderer, x, y, direccion);
     this->potencia.render(renderer, x, y, direccion, this->mira.get_angulo());
+    this->mira.render(renderer, x, y, direccion);
 }
 
 /******************** GETTERS ********************/
