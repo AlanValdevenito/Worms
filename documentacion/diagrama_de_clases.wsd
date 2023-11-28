@@ -1,149 +1,154 @@
-@startuml diagrama
-hide empty attributes
-hide circle
+    @startuml
+    hide empty attributes
+    hide circle
 
-package "Interfaz de Usuario"  {
-  class Client {
-    - send_queue: Queue 
-    - recv_queue: Queue 
-    - id: uint8_t 
-    - was_closed: bool 
-    - protocolo: ClientProtocol 
-    - recv_th: Receiver 
-    - send_th: Sender 
-    +start()
-    +kill()
-  } 
+    package "Servidor" {
+    
+    class ServerClient <<thread>>{
+        - Queue sender
+        - Queue receiver
+        - Sender sender_th
+        - Receiver receiver_th
+        - ServerProtocol protocolo
+        + changeReceiverQueue()
+        + start()
+    }
+    
+    class Game {
+        -players: List<Player> 
+        +run()
+    }
 
-  class Vista {
-    -cliente: Client
-    -menu: Menu
-    -partida: Partida
-    +iniciar()
-  }
-  
-  class Partida {
-    -cliente: Client
-    -worms: Map<int, Worm>
-    -camara: Camara
-    +iniciar()
-    +handleEvents()
-    +actualizar()
-    +renderizar()
-  }
+    class World {
+        -worms: List<Worm>
+        +step()
+    }
+    
+    class Lobby {
+        - Queue lobby_queue
+        - List partidas
+        - int partida_id
+        - int id_cliente
+        + newClient()
+        + sendMatchList()
+        + removerPartidasMuertas()
+        + agregarClienteAPartida()
+    }
+    
+    class Partida {
+        - Queue common_queue
+        - common_queue: Queue
+        - List clients
+        - Broadcaster broadcaster
+        - Game game
+        - int jugadores
+        - int conectados
+        - bool partida_empezada
+        + sendMapTo()
+        + start()
+        + finish()
+        + forceFinish()
+        + getId()
+        + is_dead()
+        + esta_completa()
+    }
 
-  class Worm {
-    -animacion: Animation
-    -arma: Arma
-    +update()
-    +render()
-  }
+    class Aceptador <<thread>>{
+        - Lobby
+        - Socket
+    }
+    
+    class Server {
+        - Socket aceptador
+        - Aceptador accept_th
+        + main()
+    }
+    }
 
-  class Animation {
-    -textura: Texture
-    -currentFrame: int
-    -repetirAnimacion: bool
-    +render()
-    +update()
-    +cambiar()
-  }
+    package "Protocolos" {
+    
+    class ProtocoloServidor {
+        - skt: Socket
+        +recibirActividad()
+        +enviarListaDePartidas()
+        +enviarListaDeGusanos()
+        +enviarIniciarPartida()
+        +enviarGanador()
+        +enviarTrayectoriaDeGranada()
+        +enviarTrayectoriaDeBazuka()
+        +enviarProyectiles()
+    }
+    
+    class ProtocoloCliente {
+        - skt: Socket
+        +receive()
+        +enviarSeleccion()
+        +enviarAtaqueConBate()
+        +enviarAtaqueConGranada()
+        +enviarAtaqueConGranada()
+        +moverADerecha()
+        +moverAIzquierda()
+        +enviarAtaqueaereo()
+        +enviarEquipadoDeArma()
+    }
+    }
 
-  class Arma {
-    -x: float
-    -y: float
-    -estado: int
-    +update()
-    +render()
-  }
-  
-}
+    package "Interfaz de Usuario"  {
+    class Client {
+        - send_queue: Queue 
+        - recv_queue: Queue 
+        - id: uint8_t 
+        - was_closed: bool 
+        - protocolo: ClientProtocol 
+        - recv_th: Receiver 
+        - send_th: Sender 
+        +start()
+        +kill()
+    } 
 
-package "Servidor" {
-  class Game {
-    -players: List<Player> 
-    +run()
-  }
+    class Vista {
+        -cliente: Client
+        -menu: Menu
+        -partida: Partida
+        +iniciar()
+    }
+    
+    class Partida {
+        -cliente: Client
+        -worms: Map<int, Worm>
+        -camara: Camara
+        +iniciar()
+        +handleEvents()
+        +actualizar()
+        +renderizar()
+    }
 
-  class World {
-    -worms: List<Worm>
-    +step()
-  }
-  
-  class ServerClient <<thread>>{
-    - Queue sender
-    - Queue receiver
-    - Sender sender_th
-    - Receiver receiver_th
-    - ServerProtocol protocolo
-    + changeReceiverQueue()
-    + start()
-  }
-  
-  class Lobby {
-    - Queue lobby_queue
-    - List partidas
-    - int partida_id
-    - int id_cliente
-    + newClient()
-    + sendMatchList()
-    + removerPartidasMuertas()
-    + agregarClienteAPartida()
-  }
-  
-  class Partida {
-    - Queue common_queue
-    - common_queue: Queue
-    - List clients
-    - Broadcaster broadcaster
-    - Game game
-    - int jugadores
-    - int conectados
-    - bool partida_empezada
-    + sendMapTo()
-    + start()
-    + finish()
-    + forceFinish()
-    + getId()
-    + is_dead()
-    + esta_completa()
-  }
+    class Worm {
+        -animacion: Animation
+        -arma: Arma
+        +update()
+        +render()
+    }
 
-  class Aceptador <<thread>>{
-    - Lobby
-    - Socket
-  }
-  
-  class Server {
-    - Socket aceptador
-    - Aceptador accept_th
-    + main()
-  }
-}
+    class Animation {
+        -textura: Texture
+        -currentFrame: int
+        -repetirAnimacion: bool
+        +render()
+        +update()
+        +cambiar()
+    }
 
-package "Protocolos" {
-  class ProtocoloCliente {
-    - skt: Socket
-    +receive()
-    +enviarSeleccion()
-    +enviarAtaqueConBate()
-    +enviarAtaqueConGranada()
-    +enviarAtaqueConGranada()
-    +moverADerecha()
-    +moverAIzquierda()
-    +enviarAtaqueaereo()
-    +enviarEquipadoDeArma()
-  }
-  
-  class ProtocoloServidor {
-    - skt: Socket
-    +recibirActividad()
-    +enviarListaDePartidas()
-    +enviarListaDeGusanos()
-    +enviarIniciarPartida()
-    +enviarGanador()
-    +enviarTrayectoriaDeGranada()
-    +enviarTrayectoriaDeBazuka()
-    +enviarProyectiles()
-  }
-}
-@enduml
+    class Arma {
+        -x: float
+        -y: float
+        -estado: int
+        +update()
+        +render()
+    }
+    
+    }
+
+    Client -> ProtocoloCliente
+    ServerClient -> ProtocoloServidor
+    @enduml
