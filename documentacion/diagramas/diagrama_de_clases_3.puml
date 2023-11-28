@@ -1,0 +1,69 @@
+@startuml
+class Arma {
+   -x: float
+   -y: float
+   -estado: int
+   +{abstract}update()
+   +{abstract}render()
+
+}
+
+class AnimacionGranadaVerde {
+   -movimiento: Animation
+   -explosion: Explosion
+   -apuntado: Apuntado
+   -angulo: int
+   -tiempo: int
+   +update()
+   +render()
+}
+
+class AnimacionDinamita {
+   -movimiento: Animation
+   -explosion: Explosion
+   -tiempo: tiempo
+   +update()
+   +render()
+}
+
+class AnimacionAtaqueAereo {
+   -misiles: Map<int, AnimacionMisil>
+   +update()
+   +render()
+}
+
+class AnimacionMisil {
+    -movimiento: Animation
+    -explosion: Explosion
+    +update()
+    +render()
+}
+
+class AnimacionBazooka {
+   -movimiento: Animation
+   -explosion: Explosion
+   -apuntado: Apuntado
+   -angulo: int
+   -direccion: int
+   +update()
+   +render()
+}
+
+class Explosion {
+   -textura: Texture
+   +update()
+   +render()
+}
+
+AnimacionBazooka --up-|> Arma
+AnimacionGranadaVerde --up-|> Arma
+AnimacionDinamita --up-|> Arma
+AnimacionAtaqueAereo --left-|> Arma
+
+AnimacionAtaqueAereo "  1  " --down-> "  6  " AnimacionMisil
+
+AnimacionGranadaVerde --down-> Explosion 
+AnimacionDinamita --down-> Explosion 
+AnimacionMisil --down-> Explosion 
+AnimacionBazooka --down-> Explosion
+@enduml

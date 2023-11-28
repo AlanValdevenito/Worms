@@ -4,7 +4,7 @@ Semana a semana nos fuimos organizando con el objetivo de ir llevando al dia los
 propuestos por la catedra tal cual los marcaba en la documentacion.
 
 ### Semana 1
-* Pruebas de concepto de SDL y Box2D
+* Pruebas de concepto de SDL, Qt y Box2D
 ### Semana 2
 * Inicio del armado del protocolo de comunicacion.
 * Armado de la estructura cliente-servidor, colas de entrada y salida, hilos de enviado y recepcion.
@@ -81,25 +81,25 @@ particular se encargo de:
 * Hacer diagrama de estructura del proyecto.
 * Implementacion de test automaticos de la comunicacion haciendo mocks de socket.
 
-El alumno responsable en llevar a cabo la logica de la Vista fue Alan Valdevinito. En
+El alumno responsable en llevar a cabo la logica de la vista fue Alan Valdevenito. En
 particular se encargo de:
 
-* Implementar la vista del juego mediante SDL
-* Implementar el menu de seleccion de partidas mediante SDL y QT
+* Implementar la vista del juego mediante SDL2pp. Esta implementacion incluye el manejo de eventos, la actualizacion del estado proporcionado por el servidor y el renderizado.
+* Implementar el menu principal mediante QT. Esta implementacion incluye un menu de partidas donde el cliente puede unirse a partidas que ya fueron creadas y un menu para crear nuevas partidas.
 
 
 # Herramientas utilizadas
 * Google Test
 * Box2D
-* SDL
+* SDL2pp
 * QT
-* Visual studio code
-* Live Share (en vscode)
+* Visual Studio Code
+* Live Share (Visual Studio Code)
 ## Documentacion requerida para utilizacion de las herramientas
 * Google test: https://github.com/google/googletest
 * Box2D: https://box2d.org/documentation/ https://www.iforce2d.net/b2dtut/
-* SLD:
-* QT:
+* SLD2pp: https://github.com/libSDL2pp/libSDL2pp
+* QT: https://doc.qt.io/
 
 
 # Documentacion adicional
