@@ -7,7 +7,7 @@
                   // tienen el (0,0) de los cuerpos en el centro
 
 Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
-                                                                                          estado(MOVIENDOSE),
+                                                                                          estado(QUIETO),
                                                                                           x(x), 
                                                                                           y(y), 
                                                                                           vida(vida),
@@ -50,8 +50,13 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     this->estado = nuevoEstado;
     this->tipoDeArma = tipoDeArma;
 
-    if (nuevoEstado == MOVIENDOSE) {
+    if ((nuevoEstado == MOVIENDOSE) || (nuevoEstado == QUIETO)) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+        this->animacion.cambiar(nuevaTextura);
+    }
+
+    else if (nuevoEstado == CAYENDO) {
+        std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfall.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
     }
 
@@ -170,8 +175,10 @@ void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraL
 
     if (this->estado == MUERTO) {
         this->animacion.render(renderer, this->camara ? SDL2pp::Rect(camaraCentroX - OFFSET, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
+        return;
+    }
     
-    } else if (this->estado == APUNTANDO) {
+    if (this->estado == APUNTANDO) {
         int posicionX = this->camara ? (camaraCentroX - OFFSET) : (x - OFFSET - camaraLimiteIzquierdo);
         int posicionY = this->camara ? (y - OFFSET - camaraLimiteSuperior) : (y - OFFSET - camaraLimiteSuperior);
         this->arma->render(renderer, this->color, posicionX, posicionY, this->direccion);
@@ -187,13 +194,11 @@ void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraL
         }
     }
 
-    if ((this->arma) && (this->estado != EQUIPANDO_ARMA) && (this->estado != APUNTANDO) && (this->arma->get_estado() == ARMA_MOVIENDOSE || this->arma->get_estado() == ARMA_EXPLOTAR)) {
+    if ((this->arma) && (this->estado != EQUIPANDO_ARMA) && (this->estado != APUNTANDO)) {
         this->arma->render(renderer, this->color, camaraLimiteIzquierdo, camaraLimiteSuperior);
     }
 
-    if (this->estado != MUERTO) {
-        this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
-    }
+    this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
 }
 
 void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
@@ -268,7 +273,9 @@ int Worm::get_tipo_de_arma() {
 /******************** PROYECTIL ********************/
 
 void Worm::update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado, int nuevoTiempo) {
-    this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, nuevoTiempo, id);
+    if (this->arma) {
+        this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, nuevoTiempo, id);
+    }
 }
 
 void Worm::set_tiempo(int tiempo) {

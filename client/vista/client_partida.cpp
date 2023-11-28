@@ -212,14 +212,13 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se hace click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
+                this->camara.setMoverCamara(true);
                 break;
 
             // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
                 this->x = event.button.x;
                 this->y = (renderer.GetOutputHeight()) - event.button.y;
-
-                this->camara.setMoverCamara(true);
                 break;
             }
 
@@ -467,6 +466,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se suelta el click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
+                this->camara.setMoverCamara(false);
                 break;
 
             // Si se suelta el click izquierdo...
@@ -475,8 +475,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
                     enviarAtaque();
                 }
-
-                this->camara.setMoverCamara(false);
                 break;
             }
 
@@ -636,6 +634,8 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         if (nuevoEstado == MUERTO) {
             // this->worms.erase(gusano->get_id());
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+
+            std::cout << (int) gusano->x_pos() << " " << (int) gusano->y_pos() << std::endl;
             continue;
         }
 

@@ -106,7 +106,6 @@ void Worm::moveLeft() {
 			if (f->RayCast( &output, input, 1)) {
 				//normal = output.normal;
 				if (output.fraction <= minFraction) {
-					std::cout << "fraction = " << output.fraction << "\n";
 					minFraction = output.fraction;
 					normal = output.normal;
 				}
@@ -118,8 +117,6 @@ void Worm::moveLeft() {
 	float theta = 3.14f / 2.0f;
 	b2Vec2 velocity = b2Vec2(std::min(0.0f, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
 							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
-
-	std::cout << "velocity = (" << velocity.x << ", " << velocity.y << ")\n";
 
 	if (actualWeapon == NO_WEAPON) {
 		isRunning = true;
@@ -153,7 +150,6 @@ void Worm::moveRight()
 			b2RayCastOutput output;
 			if (f->RayCast( &output, input, 1)) {
 				if (output.fraction <= minFraction) {
-					std::cout << "fraction = " << output.fraction << "\n";
 					minFraction = output.fraction;
 					normal = output.normal;
 				}
@@ -167,7 +163,6 @@ void Worm::moveRight()
 	b2Vec2 velocity = b2Vec2(std::max(0.0f, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
 							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
 	
-	std::cout << "velocity = (" << velocity.x << ", " << velocity.y << ")\n";
 
 	// si no tiene arma, que se mueva
 	// si tiene arma, cambia la direccion a la derecha pero no se mueve
@@ -198,7 +193,7 @@ void Worm::jump() {
 }
 
 void Worm::jumpBackward() {
-	if (numberOfContacts == 0) return;
+	if (numberOfContacts == 0 || jumpTimeout > 0) return;
 	float xComponent; float yComponent;
 	if (facingRight) {
 		xComponent = -2.0f;
@@ -208,6 +203,7 @@ void Worm::jumpBackward() {
 	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 	state = JUMPING_BACKWARD;
+	jumpTimeout = 42;
 }
 
 
@@ -263,7 +259,6 @@ bool Worm::isMoving() {
 }
 
 void Worm::takeDamage(uint8_t damage) {
-	std::cout << "Worm:: takeDamage()\n";
 	damageTaken += damage;
 }
 
@@ -304,14 +299,12 @@ void Worm::startContact() {
 }
 
 void Worm::equipWeapon(uint8_t weapon) {
-	
-	if (weapon == actualWeapon || weapon == NO_WEAPON) {
+ 	if (weapon == actualWeapon || weapon == NO_WEAPON) {
 		actualWeapon = NO_WEAPON;
-		state = MOVING;
+		state = STATIC;
 	} else {
 		actualWeapon = weapon;
 		state = EQUIPING_WEAPON;
-		//state = AIMING;
 	}
 }
 
@@ -332,4 +325,8 @@ void Worm::endContact() {
 	numberOfContacts--;
 }
 
+
+b2Vec2 Worm::getVelocity() {
+	return body->GetLinearVelocity();
+}
 Worm::~Worm() {}

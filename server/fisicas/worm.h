@@ -17,6 +17,8 @@ const int AIMING = 4;
 const int DEAD = 5;
 const int NO_WEAPON = 10;
 const int FLYING = 7;
+const int STATIC = 8;
+const int FALLING = 9;
 
 
 
@@ -61,6 +63,7 @@ public:
     float getYCoordinate();
     uint8_t getId();
     uint8_t getState();
+    b2Vec2 getVelocity(); 
     void moveLeft();
     void moveRight();
     b2Body* getBody();

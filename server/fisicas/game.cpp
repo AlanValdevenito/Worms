@@ -464,7 +464,13 @@ void Game::updateWorms()
 {
     // actualizo los gusanos
     for (Worm *worm : world.getWorms())
-    {
+    {   
+        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPING_WEAPON) {
+            worm->state = STATIC;
+        }
+        if (worm->is_alive && worm->numberOfContacts == 0 && 
+            worm->getState() != JUMPING_BACKWARD && worm->getState() != JUMPING_FORWARD &&
+            worm->getState() != FLYING && worm->getVelocity().y < 0.0f) {worm->state = FALLING;}
         // std::cout << "worm x = " << worm->getXCoordinate() << "\n";
         if (not worm->isMoving() && worm->getHp() == 0 && worm->is_alive)
         {
@@ -474,6 +480,7 @@ void Game::updateWorms()
             players[worm->playerId - 1].numberOfAliveWorms--;
             players[worm->playerId - 1].markWormAsDead(worm->getId());
         }
+        // si el worm sufre algun daño en su turno pierde el turno
         if (worm->getId() == actualWormId && not wormAttacked && worm->damageTaken > 0) {
             beginNextTurn();
         }
@@ -490,7 +497,7 @@ void Game::updateWorms()
             if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive)
             {
                 players[worm->playerId - 1].markWormAsDead(worm->getId());
-                beginNextTurn();
+                //beginNextTurn();
             }
         }
 
@@ -516,12 +523,13 @@ void Game::updatePlayers()
     // actualizo los players
     for (int i = 0; i < numberOfPlayers; i++)
     {
-
+        // si un player tiene 0 worms => pierde
         if (players[i].numberOfAliveWorms == 0 && players[i].isAlive)
         {
             players[i].isAlive = false;
             numberOfAlivePlayers--;
         }
+        // si queda 1 player vivo o menos => se termina el match
         if (numberOfAlivePlayers <= 1)
         {
             uint8_t winnerId;
@@ -705,9 +713,10 @@ void Game::sendWorms()
 
     std::vector<std::shared_ptr<Gusano>> vectorGusanos;
     for (Worm *w : world.getWorms())
-    {
+    {   
+        std::cout << "worm id = " << (int)w->getId() << ", estado = " << (int)w->getState() << "\n";
         if (w->is_alive)
-        {
+         {
             // std::cout << "sendWorms(), w->getHp() = " << (int)w->getHp() << "\n";
             std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
                                                                  (int)(w->getXCoordinate() * 100),
@@ -800,7 +809,7 @@ void Game::sendBombs() {
     {
         if (redGrenadeFragments[i] != NULL)
         {   
-            //std::cout << "enviando fragmento de id = " << id_fragmento << ", x = " << redGrenadeFragments[i]->getXCoordinate() << ",y = " << redGrenadeFragments[i]->getYCoordinate() << "\n";
+            std::cout << "enviando fragmento de id = " << id_fragmento << ", x = " << redGrenadeFragments[i]->getXCoordinate() << ", y = " << redGrenadeFragments[i]->getYCoordinate() << " exploto? -> " << redGrenadeFragments[i]->exploded << "\n";
             std::shared_ptr<Fragmento> fragmento = std::make_shared<Fragmento>(id_fragmento, (uint16_t)(redGrenadeFragments[i]->getXCoordinate() * 100), (uint16_t)(redGrenadeFragments[i]->getYCoordinate() * 100), 0, redGrenadeFragments[i]->exploded);
             proyectiles.push_back(fragmento);
         }
@@ -1126,11 +1135,12 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     {
         std::shared_ptr<EquiparArma> equiparArma = std::dynamic_pointer_cast<EquiparArma>(dto);
         world.getWormsById()[actualWormId]->equipWeapon(equiparArma->get_arma());
+
     }
 
     if (wormAttacked)
     {
-        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+       world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
     }
 }
 

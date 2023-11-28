@@ -9,13 +9,27 @@ void Camara::seguirWorm(std::map<int, Worm *> &worms) {
     for (const auto &elemento : worms)
     {
         elemento.second->set_camara(false);
-
-        // int estado = elemento.second->get_estado();
+    }
+    
+    for (const auto &elemento : worms)
+    {
+        int estado = elemento.second->get_estado();
         bool turno = elemento.second->get_turno();
 
-        if (turno && not this->moverCamara) {
+        if (estado == MUERTO) {
+            continue;
+        }
+
+        if ((not turno) && (estado != QUIETO) && not this->moverCamara) {
             seguir(elemento.second->get_x(), elemento.second->get_y());
             elemento.second->set_camara(true);
+            break;
+        }
+
+        else if (turno && (estado != QUIETO) && not this->moverCamara) {
+            seguir(elemento.second->get_x(), elemento.second->get_y());
+            elemento.second->set_camara(true);
+            break;
         }
     }
 

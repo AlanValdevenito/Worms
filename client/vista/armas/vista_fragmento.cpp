@@ -18,7 +18,7 @@ void AnimacionFragmento::render(SDL2pp::Renderer &renderer, SDL2pp::Color color,
     if (this->estado == ARMA_MOVIENDOSE) {
         SDL_RendererFlip flip = SDL_FLIP_NONE;
         this->movimiento.render(renderer, SDL2pp::Rect(this->x - (30) - camaraLimiteIzquierdo, this->y - (30) - camaraLimiteSuperior, 60, 60), flip, this->angulo);
-    
+
     } else if (this->estado == ARMA_EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
         

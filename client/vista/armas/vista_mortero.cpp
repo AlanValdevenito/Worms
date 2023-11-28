@@ -46,7 +46,7 @@ void AnimacionMortero::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, f
             this->explosion.update();
         }
     }
-
+ 
     if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
 
         for (auto &elemento : this->fragmentos)
