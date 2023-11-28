@@ -52,9 +52,10 @@ private:
     int numeroColor;
 
     SDL2pp::Color &color;
-    YAML::Node configuraciones;
 
 public:
+    bool camara;
+
     Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion);
 
     void update(int it, float nuevoX, float nuevoY, int vida, int direccion, int angulo); // Actualiza el Worm en funcion del tiempo transcurrido.
@@ -62,11 +63,11 @@ public:
 
     void equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma);
 
-    void render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
+    void render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void render_vida(SDL2pp::Renderer &renderer,float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
-    void desactivar_turno();
-    void activar_turno();
+    void set_turno(bool nuevoTurno);
+    void set_camara(bool nuevaCamara);
 
     int get_tipo_de_arma();
 
@@ -86,6 +87,7 @@ public:
     int get_vida();
     int get_estado();
     int get_color();
+    bool get_turno();
 };
 
 #endif // __WORM_H_

@@ -6,8 +6,6 @@
 #include "client_mira.h"
 #include "client_potencia.h"
 
-#include "client_camara.h"
-
 class Apuntado
 {
 

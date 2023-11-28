@@ -25,13 +25,13 @@ int Partida::iniciar()
 
     /******************** INICIALIZAR MUSICA AMBIENTE ********************/
 
-    Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+    // Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
-    Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
+    // Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
 
-    sound.SetVolume(SDL_MIX_MAXVOLUME / 8); // Ajustamos el nivel de volumen
+    // sound.SetVolume(SDL_MIX_MAXVOLUME / 8); // Ajustamos el nivel de volumen
 
-    mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
+    // mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
 
     /******************** TEXTURAS Y COLORES ********************/
 
@@ -171,8 +171,6 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
         this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], (int) gusano->get_color(), metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
     }
-
-    camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
 }
 
 /******************** HANDLER DE EVENTOS ********************/
@@ -608,15 +606,15 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     int id_gusano_siguiente = gusanos->get_gusano_de_turno();
 
     if (this->id_gusano_actual != id_gusano_siguiente) {
-        this->worms[this->id_gusano_actual]->desactivar_turno(); // Le aviso al Worm del turno anterior que ya no es mas su turno
+        this->worms[this->id_gusano_actual]->set_turno(false); // Le aviso al Worm del turno anterior que ya no es mas su turno
         this->id_gusano_actual = id_gusano_siguiente;
-        this->worms[this->id_gusano_actual]->activar_turno(); // Le aviso al Worm del turno actual que es su turno
+        this->worms[this->id_gusano_actual]->set_turno(true); // Le aviso al Worm del turno actual que es su turno
         this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
+    
+    } else {
+        this->id_gusano_actual = id_gusano_siguiente;
+        this->worms[this->id_gusano_actual]->set_turno(true);
     }
-
-    /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/
-
-    camara.seguirWorm(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
 
     /***** ACTUALIZAMOS LA POSICION DE CADA WORM *****/
 
@@ -646,7 +644,7 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         }
     }
 
-    /***** ACTUALIZAMOS LA POSICION DEL PROYECTIL (SI ES QUE HAY) *****/
+    /***** SI HAY PROYECTIL ACTUALIZAMOS SU POSICION Y LA CAMARA PARA QUE SE ENFOQUE EN ÈL *****/
     
     int flag = (int) gusanos->get_flag_proyectil();
 
@@ -660,7 +658,15 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
             float nuevoX = metros_a_pixeles(centimetros_a_metros((int)proyectil->x_pos()));
             float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)proyectil->y_pos()));
             this->worms[this->id_gusano_actual]->update_proyectil(renderer, (int) proyectil->get_id(), nuevoX, nuevoY, (int) proyectil->get_angulo(), (int) proyectil->get_direccion(), (int) proyectil->get_exploto(), (int) proyectil->get_tiempo());
+        
+            this->worms[this->id_gusano_actual]->set_camara(false);
+            camara.seguir(nuevoX, nuevoY);
         }
+
+    /***** ACTUALIZAMOS LA CAMARA PARA QUE SE ENFOQUE EN EL WORM DEL TURNO ACTUAL *****/
+
+    } else {
+        camara.seguirWorm(this->worms);
     }
 
     return true;
@@ -764,7 +770,7 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
     for (const auto &elemento : this->worms)
     {
-        elemento.second->render(renderer, this->camara, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
+        elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
     }
 }
 

@@ -3,12 +3,10 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "vista_arma.h"
-// #include "client_mira.h"
-// #include "client_potencia.h"
 #include "client_apuntado.h"
-
+#include "vista_arma.h"
 #include "vista_misil.h"
+
 #include <map>
 
 class AnimacionAtaqueAereo: public Arma

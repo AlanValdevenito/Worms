@@ -1,6 +1,9 @@
 #ifndef _CAMARA_H
 #define _CAMARA_H
 
+#include "client_worm.h"
+#include <map>
+
 class Camara
 {
 
@@ -14,7 +17,8 @@ private:
 public:
     Camara(float ventanaAncho, float ventanaAlto);
 
-    void seguirWorm(float nuevoX, float nuevoY); // Actualiza la posicion de la camara para seguir al Worm
+    void seguirWorm(std::map<int, Worm *> &worms);
+    void seguir(float nuevoX, float nuevoY); // Actualiza la posicion de la camara para seguir al Worm
     bool comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto);
 
     float getLimiteDerecho();

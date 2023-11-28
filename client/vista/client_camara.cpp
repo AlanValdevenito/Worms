@@ -4,7 +4,24 @@
 
 Camara::Camara(float ventanaAncho, float ventanaAlto): x(0), y(0), ancho(ventanaAncho), alto(ventanaAlto) {}
 
-void Camara::seguirWorm(float nuevoX, float nuevoY) {
+void Camara::seguirWorm(std::map<int, Worm *> &worms) {
+
+    for (const auto &elemento : worms)
+    {
+        elemento.second->set_camara(false);
+
+        // int estado = elemento.second->get_estado();
+        bool turno = elemento.second->get_turno();
+
+        if (turno) {
+            seguir(elemento.second->get_x(), elemento.second->get_y());
+            elemento.second->set_camara(true);
+        }
+    }
+
+}
+
+void Camara::seguir(float nuevoX, float nuevoY) {
     this->x = nuevoX / 24;
     this->y = nuevoY / 24;
 }

@@ -7,7 +7,7 @@
                   // tienen el (0,0) de los cuerpos en el centro
 
 Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): animacion(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
-                                                                                          estado(MOVIENDOSE),
+                                                                                          estado(QUIETO),
                                                                                           x(x), 
                                                                                           y(y), 
                                                                                           vida(vida),
@@ -16,7 +16,7 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, fl
                                                                                           turno(false), 
                                                                                           numeroColor(numeroColor),
                                                                                           color(color),
-                                                                                          configuraciones(YAML::LoadFile("/configuracion.yml")) {}
+                                                                                          camara(false) {}
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos.
 
@@ -64,6 +64,7 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     else if (nuevoEstado == SALTANDO_ATRAS) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
+        this->animacion.no_repetir_animacion();
     }
 
     else if (nuevoEstado == EQUIPANDO_ARMA) {
@@ -163,20 +164,20 @@ void Worm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
     }
 }
 
-void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
+void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
 {
     SDL_RendererFlip flip = this->direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
     if (this->estado == MUERTO) {
-        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
+        this->animacion.render(renderer, this->camara ? SDL2pp::Rect(camaraCentroX - OFFSET, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
     
     } else if (this->estado == APUNTANDO) {
-        int posicionX = this->turno ? (camaraCentroX - OFFSET) : (x - OFFSET - camaraLimiteIzquierdo);
-        int posicionY = this->turno ? (y - OFFSET - camaraLimiteSuperior) : (y - OFFSET - camaraLimiteSuperior);
+        int posicionX = this->camara ? (camaraCentroX - OFFSET) : (x - OFFSET - camaraLimiteIzquierdo);
+        int posicionY = this->camara ? (y - OFFSET - camaraLimiteSuperior) : (y - OFFSET - camaraLimiteSuperior);
         this->arma->render(renderer, this->color, posicionX, posicionY, this->direccion);
 
     } else {
-        this->animacion.render(renderer, this->turno ? SDL2pp::Rect(camaraCentroX - OFFSET, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip, this->angulo);
+        this->animacion.render(renderer, this->camara ? SDL2pp::Rect(camaraCentroX - OFFSET, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - OFFSET - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip, this->angulo);
     }
 
     if ((this->estado == EQUIPANDO_ARMA) && (this->animacion.completa())) {
@@ -187,7 +188,7 @@ void Worm::render(SDL2pp::Renderer &renderer, Camara &camara, float camaraCentro
     }
 
     if ((this->arma) && (this->estado != EQUIPANDO_ARMA) && (this->estado != APUNTANDO) && (this->arma->get_estado() == ARMA_MOVIENDOSE || this->arma->get_estado() == ARMA_EXPLOTAR)) {
-        this->arma->render(renderer, this->color, camara.getLimiteIzquierdo() * 24, camara.getLimiteSuperior() * 24);
+        this->arma->render(renderer, this->color, camaraLimiteIzquierdo, camaraLimiteSuperior);
     }
 
     if (this->estado != MUERTO) {
@@ -206,15 +207,15 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
     renderer.Copy(
         borde,
         SDL2pp::NullOpt,
-        SDL2pp::Rect(this->turno ? (camaraCentroX + 10 - OFFSET) : (this->x - 19 - camaraLimiteIzquierdo),
-                     this->turno ? (this->y - 45 - camaraLimiteSuperior) : (this->y - 45 - camaraLimiteSuperior), 
+        SDL2pp::Rect(this->camara ? (camaraCentroX + 10 - OFFSET) : (this->x - 19 - camaraLimiteIzquierdo),
+                     this->camara ? (this->y - 45 - camaraLimiteSuperior) : (this->y - 45 - camaraLimiteSuperior), 
                      41, 29)
     );
 
     /********** CONTENEDOR **********/
 
-    SDL2pp::Rect contenedor(this->turno ? (camaraCentroX + 13 - OFFSET) : (this->x - 16 - camaraLimiteIzquierdo),
-                            this->turno ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
+    SDL2pp::Rect contenedor(this->camara ? (camaraCentroX + 13 - OFFSET) : (this->x - 16 - camaraLimiteIzquierdo),
+                            this->camara ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                             34, 22);
 	renderer.SetDrawColor(this->color); 
 	renderer.FillRect(contenedor);
@@ -225,22 +226,22 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
 	SDL2pp::Texture texture(renderer, surface);
 
     if (this->vida == 100) {
-        SDL2pp::Rect mensaje(this->turno ? (camaraCentroX + 12 - OFFSET) : (this->x - 16 - camaraLimiteIzquierdo),
-                            this->turno ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
+        SDL2pp::Rect mensaje(this->camara ? (camaraCentroX + 12 - OFFSET) : (this->x - 16 - camaraLimiteIzquierdo),
+                            this->camara ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                             surface.GetWidth(), surface.GetHeight());
 
         renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
     
     } else if ((this->vida < 100) && (this->vida >= 10)) {
-        SDL2pp::Rect mensaje(this->turno ? (camaraCentroX + 17 - OFFSET) : (this->x - 11 - camaraLimiteIzquierdo),
-                            this->turno ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
+        SDL2pp::Rect mensaje(this->camara ? (camaraCentroX + 17 - OFFSET) : (this->x - 11 - camaraLimiteIzquierdo),
+                            this->camara ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                             surface.GetWidth(), surface.GetHeight());
 
         renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
     
     } else if (this->vida < 10) {
-        SDL2pp::Rect mensaje(this->turno ? (camaraCentroX + 23 - OFFSET) : (this->x - 5 - camaraLimiteIzquierdo),
-                            this->turno ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
+        SDL2pp::Rect mensaje(this->camara ? (camaraCentroX + 23 - OFFSET) : (this->x - 5 - camaraLimiteIzquierdo),
+                            this->camara ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                             surface.GetWidth(), surface.GetHeight());
 
         renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
@@ -250,12 +251,12 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
 
 /******************** TURNO ********************/
 
-void Worm::desactivar_turno() {
-    this->turno = false;
+void Worm::set_turno(bool nuevoTurno) {
+    this->turno = nuevoTurno;
 }
 
-void Worm::activar_turno() {
-    this->turno = true;
+void Worm::set_camara(bool nuevaCamara) {
+    this->camara = nuevaCamara;
 }
 
 /******************** ARMA ********************/
@@ -332,4 +333,8 @@ int Worm::get_estado() {
 
 int Worm::get_color() {
     return this->numeroColor;
+}
+
+bool Worm::get_turno() {
+    return this->turno;
 }
