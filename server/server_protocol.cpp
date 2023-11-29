@@ -339,6 +339,7 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
 
     uint8_t angulo = b->get_angulo();
     uint8_t direccion = b->get_direccion();
+    uint8_t exploto = b->get_exploto();
 
     if (not enviarPosicionDelElemento(b, was_closed))
         return false;
@@ -351,7 +352,6 @@ bool ServerProtocol::enviarTrayectoriaDeBazuka(std::shared_ptr<Bazuka> b, bool &
     if (was_closed)
         return false;
 
-    uint8_t exploto = b->get_exploto();
     skt->sendall(&(exploto), sizeof(exploto), &was_closed);
     if (was_closed)
         return false;
@@ -368,6 +368,7 @@ bool ServerProtocol::enviarTrayectoriaDeMortero(std::shared_ptr<Mortero> b, bool
 
     uint8_t angulo = b->get_angulo();
     uint8_t direccion = b->get_direccion();
+    uint8_t exploto = b->get_exploto();
 
     if (not enviarPosicionDelElemento(b, was_closed))
         return false;
@@ -380,7 +381,6 @@ bool ServerProtocol::enviarTrayectoriaDeMortero(std::shared_ptr<Mortero> b, bool
     if (was_closed)
         return false;
 
-    uint8_t exploto = b->get_exploto();
     skt->sendall(&(exploto), sizeof(exploto), &was_closed);
     if (was_closed)
         return false;
