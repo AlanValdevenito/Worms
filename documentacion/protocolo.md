@@ -139,7 +139,7 @@
 * Se envia un entero sin signo de 8 bits que representa el id del cliente que esta enviando el mensaje.
 * Se envia un entero sin signo de 8 bits que representa la finalizacion de la partida de el cliente. 
 
-### Ataque con Bate de beisball
+### Ataque con Bate de beisbol
 >codigo = 14
 * Se envia un entero sin signo de 8 bits que representa el id del cliente que esta enviando el mensaje.
 * Se envia un entero sin signo de 8 bits que representa el codigo  el ataque con el bate. 
@@ -218,8 +218,94 @@
 
 > **6** => Dinamita
 
-> **7** => Bate de Beisball
+> **7** => Bate de Beisbol
 
 > **8** => Ataque Aereo
 
 > **9** => Teletransportacion
+
+
+
+# Protocolo Servidor
+
+## Recibir
+* Se recibe un entero sin signo de 8 bit que representa el id del cliente que esta enviando el mensaje
+* Se recibe un entero de 8 bits sin signo que representa el codigo de la accion requerida por el usuario
+> Segun el numero indicado en el codigo se recibiran distintos parametros. A continuacion se detallara el codigo con el cual se interpretara cada accion y cuales son los siguientes elementos a recibir.
+
+
+### Partida seleccionada
+> Codigo **6** 
+* Se recibe un entero sin signo de 8 bits que representa el id de la partida seleccionada.
+
+### Mover a derecha
+> Codigo **10** 
+> No es necesario recibir mas informacion
+
+
+### Mover a izquierda
+> Codigo **11** 
+> No es necesario recibir mas informacion
+
+
+### Ataque con bate de beisbol
+> Codigo **14** 
+* Se recibe un entero sin signo de 8 bits que representa el angulo con el que se efectuara el golpe.
+
+
+### Finalizar partida
+> Codigo **4** 
+> No es necesario recibir mas informacion
+
+### Salto
+> Codigo **12** 
+* Se recibe un entero sin signo de 8 bits que representa la direccion con la que se efectuara el salto.
+
+
+### Nueva Partida
+> Codigo **5** 
+* Se recibe un entero sin signo de 8 bits que representa la cantidad de jugadores que debe tener la nueva partida.
+* Se recibe un entero sin digno de 8 bits que representa el mapa seleccionado para la partida.
+
+### Ataque con Bazooka
+> Codigo **16** 
+* Se recibe un entero sin signo de 8 bits que representa la potencia con la que se efectuara el lanzamiento del proyectil de la bazooka.
+* Se recibe un entero sin signo de 8 bits que representa el angulo con el que se efectuara el lanzamiento del proyectil de la bazooka.
+
+
+### Ataque con Granadas (Verde, Banana, Santa, Roja)
+> Codigo **17** Verde
+> Codigo **18** Banana
+> Codigo **19** Santa
+> Codigo **20** Roja
+* Se recibe un entero sin signo de 8 bits que representa la potencia con la que se efectuara el lanzamiento de la granada.
+* Se recibe un entero sin signo de 8 bits que representa el angulo con el que se efectuara el lanzamiento de la granada.
+* Se recibe un entero sin signo de 8 bits que representa el tiempo que debe transcurrir hasta explotar la granada.
+
+
+### Ataque con Dinamita
+> Codigo **21** 
+* Se recibe un entero sin signo de 8 bits que representa el tiempo que debe transcurrir hasta explotar la dinamita.
+
+
+### Ataque con Mortero
+> Codigo **23** 
+* Se recibe un entero sin signo de 8 bits que representa la potencia con la que se efectuara el lanzamiento del proyectil del mortero.
+* Se recibe un entero sin signo de 8 bits que representa el angulo con el que se efectuara el lanzamiento del proyectil del mortero.
+
+
+### Ataque Aereo
+> Codigo **22** 
+* Se recibe un entero sin signo de 16 bits que representa la posicion en x a donde desea lanzar el ataque.
+* Se recibe un entero sin signo de 16 bits que representa la posicion en y a donde desea lanzar el ataque.
+
+
+### Teletrasportar
+> Codigo **15** 
+* Se recibe un entero sin signo de 16 bits que representa la posicion en x a donde desea teletransportarse.
+* Se recibe un entero sin signo de 16 bits que representa la posicion en y a donde desea teletransportarse.
+
+
+### Equipar Arma
+> Codigo **13**
+* Se recibe un entero sin signo de 8 bits que representa el arma que solicita ser equipada por el cliente.
