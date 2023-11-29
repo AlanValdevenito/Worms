@@ -19,9 +19,9 @@ int Vista::iniciar(int argc, char* argv[])
     // Luego de que todos los jugadores se conectan, el servidor le envia a todos los clientes el mapa (vigas) y los worms. Por lo tanto
     // cuando se quiera hacer pop() de estas cosas ya no nos quedaremos bloqueados y no se frenara la ejecucion de SDL
 
-    std::cout << "Esperando la señal para iniciar la partida" << std::endl;
+    //std::cout << "Esperando la señal para iniciar la partida" << std::endl;
     cliente.recv_queue.pop();
-    std::cout << "Inicia la partida" << std::endl;
+    //std::cout << "Inicia la partida" << std::endl;
 
     /******************** PARTIDA ********************/
 

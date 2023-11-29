@@ -25,13 +25,13 @@ int Partida::iniciar()
 
     /******************** INICIALIZAR MUSICA AMBIENTE ********************/
 
-    Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+    // Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
-    Chunk sound(DATA_PATH "/sonidos/worms-hello.ogg");
+    // Chunk sound(DATA_PATH "/sonidos/worms-hello.ogg");
 
-    sound.SetVolume(SDL_MIX_MAXVOLUME / 8); // Ajustamos el nivel de volumen
+    // sound.SetVolume(SDL_MIX_MAXVOLUME / 8); // Ajustamos el nivel de volumen
 
-    mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
+    // mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
 
     /******************** TEXTURAS Y COLORES ********************/
 
@@ -632,8 +632,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         if (nuevoEstado == MUERTO) {
             // this->worms.erase(gusano->get_id());
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
-
-            std::cout << (int) gusano->x_pos() << " " << (int) gusano->y_pos() << std::endl;
             continue;
         }
 
@@ -641,11 +639,16 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo());
 
+        if ((this->worms[gusano->get_id()]->get_tipo_de_arma() != tipoDeArma)) {
+            std::cout << tipoDeArma << std::endl;
+            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        }
+
         if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
 
-        else if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (tipoDeArma == 10) && (this->worms[gusano->get_id()]->get_estado() == APUNTANDO)) {
+        else if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (tipoDeArma == SIN_ARMA) && (this->worms[gusano->get_id()]->get_estado() == APUNTANDO)) {
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
     }

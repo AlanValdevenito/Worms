@@ -88,7 +88,7 @@ void RedGrenadeFragment::explode() {
             Entity *entity = (Entity*)b->GetUserData().pointer;
 	  
             if (entity != NULL) {
-                std::cout << "entityType = " << (int)entity->entityType << "\n";
+                //std::cout << "entityType = " << (int)entity->entityType << "\n";
                 if ((entity->entityType == WORM)) {;
                     Worm *worm = (Worm*)entity;
                     damage = maxDamage * (1 - distance / explosionRadius);

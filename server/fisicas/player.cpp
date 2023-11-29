@@ -23,12 +23,12 @@ int Player::getActualWormId() {
 }
 
 void Player::changeActualWorm() {
-    std::cout << "wormIds = [";
+    //std::cout << "wormIds = [";
     for (int i = 0; i < (int)wormIds.size(); i++) {
-        std::cout << (int)wormIds[i] << ", ";
+        //std::cout << (int)wormIds[i] << ", ";
     }
-    std::cout << "]\n";
-    std::cout << "Player::changeActualWorm, numberOfAliveWorms = " << numberOfAliveWorms << "\n";
+    //std::cout << "]\n";
+    //std::cout << "Player::changeActualWorm, numberOfAliveWorms = " << numberOfAliveWorms << "\n";
     for (int i = 0; i < (int)wormIds.size(); i++) {
         if (indexOfActualWorm == (int)wormIds.size() - 1) {
             indexOfActualWorm = 0;

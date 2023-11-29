@@ -306,7 +306,6 @@ void Game::createPlayers()
         world.getWormsById()[wormId]->setPlayerId(idPlayers[playerIndex]);
         world.getWormsById()[wormId]->setTeamNumber(playerIndex);
         wormIdsByPlayerId[idPlayers[playerIndex]].push_back(wormId);
-        std::cout << "worm de id " << wormId << " pertenece a player de id " << (int)idPlayers[playerIndex] << "\n";
         wormId++;    
         playerIndex++;
     }
@@ -318,19 +317,11 @@ void Game::createPlayers()
         teamNumber++;
     }
 
-    for (Player player : players) {
-        std::cout << "player id = " << player.getId() << " teamNumber = " << player.getTeamNumber() << ", worms = [";
-        for (int wormId : player.wormIds) {
-            std::cout << (int)wormId << ", ";
-        }
-        std::cout << "]\n";
-    }
 
     idTurn = idPlayers[indexOfActualPlayer];
     actualWormId = players[indexOfActualPlayer].actualWormId;
     numberOfPlayers = (int)idPlayers.size();
     numberOfAlivePlayers = numberOfPlayers;
-    std::cout << "numberOfAlivePlayers = " << numberOfAlivePlayers << "\n";
 }
 
 
@@ -389,7 +380,10 @@ bool Game::timeIsUp() {
 }
 
 void Game::beginNextTurn() {
-    world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+    //world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+    
+    
+    
     for (int i = 0; i < numberOfPlayers; i++)
     {
         if (indexOfActualPlayer == (int)idPlayers.size() - 1)
@@ -407,6 +401,7 @@ void Game::beginNextTurn() {
             actualWormId = players[indexOfActualPlayer].actualWormId;
             world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
             begin = std::chrono::steady_clock::now();
+            wormAttacked = false;
             return;
         }
     }
@@ -430,8 +425,8 @@ void Game::passTurn()
         
         updateWorms();
         updatePlayers();
-        wormAttacked = false;
-
+        
+        //wormAttacked = false;
         beginNextTurn();
         if (idTurn == -1) {
             // si no hay jugadores para elegir ==> cierro.
@@ -545,7 +540,6 @@ void Game::updatePlayers()
                     break;
                 }
             }
-            std::cout << "updatePlayers():: No hay jugadores, cierro\n";
             broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE, 1));
             broadcaster.deleteAllQueues(); // aviso a los demas que cierren
             stop();
@@ -559,6 +553,7 @@ void Game::updateBombs()
     if (greenGrenade != NULL) {
         if (greenGrenade->exploded) {
             greenGrenade->destroy();
+            delete greenGrenade;
             greenGrenade = NULL;
         } else {
             greenGrenade->update();
@@ -570,6 +565,7 @@ void Game::updateBombs()
     {
         if (bazookaRocket->exploded) { 
             bazookaRocket->destroy();
+            delete bazookaRocket;
             bazookaRocket = NULL;
         } else {
             bazookaRocket->updateAngle();
@@ -580,6 +576,7 @@ void Game::updateBombs()
     {
         if (banana->exploded) {
             banana->destroy();
+            delete banana;
             banana = NULL;
         } else {
             banana->update();
@@ -591,6 +588,7 @@ void Game::updateBombs()
         if (holyGrenade->exploded)
         {
             holyGrenade->destroy();
+            delete holyGrenade;
             holyGrenade = NULL;
         } else {
             holyGrenade->update();
@@ -603,6 +601,7 @@ void Game::updateBombs()
         if (dynamite->exploded)
         {
             dynamite->destroy();
+            delete dynamite;
             dynamite = NULL;
         } else {
             dynamite->update();
@@ -615,6 +614,7 @@ void Game::updateBombs()
             float y = redGrenade->getYCoordinate() + 1;
             throwFragments(x, y);
             redGrenade->destroy();
+            delete redGrenade;
             redGrenade = NULL;
         } else {
             redGrenade->update();
@@ -627,6 +627,7 @@ void Game::updateBombs()
             float y = morteroRocket->getYCoordinate() + 1;
             throwFragments(x, y);
             morteroRocket->destroy();
+            delete morteroRocket;
             morteroRocket = NULL;
         } else {
             morteroRocket->updateAngle();
@@ -637,6 +638,7 @@ void Game::updateBombs()
         if (redGrenadeFragments[i] != NULL) {
             if (redGrenadeFragments[i]->exploded) {   
                 redGrenadeFragments[i]->destroy();
+                delete redGrenadeFragments[i];
                 redGrenadeFragments[i] = NULL;
             }
         }
@@ -646,6 +648,7 @@ void Game::updateBombs()
         if (airStrike[i] != NULL) {
             if (airStrike[i]->exploded) {
                 airStrike[i]->destroy();
+                delete airStrike[i];
                 airStrike[i] = NULL;
             }
         }
@@ -680,7 +683,6 @@ bool Game::anyAirStrikeRocket()
             }
         }
     }
-    std::cout << "no hay mas cohetes del ataque aereo\n";
     return false;
 }
 
@@ -714,7 +716,7 @@ void Game::sendWorms()
     std::vector<std::shared_ptr<Gusano>> vectorGusanos;
     for (Worm *w : world.getWorms())
     {   
-        std::cout << "worm id = " << (int)w->getId() << ", estado = " << (int)w->getState() << "\n";
+        //std::cout << "worm id = " << (int)w->getId() << ", estado = " << (int)w->getState() << "\n";
         if (w->is_alive)
          {
             // std::cout << "sendWorms(), w->getHp() = " << (int)w->getHp() << "\n";
@@ -809,7 +811,6 @@ void Game::sendBombs() {
     {
         if (redGrenadeFragments[i] != NULL)
         {   
-            std::cout << "enviando fragmento de id = " << id_fragmento << ", x = " << redGrenadeFragments[i]->getXCoordinate() << ", y = " << redGrenadeFragments[i]->getYCoordinate() << " exploto? -> " << redGrenadeFragments[i]->exploded << "\n";
             std::shared_ptr<Fragmento> fragmento = std::make_shared<Fragmento>(id_fragmento, (uint16_t)(redGrenadeFragments[i]->getXCoordinate() * 100), (uint16_t)(redGrenadeFragments[i]->getYCoordinate() * 100), 0, redGrenadeFragments[i]->exploded);
             proyectiles.push_back(fragmento);
         }
@@ -1028,7 +1029,6 @@ void Game::shootAirStrike(float x, float y)
     airStrike.clear();
     for (int i = 0; i < 6; i++)
     {
-        std::cout << "cohete +1\n";
         airStrike.push_back(new AirStrikeRocket(&world.world, x + 3 * i - 7.5f, y + 40 + 2 * i, config));
         // airStrike[i]->shoot();
     }
@@ -1085,7 +1085,6 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     }
     else if (code == GRANADA_VERDE_CODE)
     {
-        std::cout << "game-> recibo ataque granada verde\n";
         std::shared_ptr<GranadaVerde> grenade = std::dynamic_pointer_cast<GranadaVerde>(dto);
         throwGreenGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia(), grenade->get_tiempo());
     }
@@ -1117,12 +1116,10 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     else if (code == ATAQUE_AEREO_CODE)
     {
         std::shared_ptr<Misil> misil = std::dynamic_pointer_cast<Misil>(dto);
-        std::cout << "game-> ataque aereo x = " << (int)misil->x_pos() << ", y = " << (int)misil->y_pos() << "\n";
         shootAirStrike((float)misil->x_pos() / 100.0f, (float)misil->y_pos() / 100.0f);
     }
     else if (code == GRANADA_ROJA_CODE)
     {
-        std::cout << "game->granada roja\n";
         std::shared_ptr<GranadaRoja> grenade = std::dynamic_pointer_cast<GranadaRoja>(dto);
         throwRedGrenade((float)grenade->get_angulo() * 3.14f / 180.0f, grenade->get_potencia(), grenade->get_tiempo());
     }
@@ -1138,9 +1135,12 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
 
     }
 
-    if (wormAttacked)
+    if (wormAttacked && world.getWormsById()[actualWormId]->getWeapon() != 7)
     {
-       world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+       world.getWormsById()[actualWormId]->equipWeapon(11);
+    }
+    if (wormAttacked && world.getWormsById()[actualWormId]->getWeapon() == 7) {
+        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
     }
 }
 

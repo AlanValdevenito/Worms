@@ -44,14 +44,10 @@ int main(int argc, char *argv[])
         Vista vista(client);
 
         client.start();
-        // elegirPartida(std::ref(client));
 
         vista.iniciar(argc, argv);
 
-        // Dto* d = new MoverADerecha();
-        // client.send_queue.push(d);
-
-        client.join(); // Se queda en join y no termina
+        client.join(); 
 
         ret = 0;
         return ret;
@@ -68,18 +64,3 @@ int main(int argc, char *argv[])
     }
 }
 
-void elegirPartida(Client &client)
-{
-    // ListaDePartidas *l = (ListaDePartidas *)client.recv_queue.pop();
-
-    // std::list<uint8_t> lista = l->return_list();
-    // for (uint8_t o : lista)
-    // {
-    //     printf("opcion: %u \n", o); // ver de hacer un MAP
-    //     // que ListaDePartidas sea un map y el seleccionar sea pasandole la key
-    // }
-
-    // uint8_t s = 2;
-    // ListaDePartidas *seleccion = new ListaDePartidas(s);
-    // client.send_queue.push(seleccion);
-}

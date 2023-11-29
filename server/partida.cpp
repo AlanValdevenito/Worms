@@ -47,21 +47,14 @@ void Partida::forceFinish()
 
         std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
         broadcaster.notificarCierre(fin);
-
-        sleep(5); // Consultar si esta bien
-
+        sleep(5);
         broadcaster.deleteAllQueues();
     }
 
     for (auto &c : clients)
     {
-        // Implementar metodos joinSender y joinReceiver
-
-        // join sender ---> Con timeout
         c->kill();
-        // join receiver
-        // join sender ---> Solo si el primero timeouteo
-        c->join(); // Este join() se borra
+        c->join();
         delete c;
     }
     clients.clear();

@@ -13,13 +13,13 @@ class ContactListener : public b2ContactListener {
             if (entity != NULL) {
                 //std::cout << "A: entity->entityType = " << entity->entityType << "\n";
                 if ((entity->entityType == WORM)) {
-                    std::cout << "A: contact entity type = " << entity->entityType << "\n";
+                    //std::cout << "A: contact entity type = " << entity->entityType << "\n";
                     Worm *worm = (Worm*)entity;
                     worm->startContact();
                 } else if (entity->entityType == FRAGMENT) {
                     RedGrenadeFragment *fragment = (RedGrenadeFragment*)entity;
                     fragment->startContact();
-                    std::cout << "ContactListener -> fragmento explota en x = " << fragment->getXCoordinate() << ", y = " << fragment->getYCoordinate() <<  "\n";
+                    //std::cout << "ContactListener -> fragmento explota en x = " << fragment->getXCoordinate() << ", y = " << fragment->getYCoordinate() <<  "\n";
                 } else if (entity->entityType >= 2 && entity->entityType != FRAGMENT) {
                     //std::cout << "A: contact entity type = " << (int)entity->entityType << "\n";
                     entity->startContact();
@@ -40,7 +40,7 @@ class ContactListener : public b2ContactListener {
                 } else if (entity->entityType == FRAGMENT) {
                     RedGrenadeFragment *fragment = (RedGrenadeFragment*)entity;
                     fragment->startContact();
-                    std::cout << "ContactListener -> fragmento explota en x = " << fragment->getXCoordinate() << ", y = " << fragment->getYCoordinate() <<  "\n";
+                    //std::cout << "ContactListener -> fragmento explota en x = " << fragment->getXCoordinate() << ", y = " << fragment->getYCoordinate() <<  "\n";
                 } else if (entity->entityType >= 2 && entity->entityType != FRAGMENT) {
                     //std::cout << "A: contact entity type = " << (int)entity->entityType << "\n";
                     entity->startContact();

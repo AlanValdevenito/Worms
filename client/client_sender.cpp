@@ -20,7 +20,7 @@ void SenderTH::run()
             was_closed = true;
         }
     }
-    std::cout << "sale del sender del cliente\n";
+    //std::cout << "sale del sender del cliente\n";
     // salgo ordenadamente
 }
 

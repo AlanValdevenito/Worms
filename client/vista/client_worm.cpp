@@ -53,6 +53,11 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     if ((nuevoEstado == MOVIENDOSE) || (nuevoEstado == QUIETO)) {
         std::shared_ptr<SDL2pp::Texture> nuevaTextura = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
         this->animacion.cambiar(nuevaTextura);
+
+        if (this->tipoDeArma == SIN_ARMA) {
+            //std::cout << "Arma igual a null\n";
+            this->arma = nullptr;
+        }
     }
 
     else if (nuevoEstado == CAYENDO) {

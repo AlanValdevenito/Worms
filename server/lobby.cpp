@@ -87,9 +87,7 @@ void Lobby::kill()
     for (Partida *p : partidas)
     {
         p->forceFinish();
-        // std::cout << "sale del force\n";
         delete p;
-        // std::cout << "delete\n";
     }
 
     partidas.clear();

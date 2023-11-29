@@ -5,12 +5,21 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 		   std::map<std::string, int>& config) : Entity(WORM),
 												hp(config["wormHp"]), 
 												id(id), 
+												teamNumber(0),
 												numberOfContacts(0),
 												speed(config["wormSpeed"]),
 												facingRight(false), 
 												is_alive(true), 
+												damageTaken(0),
 												isRunning(false),
-												direction(LEFT)
+												state(MOVING),
+												playerId(-1),
+												highestYCoordinateReached(0),
+												jumpTimeout(0),
+												actualWeapon(NO_WEAPON),
+												direction(LEFT),
+												angle(0),
+												firstTimeFalling(true)
 												{
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -118,7 +127,7 @@ void Worm::moveLeft() {
 	b2Vec2 velocity = b2Vec2(std::min(0.0f, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
 							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
 
-	if (actualWeapon == NO_WEAPON) {
+	if (actualWeapon == NO_WEAPON || actualWeapon == USED_WEAPON) {
 		isRunning = true;
 		if (velocity == b2Vec2(0.0f,0.0f)) velocity = b2Vec2(-speed, 0.0f);
 		body->SetLinearVelocity(velocity);
@@ -166,7 +175,7 @@ void Worm::moveRight()
 
 	// si no tiene arma, que se mueva
 	// si tiene arma, cambia la direccion a la derecha pero no se mueve
-	if (actualWeapon == NO_WEAPON) {
+	if (actualWeapon == NO_WEAPON || actualWeapon == USED_WEAPON) {
 		isRunning = true;
 		if (velocity == b2Vec2(0.0f, 0.0f) || velocity.x == 0) {
 			velocity = b2Vec2(speed, 0.0f);
@@ -299,11 +308,15 @@ void Worm::startContact() {
 }
 
 void Worm::equipWeapon(uint8_t weapon) {
- 	if (weapon == actualWeapon || weapon == NO_WEAPON) {
+	if (weapon == 11) {
+		actualWeapon = 11;
+		state = STATIC;
+	} else if (weapon == actualWeapon || weapon == NO_WEAPON) {
 		actualWeapon = NO_WEAPON;
 		state = STATIC;
 	} else {
 		actualWeapon = weapon;
+		//std::cout << "actual weapon = " << (int)actualWeapon << "\n";
 		state = EQUIPING_WEAPON;
 	}
 }

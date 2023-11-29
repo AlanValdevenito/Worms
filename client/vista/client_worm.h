@@ -28,6 +28,9 @@ const int ATAQUE_AEREO = 8;
 const int GRANADA_ROJA = 3;
 const int MORTERO = 1;
 
+const int SIN_ARMA = 10;
+const int USADA = 11;
+
 #include "yaml-cpp/yaml.h"
 
 class Worm

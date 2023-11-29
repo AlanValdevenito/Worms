@@ -41,9 +41,8 @@ void ServerClient::kill()
     {
         skt->shutdown(2);
         skt->close();
-        // skt.shutdown(2);
-        // skt.close();
     }
+    delete skt;
 }
 
 void ServerClient::join()

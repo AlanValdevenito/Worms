@@ -26,7 +26,7 @@ void MenuCrearPartida::crearPartida() {
     std::string cantidadJugadores = (ui->jugadoresComboBox->currentText()).toStdString();
     int mapa = (ui->mapaComboBox->currentIndex());
 
-    std::cout << mapa << std::endl;
+    //std::cout << mapa << std::endl;
 
     if ((cantidadJugadores != "Seleccione una opcion") && (mapa > 0)) {
 

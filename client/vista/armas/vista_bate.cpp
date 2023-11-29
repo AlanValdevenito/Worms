@@ -15,6 +15,7 @@ void AnimacionBateDeBaseball::update(float nuevoX, float nuevoY, int nuevoEstado
 void AnimacionBateDeBaseball::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_APUNTANDO) {
+        // std::cout << "Renderizando Bate" << std::endl;
         this->apuntado.render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
     }
 

@@ -42,7 +42,7 @@ void RedGrenade::shoot(Direction direction, float angle, int power) {
     
     float xComponent = (float(power) / 40.0f ) * cos(angle);
     float yComponent = (float(power) / 40.0f ) * sin(angle);
-    std::cout << "xComponent = " << xComponent << " yComponent = " << yComponent << "\n";
+    //std::cout << "xComponent = " << xComponent << " yComponent = " << yComponent << "\n";
     if (direction == LEFT) {
         body->ApplyLinearImpulse(b2Vec2(-xComponent, yComponent), b2Vec2(0.025f, 0.025f), true);
     } else if (direction == RIGHT) {

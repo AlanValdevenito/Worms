@@ -50,16 +50,13 @@ private:
     int lost = 0;
     float timeStep = 1.0f / 30.0f;
 
-    bool wormAttacked;
-    int numberOfPlayers;
+    bool wormAttacked = false;
+    int numberOfPlayers = 0;
     int numberOfWormsMoving = 0;
-    int actualWormId;
+    int actualWormId = 0;
     int indexOfActualPlayer = 0;
-    int numberOfAlivePlayers;
+    int numberOfAlivePlayers = 0;
     int jugadores_en_partida;
-    // std::chrono::steady_clock::time_point t1;
-    // std::chrono::steady_clock::time_point t2;
-    //  std::map<int, LISTA DE WORMS>;
     void mapa();
     void mapa_jaula();
     void mapa_puente();
@@ -78,8 +75,8 @@ public:
     std::vector<RedGrenadeFragment *> redGrenadeFragments;
     std::vector<AirStrikeRocket *> airStrike;
     std::vector<int> explodedFragmentIds;
-    int idTurn;
-    bool game_finished;
+    int idTurn = 1;
+    bool game_finished = false;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad, int map);
     void update();
     void updateWorms();
