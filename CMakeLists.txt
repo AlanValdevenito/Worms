@@ -81,7 +81,7 @@ set(CMAKE_AUTORCC ON)
 # al directorio "data" en el directorio fuente del proyecto.
 add_definitions(-DDATA_PATH="${PROJECT_SOURCE_DIR}/client/vista/data")
 # Agregamos el YAML
-configure_file(configuracion.yml ${CMAKE_CURRENT_BINATY_DIR}/configuracion.yml COPYONLY)
+configure_file(configuracion.yml ${CMAKE_CURRENT_BINATY_DIR}../configuracion.yml COPYONLY)
 # Incluimos los directorios de encabezado necesarios.
 # EN este caso, incluimos los directorios de encabezado de SDL2pp, que se definen en "SDL2PP_INCLUDE_DIRS"
 include_directories(${SDL2PP_INCLUDE_DIRS})

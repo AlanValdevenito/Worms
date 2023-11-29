@@ -33,7 +33,7 @@ std::map<std::string, int> loadConfig(const std::string configFileName)
 
 Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad, int map) : common_queue(queue),
                                                                                          broadcaster(broadcaster),
-                                                                                         config(loadConfig("/configuracion.yml")),
+                                                                                         config(loadConfig("../configuracion.yml")),
                                                                                          world(World(config)),
                                                                                          jugadores_en_partida(cantidad),
                                                                                          game_finished(false)
