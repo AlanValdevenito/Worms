@@ -19,19 +19,19 @@ int Partida::iniciar()
                   ANCHO_VENTANA, ALTO_VENTANA,
                   SDL_WINDOW_RESIZABLE);
 
-    // Window& SetIcon(const Surface& icon);
+    window.SetIcon(Surface(DATA_PATH "/icono.png").SetColorKey(true, 0));  
 
     Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     /******************** INICIALIZAR MUSICA AMBIENTE ********************/
 
-    // Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+    Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
-    // Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
+    Chunk sound(DATA_PATH "/sonidos/worms-hello.ogg");
 
-    // sound.SetVolume(SDL_MIX_MAXVOLUME / 8); // Ajustamos el nivel de volumen
+    sound.SetVolume(SDL_MIX_MAXVOLUME / 8); // Ajustamos el nivel de volumen
 
-    // mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
+    mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
 
     /******************** TEXTURAS Y COLORES ********************/
 
