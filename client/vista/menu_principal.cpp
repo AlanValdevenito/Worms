@@ -19,6 +19,9 @@ MenuPrincipal::MenuPrincipal(Client &cliente, QWidget *parent):
     // Inicializamos la interfaz definida en el archivo .ui
     ui->setupUi(this); 
 
+    QIcon icono(DATA_PATH "/icono.png");
+    this->setWindowIcon(icono);
+
     connectEvents();
 }
 

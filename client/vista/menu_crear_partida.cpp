@@ -8,6 +8,9 @@ MenuCrearPartida::MenuCrearPartida(Client &cliente, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QIcon icono(DATA_PATH "/icono.png");
+    this->setWindowIcon(icono);
+
     connectEvents();
 }
 

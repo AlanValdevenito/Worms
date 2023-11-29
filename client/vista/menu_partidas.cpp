@@ -11,6 +11,10 @@ MenuPartidas::MenuPartidas(Client &cliente, std::list<uint8_t> &partidas, QWidge
     partidaSeleccionada("")
 {
     ui->setupUi(this);
+
+    QIcon icono(DATA_PATH "/icono.png");
+    this->setWindowIcon(icono);
+
     addItems();
     connectEvents();
 }
@@ -24,15 +28,20 @@ void MenuPartidas::addItems() {
         QPushButton *partidaButton = new QPushButton(partida, this);
         partidaButton->setStyleSheet("QPushButton {" 
                                      "  border: none;"
-                                     "  border-top: 1px solid black;"
-                                     "  border-bottom: 1px solid black;"
+                                     "  border-top: 1px solid gray;"
+                                     "  border-bottom: 1px solid gray;"
                                      "  text-align: left;"
                                      "  padding-left: 5px;"
-                                     "  background-color: transparent;" 
+                                     "  background-color: transparent;"
+                                     "  color: gray;" 
                                      "}"
                                      "QPushButton:pressed {"
                                      "  background-color: gray;"
-                                     "}");
+                                     "}"
+                                     "QPushButton {" 
+                                     "image: none;"
+                                     "}"
+                                     );
 
         layout->addWidget(partidaButton);
     }

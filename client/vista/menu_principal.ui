@@ -29,7 +29,10 @@
    <string>Worms 2D</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: black;</string>
+   <string notr="true">QMainWindow { 
+	background-image: url(&quot;/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/client/vista/data/fondo.png&quot;); 
+	background-position: center center;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="enabled">
@@ -51,7 +54,7 @@
     <enum>Qt::PreventContextMenu</enum>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QFrame" name="frame_2">
       <property name="minimumSize">
        <size>
@@ -66,7 +69,7 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -87,7 +90,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../client/vista/data/background1.jpg</pixmap>
+        <pixmap>../client/vista/data/background-1.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -95,7 +98,7 @@
       </widget>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="2" column="0">
      <widget class="QFrame" name="frame">
       <property name="enabled">
        <bool>true</bool>
@@ -119,7 +122,7 @@
        </size>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -147,11 +150,12 @@
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-	background-image: url(../client/vista/data/network.png);
-	border-style: outset;
-	border-width: 2px;
+
+	background-image: url(&quot;../client/vista/data/network.png&quot;);
+	border-style: inset;
+	border-width: 3px;
 	border-radius: 10px;
-	font: bold 14px;
+	border-color: grey;
 }
 
 QPushButton:pressed {
@@ -186,16 +190,15 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-	background-image: url(../client/vista/data/multiplayer.png);
-	border-style: outset;
-	border-width: 2px;
+	background-image: url(&quot;../client/vista/data/multiplayer.png&quot;);
+	border-style: inset;
+	border-width: 3px;
 	border-radius: 10px;
-	font: bold 14px;
+	border-color: grey;
 }
 
 QPushButton:pressed {
 	background-color: grey;
-	border-style: inset;
 }</string>
        </property>
        <property name="text">
@@ -205,39 +208,41 @@ QPushButton:pressed {
       <widget class="QLabel" name="partidasLabel">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>190</y>
-         <width>291</width>
+         <width>301</width>
          <height>17</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);</string>
+        <string notr="true">color: grey;
+font: 16px</string>
        </property>
        <property name="text">
         <string>Acceder al menu de partidas multijugador</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="crearPartidaLabel">
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>360</x>
          <y>190</y>
-         <width>231</width>
+         <width>251</width>
          <height>17</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);</string>
+        <string notr="true">color: grey;
+font: 16px;</string>
        </property>
        <property name="text">
         <string>Acceder al menu de crear partidas</string>
        </property>
       </widget>
       <zorder>crearPartidaButton</zorder>
-      <zorder>partidasButton</zorder>
       <zorder>partidasLabel</zorder>
-      <zorder>label</zorder>
+      <zorder>crearPartidaLabel</zorder>
+      <zorder>partidasButton</zorder>
      </widget>
     </item>
    </layout>

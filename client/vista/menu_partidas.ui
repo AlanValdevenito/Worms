@@ -29,7 +29,10 @@
    <string>Worms 2D</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(0, 0, 0);</string>
+   <string notr="true">QMainWindow { 
+	background-image: url(&quot;/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/client/vista/data/fondo.png&quot;); 
+	background-position: center center;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -48,7 +51,7 @@
     <item row="0" column="0">
      <widget class="QFrame" name="frame">
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -56,19 +59,14 @@
       <widget class="QScrollArea" name="scrollAreaPartidas">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>0</x>
          <y>10</y>
          <width>301</width>
          <height>391</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 255, 255);
-border-color: rgb(119, 118, 123);
-
-QScrollArea {
-	border: 2px solid gray;
-}</string>
+        <string notr="true"/>
        </property>
        <property name="widgetResizable">
         <bool>true</bool>
@@ -87,6 +85,13 @@ QScrollArea {
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QWidget {
+	background-color: black;
+	image: url(&quot;../client/vista/data/background-transparente-1.png&quot;);
+	border: 2px solid gray;
+}</string>
         </property>
        </widget>
       </widget>
@@ -113,15 +118,12 @@ QScrollArea {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-	background-color: white;
-	border-style: outset;
-	border-width: 2px;
-	border-radius: 10px;
+	background-color: black;
+	border-style: inset;
+	border-width: 3px;
+	border-color: grey;
 	font: bold 14px;
-}
-
-QPushButton:hover {
-	background: grey;
+	color: grey;
 }
 
 QPushButton:pressed {
@@ -138,7 +140,7 @@ QPushButton:pressed {
     <item row="0" column="1">
      <widget class="QFrame" name="frame_2">
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -166,15 +168,12 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
-	background-color: white;
-	border-style: outset;
-	border-width: 2px;
-	border-radius: 10px;
+	background-color: black;
+	border-style: inset;
+	border-width: 3px;
+	border-color: grey;
 	font: bold 14px;
-}
-
-QPushButton:hover {
-	background: grey;
+	color: grey;
 }
 
 QPushButton:pressed {

@@ -8,6 +8,10 @@ MenuFinalizar::MenuFinalizar(Client &cliente, int resultado, QWidget *parent) :
     resultado(resultado)
 {
     ui->setupUi(this);
+
+    QIcon icono(DATA_PATH "/icono.png");
+    this->setWindowIcon(icono);
+
     connectEvents();
 
     std::string texto = this->resultado ? ("¡Felicidades has ganado!") : ("            Has perdido");
