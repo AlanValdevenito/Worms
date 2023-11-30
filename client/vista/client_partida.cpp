@@ -38,6 +38,8 @@ int Partida::iniciar()
     inicializar_texturas(renderer);
     inicializar_colores();
 
+    this->armas = std::make_shared<MenuArmas>(renderer);
+
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
     guardar_vigas();
@@ -212,7 +214,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
             // Si se hace click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
-                this->camara.setMoverCamara(true);
+                this->armas->abrirMenu();
                 break;
 
             // Si se hace click izquierdo...
@@ -234,6 +236,10 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             case SDLK_ESCAPE:
             case SDLK_q:
                 return true;
+
+            case SDLK_c:
+                this->camara.setMoverCamara(true);
+                break;
 
             // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
@@ -488,6 +494,10 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             switch (event.key.keysym.sym)
             {
 
+            case SDLK_c:
+                this->camara.setMoverCamara(false);
+                break;
+
             // Si se suelta la flecha hacia la derecha cambiamos el estado del gusano
             case SDLK_RIGHT:
                 break;
@@ -689,9 +699,11 @@ void Partida::renderizar(SDL2pp::Renderer &renderer)
 
     renderizar_mapa(renderer);
     renderizar_agua(renderer);
-    renderizar_temporizador(renderer);
     renderizar_worms(renderer);
     renderizar_vidas_totales(renderer);
+    renderizar_temporizador(renderer);
+
+    this->armas->render(renderer);
 
     renderer.Present();
 }

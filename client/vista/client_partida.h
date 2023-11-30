@@ -12,6 +12,7 @@
 
 #include "client_camara.h"
 #include "client_worm.h"
+#include "client_menu_armas.h"
 #include "client.h"
 #include "viga.h"
 #include "mover.h"
@@ -50,6 +51,7 @@ private:
     Camara camara;
 
     int x,y; // Enteros que almacenan la posicion del click en la ventana
+    std::shared_ptr<MenuArmas> armas;
 
 public:
     Partida(Client &cliente);
@@ -70,9 +72,9 @@ public:
     void renderizar(SDL2pp::Renderer &renderer);
     void renderizar_agua(SDL2pp::Renderer &renderer);
     void renderizar_mapa(SDL2pp::Renderer &renderer);
-    void renderizar_temporizador(SDL2pp::Renderer &renderer);
     void renderizar_worms(SDL2pp::Renderer &renderer);
     void renderizar_vidas_totales(SDL2pp::Renderer &renderer);
+    void renderizar_temporizador(SDL2pp::Renderer &renderer);
 
     float metros_a_pixeles(float metros);
     float centimetros_a_metros(float centimetros);
