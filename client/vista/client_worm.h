@@ -67,7 +67,8 @@ public:
     void equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma);
 
     void render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
-    void render_vida(SDL2pp::Renderer &renderer,float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
+    void render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
+    void render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
 
     void set_turno(bool nuevoTurno);
     void set_camara(bool nuevaCamara);

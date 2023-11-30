@@ -22,6 +22,7 @@ public:
     void seguir(float nuevoX, float nuevoY); // Actualiza la posicion de la camara para seguir al Worm
     void mover(float moverX, float moverY);
 
+    bool comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto);
     float getLimiteDerecho();
     float getLimiteIzquierdo();
     float getLimiteSuperior();

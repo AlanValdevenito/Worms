@@ -199,11 +199,15 @@ void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraL
         }
     }
 
+    this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
+}
+
+void Worm::render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+
     if ((this->arma) && (this->estado != EQUIPANDO_ARMA) && (this->estado != APUNTANDO)) {
         this->arma->render(renderer, this->color, camaraLimiteIzquierdo, camaraLimiteSuperior);
     }
 
-    this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
 }
 
 void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {

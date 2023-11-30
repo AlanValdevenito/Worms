@@ -640,7 +640,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo());
 
         if ((this->worms[gusano->get_id()]->get_tipo_de_arma() != tipoDeArma)) {
-            std::cout << tipoDeArma << std::endl;
             this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
 
@@ -704,6 +703,8 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 
     renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
 
+    int contador = 0;
+
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
         // Debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
@@ -715,26 +716,33 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
             // Al hacer este corrimiento se graficara desde el (2,5) hasta el (8,5) 
         
         float x = this->vigas[i]->x_pos() - (this->vigas[i]->return_ancho() / 2);
-        float y = this->vigas[i]->y_pos() + (this->vigas[i]->return_alto() / 2);
+        float y = metros_a_centimetros(pixeles_a_metros(altura)) - this->vigas[i]->y_pos() - (this->vigas[i]->return_alto() / 2);
         float ancho = this->vigas[i]->return_ancho();
         float alto = this->vigas[i]->return_alto();
         float angulo = -(this->vigas[i]->return_angulo());
 
-        if (ancho == 600) {
-            renderer.Copy(
-                *this->texturas[2],
-                Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()) ,
-                metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
-        
-        } else if (ancho == 300) {
-            renderer.Copy(
-                *this->texturas[3],
-                Rect(0, 0, 50, 50),
-                Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), altura - metros_a_pixeles(centimetros_a_metros(y) + this->camara.getLimiteSuperior()),
-                metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+        if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), centimetros_a_metros(ancho), centimetros_a_metros(ancho))) {
+
+            contador++;
+
+            if (ancho == 600) {
+                renderer.Copy(
+                    *this->texturas[2],
+                    Rect(0, 0, 50, 50),
+                    Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), metros_a_pixeles(centimetros_a_metros(y) - this->camara.getLimiteSuperior()) ,
+                    metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+            
+            } else if (ancho == 300) {
+                renderer.Copy(
+                    *this->texturas[3],
+                    Rect(0, 0, 50, 50),
+                    Rect(metros_a_pixeles(centimetros_a_metros(x) - this->camara.getLimiteIzquierdo()), metros_a_pixeles(centimetros_a_metros(y) - this->camara.getLimiteSuperior()),
+                    metros_a_pixeles(centimetros_a_metros(ancho)), metros_a_pixeles(centimetros_a_metros(alto))), angulo);
+            }    
         }
     }
+
+    std::cout << "Vigas renderizadas: <" << contador << "> de un total de: <" << (int)this->vigas.size()<< ">\n" << std::endl;
 }
 
 void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
@@ -756,31 +764,53 @@ void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
 
     /***** Olas *****/
 
+    // int contador = 0;
+
     i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
     while (i < (ancho + metros_a_pixeles(this->camara.getLimiteDerecho()))) {
 
         int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
 
         for(int x = 0; x < 5; x++) {
-            renderer.Copy(
-                *this->texturas[1], 
-                NullOpt, 
-                Rect(i,j, this->texturas[1]->GetWidth(), this->texturas[1]->GetHeight())
-            );
+            
+            //if (this->camara.comprobarRenderizado(pixeles_a_metros(i), pixeles_a_metros(j), pixeles_a_metros(this->texturas[1]->GetWidth()), pixeles_a_metros(this->texturas[1]->GetHeight()))) {
+                
+                // contador++;
+                
+                renderer.Copy(
+                    *this->texturas[1], 
+                    NullOpt, 
+                    Rect(i,j, this->texturas[1]->GetWidth(), this->texturas[1]->GetHeight())
+                );
+            // }
 
             j += this->texturas[1]->GetHeight();
         }
 
         i += this->texturas[1]->GetWidth();
     }
+
+    // std::cout << "Olas renderizadas: " << contador << std::endl;
 }
 
 void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
+
+    int contador = 0;
+
     for (const auto &elemento : this->worms)
     {
-        elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
+
+        if (this->camara.comprobarRenderizado(pixeles_a_metros(elemento.second->get_x()), pixeles_a_metros(elemento.second->get_y()), 1.0f, 1.0f)) {
+            elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
+            contador++;
+        }
+
+        elemento.second->render_arma(renderer, (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
+
     }
+
+    std::cout << "Worms renderizados: <" << contador << "> de un total de: <" << (int) this->worms.size()<< ">\n" << std::endl;
 }
 
 void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {

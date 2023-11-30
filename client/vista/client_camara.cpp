@@ -48,8 +48,17 @@ void Camara::mover(float moverX, float moverY) {
     }
 }
 
+bool Camara::comprobarRenderizado(float objetoX, float objetoY, float objetoAncho, float objetoAlto) {
+    float limiteIzquierda = getLimiteIzquierdo();
+    float limiteDerecho = getLimiteDerecho();
+    float limiteSuperior = getLimiteSuperior();
+    float limiteInferior = getLimiteInferior();
+
+    return ((objetoX <= (limiteDerecho + objetoAncho)) && (objetoX >= (limiteIzquierda - objetoAncho)) && (objetoY >= (limiteSuperior - objetoAlto)) && (objetoY <= (limiteInferior + objetoAlto)));
+}
+
 float Camara::getLimiteDerecho() {
-    return this->x + ((this->ancho/2) / 24);
+    return this->x + ((this->ancho/2) / 24); // Metros
 }
 
 float Camara::getLimiteIzquierdo() {
