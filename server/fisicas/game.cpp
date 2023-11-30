@@ -12,6 +12,7 @@ std::map<std::string, int> loadConfig(const std::string configFileName)
     std::map<std::string, int> config;
     config["map"] = yaml["map"].as<int>();
     config["wormHp"] = yaml["worm"]["hp"].as<int>();
+    config["wormExtraHp"] = yaml["worm"]["extra_hp"].as<int>();
     config["wormSpeed"] = yaml["worm"]["speed"].as<int>();
     config["turnDuration"] = yaml["turn_duration"].as<int>();
     config["timeLeftAfterAttack"] = yaml["time_left_after_attack"].as<int>();
@@ -292,9 +293,6 @@ void Game::createPlayers()
 
 void Game::createPlayers()
 {
-    //creo jugadores
-    
-
     int playerIndex = 0;
     int wormId = 1;
     int numberOfWorms = (int)world.getWorms().size();
@@ -322,8 +320,32 @@ void Game::createPlayers()
     actualWormId = players[indexOfActualPlayer].actualWormId;
     numberOfPlayers = (int)idPlayers.size();
     numberOfAlivePlayers = numberOfPlayers;
+
+    // si la cantidad de gusanos no es multiplo de la cantidad de jugadores
+    if (numberOfWorms % numberOfPlayers != 0) {
+        increaseHpOfTeamsWithLessPlayers();
+    }
 }
 
+void Game::increaseHpOfTeamsWithLessPlayers() {
+    int maxNumberOfWorms = 0;
+    // busco cual es la cantidad maxima de gusanos por equipo
+    for (int i = 0; i < numberOfPlayers; i++) {
+        if (players[i].numberOfAliveWorms > maxNumberOfWorms) {
+            maxNumberOfWorms = players[i].numberOfAliveWorms;
+        }
+    }
+
+    // a los equipos que tienen menos gusanos que la cantidad maxima
+    // les sumo hp 
+    for (int i = 0; i < numberOfPlayers; i++) {
+        if (players[i].numberOfAliveWorms < maxNumberOfWorms) {
+            for (int wormId : players[i].wormIds) {
+                world.getWormsById()[wormId]->increaseHp(config["wormExtraHp"]);
+            }
+        }
+    }
+}
 
 void Game::finalizar_juego(std::shared_ptr<Dto> dto)
 {

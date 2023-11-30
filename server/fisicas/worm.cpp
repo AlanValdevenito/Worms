@@ -321,6 +321,10 @@ void Worm::equipWeapon(uint8_t weapon) {
 	}
 }
 
+void Worm::increaseHp(int extraHp) {
+	hp += extraHp;
+}
+
 void Worm::applyImpulse(float x, float y) {
 	body->ApplyLinearImpulseToCenter(b2Vec2(x, y), true);
 	state = FLYING;

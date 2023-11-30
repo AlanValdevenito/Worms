@@ -2,11 +2,12 @@
 
 map: 1
 
-cantidad_de_worms: 4
+cantidad_de_worms: 5
 
 worm:
   hp: 100
   speed: 2
+  extra_hp: 25
 
 turn_duration: 60
 time_left_after_attack: 3

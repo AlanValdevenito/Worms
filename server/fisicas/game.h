@@ -64,6 +64,7 @@ private:
     void finalizar_juego(std::shared_ptr<Dto> dto);
     bool timeIsUp();
     void beginNextTurn();
+    void increaseHpOfTeamsWithLessPlayers();
 public:
     GreenGrenade *greenGrenade = NULL;
     BazookaRocket *bazookaRocket = NULL;

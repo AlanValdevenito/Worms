@@ -78,6 +78,7 @@ public:
     void setTeamNumber(uint8_t number);
     void equipWeapon(uint8_t weapon);
     void applyImpulse(float x, float y);
+    void increaseHp(int extraHp);
     uint8_t getWeapon();
     uint8_t getTeamNumber();
     uint8_t getDirection();
