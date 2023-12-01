@@ -20,7 +20,11 @@ int Vista::iniciar(int argc, char* argv[])
     // cuando se quiera hacer pop() de estas cosas ya no nos quedaremos bloqueados y no se frenara la ejecucion de SDL
 
     //std::cout << "Esperando la señal para iniciar la partida" << std::endl;
-    cliente.recv_queue.pop();
+    if(not (cliente.recv_queue.pop())->is_alive()){
+        cliente.kill();
+        return 0;
+    }
+
     //std::cout << "Inicia la partida" << std::endl;
 
     /******************** PARTIDA ********************/

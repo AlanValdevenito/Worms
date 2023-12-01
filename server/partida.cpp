@@ -44,12 +44,11 @@ void Partida::forceFinish()
     {
         game.stop();
         game.join();
-
-        std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
-        broadcaster.notificarCierre(fin);
-        sleep(5);
-        broadcaster.deleteAllQueues();
     }
+    std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
+    broadcaster.notificarCierre(fin);
+    sleep(1);
+    broadcaster.deleteAllQueues();
 
     for (auto &c : clients)
     {

@@ -25,13 +25,13 @@ int Partida::iniciar()
 
     /******************** INICIALIZAR MUSICA AMBIENTE ********************/
 
-    Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+    //Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
-    Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
+    //Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
 
-    sound.SetVolume(SDL_MIX_MAXVOLUME / 10); // Ajustamos el nivel de volumen
+    //sound.SetVolume(SDL_MIX_MAXVOLUME / 10); // Ajustamos el nivel de volumen
 
-    mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
+    //mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
 
     /******************** TEXTURAS Y COLORES ********************/
 

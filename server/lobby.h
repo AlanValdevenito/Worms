@@ -42,9 +42,12 @@ private:
     std::list<Partida *> partidas;
     uint8_t id_cliente;
     int partida_id;
+    bool lobby_abierto;
 
     void sendMatchList(ServerClient *c);
-    void agregarClienteAPartida(ServerClient *c, std::shared_ptr<ListaDePartidas> partida);
+    void cerrarCliente(ServerClient *c);
+    void agregarClienteAPartida(ServerClient *c, std::shared_ptr<Dto> lista);
+    void crearNuevaPartida(ServerClient *c, std::shared_ptr<Dto> np);
     void removerPartidasMuertas();
 };
 #endif
