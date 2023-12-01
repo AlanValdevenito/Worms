@@ -59,12 +59,10 @@ void Lobby::addToPartida(ServerClient *c){
     int contador = 0;
     std::shared_ptr<Dto> respuesta = NULL;
 
-    // si el contador llega a la espera maxima se cierra el cliente
-    // esto es para si el jugador tarda mucho, se lo eche y se deje entrar a otro jugador si es el caso
-    // ya que el lobby va aceptando de a un solo cliente
-    while(not lobby_queue.try_pop(respuesta) && contador < ESPERA_MAXIMA_EN_LOBBY && lobby_abierto){
+    // si el servidor cierra antes de obtener la respuesta sale
+    // el sleep esta para que no pregunte tantas veces
+    while(not lobby_queue.try_pop(respuesta) && lobby_abierto){
         std::this_thread::sleep_for(std::chrono::milliseconds((int)500));
-        contador++;
     }
 
     if(respuesta == NULL)
