@@ -52,6 +52,20 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 
 	body->SetFixedRotation(true);
 
+	ammunition[BATE_WEAPON] = 1;
+	ammunition[GREEN_GRENADE_WEAPON] = config["greenGrenadeAmmunition"];
+	ammunition[BAZOOKA_WEAPON] = config["bazookaAmmunition"];
+	ammunition[BANANA_WEAPON] = config["bananaAmmunition"];
+	ammunition[RED_GRENADE_WEAPON] = config["redGrenadeAmmunition"];
+	ammunition[MORTERO_WEAPON] = config["morteroAmmunition"];
+	ammunition[AIR_STRIKE_WEAPON] = config["airStrikeAmmunition"];
+	ammunition[TELEPORT_WEAPON] = config["teleportAmmunition"];
+	ammunition[HOLY_GRENADE_WEAPON] = config["holyGrenadeAmmunition"];
+	ammunition[DYNAMITE_WEAPON] = config["dynamiteAmmunition"];
+	ammunition[NO_WEAPON] = 99999999;
+	ammunition[USED_WEAPON] = 99999999;
+
+
 
 	// cuerpo rectangular
 
@@ -308,6 +322,7 @@ void Worm::startContact() {
 }
 
 void Worm::equipWeapon(uint8_t weapon) {
+	if (ammunition[weapon] == 0) return;
 	if (weapon == 11) {
 		actualWeapon = 11;
 		state = STATIC;

@@ -3,8 +3,8 @@
 
 
 MorteroRocket::MorteroRocket(b2World *world, float x, float y, float angle,
-                             std::map<std::string, int>& config) : Entity(BAZOOKA_ROCKET),maxDamage(config["bazookaDamage"]),
-                                                                   explosionRadius(config["bazookaRadius"]) {
+                             std::map<std::string, int>& config) : Entity(BAZOOKA_ROCKET),maxDamage(config["morteroDamage"]),
+                                                                   explosionRadius(config["morteroRadius"]) {
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x, y);

@@ -2,39 +2,62 @@
 
 map: 1
 
-cantidad_de_worms: 5
+cantidad_de_worms: 2
 
 worm:
   hp: 100
   speed: 2
   extra_hp: 25
 
-turn_duration: 60
+turn_duration: 10
 time_left_after_attack: 3
 
 dynamite:
   damage: 50
   radius: 4
+  ammunition: 5
 
 green_grenade:
   damage: 30
+  radius: 2
+  ammunition: 99999
+
+red_grenade:
+  damage: 30
+  radius: 2
+  ammunition: 10
+
+fragment:
+  damage: 10
   radius: 2
 
 bazooka:
   damage: 50
   radius: 2
+  ammunition: 99999
+
+mortero:
+  damage: 50
+  radius: 2
+  ammunition: 10
 
 banana:
   damage: 70
   radius: 4
+  ammunition: 5
 
 holy_grenade:
   damage: 110
   radius: 8
+  ammunition: 2
 
 air_strike:
   damage: 40
   radius: 2
+  ammunition: 2
+
+teleport:
+  ammunition: 99999
 
 armas:
   - codigo: 3

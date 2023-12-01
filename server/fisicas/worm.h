@@ -15,25 +15,23 @@ const int JUMPING_BACKWARD = 2;
 const int EQUIPING_WEAPON = 3;
 const int AIMING = 4;
 const int DEAD = 5;
-const int NO_WEAPON = 10;
-const int USED_WEAPON = 11;
 const int FLYING = 7;
 const int STATIC = 8;
 const int FALLING = 9;
 
+const int BATE_WEAPON = 7;
+const int GREEN_GRENADE_WEAPON = 2;
+const int BAZOOKA_WEAPON = 0;
+const int BANANA_WEAPON = 4;
+const int HOLY_GRENADE_WEAPON = 5;
+const int DYNAMITE_WEAPON = 6;
+const int TELEPORT_WEAPON = 9;
+const int AIR_STRIKE_WEAPON = 8;
+const int RED_GRENADE_WEAPON = 3;
+const int MORTERO_WEAPON = 1;
+const int NO_WEAPON = 10;
+const int USED_WEAPON = 11;
 
-
-/*const int BATE = 7;
-const int GRANADA_VERDE = 2;
-const int BAZOOKA = 0;
-const int BANANA = 4;
-const int GRANADA_SANTA = 5;
-const int DINAMITA = 6;
-const int TELETRANSPORTACION = 9;
-const int ATAQUE_AEREO = 8;
-const int GRANADA_ROJA = 3;
-const int MORTERO = 1;
-*/
 
 class Worm : public Entity {
 private:
@@ -59,6 +57,7 @@ public:
     uint8_t direction;
     float angle;
     bool firstTimeFalling;
+    std::map<int, int> ammunition;
     Worm(b2World *b2world, float x, float y, uint8_t id, std::map<std::string, int>& config);
     float getXCoordinate();
     float getYCoordinate();
