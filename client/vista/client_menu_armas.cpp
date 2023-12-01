@@ -19,17 +19,20 @@ void MenuArmas::render(SDL2pp::Renderer &renderer) {
         return;
     }
 
-    float ancho = this->armas[0]->GetWidth() * 1.2f;
-    float alto = this->armas[0]->GetHeight() * 1.2f;
-
     SDL2pp::Color blanco(255, 255, 255, 255); 
+    SDL2pp::Color negro(0, 0, 0, 255);
 
-    int offset = 0;
-    for (int i = 0; i < (int) this->armas.size(); i++) {
+    int cantidad_armas = this->armas.size();
+
+    float ancho = this->armas[0]->GetWidth() * 1.3f;
+    float alto = this->armas[0]->GetHeight() * 1.3f;
+
+    float offset = (renderer.GetOutputHeight()/2) - (ancho * (cantidad_armas/2));
+    for (int i = 0; i < cantidad_armas; i++) {
 
         /***** FONDO *****/
 
-        SDL2pp::Rect fondo(renderer.GetOutputWidth() - (ancho*2) - 24, 18 + offset, (ancho*2) + 6, alto + 4);
+        SDL2pp::Rect fondo(renderer.GetOutputWidth() - (ancho*2) - 24, offset, (ancho*2) + 6, alto + 4);
         renderer.SetDrawColor(blanco);
         renderer.FillRect(fondo);
 
@@ -38,13 +41,12 @@ void MenuArmas::render(SDL2pp::Renderer &renderer) {
         renderer.Copy(
             *this->armas[i],
             SDL2pp::NullOpt,
-            SDL2pp::Rect(renderer.GetOutputWidth() - ancho - 20, 20 + offset, ancho, alto)
+            SDL2pp::Rect(renderer.GetOutputWidth() - ancho - 20, offset + 2, ancho, alto)
         );
 
         /***** TECLAS *****/
 
-        SDL2pp::Rect contenedor(renderer.GetOutputWidth() - (ancho*2) - 22, 20 + offset, ancho, alto);
-        SDL2pp::Color negro(0, 0, 0, 255);
+        SDL2pp::Rect contenedor(renderer.GetOutputWidth() - (ancho*2) - 22, offset + 2, ancho, alto);
         renderer.SetDrawColor(negro);
         renderer.FillRect(contenedor);
 
