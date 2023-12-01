@@ -15,13 +15,18 @@
     }
     
     class Game {
-        -players: List<Player> 
-        +run()
+        - common_queue: Queue
+        - broadcaster: Broadcaster
+        - players: List<Player> 
+        + run()
+        + update()
+        + sendGameState()
     }
 
     class World {
-        -worms: List<Worm>
-        +step()
+        - worms: List<Worm>
+        - beams: List<Beam>
+        + step()
     }
     
     class Lobby {
@@ -149,6 +154,22 @@
     
     }
 
-    Client -> ProtocoloCliente
-    ServerClient -> ProtocoloServidor
-    @enduml
+Client <-down-> ProtocoloCliente
+ServerClient <-down-> ProtocoloServidor
+
+Vista -down-> Client
+Vista -down-> "Interfaz de Usuario.Partida"
+"Interfaz de Usuario.Partida"-up-> Worm
+"Interfaz de Usuario.Worm"-right-> Arma
+
+Arma -down-> Animation
+Worm -down-> Animation
+
+"Servidor.Partida" -down-> ServerClient
+"Servidor.Partida" -down-> Game
+Lobby--left->"Servidor.Partida"
+Aceptador --left--> Lobby
+Game --right--> World
+Server --left-> Aceptador
+
+ @enduml
