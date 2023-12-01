@@ -461,7 +461,6 @@ void Game::passTurn()
     {
         if (world.anyMovement() || hayBombas())
         {
-            // std::cout << "hay movimiento\n";
             idTurn = -1;
             return;
         }
@@ -472,7 +471,6 @@ void Game::passTurn()
         if (not wormAttacked) {
             world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
         }
-        //wormAttacked = false;
         beginNextTurn();
         if (idTurn == -1) {
             // si no hay jugadores para elegir ==> cierro.
@@ -512,7 +510,6 @@ void Game::updateWorms()
         if (worm->is_alive && worm->numberOfContacts == 0 && 
             worm->getState() != JUMPING_BACKWARD && worm->getState() != JUMPING_FORWARD &&
             worm->getState() != FLYING && worm->getVelocity().y < 0.0f) {worm->state = FALLING;}
-        // std::cout << "worm x = " << worm->getXCoordinate() << "\n";
         if (not worm->isMoving() && worm->getHp() == 0 && worm->is_alive)
         {
             worm->is_alive = false;
@@ -762,10 +759,8 @@ void Game::sendWorms()
     std::vector<std::shared_ptr<Gusano>> vectorGusanos;
     for (Worm *w : world.getWorms())
     {   
-        //std::cout << "worm id = " << (int)w->getId() << ", estado = " << (int)w->getState() << "\n";
         if (w->is_alive)
          {
-            // std::cout << "sendWorms(), w->getHp() = " << (int)w->getHp() << "\n";
             std::shared_ptr<Gusano> g = std::make_shared<Gusano>((w->getId()),
                                                                  (int)(w->getXCoordinate() * 100),
                                                                  (int)(w->getYCoordinate() * 100),
@@ -777,16 +772,11 @@ void Game::sendWorms()
                                                                  (uint8_t)w->getAngle());
             vectorGusanos.push_back(g);
         }
-
-        // IF NO ESTA VIVO Y ESTA QUIETO O COLISIONANDO CONTRA LA VIGA -> LO ELIMINAS
     }
     std::shared_ptr<Gusanos> gusanos = std::make_shared<Gusanos>(vectorGusanos);
 
     int id = players[indexOfActualPlayer].getActualWormId(); // obtengo el id del gusano actual
-    // int id = 1;
     gusanos->set_gusano_de_turno(id);
-
-    // SI HAY GRANADA
     
     if (hayBombas())
     {
@@ -874,10 +864,8 @@ void Game::sendBombs() {
 void Game::sendMap()
 {
     std::vector<std::shared_ptr<Viga>> vs;
-    // por cada viga manda un Dto Viga a los senders
     for (auto &beam : world.getBeams())
     {
-        // cambiar los parametros a float
         std::shared_ptr<Viga> viga = std::make_shared<Viga>((int)(beam.getXCoordinate() * 100),
                                                             (int)(beam.getYCoordinate() * 100),
                                                             (int)(beam.getWidth() * 100),
@@ -892,28 +880,18 @@ void Game::sendMap()
 
 void Game::moveWormRight()
 {
-
-    // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
-
-    // lista de gusano = diccionario [ID];
-
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->moveRight();
-    // std::cout << "posicion gusano = " << world.getWorms().front()->getXCoordinate() << "\n";
 }
 
 void Game::moveWormLeft()
 {
-
-    // ACCEDEMOS A LA LISTA DE SUS GUSANOS USANDO SU ID EN EL DICCIONARIO
-
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->moveLeft();
 }
 
 void Game::jumpWorm(uint8_t direction)
 {
-    // direction = 0 ==> forward
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     if (direction == 0)
     {
@@ -939,7 +917,6 @@ void Game::batWorm(int angle)
 void Game::stop()
 {
     game_finished = true;
-    // liberar memoria
 }
 
 void Game::throwGreenGrenade(float angle, int power, int timeToExplotion)
@@ -1089,12 +1066,10 @@ void Game::shootAirStrike(float x, float y)
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
     if (actualWorm->ammunition[actualWorm->actualWeapon] <= 0) return;
-    // airStrikeRocket = new AirStrikeRocket(&world.world, x, y);
     airStrike.clear();
     for (int i = 0; i < 6; i++)
     {
         airStrike.push_back(new AirStrikeRocket(&world.world, x + 3 * i - 7.5f, y + 40 + 2 * i, config));
-        // airStrike[i]->shoot();
     }
 
     timeOfAttack = std::chrono::steady_clock::now();
@@ -1124,18 +1099,16 @@ void Game::throwFragments(float x, float y) {
 void Game::executeCommand(std::shared_ptr<Dto> dto)
 {
     uint8_t clientId = dto->get_cliente_id();
-    // std::cout << "clientId = " << (int)clientId << "\n";
     if (clientId != idTurn)
         return;
     uint8_t code = dto->return_code();
-    // printf("codigo mate %u\n",code);
     if (code == MOVER_A_DERECHA_CODE)
     {
-        moveWormRight(); // SI ES SU TURNO, LE PASAMOS EL ID
+        moveWormRight();
     }
     else if (code == MOVER_A_IZQUIERDA_CODE)
     {
-        moveWormLeft(); // SI ES SU TURNO, LE PASAMOS EL ID
+        moveWormLeft();
     }
     else if (code == BATEAR_CODE)
     {

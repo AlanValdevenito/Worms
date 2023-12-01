@@ -20,16 +20,6 @@ RedGrenadeFragment::RedGrenadeFragment(b2World *world, float x, float y,
 	fixtureDef.filter.categoryBits = 0x02;
     fixtureDef.filter.maskBits = 0xFD;
     body->CreateFixture(&fixtureDef);
-
-    /*b2FixtureDef fixtureDef2;
-    b2PolygonShape dynamicBox2;
-	dynamicBox2.SetAsBox(0.05f, 0.05f, b2Vec2(0.015f, 0.0f), 0);
-    fixtureDef2.shape = &dynamicBox2;
-	fixtureDef2.density = 5.0f;
-    fixtureDef2.filter.categoryBits = 0x02;
-    fixtureDef2.filter.maskBits = 0xFD;
-
-    body->CreateFixture(&fixtureDef2);*/
     
     // sensor
     b2FixtureDef sensorFixtureDef;

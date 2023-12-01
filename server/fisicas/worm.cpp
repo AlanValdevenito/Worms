@@ -65,32 +65,7 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 	ammunition[NO_WEAPON] = 99999999;
 	ammunition[USED_WEAPON] = 99999999;
 
-
-
 	// cuerpo rectangular
-
-	/*
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(0.5f, 0.5f);
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.filter.categoryBits = 0x02;
-    fixtureDef.filter.maskBits = 0xFD;
-
-	fixtureDef.friction = 0.7f;
-	body->CreateFixture(&fixtureDef);
-
-	// le agrego un sensor 
-	b2FixtureDef sensorFixtureDef;
-	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox(0.05f, 0.05f, b2Vec2(0.0f,-0.5f), 0);
-	sensorFixtureDef.isSensor = true;
-	sensorFixtureDef.shape = &polygonShape;
-	sensorFixtureDef.filter.categoryBits = 0x02;
-    sensorFixtureDef.filter.maskBits = 0xFD;
-	body->CreateFixture(&sensorFixtureDef);
-	*/
 }
 
 float Worm::getXCoordinate()
@@ -116,24 +91,18 @@ void Worm::moveLeft() {
 	input.maxFraction = 0.75;
 	b2Vec2 normal(0, 0);
 	int minFraction = 10;
-	//check every fixture of every body to find closest
-	//float closestFraction = 1; //start with end of line as p2
+	
 	b2Vec2 intersectionNormal(0,0);
 	for (b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext()) {
 		if (b->GetType() == b2_staticBody) {
-			//std::cout << "staticBody\n";
 			b2Fixture* f = b->GetFixtureList();
-			//for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext()) {
 				
 			b2RayCastOutput output;
 			if (f->RayCast( &output, input, 1)) {
-				//normal = output.normal;
 				if (output.fraction <= minFraction) {
 					minFraction = output.fraction;
 					normal = output.normal;
 				}
-				//break;
-				//std::cout << "normal -> x = " << output.normal.x << ", y = " << output.normal.y << "\n";
 			}		
 		}
 	}
@@ -145,7 +114,6 @@ void Worm::moveLeft() {
 		isRunning = true;
 		if (velocity == b2Vec2(0.0f,0.0f)) velocity = b2Vec2(-speed, 0.0f);
 		body->SetLinearVelocity(velocity);
-		//body->SetLinearVelocity(b2Vec2(-speed, 0.0f));
 		state = MOVING;
 	}
 	facingRight = false;
@@ -161,14 +129,10 @@ void Worm::moveRight()
 	input.maxFraction = 0.75f;
 	b2Vec2 normal(0, 0);
 	int minFraction = 10;
-	//check every fixture of every body to find closest
-	//float closestFraction = 1; //start with end of line as p2
 	b2Vec2 intersectionNormal(0,0);
 	for (b2Body* b = body->GetWorld()->GetBodyList(); b; b = b->GetNext()) {
 		if (b->GetType() == b2_staticBody) {
-			//std::cout << "staticBody\n";
 			b2Fixture* f = b->GetFixtureList();
-			//for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext()) {
 				
 			b2RayCastOutput output;
 			if (f->RayCast( &output, input, 1)) {
@@ -176,9 +140,6 @@ void Worm::moveRight()
 					minFraction = output.fraction;
 					normal = output.normal;
 				}
-				//normal = output.normal;
-				//break;
-				//std::cout << "normal -> x = " << output.normal.x << ", y = " << output.normal.y << "\n";
 			}		
 		}
 	}
@@ -246,7 +207,7 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 			}
 			yComponent = 40.0f*sin(angleInRadians);
 			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
-			worm->takeDamage(10); // Sacarle la vida cuando se deje de mover
+			worm->takeDamage(10);
 			worm->state = FLYING;
 		}
 	}
@@ -256,7 +217,6 @@ void Worm::makeDamage() {
 	if (hp <= damageTaken) {
 		hp = 0;
 		state = DEAD;
-		//is_alive = false;
 	} else {
 		hp -= damageTaken;
 	}
@@ -331,7 +291,6 @@ void Worm::equipWeapon(uint8_t weapon) {
 		state = STATIC;
 	} else {
 		actualWeapon = weapon;
-		//std::cout << "actual weapon = " << (int)actualWeapon << "\n";
 		state = EQUIPING_WEAPON;
 	}
 }

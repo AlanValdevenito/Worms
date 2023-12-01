@@ -13,21 +13,6 @@ Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds,
 	bodyDef.position.Set(x, y);
 	bodyDef.userData.pointer = (uintptr_t)this;
 	body = world->CreateBody(&bodyDef);
-	
-    
-    /*b2FixtureDef fixtureDef;
-    b2CircleShape circleShape;
-    circleShape.m_p.Set(0, 0); //position, relative to body position
-    circleShape.m_radius = 0.025f; //radius
-    fixtureDef.shape = &circleShape; //this is a pointer to the shape above
-    fixtureDef.restitution = 0.2f;
-    fixtureDef.density = 1.5f;
-    fixtureDef.friction = 0.5f;
-    fixtureDef.filter.categoryBits = 0x02;
-    fixtureDef.filter.maskBits = 0xFD;
-    body->CreateFixture(&fixtureDef); //add a fixture to the body*/
-
-    
 
     b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(0.10f, 0.025f);
@@ -57,7 +42,6 @@ void Banana::shoot(Direction direction, float angle, int power) {
     
     float xComponent = (float(power) / 40.0f ) * cos(angle);
     float yComponent = (float(power) / 40.0f ) * sin(angle);
-    //std::cout << "xComponent = " << xComponent << " yComponent = " << yComponent << "\n";
     if (direction == LEFT) {
         body->ApplyLinearImpulse(b2Vec2(-xComponent, yComponent), b2Vec2(0.05f, 0.0f), true);
     } else if (direction == RIGHT) {
@@ -86,7 +70,6 @@ void Banana::explode() {
                     xComponent = 5*(b->GetPosition().x - body->GetPosition().x) / distance;
                     yComponent = abs(b->GetPosition().y - body->GetPosition().y) + 5.0f;
                     worm->applyImpulse(xComponent, yComponent);
-                    //b->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
                 }
             } 
             

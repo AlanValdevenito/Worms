@@ -74,7 +74,6 @@ void World::addWorm(float x, float y)
 void World::step(float timeStep)
 {
     world.Step(timeStep, 10, 10);
-    //std::cout << "coordenada x = " << worms.front().getXCoordinate() << "\ncoordenada y = " << worms.front().getYCoordinate() << "\n";
 }
 
 std::map<uint8_t, Worm*>& World::getWormsById() {

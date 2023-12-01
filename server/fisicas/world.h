@@ -20,8 +20,7 @@ private:
     std::list<Worm*> worms;
     std::map<uint8_t, Worm*> wormsById;
     int idWorms = 0;
-    
-    //float timeStep = 1.0f / 30.0f;
+
     
 public:
     b2World world;
