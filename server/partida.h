@@ -29,8 +29,8 @@ class Partida
 public:
     Partida(uint8_t id, int cant, uint8_t mapa);
     ~Partida();
-    void start();
-    void sendMapTo(ServerClient *c);
+    void tryToStart();
+    void addToMatch(ServerClient *c);
     void finish();
     void forceFinish();
     uint8_t getId();

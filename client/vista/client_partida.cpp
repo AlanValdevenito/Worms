@@ -75,7 +75,7 @@ int Partida::iniciar()
         }
 
         if (not actualizar(renderer, it)) {
-            cliente.elOtroSeFue();
+            cliente.servidorCerro();
             liberar_memoria();
             return this->resultado;
         }

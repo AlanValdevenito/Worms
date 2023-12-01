@@ -29,16 +29,14 @@ void Client::kill()
     skt.close();
 }
 
-void Client::elOtroSeFue()
+void Client::servidorCerro()
 {
     recv_th.was_closed = true;
 
     std::shared_ptr<DeadDto> dead = std::make_shared<DeadDto>();
     send_queue.push(dead);
 
-    while(not send_th.was_closed){
-        // std::cout<< "esperando a que cierre\n";
-    }
+    while(not send_th.was_closed){std::this_thread::sleep_for(std::chrono::milliseconds((int)500));}
     
     skt.shutdown(2);
     skt.close();

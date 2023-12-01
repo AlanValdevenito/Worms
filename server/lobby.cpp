@@ -20,8 +20,8 @@ void Lobby::agregarClienteAPartida(ServerClient *c, std::shared_ptr<Dto> lista)
         if (p->getId() == partida->seleccionada)
         {
             // printf("CLIENTE AGREGADO A PARTIDA: %u\n", p->getId());
-            p->sendMapTo(c);
-            p->start();
+            p->addToMatch(c);
+            p->tryToStart();
         }
     }
 }
@@ -35,8 +35,8 @@ void Lobby::crearNuevaPartida(ServerClient *c, std::shared_ptr<Dto> np)
     partidas.push_back(p);
     
     // agrego al cliente a la partida
-    p->sendMapTo(c); // cambiar a addToPartida
-    p->start(); // si esta completa comienza ( no va a estarlo porque es nueva)
+    p->addToMatch(c); // cambiar a addToPartida
+    p->tryToStart(); // si esta completa comienza ( no va a estarlo porque es nueva)
     partida_id++;
 }
 
@@ -49,23 +49,26 @@ void Lobby::sendMatchList(ServerClient *c)
             partidas_disponibles->addOption(p->getId());
         // printf("id disponible: %u\n", p->getId());
     }
-
     c->sender_queue.push(partidas_disponibles); // le envio la lista al cliente
+}
 
-    // std::shared_ptr<Dto> respuesta = lobby_queue.pop(); // recibo la rta
-    std::shared_ptr<Dto> respuesta = NULL; // recibo la rta
+void Lobby::addToPartida(ServerClient *c){
+    
+    sendMatchList(c);
+
     int contador = 0;
+    std::shared_ptr<Dto> respuesta = NULL;
 
-    while(not lobby_queue.try_pop(respuesta) && contador < 20 && lobby_abierto){
-        std::cout << "entra tiempo --->" << contador/2 << std::endl;
+    // si el contador llega a la espera maxima se cierra el cliente
+    // esto es para si el jugador tarda mucho, se lo eche y se deje entrar a otro jugador si es el caso
+    // ya que el lobby va aceptando de a un solo cliente
+    while(not lobby_queue.try_pop(respuesta) && contador < ESPERA_MAXIMA_EN_LOBBY && lobby_abierto){
         std::this_thread::sleep_for(std::chrono::milliseconds((int)500));
         contador++;
     }
 
-    if(respuesta == NULL){
-        cerrarCliente(c);
-        return;
-    }
+    if(respuesta == NULL)
+        return  cerrarCliente(c);
 
     if (respuesta->return_code() == LISTA_DE_PARTIDAS_CODE)
         agregarClienteAPartida(c, respuesta);
@@ -80,7 +83,7 @@ void Lobby::newClient(Socket *s)
     ServerClient *c = new ServerClient(s, &lobby_queue, id_cliente);
     c->start();
 
-    sendMatchList(c);
+    addToPartida(c);
     c = NULL; // vacio la referencia al cliente.
 }
 

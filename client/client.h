@@ -27,7 +27,7 @@ public:
     ~Client();
     void start();
     void kill();
-    void elOtroSeFue();
+    void servidorCerro();
     void join();
     uint8_t id;
     Queue<std::shared_ptr<Dto>> send_queue;

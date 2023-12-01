@@ -4,7 +4,7 @@
 Partida::Partida(uint8_t id, int cant, uint8_t mapa) : game(common_queue, broadcaster, cant, mapa), id(id), jugadores(cant), conectados(0), partida_empezada(false) {}
 Partida::~Partida() {}
 
-void Partida::start()
+void Partida::tryToStart()
 {
     if (jugadores > conectados) // si hay igual cantidad de conectados que de esperados, empieza
         return;
@@ -25,7 +25,7 @@ void Partida::start()
     game.start();
 }
 
-void Partida::sendMapTo(ServerClient *c)
+void Partida::addToMatch(ServerClient *c)
 {
     if (conectados == jugadores)
         return;

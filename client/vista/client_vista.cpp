@@ -21,7 +21,7 @@ int Vista::iniciar(int argc, char* argv[])
 
     //std::cout << "Esperando la señal para iniciar la partida" << std::endl;
     if(not (cliente.recv_queue.pop())->is_alive()){
-        cliente.kill();
+        cliente.servidorCerro();
         return 0;
     }
 
