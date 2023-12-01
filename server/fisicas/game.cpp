@@ -447,7 +447,9 @@ void Game::passTurn()
         
         updateWorms();
         updatePlayers();
-        
+        if (not wormAttacked) {
+            world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+        }
         //wormAttacked = false;
         beginNextTurn();
         if (idTurn == -1) {
