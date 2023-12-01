@@ -18,6 +18,8 @@
 #include "mover.h"
 #include "dto.h"
 
+#include "yaml-cpp/yaml.h"
+
 const int SALTO_ADELANTE = 0;
 const int SALTO_ATRAS = 1;
 

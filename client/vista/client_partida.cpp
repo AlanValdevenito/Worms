@@ -6,7 +6,11 @@
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
-Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 18), temporizador({60000, 0, 0, 0}), camara(ANCHO_VENTANA, ALTO_VENTANA) {}
+Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 18), camara(ANCHO_VENTANA, ALTO_VENTANA) 
+{
+    YAML::Node nodo = YAML::LoadFile("../configuracion.yml");
+    this->temporizador.cuentaRegresiva = (nodo["turn_duration"].as<unsigned int>()) * 1000;
+}
 
 int Partida::iniciar()
 {

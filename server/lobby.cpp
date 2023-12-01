@@ -56,7 +56,7 @@ void Lobby::addToPartida(ServerClient *c){
     
     sendMatchList(c);
 
-    int contador = 0;
+    // int contador = 0;
     std::shared_ptr<Dto> respuesta = NULL;
 
     // si el servidor cierra antes de obtener la respuesta sale

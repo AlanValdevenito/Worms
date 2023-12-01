@@ -2,11 +2,12 @@
 #define __WORM_H__
 
 #include <SDL2pp/SDL2pp.hh>
+#include <map>
+
 #include "client_animacion.h"
 #include "client_apuntado.h"
 #include "constantes.h"
 #include "sonido.h"
-#include <map>
 
 #include "vista_bate.h"
 #include "vista_granada_verde.h"
@@ -31,8 +32,6 @@ const int MORTERO = 1;
 
 const int SIN_ARMA = 10;
 const int USADA = 11;
-
-#include "yaml-cpp/yaml.h"
 
 class Worm
 {
