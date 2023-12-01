@@ -10,7 +10,7 @@ class Apuntado
 {
 
 private:
-    std::shared_ptr<SDL2pp::Texture> texture; // Atributo que almacena la textura de la animacion
+    std::unique_ptr<SDL2pp::Texture> texture; // Atributo que almacena la textura de la animacion
 
     Mira mira;
     Potencia potencia;
@@ -23,7 +23,7 @@ private:
 
 public:
     Apuntado(SDL2pp::Renderer &renderer);
-    Apuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura);
+    Apuntado(SDL2pp::Renderer &renderer, std::unique_ptr<SDL2pp::Texture> textura);
 
     void aumentar_potencia();
     void aumentar_angulo();

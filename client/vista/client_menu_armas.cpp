@@ -1,16 +1,16 @@
 #include "client_menu_armas.h"
 
 MenuArmas::MenuArmas(SDL2pp::Renderer &renderer): abierto(false), fuente(DATA_PATH "/Vera.ttf", 18) {
-    this->armas[0] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/baseball.1.png")));
-    this->armas[1] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/grenade.1.png")));
-    this->armas[2] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/bazooka.1.png")));
-    this->armas[3] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/banana.1.png")));
-    this->armas[4] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/hgrenade.1.png")));
-    this->armas[5] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/dynamite.1.png")));
-    this->armas[6] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/teleport.1.png")));
-    this->armas[7] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/airstrke.1.png")));
-    this->armas[8] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/cluster.1.png")));
-    this->armas[9] = std::make_shared<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/mortar.1.png")));
+    this->armas[0] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/baseball.1.png")));
+    this->armas[1] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/grenade.1.png")));
+    this->armas[2] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/bazooka.1.png")));
+    this->armas[3] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/banana.1.png")));
+    this->armas[4] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/hgrenade.1.png")));
+    this->armas[5] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/dynamite.1.png")));
+    this->armas[6] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/teleport.1.png")));
+    this->armas[7] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/airstrke.1.png")));
+    this->armas[8] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/cluster.1.png")));
+    this->armas[9] = std::make_unique<SDL2pp::Texture>(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/armas/mortar.1.png")));
 }
 
 void MenuArmas::render(SDL2pp::Renderer &renderer) {

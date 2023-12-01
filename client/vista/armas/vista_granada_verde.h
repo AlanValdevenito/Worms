@@ -5,6 +5,7 @@
 
 #include "vista_arma.h"
 #include "client_apuntado.h"
+#include "sonido.h"
 
 class AnimacionGranadaVerde: public Arma
 {
@@ -13,6 +14,8 @@ private:
     Animation movimiento;
     Explosion explosion;
     Apuntado apuntado;
+
+    Sonido sonido;
 
     int angulo;
     int tiempo;

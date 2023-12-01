@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#define LIMITE_X 12
+#define LIMITE_Y 20
+
 Camara::Camara(float ventanaAncho, float ventanaAlto): x(0), y(0), ancho(ventanaAncho), alto(ventanaAlto), moverCamara(false) {}
 
 void Camara::seguirWorm(std::map<int, Worm *> &worms) {
@@ -43,6 +46,11 @@ void Camara::seguir(float nuevoX, float nuevoY) {
 void Camara::mover(float moverX, float moverY) {
 
     if (this->moverCamara) {
+
+        if (((this->x + moverX) < LIMITE_X) || ((this->y + moverY) > LIMITE_Y)) {
+            return;
+        }
+
         this->x += moverX;
         this->y += moverY;
     }

@@ -1,7 +1,7 @@
 #include "vista_bate.h"
 
 AnimacionBateDeBaseball::AnimacionBateDeBaseball(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
-                                                                              apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsbaim.png").SetColorKey(true, 0))) {}
+                                                                              apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsbaim.png").SetColorKey(true, 0))) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 

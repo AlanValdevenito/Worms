@@ -51,7 +51,7 @@ private:
     Camara camara;
 
     int x,y; // Enteros que almacenan la posicion del click en la ventana
-    std::shared_ptr<MenuArmas> armas;
+    std::unique_ptr<MenuArmas> armas;
 
 public:
     Partida(Client &cliente);

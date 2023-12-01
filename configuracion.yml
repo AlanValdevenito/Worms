@@ -9,7 +9,7 @@ worm:
   speed: 2
   extra_hp: 25
 
-turn_duration: 10
+turn_duration: 60
 time_left_after_attack: 3
 
 dynamite:

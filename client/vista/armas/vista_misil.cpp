@@ -1,8 +1,8 @@
 #include "vista_misil.h"
 
-AnimacionMisil::AnimacionMisil(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> ex):   Arma(ARMA_MOVIENDOSE), 
-                                                                                                    movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/airmisl.png").SetColorKey(true, 0))), 
-                                                                                                    explosion(renderer, ex) {}
+AnimacionMisil::AnimacionMisil(SDL2pp::Renderer &renderer, std::unique_ptr<SDL2pp::Texture> ex):   Arma(ARMA_MOVIENDOSE), 
+                                                                                                    movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/airmisl.png").SetColorKey(true, 0))), 
+                                                                                                    explosion(renderer, std::move(ex)) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 

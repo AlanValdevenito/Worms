@@ -9,7 +9,7 @@ class MenuArmas
 {
 
 private:
-    std::map<int, std::shared_ptr<SDL2pp::Texture>> armas;
+    std::map<int, std::unique_ptr<SDL2pp::Texture>> armas;
     int abierto;
 
     SDL2pp::Font fuente;

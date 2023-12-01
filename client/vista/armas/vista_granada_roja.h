@@ -16,7 +16,7 @@ private:
     Explosion explosion;
     Apuntado apuntado;
 
-    std::map<int, std::shared_ptr<AnimacionFragmento>> fragmentos;
+    std::map<int, std::unique_ptr<AnimacionFragmento>> fragmentos;
 
     int angulo;
     int tiempo;

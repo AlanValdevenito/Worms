@@ -5,6 +5,7 @@
 #include "client_animacion.h"
 #include "client_apuntado.h"
 #include "constantes.h"
+#include "sonido.h"
 #include <map>
 
 #include "vista_bate.h"
@@ -39,7 +40,7 @@ class Worm
 private:
     Animation animacion;
 
-    std::shared_ptr<Arma> arma;
+    std::unique_ptr<Arma> arma;
 
     int estado;
 
@@ -55,6 +56,7 @@ private:
     int numeroColor;
 
     SDL2pp::Color &color;
+    Sonido sonido;
 
 public:
     bool camara;

@@ -13,7 +13,7 @@ class AnimacionAtaqueAereo: public Arma
 {
 
 private:
-    std::map<int, std::shared_ptr<AnimacionMisil>> misiles;
+    std::map<int, std::unique_ptr<AnimacionMisil>> misiles;
 
 public:
     AnimacionAtaqueAereo(SDL2pp::Renderer &renderer);

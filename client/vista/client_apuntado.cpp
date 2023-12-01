@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Apuntado::Apuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura): texture(textura), 
+Apuntado::Apuntado(SDL2pp::Renderer &renderer, std::unique_ptr<SDL2pp::Texture> textura): texture(std::move(textura)), 
                                         mira(renderer),
                                         potencia(renderer),
                                         numFrames(this->texture->GetHeight() / this->texture->GetWidth()),

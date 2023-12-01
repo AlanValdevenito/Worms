@@ -1,9 +1,10 @@
 #include "vista_granada_verde.h"
 
 AnimacionGranadaVerde::AnimacionGranadaVerde(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
-                                                                          movimiento(std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grenade.png").SetColorKey(true, 0))), 
-                                                                          explosion(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/expow.png").SetColorKey(true, 0))), 
-                                                                          apuntado(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrgrn.png").SetColorKey(true, 0))), 
+                                                                          movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grenade.png").SetColorKey(true, 0))), 
+                                                                          explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/expow.png").SetColorKey(true, 0))), 
+                                                                          apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrgrn.png").SetColorKey(true, 0))), 
+                                                                          sonido("/sonidos/armas/EXPLOSION1.WAV"),
                                                                           tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
@@ -29,6 +30,7 @@ void AnimacionGranadaVerde::render(SDL2pp::Renderer &renderer, SDL2pp::Color col
         renderizar_tiempo(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior);
 
     } else if (this->estado == ARMA_EXPLOTAR) {
+        this->sonido.reproducir();
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
         
         if (this->explosion.animacion_completa()) {

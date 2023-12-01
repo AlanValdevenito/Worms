@@ -3,7 +3,7 @@
 AnimacionAtaqueAereo::AnimacionAtaqueAereo(SDL2pp::Renderer &renderer): Arma(ARMA_MOVIENDOSE) {
 
     for (int i = 1; i <= 6; i++){
-        this->misiles[i] = std::make_shared<AnimacionMisil>(renderer, std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0)));
+        this->misiles[i] = std::make_unique<AnimacionMisil>(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0)));
     }
     
 }

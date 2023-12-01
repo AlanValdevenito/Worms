@@ -25,20 +25,20 @@ int Partida::iniciar()
 
     /******************** INICIALIZAR MUSICA AMBIENTE ********************/
 
-    //Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+    Mixer mixer(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 
-    //Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
+    Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
 
-    //sound.SetVolume(SDL_MIX_MAXVOLUME / 10); // Ajustamos el nivel de volumen
+    sound.SetVolume(SDL_MIX_MAXVOLUME / 10); // Ajustamos el nivel de volumen
 
-    //mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
+    mixer.FadeInChannel(-1, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
 
     /******************** TEXTURAS Y COLORES ********************/
 
     inicializar_texturas(renderer);
     inicializar_colores();
 
-    this->armas = std::make_shared<MenuArmas>(renderer);
+    this->armas = std::make_unique<MenuArmas>(renderer);
 
     /******************** GUARDAR ESTADO DEL JUEGO ********************/
 
@@ -621,8 +621,11 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
 
     if (this->id_gusano_actual != id_gusano_siguiente) {
         this->worms[this->id_gusano_actual]->set_turno(false); // Le aviso al Worm del turno anterior que ya no es mas su turno
+        this->worms[this->id_gusano_actual]->set_camara(false);
         this->id_gusano_actual = id_gusano_siguiente;
         this->worms[this->id_gusano_actual]->set_turno(true); // Le aviso al Worm del turno actual que es su turno
+        this->worms[this->id_gusano_actual]->set_camara(false);
+        this->camara.seguir(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
         this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
     
     } else {
@@ -715,7 +718,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 
     renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
 
-    int contador = 0;
+    // int contador = 0;
 
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
@@ -735,7 +738,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 
         if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), centimetros_a_metros(ancho), centimetros_a_metros(ancho))) {
 
-            contador++;
+            // contador++;
 
             if (ancho == 600) {
                 renderer.Copy(
@@ -754,7 +757,7 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         }
     }
 
-    std::cout << "Vigas renderizadas: <" << contador << "> de un total de: <" << (int)this->vigas.size()<< ">\n" << std::endl;
+    // std::cout << "Vigas renderizadas: <" << contador << "> de un total de: <" << (int)this->vigas.size()<< ">\n" << std::endl;
 }
 
 void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
@@ -808,21 +811,21 @@ void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
 void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
 
-    int contador = 0;
+    // int contador = 0;
 
     for (const auto &elemento : this->worms)
     {
 
         if (this->camara.comprobarRenderizado(pixeles_a_metros(elemento.second->get_x()), pixeles_a_metros(elemento.second->get_y()), 1.0f, 1.0f)) {
             elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
-            contador++;
+            // contador++;
         }
 
         elemento.second->render_arma(renderer, (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
 
     }
 
-    std::cout << "Worms renderizados: <" << contador << "> de un total de: <" << (int) this->worms.size()<< ">\n" << std::endl;
+    // std::cout << "Worms renderizados: <" << contador << "> de un total de: <" << (int) this->worms.size()<< ">\n" << std::endl;
 }
 
 void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {
