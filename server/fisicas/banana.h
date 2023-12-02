@@ -13,7 +13,7 @@
 
 class Banana : public Entity {
 public:
-    EntityType entityType = BANANA;
+    EntityType entityType = BANANA_GRENADE;
     b2Body *body;
     int maxDamage;
     int explosionRadius;

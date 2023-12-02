@@ -1,6 +1,7 @@
 #include "worm.h"
 #include <iostream>
 
+
 Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 		   std::map<std::string, int>& config) : Entity(WORM),
 												hp(config["wormHp"]), 
@@ -12,11 +13,11 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 												is_alive(true), 
 												damageTaken(0),
 												isRunning(false),
-												state(MOVING),
+												state(MOVIENDOSE),
 												playerId(-1),
 												highestYCoordinateReached(0),
 												jumpTimeout(0),
-												actualWeapon(NO_WEAPON),
+												actualWeapon(SIN_ARMA),
 												direction(LEFT),
 												angle(0),
 												firstTimeFalling(true),
@@ -53,21 +54,20 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 
 	body->SetFixedRotation(true);
 
-	ammunition[BATE_WEAPON] = 1;
-	ammunition[GREEN_GRENADE_WEAPON] = config["greenGrenadeAmmunition"];
-	ammunition[BAZOOKA_WEAPON] = config["bazookaAmmunition"];
-	ammunition[BANANA_WEAPON] = config["bananaAmmunition"];
-	ammunition[RED_GRENADE_WEAPON] = config["redGrenadeAmmunition"];
-	ammunition[MORTERO_WEAPON] = config["morteroAmmunition"];
-	ammunition[AIR_STRIKE_WEAPON] = config["airStrikeAmmunition"];
-	ammunition[TELEPORT_WEAPON] = config["teleportAmmunition"];
-	ammunition[HOLY_GRENADE_WEAPON] = config["holyGrenadeAmmunition"];
-	ammunition[DYNAMITE_WEAPON] = config["dynamiteAmmunition"];
-	ammunition[NO_WEAPON] = 99999999;
-	ammunition[USED_WEAPON] = 99999999;
-
-	// cuerpo rectangular
+	ammunition[BATE] = 1;
+	ammunition[GRANADA_VERDE] = config["greenGrenadeAmmunition"];
+	ammunition[BAZOOKA] = config["bazookaAmmunition"];
+	ammunition[BANANA] = config["bananaAmmunition"];
+	ammunition[GRANADA_ROJA] = config["redGrenadeAmmunition"];
+	ammunition[MORTERO] = config["morteroAmmunition"];
+	ammunition[ATAQUE_AEREO] = config["airStrikeAmmunition"];
+	ammunition[TELETRANSPORTACION] = config["teleportAmmunition"];
+	ammunition[GRANADA_SANTA] = config["holyGrenadeAmmunition"];
+	ammunition[DINAMITA] = config["dynamiteAmmunition"];
+	ammunition[SIN_ARMA] = 99999999;
+	ammunition[USADA] = 99999999;
 }
+
 
 float Worm::getXCoordinate()
 {
@@ -111,11 +111,11 @@ void Worm::moveLeft() {
 	b2Vec2 velocity = b2Vec2(std::min(0.0f, speed * (cos(theta) * normal.x - sin(theta) * normal.y)),
 							 std::max(0.0f, speed * (sin(theta) * normal.x + cos(theta) * normal.y)));
 
-	if (actualWeapon == NO_WEAPON || actualWeapon == USED_WEAPON) {
+	if (actualWeapon == SIN_ARMA || actualWeapon == USADA) {
 		isRunning = true;
 		if (velocity == b2Vec2(0.0f,0.0f)) velocity = b2Vec2(-speed, 0.0f);
 		body->SetLinearVelocity(velocity);
-		state = MOVING;
+		state = MOVIENDOSE;
 	}
 	facingRight = false;
 	direction = LEFT;
@@ -151,13 +151,13 @@ void Worm::moveRight()
 
 	// si no tiene arma, que se mueva
 	// si tiene arma, cambia la direccion a la derecha pero no se mueve
-	if (actualWeapon == NO_WEAPON || actualWeapon == USED_WEAPON) {
+	if (actualWeapon == SIN_ARMA || actualWeapon == USADA) {
 		isRunning = true;
 		if (velocity == b2Vec2(0.0f, 0.0f) || velocity.x == 0) {
 			velocity = b2Vec2(speed, 0.0f);
 		}
 		body->SetLinearVelocity(velocity);
-		state = MOVING;
+		state = MOVIENDOSE;
 	}
 	facingRight = true;
 	direction = RIGHT;
@@ -173,7 +173,7 @@ void Worm::jump() {
 	}
 	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
-	state = JUMPING_FORWARD;
+	state = SALTANDO_ADELANTE;
 	jumpTimeout = 42;
 }
 
@@ -187,7 +187,7 @@ void Worm::jumpBackward() {
 	}
 	yComponent = 5.0f;
 	body->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
-	state = JUMPING_BACKWARD;
+	state = SALTANDO_ATRAS;
 	jumpTimeout = 42;
 }
 
@@ -209,7 +209,8 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 			yComponent = 40.0f*sin(angleInRadians);
 			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 			worm->takeDamage(10);
-			worm->state = FLYING;
+			worm->state = GOLPEADO
+			;
 		}
 	}
 }
@@ -217,7 +218,7 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 void Worm::makeDamage() {
 	if (hp <= damageTaken) {
 		hp = 0;
-		state = DEAD;
+		state = MUERTO;
 	} else {
 		hp -= damageTaken;
 	}
@@ -274,7 +275,7 @@ float Worm::getAngle() {
 void Worm::startContact() {
 	numberOfContacts++;
 	angle = 0;
-	state = MOVING;
+	state = MOVIENDOSE;
 	float fallDistance = highestYCoordinateReached - body->GetPosition().y;
 	if (fallDistance > 2.0f && not firstTimeFalling) {
 		takeDamage(std::min((int)fallDistance, 25));
@@ -285,15 +286,15 @@ void Worm::startContact() {
 
 void Worm::equipWeapon(uint8_t weapon) {
 	if (ammunition[weapon] == 0) return;
-	if (weapon == 11) {
-		actualWeapon = 11;
-		state = STATIC;
-	} else if (weapon == actualWeapon || weapon == NO_WEAPON) {
-		actualWeapon = NO_WEAPON;
-		state = STATIC;
+	if (weapon == USADA) {
+		actualWeapon = USADA;
+		state = QUIETO;
+	} else if (weapon == actualWeapon || weapon == SIN_ARMA) {
+		actualWeapon = SIN_ARMA;
+		state = QUIETO;
 	} else {
 		actualWeapon = weapon;
-		state = EQUIPING_WEAPON;
+		state = EQUIPANDO_ARMA;
 	}
 }
 
@@ -303,7 +304,7 @@ void Worm::increaseHp(int extraHp) {
 
 void Worm::applyImpulse(float x, float y) {
 	body->ApplyLinearImpulseToCenter(b2Vec2(x, y), true);
-	state = FLYING;
+	state = GOLPEADO;
 }
 
 uint8_t Worm::getWeapon() {

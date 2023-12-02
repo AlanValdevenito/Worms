@@ -6,6 +6,8 @@
 #define TIME_LEFT_AFTER_ATTACK 2
 #define WATER_POSITION 0
 
+
+
 std::map<std::string, int> loadConfig(const std::string configFileName)
 {
     YAML::Node yaml = YAML::LoadFile(configFileName);
@@ -414,7 +416,7 @@ void Game::beginNextTurn() {
             idTurn = idPlayers[indexOfActualPlayer];
             players[indexOfActualPlayer].changeActualWorm();
             actualWormId = players[indexOfActualPlayer].actualWormId;
-            world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+            world.getWormsById()[actualWormId]->equipWeapon(SIN_ARMA);
             begin = std::chrono::steady_clock::now();
             wormAttacked = false;
             return;
@@ -440,7 +442,7 @@ void Game::passTurn()
         updateWorms();
         updatePlayers();
         if (not wormAttacked) {
-            world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+            world.getWormsById()[actualWormId]->equipWeapon(SIN_ARMA);
         }
         beginNextTurn();
         if (idTurn == -1) {
@@ -475,12 +477,12 @@ void Game::updateWorms()
     // actualizo los gusanos
     for (Worm *worm : world.getWorms())
     {   
-        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPING_WEAPON) {
-            worm->state = STATIC;
+        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPANDO_ARMA) {
+            worm->state = QUIETO;
         }
         if (worm->is_alive && worm->numberOfContacts == 0 && 
-            worm->getState() != JUMPING_BACKWARD && worm->getState() != JUMPING_FORWARD &&
-            worm->getState() != FLYING && worm->getVelocity().y < 0.0f) {worm->state = FALLING;}
+            worm->getState() != SALTANDO_ATRAS && worm->getState() != SALTANDO_ADELANTE &&
+            worm->getState() != GOLPEADO && worm->getVelocity().y < 0.0f) {worm->state = CAYENDO;}
         if (not worm->isMoving() && worm->getHp() == 0 && worm->is_alive)
         {
             worm->is_alive = false;
@@ -508,7 +510,7 @@ void Game::updateWorms()
             if (not infiniteHp) {
                 worm->makeDamage();
             }
-            if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive)
+            if (worm->getState() == MUERTO && actualWormId == worm->getId() && worm->is_alive)
             {
                 players[worm->playerId - 1].markWormAsDead(worm->getId());
                 
@@ -528,7 +530,7 @@ void Game::updateWorms()
 
         if (worm->jumpTimeout > 0)
             worm->jumpTimeout--;
-        if (worm->state == FLYING)
+        if (worm->state == GOLPEADO)
         {
             worm->updateAngle();
         }
@@ -1203,7 +1205,7 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
         world.getWormsById()[actualWormId]->equipWeapon(11);
     }
     if (wormAttacked && world.getWormsById()[actualWormId]->getWeapon() == 7 && code != EQUIPAR_ARMA_CODE) {
-        world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
+        world.getWormsById()[actualWormId]->equipWeapon(SIN_ARMA);
     }
     
 }

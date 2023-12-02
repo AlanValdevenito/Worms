@@ -5,7 +5,7 @@
 
 
 Banana::Banana(b2World *world, float x, float y, int timeToExplotionInSeconds,
-               std::map<std::string, int>& config) : Entity(BANANA),
+               std::map<std::string, int>& config) : Entity(BANANA_GRENADE),
                                                      maxDamage(config["bananaDamage"]),
                                                      explosionRadius(config["bananaRadius"]) {
     b2BodyDef bodyDef;

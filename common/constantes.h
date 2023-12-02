@@ -35,6 +35,9 @@ const uint8_t PROYECTILES_CODE = 25;
 const int CHEAT_CODE = 26;
 const int VIDA_INFINITA_CODE = 27;
 const int TURNO_INFINITO_CODE = 28;
+const int MUNICION_INFINITA_CODE = 29;
+
+/* ESTADOS DEL WORM */
 
 const int MOVIENDOSE = 0;
 const int SALTANDO_ADELANTE = 1;
@@ -46,5 +49,20 @@ const int USAR = 6;
 const int GOLPEADO = 7;
 const int QUIETO = 8;
 const int CAYENDO = 9;
+
+/* ARMAS */
+
+const int BAZOOKA = 0;
+const int MORTERO = 1;
+const int GRANADA_VERDE = 2;
+const int GRANADA_ROJA = 3;
+const int BANANA = 4;
+const int GRANADA_SANTA = 5;
+const int DINAMITA = 6;
+const int BATE = 7;
+const int ATAQUE_AEREO = 8;
+const int TELETRANSPORTACION = 9;
+const int SIN_ARMA = 10;
+const int USADA = 11;
 
 #endif

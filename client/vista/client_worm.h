@@ -19,20 +19,6 @@
 #include "vista_granada_roja.h"
 #include "vista_mortero.h"
 
-const int BATE = 7;
-const int GRANADA_VERDE = 2;
-const int BAZOOKA = 0;
-const int BANANA = 4;
-const int GRANADA_SANTA = 5;
-const int DINAMITA = 6;
-const int TELETRANSPORTACION = 9;
-const int ATAQUE_AEREO = 8;
-const int GRANADA_ROJA = 3;
-const int MORTERO = 1;
-
-const int SIN_ARMA = 10;
-const int USADA = 11;
-
 class Worm
 {
 

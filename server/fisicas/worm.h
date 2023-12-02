@@ -8,29 +8,7 @@
 #include <map>
 #include <string>
 #include "yaml-cpp/yaml.h"
-
-const int MOVING = 0;
-const int JUMPING_FORWARD = 1;
-const int JUMPING_BACKWARD = 2;
-const int EQUIPING_WEAPON = 3;
-const int AIMING = 4;
-const int DEAD = 5;
-const int FLYING = 7;
-const int STATIC = 8;
-const int FALLING = 9;
-
-const int BATE_WEAPON = 7;
-const int GREEN_GRENADE_WEAPON = 2;
-const int BAZOOKA_WEAPON = 0;
-const int BANANA_WEAPON = 4;
-const int HOLY_GRENADE_WEAPON = 5;
-const int DYNAMITE_WEAPON = 6;
-const int TELEPORT_WEAPON = 9;
-const int AIR_STRIKE_WEAPON = 8;
-const int RED_GRENADE_WEAPON = 3;
-const int MORTERO_WEAPON = 1;
-const int NO_WEAPON = 10;
-const int USED_WEAPON = 11;
+#include "constantes.h"
 
 
 class Worm : public Entity {
