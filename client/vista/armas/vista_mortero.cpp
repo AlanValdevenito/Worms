@@ -1,13 +1,14 @@
 #include "vista_mortero.h"
 
-AnimacionMortero::AnimacionMortero(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido): Arma(ARMA_APUNTANDO), 
-                                                                movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/mortar.png").SetColorKey(true, 0))), 
-                                                                explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0))), 
-                                                                apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbaz.png").SetColorKey(true, 0))),
-                                                                sonido(sonido) 
+AnimacionMortero::AnimacionMortero(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
+    Arma(ARMA_APUNTANDO), 
+    movimiento(texturas[29]), 
+    explosion(texturas, texturas[20]), 
+    apuntado(renderer, texturas[33]),
+    sonido(sonidos[4]) 
 {
     for (int i = 1; i <= 6; i++){
-        this->fragmentos[i] = std::make_unique<AnimacionFragmento>(renderer, sonido);
+        this->fragmentos[i] = std::make_unique<AnimacionFragmento>(renderer, texturas, sonidos);
     }
 }
 

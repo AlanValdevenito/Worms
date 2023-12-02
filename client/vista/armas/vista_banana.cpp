@@ -1,11 +1,12 @@
 #include "vista_banana.h"
 
-AnimacionBanana::AnimacionBanana(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido): Arma(ARMA_APUNTANDO), 
-                                                              movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/banana.png").SetColorKey(true, 0))), 
-                                                              explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/expow.png").SetColorKey(true, 0))), 
-                                                              apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrban.png").SetColorKey(true, 0))), 
-                                                              sonido(sonido),
-                                                              tiempo(5) {}
+AnimacionBanana::AnimacionBanana(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
+    Arma(ARMA_APUNTANDO), 
+    movimiento(texturas[24]), 
+    explosion(texturas, texturas[21]), 
+    apuntado(renderer, texturas[34]), 
+    sonido(sonidos[4]),
+    tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 

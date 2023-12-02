@@ -1,10 +1,11 @@
 #include "client_explosion.h"
 
-Explosion::Explosion(SDL2pp::Renderer &renderer, std::unique_ptr<SDL2pp::Texture> ex):  ex(std::move(ex), false),
-                                                                                        circulo(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/circle50.png").SetColorKey(true, 0)), false),
-                                                                                        elipse(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/elipse50.png").SetColorKey(true, 0)), false),
-                                                                                        fuego(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/flame1.png").SetColorKey(true, 0)), false),
-                                                                                        movimientoFuego(0) {}
+Explosion::Explosion(std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::shared_ptr<SDL2pp::Texture> ex):  
+    ex(ex, false),
+    circulo(texturas[37], false),
+    elipse(texturas[38], false),
+    fuego(texturas[39], false),
+    movimientoFuego(0) {}
 
 void Explosion::update() {
     this->fuego.update();

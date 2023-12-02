@@ -37,10 +37,12 @@ class Worm
 {
 
 private:
-    Animation animacion;
-    std::shared_ptr<Sonido> sonido;
+    std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas;
+    std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos;
 
+    Animation animacion;
     std::unique_ptr<Arma> arma;
+    std::shared_ptr<Sonido> sonido;
 
     int estado;
 
@@ -57,13 +59,10 @@ private:
 
     SDL2pp::Color &color;
 
-    std::map<int, std::shared_ptr<SDL2pp::Chunk>> sonidos;
-    std::map<int, std::shared_ptr<SDL2pp::Texture>> texturas;
-
 public:
     bool camara;
 
-    Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion);
+    Worm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion);
 
     void update(int it, float nuevoX, float nuevoY, int vida, int direccion, int angulo,  bool turno); // Actualiza el Worm en funcion del tiempo transcurrido.
     void update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int arma = 0);

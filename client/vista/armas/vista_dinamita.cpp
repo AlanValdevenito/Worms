@@ -1,10 +1,11 @@
 #include "vista_dinamita.h"
 
-AnimacionDinamita::AnimacionDinamita(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido): Arma(ARMA_MOVIENDOSE), 
-                                                                  movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/dynamite.png").SetColorKey(true, 0)), false), 
-                                                                  explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0))),
-                                                                  sonido(sonido), 
-                                                                  tiempo(5) {}
+AnimacionDinamita::AnimacionDinamita(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
+    Arma(ARMA_MOVIENDOSE), 
+    movimiento(texturas[26], false), 
+    explosion(texturas, texturas[20]),
+    sonido(sonidos[4]), 
+    tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 

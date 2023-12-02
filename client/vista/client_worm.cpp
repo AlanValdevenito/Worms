@@ -6,43 +6,21 @@
 #define OFFSET 30 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                   // tienen el (0,0) de los cuerpos en el centro
 
-Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): animacion(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0))), 
-                                                                                          estado(QUIETO),
-                                                                                          x(x), 
-                                                                                          y(y), 
-                                                                                          vida(vida),
-                                                                                          direccion(direccion),
-                                                                                          angulo(0),
-                                                                                          turno(false), 
-                                                                                          numeroColor(numeroColor),
-                                                                                          color(color),
-                                                                                          camara(false)
+Worm::Worm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): 
+    texturas(texturas),
+    sonidos(sonidos),
+    animacion(this->texturas[4]), 
+    estado(QUIETO),
+    x(x), 
+    y(y), 
+    vida(vida),
+    direccion(direccion),
+    angulo(0),
+    turno(false), 
+    numeroColor(numeroColor),
+    color(color),
+    camara(false)
 {
-    this->sonidos[0] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/YESSIR.WAV");
-    this->sonidos[1] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/JUMP1.WAV");
-    this->sonidos[2] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/BACKFLIP.WAV");
-    this->sonidos[3] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/DEAD1.WAV");
-
-    this->sonidos[4] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/EXPLOSION1.WAV");
-    this->sonidos[5] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/HOLYGRENADE.WAV");
-
-    this->texturas[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-    this->texturas[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfall.png").SetColorKey(true, 0));
-    this->texturas[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wflylnk.png").SetColorKey(true, 0));
-    this->texturas[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
-    this->texturas[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfly1.png").SetColorKey(true, 0));
-    this->texturas[5] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grave1.png").SetColorKey(true, 0));
-    this->texturas[6] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
-    this->texturas[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wgrnlnk.png").SetColorKey(true, 0));
-    this->texturas[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
-    this->texturas[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbanlnk.png").SetColorKey(true, 0));
-    this->texturas[10] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/whgrlnk.png").SetColorKey(true, 0));
-    this->texturas[11] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wdynlnk.png").SetColorKey(true, 0));
-    this->texturas[12] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wtellnk.png").SetColorKey(true, 0));
-    this->texturas[13] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wairlnk.png").SetColorKey(true, 0));
-    this->texturas[14] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wclslnk.png").SetColorKey(true, 0));
-    this->texturas[15] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
-
     this->sonido = std::make_shared<Sonido>(this->sonidos[0]);
 }
 
@@ -90,7 +68,7 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     this->tipoDeArma = tipoDeArma;
 
     if ((nuevoEstado == MOVIENDOSE) || (nuevoEstado == QUIETO)) {
-        this->animacion.cambiar(this->texturas[0]);
+        this->animacion.cambiar(this->texturas[4]);
 
         if (this->tipoDeArma == SIN_ARMA) {
             this->arma = nullptr;
@@ -98,18 +76,18 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     }
 
     else if (nuevoEstado == CAYENDO) {
-        this->animacion.cambiar(this->texturas[1]);
+        this->animacion.cambiar(this->texturas[5]);
     }
 
     else if (nuevoEstado == SALTANDO_ADELANTE) {
-        this->animacion.cambiar(this->texturas[2]);
+        this->animacion.cambiar(this->texturas[6]);
         this->animacion.no_repetir_animacion();
 
         this->sonido->cambiar(this->sonidos[1]);
     }
 
     else if (nuevoEstado == SALTANDO_ATRAS) {
-        this->animacion.cambiar(this->texturas[3]);
+        this->animacion.cambiar(this->texturas[7]);
         this->animacion.no_repetir_animacion();
 
         this->sonido->cambiar(this->sonidos[2]);
@@ -120,11 +98,11 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     }
 
     else if (nuevoEstado == GOLPEADO) {
-        this->animacion.cambiar(this->texturas[4]);
+        this->animacion.cambiar(this->texturas[8]);
     }
 
     else if (nuevoEstado == MUERTO) {
-        this->animacion.cambiar(this->texturas[5]);
+        this->animacion.cambiar(this->texturas[9]);
 
         this->sonido->cambiar(this->sonidos[3]);
     }
@@ -134,71 +112,71 @@ void Worm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
     this->tipoDeArma = tipoDeArma;
 
     if (tipoDeArma == BATE) {
-        this->animacion.cambiar(this->texturas[6]);
-        this->animacion.no_repetir_animacion();
-
-        this->arma = std::make_unique<AnimacionBateDeBaseball>(renderer);
-    }
-
-    else if (tipoDeArma == GRANADA_VERDE) {
-        this->animacion.cambiar(this->texturas[7]);
-        this->animacion.no_repetir_animacion();
-
-        this->arma = std::make_unique<AnimacionGranadaVerde>(renderer, this->sonidos[4]);
-    }
-
-    else if (tipoDeArma == BAZOOKA) {
-        this->animacion.cambiar(this->texturas[8]);
-        this->animacion.no_repetir_animacion();
-
-        this->arma = std::make_unique<AnimacionBazooka>(renderer, this->sonidos[4]);
-    }
-
-    else if (tipoDeArma == BANANA) {
-        this->animacion.cambiar(this->texturas[9]);
-        this->animacion.no_repetir_animacion();
-
-        this->arma = std::make_unique<AnimacionBanana>(renderer, this->sonidos[4]);
-    }
-
-    else if (tipoDeArma == GRANADA_SANTA) {
         this->animacion.cambiar(this->texturas[10]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionGranadaSanta>(renderer, this->sonidos[4]);
+        this->arma = std::make_unique<AnimacionBateDeBaseball>(renderer, this->texturas, this->sonidos);
     }
 
-    else if (tipoDeArma == DINAMITA) {
+    else if (tipoDeArma == GRANADA_VERDE) {
         this->animacion.cambiar(this->texturas[11]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionDinamita>(renderer, this->sonidos[4]);
+        this->arma = std::make_unique<AnimacionGranadaVerde>(renderer, this->texturas, this->sonidos);
+    }
+
+    else if (tipoDeArma == BAZOOKA) {
+        this->animacion.cambiar(this->texturas[12]);
+        this->animacion.no_repetir_animacion();
+
+        this->arma = std::make_unique<AnimacionBazooka>(renderer, this->texturas, this->sonidos);
+    }
+
+    else if (tipoDeArma == BANANA) {
+        this->animacion.cambiar(this->texturas[13]);
+        this->animacion.no_repetir_animacion();
+
+        this->arma = std::make_unique<AnimacionBanana>(renderer, this->texturas, this->sonidos);
+    }
+
+    else if (tipoDeArma == GRANADA_SANTA) {
+        this->animacion.cambiar(this->texturas[14]);
+        this->animacion.no_repetir_animacion();
+
+        this->arma = std::make_unique<AnimacionGranadaSanta>(renderer, this->texturas, this->sonidos);
+    }
+
+    else if (tipoDeArma == DINAMITA) {
+        this->animacion.cambiar(this->texturas[15]);
+        this->animacion.no_repetir_animacion();
+
+        this->arma = std::make_unique<AnimacionDinamita>(renderer, this->texturas, this->sonidos);
     }
 
     else if (tipoDeArma == TELETRANSPORTACION) {
-        this->animacion.cambiar(this->texturas[12]);
+        this->animacion.cambiar(this->texturas[16]);
         this->animacion.no_repetir_animacion();
     }
 
     else if (tipoDeArma == ATAQUE_AEREO) {
-        this->animacion.cambiar(this->texturas[13]);
+        this->animacion.cambiar(this->texturas[17]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionAtaqueAereo>(renderer, this->sonidos[4]);
+        this->arma = std::make_unique<AnimacionAtaqueAereo>(renderer, this->texturas, this->sonidos);
     }
 
     else if (tipoDeArma == GRANADA_ROJA) {
-        this->animacion.cambiar(this->texturas[14]);
+        this->animacion.cambiar(this->texturas[18]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionGranadaRoja>(renderer, this->sonidos[4]);
+        this->arma = std::make_unique<AnimacionGranadaRoja>(renderer, this->texturas, this->sonidos);
     }
 
     else if (tipoDeArma == MORTERO) {
-        this->animacion.cambiar(this->texturas[15]);
+        this->animacion.cambiar(this->texturas[19]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionMortero>(renderer, this->sonidos[4]);
+        this->arma = std::make_unique<AnimacionMortero>(renderer, this->texturas, this->sonidos);
     }
 }
 
