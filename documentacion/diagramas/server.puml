@@ -1,0 +1,112 @@
+    @startuml
+    hide empty attributes
+    hide circle
+
+
+    
+    class ProtocoloServidor {
+        - skt: Socket
+        +recibirActividad()
+        +enviarListaDePartidas()
+        +enviarListaDeGusanos()
+        +enviarIniciarPartida()
+        +enviarGanador()
+        +enviarTrayectoriaDeGranada()
+        +enviarTrayectoriaDeBazuka()
+        +enviarProyectiles()
+    }
+    
+
+    class ServerClient <<thread>>{
+        - Queue sender
+        - Queue receiver
+        - Sender sender_th
+        - Receiver receiver_th
+        - ServerProtocol protocolo
+        + changeReceiverQueue()
+        + start()
+    } 
+
+   class Lobby {
+        - Queue lobby_queue
+        - List partidas
+        - int partida_id
+        - int id_cliente
+        + newClient()
+        + sendMatchList()
+        + removerPartidasMuertas()
+        + agregarClienteAPartida()
+    }
+    
+    class Partida {
+        - Queue common_queue
+        - common_queue: Queue
+        - List clients
+        - Broadcaster broadcaster
+        - Game game
+        - int jugadores
+        - int conectados
+        - bool partida_empezada
+        + sendMapTo()
+        + start()
+        + finish()
+        + forceFinish()
+        + getId()
+        + is_dead()
+        + esta_completa()
+    }
+
+    class Aceptador <<thread>>{
+        - Lobby
+        - Socket
+    }
+    
+    class Server {
+        - Socket aceptador
+        - Aceptador accept_th
+        + main()
+    }
+    
+ class Sender <<thread>>{
+        - Queue queue
+        - ServerProtocol protocolo
+        + run()
+        + send()
+    }
+
+  class Receiver <<thread>>{
+        - Queue queue
+        - ServerProtocol protocolo
+        + run()
+        + send()
+    }
+
+
+json send_queue {
+   "Dto":["-", "-","-", "-","-", "-"]
+}
+
+json recv_queue {
+   "Dto":["-", "-","-", "-","-", "-"]
+}
+
+json clientes {
+   "ServerClient*":["-", "-","-", "-","-", "-"]
+}
+
+Partida::clients -left-> clientes
+clientes -down-> ServerClient
+Lobby--left->Partida
+Aceptador --left--> Lobby
+Server --left-> Aceptador
+
+ServerClient::sender_th --> Sender
+ServerClient::receiver_th --> Receiver
+
+Receiver <-down- ProtocoloServidor
+Sender -down-> ProtocoloServidor
+
+Sender::queue <-left- send_queue
+Receiver::queue -right-> recv_queue
+
+ @enduml

@@ -6,6 +6,8 @@ El proyecto está compuesto por 3 partes: la interfaz de usuario, el protocolo y
 
 <img src='img/diagrama_general.jpg?raw=true'>
 
+`PONER DIAGRAMA DE CLASES`
+
 ## DTOs
 
 Los DTOs son un conjunto de clases de las cuales todas heredan de DTO. Este tipo de objeto es utilizado para contener los distintos mensajes/acciones que envia el cliente hacia el servidor o el servidor hacia el cliente. Fue creado con el objetivo de tener un tipo comun para almacenar en las colas de entrada y salida. A su vez, es para abstraer a las clases de conocer su formacion, solo la conocen las clases que los utilizan. 
@@ -22,6 +24,8 @@ Teniendo un diccionario donde la clave es el id del cliente y el elemento almace
 ----
 
 ## Interfaz de usuario
+
+`PONER DIAGRAMA DE CLASES`
 
 ### Cliente
 Es la clase encargada de encapsular los atributos necesarios para que el cliente entable una conversacion con el **servidor**. Tiene un socket y dos colas, una de entrada y otra de salida. 
@@ -87,6 +91,7 @@ Mediante la actualizacion del estado se le cambia la animacion a renderizar. Los
 
 ## **Servidor**
 El servidor se encarga de iniciar un hilo aceptador que aceptara a los clientes. Esperando una 'q' como instruccion de cierre forzoso de todos los clientes, partidas, aceptador y del mismo.
+`PONER DIAGRAMA DE CLASES`
 
 ### Aceptador
 
