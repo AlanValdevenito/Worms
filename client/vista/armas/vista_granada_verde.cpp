@@ -30,8 +30,9 @@ void AnimacionGranadaVerde::render(SDL2pp::Renderer &renderer, SDL2pp::Color col
         renderizar_tiempo(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior);
 
     } else if (this->estado == ARMA_EXPLOTAR) {
-        this->sonido.reproducir();
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
+        this->sonido.reproducir();
+
         
         if (this->explosion.animacion_completa()) {
             this->estado = ARMA_EXPLOTO;

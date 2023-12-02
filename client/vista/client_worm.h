@@ -38,6 +38,7 @@ class Worm
 
 private:
     Animation animacion;
+    std::unique_ptr<Sonido> sonido;
 
     std::unique_ptr<Arma> arma;
 
@@ -55,14 +56,13 @@ private:
     int numeroColor;
 
     SDL2pp::Color &color;
-    Sonido sonido;
 
 public:
     bool camara;
 
     Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion);
 
-    void update(int it, float nuevoX, float nuevoY, int vida, int direccion, int angulo); // Actualiza el Worm en funcion del tiempo transcurrido.
+    void update(int it, float nuevoX, float nuevoY, int vida, int direccion, int angulo,  bool turno); // Actualiza el Worm en funcion del tiempo transcurrido.
     void update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int arma = 0);
 
     void equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma);
@@ -70,9 +70,6 @@ public:
     void render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
     void render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior);
-
-    void set_turno(bool nuevoTurno);
-    void set_camara(bool nuevaCamara);
 
     int get_tipo_de_arma();
 
@@ -93,6 +90,10 @@ public:
     int get_estado();
     int get_color();
     bool get_turno();
+
+    void set_turno(bool nuevoTurno);
+    void set_camara(bool nuevaCamara);
+    void set_sonido(std::unique_ptr<SDL2pp::Chunk> nuevoSonido);
 };
 
 #endif // __WORM_H_

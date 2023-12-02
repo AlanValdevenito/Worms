@@ -16,21 +16,19 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, fl
                                                                                           turno(false), 
                                                                                           numeroColor(numeroColor),
                                                                                           color(color),
-                                                                                          sonido("/sonidos/worms/YESSIR.WAV"),
                                                                                           camara(false) {}
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos.
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
-void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDireccion, int nuevoAngulo)
+void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDireccion, int nuevoAngulo, bool nuevoTurno)
 {
 
     if (this->estado == EQUIPANDO_ARMA) {
         this->animacion.update(it);
     }
 
-    // if (this->estado == MOVIENDOSE) {
     if ((nuevoX != this->x) || (nuevoY != this->y)) {
 
         if (this->estado != GOLPEADO) {
@@ -45,9 +43,21 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDi
     this->vida = nuevaVida;
     this->direccion = nuevaDireccion;
     this->angulo = nuevoAngulo;
+
+    if (nuevoTurno && (not this->turno)) {
+        this->sonido = std::make_unique<Sonido>("/sonidos/worms/YESSIR.WAV");
+    }
+
+    this->turno = nuevoTurno;
+    this->camara = nuevoTurno;
 }
 
 void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
+
+    if (this->estado == nuevoEstado) {
+        return;
+    }
+
     this->estado = nuevoEstado;
     this->tipoDeArma = tipoDeArma;
 
@@ -69,12 +79,16 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
         std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wflylnk.png").SetColorKey(true, 0));
         this->animacion.cambiar(std::move(nuevaTextura));
         this->animacion.no_repetir_animacion();
+
+        this->sonido = std::make_unique<Sonido>("/sonidos/worms/JUMP1.WAV");
     }
 
     else if (nuevoEstado == SALTANDO_ATRAS) {
         std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
         this->animacion.cambiar(std::move(nuevaTextura));
         this->animacion.no_repetir_animacion();
+
+        this->sonido = std::make_unique<Sonido>("/sonidos/worms/BACKFLIP.WAV");
     }
 
     else if (nuevoEstado == EQUIPANDO_ARMA) {
@@ -89,6 +103,7 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     else if (nuevoEstado == MUERTO) {
         std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grave1.png").SetColorKey(true, 0));
         this->animacion.cambiar(std::move(nuevaTextura));
+        this->sonido = std::make_unique<Sonido>("/sonidos/worms/DEAD1.WAV");
     }
 }
 
@@ -178,6 +193,10 @@ void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraL
 {
     SDL_RendererFlip flip = this->direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
+    if (this->sonido) {
+        this->sonido->reproducir();
+    }
+
     if (this->estado == MUERTO) {
         this->animacion.render(renderer, this->camara ? SDL2pp::Rect(camaraCentroX - OFFSET, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
         return;
@@ -200,10 +219,6 @@ void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraL
     }
 
     this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
-
-    if (this->turno) {
-        this->sonido.reproducir();
-    }
 }
 
 void Worm::render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
@@ -265,16 +280,6 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
         renderer.Copy(texture, SDL2pp::NullOpt, mensaje);
     }
 
-}
-
-/******************** TURNO ********************/
-
-void Worm::set_turno(bool nuevoTurno) {
-    this->turno = nuevoTurno;
-}
-
-void Worm::set_camara(bool nuevaCamara) {
-    this->camara = nuevaCamara;
 }
 
 /******************** ARMA ********************/
@@ -357,4 +362,18 @@ int Worm::get_color() {
 
 bool Worm::get_turno() {
     return this->turno;
+}
+
+/******************** SETTERS GENERALES ********************/
+
+void Worm::set_turno(bool nuevoTurno) {
+    this->turno = nuevoTurno;
+}
+
+void Worm::set_camara(bool nuevaCamara) {
+    this->camara = nuevaCamara;
+}
+
+void Worm::set_sonido(std::unique_ptr<SDL2pp::Chunk> nuevoSonido) {
+    this->sonido->cambiar(std::move(nuevoSonido));
 }

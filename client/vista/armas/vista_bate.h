@@ -13,7 +13,6 @@ private:
     Apuntado apuntado;
 
     int angulo;
-    // Animation animacion;
 
 public:
     AnimacionBateDeBaseball(SDL2pp::Renderer &renderer);

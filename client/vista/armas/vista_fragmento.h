@@ -13,6 +13,8 @@ private:
     Animation movimiento;
     Explosion explosion;
 
+    Sonido sonido;
+
     int angulo;
 
 public:

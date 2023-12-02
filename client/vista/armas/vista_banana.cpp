@@ -4,6 +4,7 @@ AnimacionBanana::AnimacionBanana(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTAND
                                                               movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/banana.png").SetColorKey(true, 0))), 
                                                               explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/expow.png").SetColorKey(true, 0))), 
                                                               apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrban.png").SetColorKey(true, 0))), 
+                                                              sonido("/sonidos/armas/EXPLOSION1.WAV"),
                                                               tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
@@ -29,6 +30,7 @@ void AnimacionBanana::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, fl
 
     } else if (this->estado == ARMA_EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
+        this->sonido.reproducir();
         
         if (this->explosion.animacion_completa()) {
             this->estado = ARMA_EXPLOTO;

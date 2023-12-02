@@ -4,6 +4,7 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "client_explosion.h"
+#include "sonido.h"
 
 const int ARMA_EQUIPANDO = 6;
 const int ARMA_ESPERANDO = 7;

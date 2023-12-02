@@ -14,6 +14,8 @@ private:
     Explosion explosion;
     Apuntado apuntado;
 
+    Sonido sonido;
+
     int angulo;
     int direccion;
 

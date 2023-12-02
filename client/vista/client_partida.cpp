@@ -485,6 +485,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
                     enviarAtaque();
                 }
+
                 break;
             }
 
@@ -622,20 +623,13 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     /***** ACTUALIZAMOS EL ID DEL WORM QUE SE PODRA MOVER *****/
 
     int id_gusano_siguiente = gusanos->get_gusano_de_turno();
-
-    if (this->id_gusano_actual != id_gusano_siguiente) {
-        this->worms[this->id_gusano_actual]->set_turno(false); // Le aviso al Worm del turno anterior que ya no es mas su turno
-        this->worms[this->id_gusano_actual]->set_camara(false);
-        this->id_gusano_actual = id_gusano_siguiente;
-        this->worms[this->id_gusano_actual]->set_turno(true); // Le aviso al Worm del turno actual que es su turno
-        this->worms[this->id_gusano_actual]->set_camara(false);
-        this->camara.seguir(this->worms[this->id_gusano_actual]->get_x(), this->worms[this->id_gusano_actual]->get_y());
-        this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
     
-    } else {
-        this->id_gusano_actual = id_gusano_siguiente;
-        this->worms[this->id_gusano_actual]->set_turno(true);
+    if (this->id_gusano_actual != id_gusano_siguiente) {
+        this->camara.seguir(this->worms[id_gusano_siguiente]->get_x(), this->worms[id_gusano_siguiente]->get_y());
+        this->temporizador.tiempoInicial = this->temporizador.tiempoActual;
     }
+
+    this->id_gusano_actual = id_gusano_siguiente;
 
     /***** ACTUALIZAMOS LA POSICION DE CADA WORM *****/
 
@@ -643,29 +637,30 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
     for (int i = 0; i < cantidad; i++) {
         std::shared_ptr<Gusano> gusano = gusanos->popGusano(i);
 
+        int id = gusano->get_id();
         int nuevoEstado = (int) gusano->get_estado();
         int tipoDeArma = (int) gusano->get_arma();
 
         if (nuevoEstado == MUERTO) {
-            // this->worms.erase(gusano->get_id());
-            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+            this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
             continue;
         }
 
         float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-        this->worms[gusano->get_id()]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo());
+        bool turno = (id == this->id_gusano_actual);
+        this->worms[id]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo(), turno);
 
-        if ((this->worms[gusano->get_id()]->get_tipo_de_arma() != tipoDeArma)) {
-            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        if ((this->worms[id]->get_tipo_de_arma() != tipoDeArma)) {
+            this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
 
-        if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (this->worms[gusano->get_id()]->get_estado() != APUNTANDO)) {
-            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        if ((this->worms[id]->get_estado() != APUNTANDO)) {
+            this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
 
-        else if ((this->worms[gusano->get_id()]->get_estado() != nuevoEstado) && (tipoDeArma == SIN_ARMA) && (this->worms[gusano->get_id()]->get_estado() == APUNTANDO)) {
-            this->worms[gusano->get_id()]->update_estado(renderer, nuevoEstado, tipoDeArma);
+        else if ((tipoDeArma == SIN_ARMA) && (this->worms[id]->get_estado() == APUNTANDO)) {
+            this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
     }
 

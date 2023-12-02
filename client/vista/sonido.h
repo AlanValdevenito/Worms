@@ -11,14 +11,15 @@ private:
     std::unique_ptr<SDL2pp::Mixer> mixer;
     std::unique_ptr<SDL2pp::Chunk> sonido;
 
-public:
     bool reproducido;
+    int loops;
+    int canal;
+
+public:
     Sonido(std::string ruta);
 
-    void cambiar(std::unique_ptr<SDL2pp::Chunk> nuevoSonido);
-
+    void cambiar(std::unique_ptr<SDL2pp::Chunk> nuevoSonido, int loops = 0);
     void reproducir();
-    void detener();
 };
 
 #endif // SONIDO_h

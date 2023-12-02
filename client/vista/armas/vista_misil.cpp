@@ -2,7 +2,8 @@
 
 AnimacionMisil::AnimacionMisil(SDL2pp::Renderer &renderer, std::unique_ptr<SDL2pp::Texture> ex):   Arma(ARMA_MOVIENDOSE), 
                                                                                                     movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/airmisl.png").SetColorKey(true, 0))), 
-                                                                                                    explosion(renderer, std::move(ex)) {}
+                                                                                                    explosion(renderer, std::move(ex)),
+                                                                                                    sonido("/sonidos/armas/EXPLOSION1.WAV") {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
@@ -20,6 +21,7 @@ void AnimacionMisil::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, flo
     
     } else if (this->estado == ARMA_EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
+        this->sonido.reproducir();
         
         if (this->explosion.animacion_completa()) {
             this->estado = ARMA_EXPLOTO;

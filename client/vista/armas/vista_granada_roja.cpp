@@ -3,7 +3,8 @@
 AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
                                                                           movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/cluster.png").SetColorKey(true, 0))), 
                                                                           explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0))), 
-                                                                          apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0))), 
+                                                                          apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0))),
+                                                                          sonido("/sonidos/armas/EXPLOSION1.WAV"), 
                                                                           tiempo(5) 
 {
     for (int i = 1; i <= 6; i++){
@@ -40,6 +41,7 @@ void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, SDL2pp::Color colo
 
     } else if (this->estado == ARMA_EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
+        this->sonido.reproducir();
         
         if (this->explosion.animacion_completa()) {
             this->estado = ARMA_EXPLOTO;

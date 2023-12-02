@@ -12,6 +12,8 @@ private:
     Animation movimiento;
     Explosion explosion;
 
+    Sonido sonido;
+
 public:
     AnimacionMisil(SDL2pp::Renderer &renderer, std::unique_ptr<SDL2pp::Texture> ex);
 
