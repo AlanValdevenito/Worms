@@ -721,9 +721,11 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
         bool turno = (id == this->id_gusano_actual);
+
         this->worms[id]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo(), turno);
 
         if ((this->worms[id]->get_tipo_de_arma() != tipoDeArma)) {
+            std::cout << "\nID de gusano: " << id << std::endl;
             this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
 
@@ -892,6 +894,7 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
             // contador++;
         }
 
+        std::cout << "\nID de gusano: " << elemento.first << std::endl;
         elemento.second->render_arma(renderer, (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
 
     }

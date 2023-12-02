@@ -66,7 +66,8 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
         this->animacion.cambiar(this->texturas[4]);
 
         if (this->tipoDeArma == SIN_ARMA) {
-            this->arma = nullptr;
+            std::cout << "Eliminando arma del gusano cuyo ID tengo arriba\n" << std::endl;
+            this->arma.reset();
         }
     }
 
@@ -204,12 +205,13 @@ void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraL
         }
     }
 
-    this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
+    // this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
 }
 
 void Worm::render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
 
     if ((this->arma) && (this->estado != EQUIPANDO_ARMA) && (this->estado != APUNTANDO)) {
+        std::cout << "Renderizando arma del gusano cuyo ID tengo arriba\n" << std::endl;
         this->arma->render(renderer, this->color, camaraLimiteIzquierdo, camaraLimiteSuperior);
     }
 
