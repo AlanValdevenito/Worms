@@ -11,7 +11,6 @@ void Client::start()
 
     std::shared_ptr<Dto> d = recv_queue.pop();
     id = d->get_cliente_id();
-    // delete d;
 }
 
 void Client::kill()

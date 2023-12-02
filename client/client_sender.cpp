@@ -18,7 +18,7 @@ void SenderTH::run()
             was_closed = true;
         }
     }
-    std::cerr << "El hilo sender fue cerrado por enviar informacion desconocida\n";
+    std::cerr << "El hilo sender fue cerrado.\n";
 }
 
 bool SenderTH::send(std::shared_ptr<Dto> d)

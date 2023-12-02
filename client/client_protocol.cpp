@@ -537,7 +537,6 @@ std::shared_ptr<Dto> ClientProtocol::recibirProyectiles(bool &was_closed)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool ClientProtocol::enviarMovimiento(std::shared_ptr<Dto> dto, bool &was_closed){
-    std::cout << "Envia un movimiento\n";
     
     if (dto->return_code() == MOVER_A_DERECHA_CODE)
         return moverADerecha(std::dynamic_pointer_cast<MoverADerecha>(dto), was_closed);
@@ -553,7 +552,7 @@ bool ClientProtocol::enviarMovimiento(std::shared_ptr<Dto> dto, bool &was_closed
 }
 
 bool ClientProtocol::enviarAtaque(std::shared_ptr<Dto> dto, bool &was_closed){
-    std::cout << "Envia un ataque\n";
+   
     if (dto->return_code() == BATEAR_CODE)
         return enviarAtaqueConBate(std::dynamic_pointer_cast<Batear>(dto), was_closed);
     else if (dto->return_code() == GRANADA_VERDE_CODE)
