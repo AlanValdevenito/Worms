@@ -511,12 +511,10 @@ void Game::updateWorms()
             if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive)
             {
                 players[worm->playerId - 1].markWormAsDead(worm->getId());
-                /*
+                
                 if (endlessTurn) {
                     beginNextTurn();
                 }
-                */
-                
             }
         }
 
