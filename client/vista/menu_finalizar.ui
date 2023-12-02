@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QMainWindow { 
-	background-image: url(&quot;/home/alan/Escritorio/Taller-de-Programacion-I/TPs/TP3 - Worms/Worms/client/vista/data/fondo.png&quot;); 
+	background-image: url(&quot;../client/vista/data/fondo.png&quot;); 
 	background-position: center center;
 }</string>
   </property>
