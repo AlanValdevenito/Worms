@@ -20,7 +20,6 @@ private:
 
 public:
     Fragmento(uint8_t id, uint16_t x, uint16_t y, uint8_t angulo, bool exploto);
-    // Fragmento(uint16_t x, uint16_t y, bool exploto);
     ~Fragmento();
     bool is_alive() override;
     uint16_t x_pos() override;

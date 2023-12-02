@@ -286,6 +286,41 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaSanta)
     ASSERT_TRUE(tiempo_recibido == tiempo);
 }
 
+TEST(PROTOCOLOCLIENTE__ENVIO, __GranadaRoja)
+{
+
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+    uint8_t id = 2;
+    uint8_t potencia = 20;
+    uint8_t angulo = 28;
+    uint8_t tiempo = 5;
+    std::shared_ptr<GranadaRoja> g = std::make_shared<GranadaRoja>(id, potencia, angulo, tiempo);
+
+    cp.enviarAtaqueConGranadaRoja(g, was_closed);
+
+    uint8_t id_recibido;
+    uint8_t codigo_recibido;
+    uint8_t potencia_recibida;
+    uint8_t angulo_recibido;
+    uint8_t tiempo_recibido;
+    skt.recvall(&id_recibido, sizeof(id_recibido), &was_closed);
+    skt.recvall(&codigo_recibido, sizeof(codigo_recibido), &was_closed);
+    skt.recvall(&potencia_recibida, sizeof(potencia_recibida), &was_closed);
+    skt.recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
+    skt.recvall(&tiempo_recibido, sizeof(tiempo_recibido), &was_closed);
+
+    // printf("%u %u\n", id_recibido, codigo_recibido);
+
+    ASSERT_TRUE(id_recibido == id);
+    ASSERT_TRUE(codigo_recibido == GRANADA_ROJA_CODE);
+    ASSERT_TRUE(potencia_recibida == potencia);
+    ASSERT_TRUE(angulo_recibido == angulo);
+    ASSERT_TRUE(tiempo_recibido == tiempo);
+}
+
 TEST(PROTOCOLOCLIENTE__ENVIO, __Dinamita)
 {
 
@@ -413,6 +448,40 @@ TEST(PROTOCOLOCLIENTE__ENVIO, __AtaqueAereo)
     ASSERT_TRUE(codigo_recibido == ATAQUE_AEREO_CODE);
     ASSERT_TRUE(ntohs(x_recibido) == x);
     ASSERT_TRUE(ntohs(y_recibido) == y);
+    ASSERT_TRUE(exploto_recibido == false);
+}
+
+TEST(PROTOCOLOCLIENTE__ENVIO, __Mortero)
+{
+
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+    uint8_t id = 2;
+    uint8_t potencia = 20;
+    uint8_t angulo = 45;
+    std::shared_ptr<Mortero> t = std::make_shared<Mortero>(id, potencia, angulo, false);
+
+    cp.enviarAtaqueConMortero(t, was_closed);
+
+    uint8_t id_recibido;
+    uint8_t codigo_recibido;
+    uint8_t potencia_recibido;
+    uint8_t angulo_recibido;
+    uint8_t exploto_recibido;
+    skt.recvall(&id_recibido, sizeof(id_recibido), &was_closed);
+    skt.recvall(&codigo_recibido, sizeof(codigo_recibido), &was_closed);
+    skt.recvall(&potencia_recibido, sizeof(potencia_recibido), &was_closed);
+    skt.recvall(&angulo_recibido, sizeof(angulo_recibido), &was_closed);
+    skt.recvall(&exploto_recibido, sizeof(exploto_recibido), &was_closed);
+
+    // printf("%u %u\n", id_recibido, codigo_recibido);
+
+    ASSERT_TRUE(id_recibido == id);
+    ASSERT_TRUE(codigo_recibido == MORTERO_CODE);
+    ASSERT_TRUE(potencia_recibido == potencia);
+    ASSERT_TRUE(angulo_recibido == angulo);
     ASSERT_TRUE(exploto_recibido == false);
 }
 
@@ -703,6 +772,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaVerde)
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
+    ASSERT_TRUE(rta->return_code() == GRANADA_VERDE_CODE);
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_angulo() == angulo);
@@ -743,6 +813,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaBanana)
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
+    ASSERT_TRUE(rta->return_code() == GRANADA_BANANA_CODE);
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_angulo() == angulo);
@@ -783,6 +854,48 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaSanta)
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
+    ASSERT_TRUE(rta->return_code() == GRANADA_SANTA_CODE);
+    ASSERT_TRUE(ntohs(rta->x_pos()) == x);
+    ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    ASSERT_TRUE(rta->get_angulo() == angulo);
+    ASSERT_TRUE(rta->get_exploto() == exploto);
+    ASSERT_TRUE(rta->get_tiempo() == tiempo);
+}
+
+TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaRoja)
+{
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+
+    skt.sendall(&PROYECTILES_CODE, sizeof(PROYECTILES_CODE), &was_closed);
+    uint8_t cant = 1;
+    skt.sendall(&cant, sizeof(cant), &was_closed);
+
+    skt.sendall(&GRANADA_ROJA_CODE, sizeof(GRANADA_ROJA_CODE), &was_closed);
+
+    uint16_t x = 30;
+    x = htons(x);
+    skt.sendall(&x, sizeof(x), &was_closed);
+
+    uint16_t y = 10;
+    y = htons(y);
+    skt.sendall(&y, sizeof(y), &was_closed);
+
+    uint8_t angulo = 15;
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+
+    uint8_t exploto = 1;
+    skt.sendall(&exploto, sizeof(exploto), &was_closed);
+
+    uint8_t tiempo = 1;
+    skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
+
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
+
+    ASSERT_TRUE(rta->return_code() == GRANADA_ROJA_CODE);
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_angulo() == angulo);
@@ -820,6 +933,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Dinamita)
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
+    ASSERT_TRUE(rta->return_code() == DINAMITA_CODE);
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_exploto() == exploto);
@@ -859,12 +973,127 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Bazooka)
     std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
+    ASSERT_TRUE(rta->return_code() == BAZUKA_CODE);
     ASSERT_TRUE(ntohs(rta->x_pos()) == x);
     ASSERT_TRUE(ntohs(rta->y_pos()) == y);
     ASSERT_TRUE(rta->get_angulo() == angulo);
     ASSERT_TRUE(rta->get_direccion() == direccion);
-    // ASSERT_TRUE(rta->get_id() == id);
-    // ASSERT_TRUE(rta->get_vida() == vida);
+}
+
+TEST(PROTOCOLOCLIENTE__RECIBIR, __Mortero)
+{
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+
+    skt.sendall(&PROYECTILES_CODE, sizeof(PROYECTILES_CODE), &was_closed);
+    uint8_t cant = 1;
+    skt.sendall(&cant, sizeof(cant), &was_closed);
+
+    skt.sendall(&MORTERO_CODE, sizeof(MORTERO_CODE), &was_closed);
+
+    uint16_t x = 30;
+    x = htons(x);
+    skt.sendall(&x, sizeof(x), &was_closed);
+
+    uint16_t y = 10;
+    y = htons(y);
+    skt.sendall(&y, sizeof(y), &was_closed);
+
+    uint8_t angulo = 27;
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+
+    uint8_t direccion = 1;
+    skt.sendall(&direccion, sizeof(direccion), &was_closed);
+
+    uint8_t exploto = 0;
+    skt.sendall(&exploto, sizeof(exploto), &was_closed);
+
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
+
+    ASSERT_TRUE(rta->return_code() == MORTERO_CODE);
+    ASSERT_TRUE(ntohs(rta->x_pos()) == x);
+    ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    ASSERT_TRUE(rta->get_angulo() == angulo);
+    ASSERT_TRUE(rta->get_direccion() == direccion);
+}
+
+TEST(PROTOCOLOCLIENTE__RECIBIR, __AtaqueAereo)
+{
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+
+    skt.sendall(&PROYECTILES_CODE, sizeof(PROYECTILES_CODE), &was_closed);
+    uint8_t cant = 1;
+    skt.sendall(&cant, sizeof(cant), &was_closed);
+
+    skt.sendall(&ATAQUE_AEREO_CODE, sizeof(ATAQUE_AEREO_CODE), &was_closed);
+
+    uint8_t id = 1;
+    skt.sendall(&id, sizeof(id), &was_closed);
+
+    uint16_t x = 30;
+    x = htons(x);
+    skt.sendall(&x, sizeof(x), &was_closed);
+
+    uint16_t y = 10;
+    y = htons(y);
+    skt.sendall(&y, sizeof(y), &was_closed);
+
+    uint8_t exploto = 0;
+    skt.sendall(&exploto, sizeof(exploto), &was_closed);
+
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
+
+    ASSERT_TRUE(rta->return_code() == ATAQUE_AEREO_CODE);
+    ASSERT_TRUE(rta->get_id() == id);
+    ASSERT_TRUE(ntohs(rta->x_pos()) == x);
+    ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+}
+
+TEST(PROTOCOLOCLIENTE__RECIBIR, __Fragmento)
+{
+    SocketMock skt;
+    ClientProtocol cp(std::ref(skt));
+
+    bool was_closed = false;
+
+    skt.sendall(&PROYECTILES_CODE, sizeof(PROYECTILES_CODE), &was_closed);
+    uint8_t cant = 1;
+    skt.sendall(&cant, sizeof(cant), &was_closed);
+
+    skt.sendall(&FRAGMENTO_CODE, sizeof(FRAGMENTO_CODE), &was_closed);
+
+    uint8_t id = 1;
+    skt.sendall(&id, sizeof(id), &was_closed);
+
+    uint16_t x = 30;
+    x = htons(x);
+    skt.sendall(&x, sizeof(x), &was_closed);
+
+    uint16_t y = 10;
+    y = htons(y);
+    skt.sendall(&y, sizeof(y), &was_closed);
+
+    uint8_t angulo = 45;
+    skt.sendall(&angulo, sizeof(angulo), &was_closed);
+
+    uint8_t exploto = 0;
+    skt.sendall(&exploto, sizeof(exploto), &was_closed);
+
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
+
+    ASSERT_TRUE(rta->return_code() == FRAGMENTO_CODE);
+    ASSERT_TRUE(rta->get_id() == id);
+    ASSERT_TRUE(ntohs(rta->x_pos()) == x);
+    ASSERT_TRUE(ntohs(rta->y_pos()) == y);
+    ASSERT_TRUE(rta->get_angulo() == angulo);
 }
 
 void printServidor()
@@ -1541,6 +1770,118 @@ TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaBazooka)
     ASSERT_TRUE(direccion == direccion_enviado);
 }
 
+TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaMortero)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint16_t x_enviada = 20;
+    uint16_t y_enviada = 11;
+    uint16_t angulo_enviado = 75;
+    uint16_t direccion_enviado = 1;
+    std::shared_ptr<Mortero> g = std::make_shared<Mortero>(x_enviada, y_enviada, angulo_enviado, direccion_enviado, false);
+
+    sp.enviarTrayectoriaDeMortero(g, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint16_t x;
+    skt->recvall(&x, sizeof(x), &was_closed);
+    x = ntohs(x);
+
+    uint16_t y;
+    skt->recvall(&y, sizeof(y), &was_closed);
+    y = ntohs(y);
+
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+
+    uint8_t direccion;
+    skt->recvall(&direccion, sizeof(direccion), &was_closed);
+
+    delete skt;
+    ASSERT_TRUE(code == MORTERO_CODE);
+    ASSERT_TRUE(x == x_enviada);
+    ASSERT_TRUE(y == y_enviada);
+    ASSERT_TRUE(angulo == angulo_enviado);
+    ASSERT_TRUE(direccion == direccion_enviado);
+}
+
+TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaAtaqueAereo)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint16_t id_enviado = 3;
+    uint16_t x_enviada = 20;
+    uint16_t y_enviada = 11;
+    std::shared_ptr<Misil> g = std::make_shared<Misil>(id_enviado, x_enviada, y_enviada, false);
+
+    sp.enviarTrayectoriaDeMisil(g, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint8_t id;
+    skt->recvall(&id, sizeof(id), &was_closed);
+
+    uint16_t x;
+    skt->recvall(&x, sizeof(x), &was_closed);
+    x = ntohs(x);
+
+    uint16_t y;
+    skt->recvall(&y, sizeof(y), &was_closed);
+    y = ntohs(y);
+
+    delete skt;
+    ASSERT_TRUE(code == ATAQUE_AEREO_CODE);
+    ASSERT_TRUE(id == id_enviado);
+    ASSERT_TRUE(x == x_enviada);
+    ASSERT_TRUE(y == y_enviada);
+}
+
+TEST(PROTOCOLOSERVIDOR__ENVIAR, TrayectoriaFragmento)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint16_t id_enviado = 2;
+    uint16_t x_enviada = 20;
+    uint16_t y_enviada = 11;
+    uint16_t angulo_enviado = 75;
+    std::shared_ptr<Fragmento> g = std::make_shared<Fragmento>(id_enviado, x_enviada, y_enviada, angulo_enviado, false);
+
+    sp.enviarTrayectoriaDeFragmento(g, was_closed);
+
+    uint8_t code;
+    skt->recvall(&code, sizeof(code), &was_closed);
+
+    uint8_t id;
+    skt->recvall(&id, sizeof(id), &was_closed);
+
+    uint16_t x;
+    skt->recvall(&x, sizeof(x), &was_closed);
+    x = ntohs(x);
+
+    uint16_t y;
+    skt->recvall(&y, sizeof(y), &was_closed);
+    y = ntohs(y);
+
+    uint8_t angulo;
+    skt->recvall(&angulo, sizeof(angulo), &was_closed);
+
+    delete skt;
+    ASSERT_TRUE(code == FRAGMENTO_CODE);
+    ASSERT_TRUE(id == id_enviado);
+    ASSERT_TRUE(x == x_enviada);
+    ASSERT_TRUE(y == y_enviada);
+    ASSERT_TRUE(angulo == angulo_enviado);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1786,6 +2127,37 @@ TEST(PROTOCOLOSERVIDOR__RECIBIR, __AtaqueconGranadaSanta)
     ASSERT_TRUE(tiempo == rta->get_tiempo());
 }
 
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __AtaqueconGranadaRoja)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 2;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = GRANADA_ROJA_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    uint8_t potencia = 25;
+    skt->sendall(&potencia, sizeof(potencia), &was_closed);
+
+    uint8_t angulo = 25;
+    skt->sendall(&angulo, sizeof(angulo), &was_closed);
+
+    uint8_t tiempo = 5;
+    skt->sendall(&tiempo, sizeof(tiempo), &was_closed);
+
+    std::shared_ptr<GranadaRoja> rta = std::dynamic_pointer_cast<GranadaRoja>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(id == rta->get_cliente_id());
+    ASSERT_TRUE(potencia == rta->get_potencia());
+    ASSERT_TRUE(angulo == rta->get_angulo());
+    ASSERT_TRUE(tiempo == rta->get_tiempo());
+}
+
 TEST(PROTOCOLOSERVIDOR__RECIBIR, __AtaqueconDinamita)
 {
     SocketMock *skt = new SocketMock();
@@ -1894,6 +2266,33 @@ TEST(PROTOCOLOSERVIDOR__RECIBIR, __AtaqueAereo)
     ASSERT_TRUE(id == rta->get_cliente_id());
     ASSERT_TRUE(x_enviado == rta->x_pos());
     ASSERT_TRUE(y_enviado == rta->y_pos());
+}
+
+TEST(PROTOCOLOSERVIDOR__RECIBIR, __Mortero)
+{
+    SocketMock *skt = new SocketMock();
+    ServerProtocol sp(skt);
+    bool was_closed = false;
+
+    uint8_t id = 2;
+    skt->sendall(&id, sizeof(id), &was_closed);
+
+    uint8_t code = MORTERO_CODE;
+    skt->sendall(&code, sizeof(code), &was_closed);
+
+    uint8_t potencia = 25;
+    skt->sendall(&potencia, sizeof(potencia), &was_closed);
+
+    uint8_t angulo = 25;
+    skt->sendall(&angulo, sizeof(angulo), &was_closed);
+
+    std::shared_ptr<Mortero> rta = std::dynamic_pointer_cast<Mortero>(sp.recibirActividad(was_closed));
+
+    delete skt;
+    ASSERT_TRUE(code == rta->return_code());
+    ASSERT_TRUE(id == rta->get_cliente_id());
+    ASSERT_TRUE(potencia == rta->get_potencia());
+    ASSERT_TRUE(angulo == rta->get_angulo());
 }
 
 int main(int argc, char **argv)
