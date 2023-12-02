@@ -181,6 +181,7 @@ void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
     this->texturas[37] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/circle50.png").SetColorKey(true, 0));
     this->texturas[38] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/elipse50.png").SetColorKey(true, 0));
     this->texturas[39] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/flame1.png").SetColorKey(true, 0));
+    this->texturas[40] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/hexhaust.png").SetColorKey(true, 0));
 }
 
 void Partida::inicializar_sonidos(SDL2pp::Renderer &renderer) {

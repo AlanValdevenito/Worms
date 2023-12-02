@@ -2,6 +2,7 @@
 
 AnimacionMortero::AnimacionMortero(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
     Arma(ARMA_APUNTANDO), 
+    texturas(texturas), 
     movimiento(texturas[29]), 
     explosion(texturas, texturas[20]), 
     apuntado(renderer, texturas[33]),
@@ -19,6 +20,8 @@ void AnimacionMortero::update(float nuevoX, float nuevoY, int nuevoEstado, int n
     if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
         this->fragmentos[id]->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo);
     } else {
+        this->humo.push_back(AnimacionHumo(this->texturas[40], this->x, this->y));
+
         this->x = nuevoX;
         this->y = nuevoY;
         this->estado = nuevoEstado;
@@ -59,6 +62,13 @@ void AnimacionMortero::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, f
 
     }
 
+    renderizar_humo(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior);
+}
+
+void AnimacionMortero::renderizar_humo(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+    for(int i = 0; i < (int) this->humo.size(); i++) {
+        this->humo[i].render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior);
+    }
 }
 
 /******************** ANGULO ********************/

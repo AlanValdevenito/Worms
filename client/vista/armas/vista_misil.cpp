@@ -2,6 +2,7 @@
 
 AnimacionMisil::AnimacionMisil(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos):   
     Arma(ARMA_MOVIENDOSE), 
+    texturas(texturas), 
     movimiento(texturas[27]), 
     explosion(texturas, texturas[20]),
     sonido(sonidos[4]) {}
@@ -9,6 +10,8 @@ AnimacionMisil::AnimacionMisil(SDL2pp::Renderer &renderer, std::map<int, std::sh
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
 void AnimacionMisil::update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo, int nuevaDireccion, int nuevoTiempo, int id) {
+    this->humo.push_back(AnimacionHumo(this->texturas[40], this->x, this->y));
+    
     this->x = nuevoX;
     this->y = nuevoY;
     this->estado = nuevoEstado;
@@ -31,4 +34,11 @@ void AnimacionMisil::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, flo
         }
     }
 
+    renderizar_humo(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior);
+}
+
+void AnimacionMisil::renderizar_humo(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+    for(int i = 0; i < (int) this->humo.size(); i++) {
+        this->humo[i].render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior);
+    }
 }

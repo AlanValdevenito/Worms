@@ -1,8 +1,9 @@
 #include "vista_bazooka.h"
 
 AnimacionBazooka::AnimacionBazooka(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
-    Arma(ARMA_APUNTANDO), 
-    movimiento(texturas[23]), 
+    Arma(ARMA_APUNTANDO),
+    texturas(texturas), 
+    movimiento(texturas[23]),
     explosion(texturas, texturas[20]), 
     apuntado(renderer, texturas[33]),
     sonido(sonidos[4]) {}
@@ -10,6 +11,8 @@ AnimacionBazooka::AnimacionBazooka(SDL2pp::Renderer &renderer, std::map<int, std
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
 void AnimacionBazooka::update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo, int nuevaDireccion, int nuevoTiempo, int id) {
+    this->humo.push_back(AnimacionHumo(this->texturas[40], this->x, this->y));
+
     this->x = nuevoX;
     this->y = nuevoY;
     this->estado = nuevoEstado;
@@ -27,11 +30,11 @@ void AnimacionBazooka::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, f
         SDL_RendererFlip flip = this->direccion ? SDL_FLIP_VERTICAL : SDL_FLIP_NONE;
         int offset = this->direccion ? 180 : (-90);
         this->movimiento.render(renderer, SDL2pp::Rect(this->x - (30) - camaraLimiteIzquierdo, this->y - (30) - camaraLimiteSuperior, 60, 60), flip, this->angulo - offset);
-    
+
     } else if (this->estado == ARMA_EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
         this->sonido.reproducir();
-        
+
         if (this->explosion.animacion_completa()) {
             this->estado = ARMA_EXPLOTO;
         } else {
@@ -39,6 +42,13 @@ void AnimacionBazooka::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, f
         }
     }
 
+    renderizar_humo(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior);
+}
+
+void AnimacionBazooka::renderizar_humo(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+    for(int i = 0; i < (int) this->humo.size(); i++) {
+        this->humo[i].render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior);
+    }
 }
 
 /******************** ANGULO ********************/
