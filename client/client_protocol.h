@@ -32,6 +32,7 @@
 #include "teletransportar.h"
 #include "bazuka.h"
 #include "proyectil.h"
+#include "cheats.h"
 #include "ganador.h"
 #include "fragmento.h"
 #include "ataque_aereo.h"
@@ -45,6 +46,7 @@ class ClientProtocol
 public:
     explicit ClientProtocol(SocketInterface &skt);
     ~ClientProtocol();
+
     std::shared_ptr<Dto> receive(bool &was_closed);
     bool moverADerecha(std::shared_ptr<MoverADerecha> m, bool &was_closed);
     bool moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &was_closed);
@@ -63,6 +65,8 @@ public:
     bool enviarTeletrasnportacion(std::shared_ptr<Teletransportar> t, bool &was_closed);
     bool enviarEquipadoDeArma(std::shared_ptr<EquiparArma> t, bool &was_closed);
     bool enviarAtaqueaereo(std::shared_ptr<Misil> t, bool &was_closed);
+    bool enviarCheat(std::shared_ptr<Cheat> c, bool &was_closed);
+   
 
 private:
     SocketInterface &skt;
@@ -82,12 +86,12 @@ private:
     std::shared_ptr<Dto> recibirTrayectoriaMortero(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaMisil(bool &was_closed);
     std::shared_ptr<Dto> recibirTrayectoriaFragmento(bool &was_closed);
+    std::shared_ptr<Dto> recibirProyectiles(bool &was_closed);
+    std::shared_ptr<Dto> recibirProyectil(bool &was_closed);
     bool enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarAnguloYPotenciaDeProyectil(std::shared_ptr<Proyectil> dto, bool &was_closed);
     bool enviarAtaqueConGranada(std::shared_ptr<Proyectil> g, bool &was_closed);
     bool recibirPosicion(uint16_t &x, uint16_t &y, bool &was_closed);
     uint8_t cantidadARecibir(bool &was_closed);
-    std::shared_ptr<Dto> recibirProyectiles(bool &was_closed);
-    std::shared_ptr<Dto> recibirProyectil(bool &was_closed);
 };
 #endif

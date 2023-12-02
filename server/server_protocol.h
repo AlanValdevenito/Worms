@@ -33,6 +33,7 @@
 #include "bazuka.h"
 #include "ganador.h"
 #include "fragmento.h"
+#include "cheats.h"
 #include "equipar_arma.h"
 #include "socket.h"
 #include "socket_interface.h"
@@ -77,6 +78,7 @@ private:
     std::shared_ptr<Dto> recibirParametrosDeLaPartida(bool &was_closed);
     std::shared_ptr<Dto> recibirAtaqueAereo(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirEquipadoDeArma(uint8_t id, bool &was_closed);
+    std::shared_ptr<Dto> recibirCheat(uint8_t id, bool &was_closed);
     bool recibirGranada(uint8_t &potencia, uint8_t &angulo, uint8_t &tiempo, bool &was_closed);
     bool esGranada(uint8_t code);
     bool enviarViga(std::shared_ptr<Dto> dto, bool &was_closed);

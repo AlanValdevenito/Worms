@@ -60,6 +60,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int can
                                                                                          world(World(config)),
                                                                                          jugadores_en_partida(cantidad),
                                                                                          game_finished(false)
+
 {   
     if (map == 1)
     {
@@ -286,32 +287,7 @@ void Game::mapa_vigas_inclinadas()
         x += 2;
     }
 }
-/*
-void Game::createPlayers()
-{
-    int numberOfWorms = (int)world.getWorms().size();
-    int wormId = 1;
-    int teamNumber = 0;
-    numberOfPlayers = (int)idPlayers.size();
-    idTurn = idPlayers[indexOfActualPlayer];
-    for (int playerId : idPlayers)
-    {
-        std::vector<int> wormIds;
-        for (int i = 0; i < numberOfWorms / numberOfPlayers; i++)
-        {
-            wormIds.push_back(wormId);
-            world.getWormsById()[wormId]->setPlayerId(playerId);
-            world.getWormsById()[wormId]->setTeamNumber(teamNumber);
-            wormId++;
-        }
-        players.push_back(Player(playerId, teamNumber, wormIds));
-        teamNumber++;
-    }
-    
-    actualWormId = players[indexOfActualPlayer].actualWormId;
-    numberOfAlivePlayers = numberOfPlayers;
-}
-*/
+
 
 void Game::createPlayers()
 {
@@ -396,11 +372,6 @@ void Game::run()
                     break;
                 }
             }
-            // if (not dto->is_alive()) {
-            //     stop();
-            //     broadcaster.deleteAllQueues();
-            // }
-            // printf("antes de execute %u\n",dto->return_code());
             executeCommand(dto);
         }
         update();
@@ -530,8 +501,10 @@ void Game::updateWorms()
             worm->getBody()->SetTransform(b2Vec2(worm->getXCoordinate(), worm->getYCoordinate()), true);
         }
         if (not world.anyMovement())
-        {
-            worm->makeDamage();
+        {   
+            if (not infiniteHp) {
+                worm->makeDamage();
+            }
             if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive)
             {
                 players[worm->playerId - 1].markWormAsDead(worm->getId());
@@ -1170,7 +1143,20 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     {
         std::shared_ptr<EquiparArma> equiparArma = std::dynamic_pointer_cast<EquiparArma>(dto);
         world.getWormsById()[actualWormId]->equipWeapon(equiparArma->get_arma());
-
+    }
+    else if (code == CHEAT_CODE) {
+        std::shared_ptr<Cheat> cheat = std::dynamic_pointer_cast<Cheat>(dto);
+        uint8_t cheat_code = cheat->get_cheat();
+        if (cheat_code == VIDA_INFINITA_CODE) {
+            if (infiniteHp) {
+                infiniteHp = false;
+            } else {
+                infiniteHp = true;
+            }
+            for (Worm *worm : world.getWorms()) {
+                worm->infiniteHp = infiniteHp;
+            }
+        }
     }
 
     if (wormAttacked && world.getWormsById()[actualWormId]->getWeapon() != 7)

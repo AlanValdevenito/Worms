@@ -19,7 +19,8 @@ Worm::Worm(b2World *b2world, float x, float y, uint8_t id,
 												actualWeapon(NO_WEAPON),
 												direction(LEFT),
 												angle(0),
-												firstTimeFalling(true)
+												firstTimeFalling(true),
+												infiniteHp(false)
 												{
     b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -242,6 +243,7 @@ bool Worm::isMoving() {
 }
 
 void Worm::takeDamage(uint8_t damage) {
+	if (infiniteHp) return;
 	damageTaken += damage;
 }
 

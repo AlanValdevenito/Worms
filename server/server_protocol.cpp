@@ -632,6 +632,17 @@ std::shared_ptr<Dto> ServerProtocol::recibirEquipadoDeArma(uint8_t id, bool &was
     return std::make_shared<EquiparArma>(id, arma);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recibirCheat(uint8_t id, bool &was_closed)
+{
+    uint8_t cheat;
+    skt->recvall(&cheat, sizeof(cheat), &was_closed);
+    if (was_closed)
+        return std::make_shared<DeadDto>();
+
+    // printf("recibir pos ataque: %u %u %u\n", id, x, y);
+    return std::make_shared<Cheat>(id, cheat);
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
 {
     uint8_t id;
@@ -674,6 +685,8 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return recibirAtaqueAereo(id, was_closed);
     else if (code == EQUIPAR_ARMA_CODE)
         return recibirEquipadoDeArma(id, was_closed);
+    else if (code == CHEAT_CODE)
+        return recibirCheat(id,was_closed);
     else if (esGranada(code))
         return recibirAtaqueConGranada(code, id, was_closed);
 

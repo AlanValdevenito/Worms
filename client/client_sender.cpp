@@ -60,6 +60,8 @@ bool SenderTH::send(std::shared_ptr<Dto> d)
         return protocol.enviarAtaqueConMortero(std::dynamic_pointer_cast<Mortero>(d), was_closed);
     else if (d->return_code() == EQUIPAR_ARMA_CODE)
         return protocol.enviarEquipadoDeArma(std::dynamic_pointer_cast<EquiparArma>(d), was_closed);
+    else if (d->return_code() == CHEAT_CODE)
+        return protocol.enviarCheat(std::dynamic_pointer_cast<Cheat>(d), was_closed);
     else
         std::cerr << "Codigo de envio desconocido\n";
     return false;
