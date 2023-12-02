@@ -570,6 +570,10 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 cliente.send_queue.push(std::make_shared<Cheat>(this->cliente.id, TURNO_INFINITO_CODE));
                 break;
 
+            case SDLK_m:
+                cliente.send_queue.push(std::make_shared<Cheat>(this->cliente.id, TURNO_INFINITO_CODE));
+                break;
+
             // Si se suelta la flecha hacia la derecha cambiamos el estado del gusano
             case SDLK_RIGHT:
                 break;
@@ -722,11 +726,11 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
             this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
 
-        if ((this->worms[id]->get_estado() != APUNTANDO)) {
+        if ((this->worms[id]->get_estado() != nuevoEstado) && (this->worms[id]->get_estado() != APUNTANDO)) {
             this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
 
-        else if ((tipoDeArma == SIN_ARMA) && (this->worms[id]->get_estado() == APUNTANDO)) {
+        else if ((this->worms[id]->get_estado() != nuevoEstado) && (tipoDeArma == SIN_ARMA) && (this->worms[id]->get_estado() == APUNTANDO)) {
             this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
     }

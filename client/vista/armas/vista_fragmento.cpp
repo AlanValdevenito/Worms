@@ -3,7 +3,7 @@
 AnimacionFragmento::AnimacionFragmento(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
     Arma(ARMA_MOVIENDOSE), 
     movimiento(texturas[30]), 
-    explosion(texturas, texturas[22]),
+    explosion(texturas, texturas[20]),
     sonido(sonidos[4]) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/

@@ -59,11 +59,6 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDi
 }
 
 void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
-
-    if (this->estado == nuevoEstado) {
-        return;
-    }
-
     this->estado = nuevoEstado;
     this->tipoDeArma = tipoDeArma;
 
