@@ -60,6 +60,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int can
                                                                                          world(World(config)),
                                                                                          jugadores_en_partida(cantidad),
                                                                                          game_finished(false)
+
 {   
     if (map == 1)
     {
@@ -286,32 +287,7 @@ void Game::mapa_vigas_inclinadas()
         x += 2;
     }
 }
-/*
-void Game::createPlayers()
-{
-    int numberOfWorms = (int)world.getWorms().size();
-    int wormId = 1;
-    int teamNumber = 0;
-    numberOfPlayers = (int)idPlayers.size();
-    idTurn = idPlayers[indexOfActualPlayer];
-    for (int playerId : idPlayers)
-    {
-        std::vector<int> wormIds;
-        for (int i = 0; i < numberOfWorms / numberOfPlayers; i++)
-        {
-            wormIds.push_back(wormId);
-            world.getWormsById()[wormId]->setPlayerId(playerId);
-            world.getWormsById()[wormId]->setTeamNumber(teamNumber);
-            wormId++;
-        }
-        players.push_back(Player(playerId, teamNumber, wormIds));
-        teamNumber++;
-    }
-    
-    actualWormId = players[indexOfActualPlayer].actualWormId;
-    numberOfAlivePlayers = numberOfPlayers;
-}
-*/
+
 
 void Game::createPlayers()
 {
@@ -396,11 +372,6 @@ void Game::run()
                     break;
                 }
             }
-            // if (not dto->is_alive()) {
-            //     stop();
-            //     broadcaster.deleteAllQueues();
-            // }
-            // printf("antes de execute %u\n",dto->return_code());
             executeCommand(dto);
         }
         update();
@@ -456,7 +427,7 @@ void Game::beginNextTurn() {
 void Game::passTurn()
 {
     // cambio de turno
-    
+    if (endlessTurn) return;
     if (timeIsUp())
     {
         if (world.anyMovement() || hayBombas())
@@ -520,7 +491,10 @@ void Game::updateWorms()
         }
         // si el worm sufre algun daño en su turno pierde el turno
         if (worm->getId() == actualWormId && not wormAttacked && worm->damageTaken > 0) {
-            beginNextTurn();
+            if (not endlessTurn) {
+                beginNextTurn();
+            }
+            
         }
 
         if (worm->getYCoordinate() <= WATER_POSITION && worm->is_alive)
@@ -530,8 +504,10 @@ void Game::updateWorms()
             worm->getBody()->SetTransform(b2Vec2(worm->getXCoordinate(), worm->getYCoordinate()), true);
         }
         if (not world.anyMovement())
-        {
-            worm->makeDamage();
+        {   
+            if (not infiniteHp) {
+                worm->makeDamage();
+            }
             if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive)
             {
                 players[worm->playerId - 1].markWormAsDead(worm->getId());
@@ -905,7 +881,7 @@ void Game::jumpWorm(uint8_t direction)
 
 void Game::batWorm(int angle)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     world.getWormsById()[idActualWorm]->bat(world.getWorms(), angle);
@@ -921,7 +897,7 @@ void Game::stop()
 
 void Game::throwGreenGrenade(float angle, int power, int timeToExplotion)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
@@ -939,7 +915,7 @@ void Game::throwGreenGrenade(float angle, int power, int timeToExplotion)
 
 void Game::throwRedGrenade(float angle, int power, int timeToExplotion)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
 
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
@@ -958,7 +934,7 @@ void Game::throwRedGrenade(float angle, int power, int timeToExplotion)
 
 void Game::shootBazooka(float angle, int power)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
@@ -975,7 +951,7 @@ void Game::shootBazooka(float angle, int power)
 
 void Game::shootMortero(float angle, int power)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
@@ -992,7 +968,7 @@ void Game::shootMortero(float angle, int power)
 
 void Game::shootBanana(float angle, int power, int timeToExplotion)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
@@ -1010,7 +986,7 @@ void Game::shootBanana(float angle, int power, int timeToExplotion)
 
 void Game::shootHolyGrenade(float angle, int power, int timeToExplotion)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
@@ -1028,7 +1004,7 @@ void Game::shootHolyGrenade(float angle, int power, int timeToExplotion)
 
 void Game::shootDynamite(int timeToExplotion)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
@@ -1046,7 +1022,7 @@ void Game::shootDynamite(int timeToExplotion)
 
 void Game::teleport(float x, float y)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
@@ -1061,7 +1037,7 @@ void Game::teleport(float x, float y)
 
 void Game::shootAirStrike(float x, float y)
 {
-    if (wormAttacked)
+    if (wormAttacked && not endlessTurn)
         return;
     int idActualWorm = players[indexOfActualPlayer].getActualWormId();
     Worm *actualWorm = world.getWormsById()[idActualWorm];
@@ -1102,6 +1078,7 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     if (clientId != idTurn)
         return;
     uint8_t code = dto->return_code();
+    std::cout << "executeCommand code = " << (int)code << "\n";
     if (code == MOVER_A_DERECHA_CODE)
     {
         moveWormRight();
@@ -1167,20 +1144,44 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
         shootMortero(mortero->get_angulo() * 3.14f / 180.0f, mortero->get_potencia());
     }
     else if (code == EQUIPAR_ARMA_CODE)
-    {
-        std::shared_ptr<EquiparArma> equiparArma = std::dynamic_pointer_cast<EquiparArma>(dto);
-        world.getWormsById()[actualWormId]->equipWeapon(equiparArma->get_arma());
-
+    {   
+        if (not hayBombas()) {
+            std::shared_ptr<EquiparArma> equiparArma = std::dynamic_pointer_cast<EquiparArma>(dto);
+            world.getWormsById()[actualWormId]->equipWeapon(equiparArma->get_arma());
+        }
+        
     }
-
-    if (wormAttacked && world.getWormsById()[actualWormId]->getWeapon() != 7)
-    {
-       world.getWormsById()[actualWormId]->equipWeapon(11);
+    else if (code == CHEAT_CODE) {
+        std::shared_ptr<Cheat> cheat = std::dynamic_pointer_cast<Cheat>(dto);
+        uint8_t cheat_code = cheat->get_cheat();
+        if (cheat_code == VIDA_INFINITA_CODE) {
+            if (infiniteHp) {
+                infiniteHp = false;
+            } else {
+                infiniteHp = true;
+            }
+            for (Worm *worm : world.getWorms()) {
+                worm->infiniteHp = infiniteHp;
+            }
+        } else if (cheat_code == TURNO_INFINITO_CODE) {
+            if (endlessTurn) {
+                endlessTurn = false;
+            } else {
+                endlessTurn = true;
+            }
+        }
     }
-    if (wormAttacked && world.getWormsById()[actualWormId]->getWeapon() == 7) {
+    
+    if (wormAttacked && world.getWormsById()[actualWormId]->getWeapon() != 7 && code != EQUIPAR_ARMA_CODE)
+    {
+        world.getWormsById()[actualWormId]->equipWeapon(11);
+    }
+    if (wormAttacked && world.getWormsById()[actualWormId]->getWeapon() == 7 && code != EQUIPAR_ARMA_CODE) {
         world.getWormsById()[actualWormId]->equipWeapon(NO_WEAPON);
     }
+    
 }
+    
 
 bool Game::anyWormMoving()
 {

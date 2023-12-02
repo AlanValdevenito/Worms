@@ -562,6 +562,14 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 this->camara.setMoverCamara(false);
                 break;
 
+            case SDLK_v:
+                cliente.send_queue.push(std::make_shared<Cheat>(this->cliente.id, VIDA_INFINITA_CODE));
+                break;
+
+            case SDLK_t:
+                cliente.send_queue.push(std::make_shared<Cheat>(this->cliente.id, TURNO_INFINITO_CODE));
+                break;
+
             // Si se suelta la flecha hacia la derecha cambiamos el estado del gusano
             case SDLK_RIGHT:
                 break;

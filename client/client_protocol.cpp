@@ -766,3 +766,18 @@ bool ClientProtocol::enviarEquipadoDeArma(std::shared_ptr<EquiparArma> e, bool &
 
     return true;
 }
+
+bool ClientProtocol::enviarCheat(std::shared_ptr<Cheat> c, bool &was_closed)
+{
+
+    if (not enviarIdDelClienteYCodigoDeAccion(c, was_closed))
+        return false;
+
+    uint8_t cheat = c->get_cheat();
+    // printf("Envio ---> cheat:%u\n", cheat);
+    skt.sendall(&cheat, sizeof(cheat), &was_closed);
+    if (was_closed)
+        return false;
+
+    return true;
+}

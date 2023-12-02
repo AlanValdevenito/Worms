@@ -58,6 +58,7 @@ public:
     float angle;
     bool firstTimeFalling;
     std::map<int, int> ammunition;
+    bool infiniteHp;
     Worm(b2World *b2world, float x, float y, uint8_t id, std::map<std::string, int>& config);
     float getXCoordinate();
     float getYCoordinate();
