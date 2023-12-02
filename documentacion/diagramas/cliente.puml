@@ -1,0 +1,65 @@
+    @startuml
+    hide empty attributes
+    hide circle
+
+
+    
+    class ProtocoloCliente {
+        - skt: Socket
+        +receive()
+        +enviarSeleccion()
+        +enviarAtaqueConBate()
+        +enviarAtaqueConGranada()
+        +enviarAtaqueConGranada()
+        +moverADerecha()
+        +moverAIzquierda()
+        +enviarAtaqueaereo()
+        +enviarEquipadoDeArma()
+    }
+    
+
+    class Client {
+        - send_queue: Queue 
+        - recv_queue: Queue 
+        - id: uint8_t 
+        - was_closed: bool 
+        - protocolo: ClientProtocol 
+        - recv_th: Receiver 
+        - send_th: Sender 
+        +start()
+        +kill()
+    } 
+
+    class ClientReceiver <<Thread>> {
+        -protocolo: ClientProtocol
+        -queue: Queue<std::shared_ptr<Dto>>&
+        +run()
+    }
+    
+    class ClientSender <<Thread>> {
+        -protocolo: ClientProtocol
+        -queue: Queue<std::shared_ptr<Dto>>&
+        +run()
+        +send()
+    }
+    
+
+json send_queue {
+   "Dto":["-", "-","-", "-","-", "-"]
+}
+
+json recv_queue {
+   "Dto":["-", "-","-", "-","-", "-"]
+}
+
+Client::recv_th -down-> ClientReceiver
+Client::send_th -down-> ClientSender
+
+ClientSender::queue <-left- send_queue : Pop
+ClientReceiver::queue -right-> recv_queue : Push
+
+
+ClientSender -down[thickness=4]-> ProtocoloCliente 
+ClientReceiver <-down[thickness=4]- ProtocoloCliente 
+
+ @enduml
