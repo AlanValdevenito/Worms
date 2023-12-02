@@ -571,7 +571,7 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 break;
 
             case SDLK_m:
-                cliente.send_queue.push(std::make_shared<Cheat>(this->cliente.id, TURNO_INFINITO_CODE));
+                cliente.send_queue.push(std::make_shared<Cheat>(this->cliente.id, MUNICION_INFINITA_CODE));
                 break;
 
             // Si se suelta la flecha hacia la derecha cambiamos el estado del gusano

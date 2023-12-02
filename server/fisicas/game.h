@@ -78,6 +78,7 @@ public:
     std::vector<int> explodedFragmentIds;
     bool infiniteHp = false;
     bool endlessTurn = false;
+    bool infiniteAmmunition = false;
     int idTurn = 1;
     bool game_finished = false;
     Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad, int map);
