@@ -17,18 +17,13 @@ void Sender::run()
         }
         else
         {
-            // protocolo.enviarFinalizarPartida(d, was_closed);
             was_closed = true;
         }
     }
-    // std::cout<<"SALE DEL SENDER\n";
-    // salgo ordenadamente
 }
 
 bool Sender::send(std::shared_ptr<Dto> d)
 {
-    //printf("codigo sender: %u\n", d->return_code());
-
     if (d->return_code() == CLIENTE_ID_CODE)
         return protocol.enviarId(std::dynamic_pointer_cast<ClienteId>(d), was_closed);
     else if (d->return_code() == VIGA_CODE)
