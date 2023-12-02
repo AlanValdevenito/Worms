@@ -205,7 +205,7 @@ void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraL
         }
     }
 
-    // this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
+    this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
 }
 
 void Worm::render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {

@@ -54,9 +54,6 @@ Dentro del archivo configuracion.yml se podran cambiar los siguientes atributos 
 Para cambiar el valor de estos atributos simplemente se debe entrar al archivo de configuraciones, buscar
 el atributo que se desee cambiar y cambiarlo.
 
-Luego de cualquier cambio hecho en los atributos sera necesario volver a compilar el proyecto para que
-estos se vean reflejados
-
 ## 3 Uso del servidor
 
 ### 3.1 Ejecucion
@@ -134,12 +131,15 @@ A continuacion se listan las teclas utilizadas en el juego.
 
 • RETROCESO: El gusano da una vuelta hacia atras.
 
-• ESPACIO: Presionando y manteniendo presionada esta tecla, la potencia de un disparo se acumula.
-Si se suelta se produce el disparo.
+• ESPACIO: Manteniendo presionada esta tecla, la potencia de un disparo se acumula. Si se suelta se produce el disparo.
+
+• C: Manteniendo presionada esta tecla se habilita el movimiento de la camara con el mouse.
 
 • CLICK IZQUIERDO: Si el gusano tiene equipado armas teledirigidas, presionando click izquierdo
 sobre la pantalla se determina el punto exacto donde el proyectil deberıa caer o la herramienta
 deberıa usarse.
+
+• CLICK DERECHO: Abre el menu de armas. Para cerrarlo se debe volver a presionar click derecho.
 
 • NUMEROS 1-5: Si se presiona alguna de estas teclas, se puede prefijar el tiempo de espera de un
 arma seleccionando una cuenta regresiva de 1, 2, 3, 4 o 5 segundos respectivamente.
@@ -164,4 +164,14 @@ arma seleccionando una cuenta regresiva de 1, 2, 3, 4 o 5 segundos respectivamen
 
 • F10: El gusano se equipa el Mortero.
 
-Nota: Presionando nuevamente la tecla correspondiente el gusano se des-equipa el arma.
+## 4.3 Cheats
+
+A continuacion se listan las teclas utilizadas en el juego para activar y desactivar los cheats.
+
+• V: Vida infinita.
+
+• T: Turno infinito.
+
+• M: Municion infinita.
+
+Nota: Presionando nuevamente estas teclas se desactivan los cheats.
