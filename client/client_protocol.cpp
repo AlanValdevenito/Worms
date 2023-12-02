@@ -536,6 +536,48 @@ std::shared_ptr<Dto> ClientProtocol::recibirProyectiles(bool &was_closed)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool ClientProtocol::enviarMovimiento(std::shared_ptr<Dto> dto, bool &was_closed){
+    std::cout << "Envia un movimiento\n";
+    
+    if (dto->return_code() == MOVER_A_DERECHA_CODE)
+        return moverADerecha(std::dynamic_pointer_cast<MoverADerecha>(dto), was_closed);
+    else if (dto->return_code() == MOVER_A_IZQUIERDA_CODE)
+        return moverAIzquierda(std::dynamic_pointer_cast<MoverAIzquierda>(dto), was_closed);
+    else if (dto->return_code() == SALTAR_CODE)
+        return saltar(std::dynamic_pointer_cast<Saltar>(dto), was_closed);
+    else if (dto->return_code() == TELETRANSPORTAR_CODE)
+        return enviarTeletrasnportacion(std::dynamic_pointer_cast<Teletransportar>(dto), was_closed);
+    else
+        return false;
+
+}
+
+bool ClientProtocol::enviarAtaque(std::shared_ptr<Dto> dto, bool &was_closed){
+    std::cout << "Envia un ataque\n";
+    if (dto->return_code() == BATEAR_CODE)
+        return enviarAtaqueConBate(std::dynamic_pointer_cast<Batear>(dto), was_closed);
+    else if (dto->return_code() == GRANADA_VERDE_CODE)
+        return enviarAtaqueConGranadaVerde(std::dynamic_pointer_cast<GranadaVerde>(dto), was_closed);
+    else if (dto->return_code() == BAZUKA_CODE)
+        return enviarAtaqueConBazuka(std::dynamic_pointer_cast<Bazuka>(dto), was_closed);
+    else if (dto->return_code() == GRANADA_BANANA_CODE)
+        return enviarAtaqueConGranadaBanana(std::dynamic_pointer_cast<GranadaBanana>(dto), was_closed);
+    else if (dto->return_code() == GRANADA_SANTA_CODE)
+        return enviarAtaqueConGranadaSanta(std::dynamic_pointer_cast<GranadaSanta>(dto), was_closed);
+    else if (dto->return_code() == GRANADA_ROJA_CODE)
+        return enviarAtaqueConGranadaRoja(std::dynamic_pointer_cast<GranadaRoja>(dto), was_closed);
+    else if (dto->return_code() == DINAMITA_CODE)
+        return enviarAtaqueConDinamita(std::dynamic_pointer_cast<Dinamita>(dto), was_closed);
+    else if (dto->return_code() == ATAQUE_AEREO_CODE)
+        return enviarAtaqueaereo(std::dynamic_pointer_cast<Misil>(dto), was_closed);
+    else if (dto->return_code() == MORTERO_CODE)
+        return enviarAtaqueConMortero(std::dynamic_pointer_cast<Mortero>(dto), was_closed);
+    else
+        return false;
+}
+
+
+
 bool ClientProtocol::enviarIdDelClienteYCodigoDeAccion(std::shared_ptr<Dto> dto, bool &was_closed)
 {
     // printf("enviar: %u\n", a);

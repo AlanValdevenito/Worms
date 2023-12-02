@@ -25,6 +25,8 @@ struct SenderTH : public Thread
 private:
     ClientProtocol &protocol;
     Queue<std::shared_ptr<Dto>> &queue;
+    bool is_attak(std::shared_ptr<Dto> d);
+    bool is_a_move(std::shared_ptr<Dto> d);
 
 public:
     bool was_closed;

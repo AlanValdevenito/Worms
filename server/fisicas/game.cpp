@@ -511,7 +511,12 @@ void Game::updateWorms()
             if (worm->getState() == DEAD && actualWormId == worm->getId() && worm->is_alive)
             {
                 players[worm->playerId - 1].markWormAsDead(worm->getId());
-                //beginNextTurn();
+                /*
+                if (endlessTurn) {
+                    beginNextTurn();
+                }
+                */
+                
             }
         }
 
@@ -1078,7 +1083,6 @@ void Game::executeCommand(std::shared_ptr<Dto> dto)
     if (clientId != idTurn)
         return;
     uint8_t code = dto->return_code();
-    std::cout << "executeCommand code = " << (int)code << "\n";
     if (code == MOVER_A_DERECHA_CODE)
     {
         moveWormRight();

@@ -628,7 +628,7 @@ std::shared_ptr<Dto> ServerProtocol::recibirEquipadoDeArma(uint8_t id, bool &was
     if (was_closed)
         return std::make_shared<DeadDto>();
 
-    // printf("recibir pos ataque: %u %u %u\n", id, x, y);
+    // printf("recibir pos ataque: %u\n", arma);
     return std::make_shared<EquiparArma>(id, arma);
 }
 

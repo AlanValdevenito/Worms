@@ -67,6 +67,8 @@ public:
     bool enviarAtaqueaereo(std::shared_ptr<Misil> t, bool &was_closed);
     bool enviarCheat(std::shared_ptr<Cheat> c, bool &was_closed);
    
+    bool enviarAtaque(std::shared_ptr<Dto> dto, bool &was_closed);
+    bool enviarMovimiento(std::shared_ptr<Dto> dto, bool &was_closed);
 
 private:
     SocketInterface &skt;
