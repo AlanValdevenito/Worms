@@ -4,7 +4,6 @@ SenderTH::SenderTH(ClientProtocol &p, Queue<std::shared_ptr<Dto>> &q) : protocol
 
 void SenderTH::run()
 {
-    bool se_envia;
     while (not was_closed)
     {
         std::shared_ptr<Dto> dto = queue.pop();
