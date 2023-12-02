@@ -24,7 +24,7 @@ private:
     int direccion;
 
 public:
-    AnimacionMortero(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido);
+    AnimacionMortero(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos);
 
     void update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo = 0, int nuevaDireccion = 0, int nuevoTiempo = 0, int id = 0) override;
     void render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) override;

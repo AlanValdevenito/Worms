@@ -40,6 +40,7 @@ int Partida::iniciar()
     /******************** TEXTURAS Y COLORES ********************/
 
     inicializar_texturas(renderer);
+    inicializar_sonidos(renderer);
     inicializar_colores();
 
     this->armas = std::make_unique<MenuArmas>(renderer);
@@ -127,11 +128,69 @@ int Partida::iniciar()
 /******************** ALMACENAMIENTO DEL ESTADO INICIAL DEL JUEGO ********************/
 
 void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
-    this->texturas[0] = new Texture(renderer, Surface(DATA_PATH "/background.png").SetColorKey(true, 0xff));
-    this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/blue00.png").SetColorKey(true, 0));
-    // this->texturas[1] = new Texture(renderer, Surface(DATA_PATH "/agua.png").SetColorKey(true, 0));
-    this->texturas[2] = new Texture(renderer, Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0xff));
-    this->texturas[3] = new Texture(renderer, Surface(DATA_PATH "/grds4.png").SetColorKey(true, 0xff));
+    this->texturas[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/background.png").SetColorKey(true, 0));
+    this->texturas[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/blue00.png").SetColorKey(true, 0));
+    this->texturas[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0));
+    this->texturas[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grds4.png").SetColorKey(true, 0));
+
+    /* WORM */
+    this->texturas[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+    this->texturas[5] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfall.png").SetColorKey(true, 0));
+    this->texturas[6] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wflylnk.png").SetColorKey(true, 0));
+    this->texturas[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
+    this->texturas[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfly1.png").SetColorKey(true, 0));
+    this->texturas[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grave1.png").SetColorKey(true, 0));
+
+    /* EQUIPADO */
+    this->texturas[10] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+    this->texturas[11] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wgrnlnk.png").SetColorKey(true, 0));
+    this->texturas[12] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
+    this->texturas[13] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbanlnk.png").SetColorKey(true, 0));
+    this->texturas[14] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/whgrlnk.png").SetColorKey(true, 0));
+    this->texturas[15] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wdynlnk.png").SetColorKey(true, 0));
+    this->texturas[16] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wtellnk.png").SetColorKey(true, 0));
+    this->texturas[17] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wairlnk.png").SetColorKey(true, 0));
+    this->texturas[18] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wclslnk.png").SetColorKey(true, 0));
+    this->texturas[19] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
+
+    /* EXPLOSION */
+    this->texturas[20] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
+    this->texturas[21] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/expow.png").SetColorKey(true, 0));
+    this->texturas[22] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exfoom.png").SetColorKey(true, 0));
+
+    /* MOVIMIENTO */
+    this->texturas[22] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grenade.png").SetColorKey(true, 0));
+    this->texturas[23] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/missile.png").SetColorKey(true, 0));
+    this->texturas[24] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/banana.png").SetColorKey(true, 0));
+    this->texturas[25] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/hgrenade.png").SetColorKey(true, 0));
+    this->texturas[26] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/dynamite.png").SetColorKey(true, 0));
+    this->texturas[27] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/airmisl.png").SetColorKey(true, 0));
+    this->texturas[28] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/cluster.png").SetColorKey(true, 0));
+    this->texturas[29] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/mortar.png").SetColorKey(true, 0));
+    this->texturas[30] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/clustlet.png").SetColorKey(true, 0));
+
+    /* APUNTADO */
+    this->texturas[31] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsbaim.png").SetColorKey(true, 0));
+    this->texturas[32] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrgrn.png").SetColorKey(true, 0));
+    this->texturas[33] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbaz.png").SetColorKey(true, 0));
+    this->texturas[34] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrban.png").SetColorKey(true, 0));
+    this->texturas[35] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrhgr.png").SetColorKey(true, 0));
+    this->texturas[36] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0));
+
+    /* EFECTOS DE EXPLOSION */
+    this->texturas[37] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/circle50.png").SetColorKey(true, 0));
+    this->texturas[38] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/elipse50.png").SetColorKey(true, 0));
+    this->texturas[39] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/flame1.png").SetColorKey(true, 0));
+}
+
+void Partida::inicializar_sonidos(SDL2pp::Renderer &renderer) {
+    this->sonidos[0] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/YESSIR.WAV");
+    this->sonidos[1] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/JUMP1.WAV");
+    this->sonidos[2] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/BACKFLIP.WAV");
+    this->sonidos[3] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/DEAD1.WAV");
+
+    this->sonidos[4] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/EXPLOSION1.WAV");
+    this->sonidos[5] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/HOLYGRENADE.WAV");
 }
 
 void Partida::inicializar_colores() {
@@ -175,7 +234,7 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
-        this->worms[gusano->get_id()] = new Worm(renderer, colores[(int) gusano->get_color()], (int) gusano->get_color(), metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
+        this->worms[gusano->get_id()] = new Worm(renderer, this->texturas, this->sonidos, colores[(int) gusano->get_color()], (int) gusano->get_color(), metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
     }
 }
 
@@ -910,12 +969,6 @@ float Partida::metros_a_centimetros(float metros)
 
 void Partida::liberar_memoria()
 {
-
-    for (int i = 0; i < (int)this->texturas.size(); i++)
-    {
-        delete this->texturas[i];
-    }
-
     for (int i = 0; i < (int)this->worms.size(); i++)
     {
         Worm *worm = this->worms[i];

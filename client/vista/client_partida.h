@@ -40,12 +40,13 @@ private:
 
     Client &cliente;
     int resultado;
+    int id_gusano_actual;
 
     std::vector<std::shared_ptr<Viga>> vigas;
     std::map<int, Worm *> worms;
-    int id_gusano_actual;
 
-    std::map<int, SDL2pp::Texture *> texturas;
+    std::map<int, std::shared_ptr<SDL2pp::Texture>> texturas;
+    std::map<int, std::shared_ptr<SDL2pp::Chunk>> sonidos;
     std::map<int, SDL2pp::Color> colores;
     Font fuente;
     
@@ -61,6 +62,7 @@ public:
     int iniciar();
 
     void inicializar_texturas(SDL2pp::Renderer &renderer);
+    void inicializar_sonidos(SDL2pp::Renderer &renderer);
     void inicializar_colores();
 
     void guardar_vigas();

@@ -2,6 +2,7 @@
 #define ARMA_H
 
 #include <SDL2pp/SDL2pp.hh>
+#include <map>
 
 #include "client_explosion.h"
 #include "sonido.h"

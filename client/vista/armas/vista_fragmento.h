@@ -18,7 +18,7 @@ private:
     int angulo;
 
 public:
-    AnimacionFragmento(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido);
+    AnimacionFragmento(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos);
 
     void update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo = 0, int nuevaDireccion = 0, int nuevoTiempo = 0, int id = 0) override;
     
