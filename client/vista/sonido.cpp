@@ -1,12 +1,12 @@
 #include "sonido.h"
 
-Sonido::Sonido(std::string ruta): mixer(std::make_unique<SDL2pp::Mixer>(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096)),
-                                      sonido(std::make_unique<SDL2pp::Chunk>(DATA_PATH + ruta)),
+Sonido::Sonido(std::shared_ptr<SDL2pp::Chunk> sonido): mixer(std::make_unique<SDL2pp::Mixer>(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096)),
+                                      sonido(sonido),
                                       reproducido(false),
                                       loops(0) {}
 
-void Sonido::cambiar(std::unique_ptr<SDL2pp::Chunk> nuevoSonido, int loops) {
-    this->sonido = std::move(nuevoSonido);
+void Sonido::cambiar(std::shared_ptr<SDL2pp::Chunk> nuevoSonido, int loops) {
+    this->sonido = nuevoSonido;
     this->reproducido = false;
     this->loops = loops;
 }

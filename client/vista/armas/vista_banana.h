@@ -20,7 +20,7 @@ private:
     int tiempo;
 
 public:
-    AnimacionBanana(SDL2pp::Renderer &renderer);
+    AnimacionBanana(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido);
 
     void update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo = 0, int nuevaDireccion = 0, int nuevoTiempo = 0, int id = 0) override;
     

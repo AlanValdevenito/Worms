@@ -9,16 +9,16 @@ class Sonido
 
 private:
     std::unique_ptr<SDL2pp::Mixer> mixer;
-    std::unique_ptr<SDL2pp::Chunk> sonido;
+    std::shared_ptr<SDL2pp::Chunk> sonido;
 
     bool reproducido;
     int loops;
     int canal;
 
 public:
-    Sonido(std::string ruta);
+    Sonido(std::shared_ptr<SDL2pp::Chunk> sonido); 
 
-    void cambiar(std::unique_ptr<SDL2pp::Chunk> nuevoSonido, int loops = 0);
+    void cambiar(std::shared_ptr<SDL2pp::Chunk> nuevoSonido, int loops = 0);
     void reproducir();
 };
 

@@ -16,7 +16,35 @@ Worm::Worm(SDL2pp::Renderer &renderer, SDL2pp::Color &color, int numeroColor, fl
                                                                                           turno(false), 
                                                                                           numeroColor(numeroColor),
                                                                                           color(color),
-                                                                                          camara(false) {}
+                                                                                          camara(false)
+{
+    this->sonidos[0] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/YESSIR.WAV");
+    this->sonidos[1] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/JUMP1.WAV");
+    this->sonidos[2] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/BACKFLIP.WAV");
+    this->sonidos[3] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/DEAD1.WAV");
+
+    this->sonidos[4] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/EXPLOSION1.WAV");
+    this->sonidos[5] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/HOLYGRENADE.WAV");
+
+    this->texturas[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+    this->texturas[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfall.png").SetColorKey(true, 0));
+    this->texturas[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wflylnk.png").SetColorKey(true, 0));
+    this->texturas[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
+    this->texturas[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfly1.png").SetColorKey(true, 0));
+    this->texturas[5] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grave1.png").SetColorKey(true, 0));
+    this->texturas[6] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+    this->texturas[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wgrnlnk.png").SetColorKey(true, 0));
+    this->texturas[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
+    this->texturas[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbanlnk.png").SetColorKey(true, 0));
+    this->texturas[10] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/whgrlnk.png").SetColorKey(true, 0));
+    this->texturas[11] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wdynlnk.png").SetColorKey(true, 0));
+    this->texturas[12] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wtellnk.png").SetColorKey(true, 0));
+    this->texturas[13] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wairlnk.png").SetColorKey(true, 0));
+    this->texturas[14] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wclslnk.png").SetColorKey(true, 0));
+    this->texturas[15] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
+
+    this->sonido = std::make_shared<Sonido>(this->sonidos[0]);
+}
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos.
 
@@ -45,7 +73,7 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDi
     this->angulo = nuevoAngulo;
 
     if (nuevoTurno && (not this->turno)) {
-        this->sonido = std::make_unique<Sonido>("/sonidos/worms/YESSIR.WAV");
+        this->sonido->cambiar(this->sonidos[0]);
     }
 
     this->turno = nuevoTurno;
@@ -62,8 +90,7 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     this->tipoDeArma = tipoDeArma;
 
     if ((nuevoEstado == MOVIENDOSE) || (nuevoEstado == QUIETO)) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[0]);
 
         if (this->tipoDeArma == SIN_ARMA) {
             this->arma = nullptr;
@@ -71,24 +98,21 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     }
 
     else if (nuevoEstado == CAYENDO) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfall.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[1]);
     }
 
     else if (nuevoEstado == SALTANDO_ADELANTE) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wflylnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[2]);
         this->animacion.no_repetir_animacion();
 
-        this->sonido = std::make_unique<Sonido>("/sonidos/worms/JUMP1.WAV");
+        this->sonido->cambiar(this->sonidos[1]);
     }
 
     else if (nuevoEstado == SALTANDO_ATRAS) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[3]);
         this->animacion.no_repetir_animacion();
 
-        this->sonido = std::make_unique<Sonido>("/sonidos/worms/BACKFLIP.WAV");
+        this->sonido->cambiar(this->sonidos[2]);
     }
 
     else if (nuevoEstado == EQUIPANDO_ARMA) {
@@ -96,14 +120,13 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     }
 
     else if (nuevoEstado == GOLPEADO) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfly1.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[4]);
     }
 
     else if (nuevoEstado == MUERTO) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grave1.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
-        this->sonido = std::make_unique<Sonido>("/sonidos/worms/DEAD1.WAV");
+        this->animacion.cambiar(this->texturas[5]);
+
+        this->sonido->cambiar(this->sonidos[3]);
     }
 }
 
@@ -111,81 +134,71 @@ void Worm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
     this->tipoDeArma = tipoDeArma;
 
     if (tipoDeArma == BATE) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[6]);
         this->animacion.no_repetir_animacion();
 
         this->arma = std::make_unique<AnimacionBateDeBaseball>(renderer);
     }
 
     else if (tipoDeArma == GRANADA_VERDE) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wgrnlnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[7]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionGranadaVerde>(renderer);
+        this->arma = std::make_unique<AnimacionGranadaVerde>(renderer, this->sonidos[4]);
     }
 
     else if (tipoDeArma == BAZOOKA) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[8]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionBazooka>(renderer);
+        this->arma = std::make_unique<AnimacionBazooka>(renderer, this->sonidos[4]);
     }
 
     else if (tipoDeArma == BANANA) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbanlnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[9]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionBanana>(renderer);
+        this->arma = std::make_unique<AnimacionBanana>(renderer, this->sonidos[4]);
     }
 
     else if (tipoDeArma == GRANADA_SANTA) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/whgrlnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[10]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionGranadaSanta>(renderer);
+        this->arma = std::make_unique<AnimacionGranadaSanta>(renderer, this->sonidos[4]);
     }
 
     else if (tipoDeArma == DINAMITA) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wdynlnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[11]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionDinamita>(renderer);
+        this->arma = std::make_unique<AnimacionDinamita>(renderer, this->sonidos[4]);
     }
 
     else if (tipoDeArma == TELETRANSPORTACION) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wtellnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[12]);
         this->animacion.no_repetir_animacion();
     }
 
     else if (tipoDeArma == ATAQUE_AEREO) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wairlnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[13]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionAtaqueAereo>(renderer);
+        this->arma = std::make_unique<AnimacionAtaqueAereo>(renderer, this->sonidos[4]);
     }
 
     else if (tipoDeArma == GRANADA_ROJA) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wclslnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[14]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionGranadaRoja>(renderer);
+        this->arma = std::make_unique<AnimacionGranadaRoja>(renderer, this->sonidos[4]);
     }
 
     else if (tipoDeArma == MORTERO) {
-        std::unique_ptr<SDL2pp::Texture> nuevaTextura = std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
-        this->animacion.cambiar(std::move(nuevaTextura));
+        this->animacion.cambiar(this->texturas[15]);
         this->animacion.no_repetir_animacion();
 
-        this->arma = std::make_unique<AnimacionMortero>(renderer);
+        this->arma = std::make_unique<AnimacionMortero>(renderer, this->sonidos[4]);
     }
 }
 
@@ -372,8 +385,4 @@ void Worm::set_turno(bool nuevoTurno) {
 
 void Worm::set_camara(bool nuevaCamara) {
     this->camara = nuevaCamara;
-}
-
-void Worm::set_sonido(std::unique_ptr<SDL2pp::Chunk> nuevoSonido) {
-    this->sonido->cambiar(std::move(nuevoSonido));
-}
+} 

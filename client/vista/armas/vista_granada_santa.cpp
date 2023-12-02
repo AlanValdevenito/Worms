@@ -1,10 +1,10 @@
 #include "vista_granada_santa.h"
 
-AnimacionGranadaSanta::AnimacionGranadaSanta(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
+AnimacionGranadaSanta::AnimacionGranadaSanta(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido): Arma(ARMA_APUNTANDO), 
                                                                           movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/hgrenade.png").SetColorKey(true, 0))), 
                                                                           explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0))), 
                                                                           apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrhgr.png").SetColorKey(true, 0))),
-                                                                          sonido("/sonidos/armas/HOLYGRENADE.WAV"), 
+                                                                          sonido(sonido), 
                                                                           tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
@@ -28,11 +28,11 @@ void AnimacionGranadaSanta::render(SDL2pp::Renderer &renderer, SDL2pp::Color col
         this->movimiento.render(renderer, SDL2pp::Rect(this->x - (30) - camaraLimiteIzquierdo, this->y - (30) - camaraLimiteSuperior, 60, 60), flip, this->angulo);
         renderizar_tiempo(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior);
 
-        if (this->tiempo == 2) {
+        /*if (this->tiempo == 2) {
             this->sonido.reproducir();
         } else if (this->tiempo == 0) {
             this->sonido.cambiar(std::make_unique<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/EXPLOSION1.WAV"));
-        }
+        }*/
 
     } else if (this->estado == ARMA_EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);

@@ -1,14 +1,14 @@
 #include "vista_granada_roja.h"
 
-AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer): Arma(ARMA_APUNTANDO), 
+AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido): Arma(ARMA_APUNTANDO), 
                                                                           movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/cluster.png").SetColorKey(true, 0))), 
                                                                           explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0))), 
                                                                           apuntado(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0))),
-                                                                          sonido("/sonidos/armas/EXPLOSION1.WAV"), 
+                                                                          sonido(sonido), 
                                                                           tiempo(5) 
 {
     for (int i = 1; i <= 6; i++){
-        this->fragmentos[i] = std::make_unique<AnimacionFragmento>(renderer);
+        this->fragmentos[i] = std::make_unique<AnimacionFragmento>(renderer, sonido);
     }
 }
 

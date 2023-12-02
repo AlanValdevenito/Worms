@@ -7,7 +7,7 @@
 
 #include "client_animacion.h"
 
-Animation::Animation(std::unique_ptr<SDL2pp::Texture> textura, bool repetirAnimacion): textura(std::move(textura)),
+Animation::Animation(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion): textura(textura),
                                                                                        currentFrame(0),
                                                                                        numFrames(this->textura->GetHeight() / this->textura->GetWidth()),
                                                                                        size(this->textura->GetWidth()), repetirAnimacion(repetirAnimacion) {
@@ -37,8 +37,8 @@ void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_R
         );
 }
 
-void Animation::cambiar(std::unique_ptr<SDL2pp::Texture> nuevaTextura) {
-    this->textura = std::move(nuevaTextura);
+void Animation::cambiar(std::shared_ptr<SDL2pp::Texture> nuevaTextura) {
+    this->textura = nuevaTextura;
     this->currentFrame = 0;
     this->numFrames = this->textura->GetHeight() / this->textura->GetWidth();
     this->size = this->textura->GetWidth();

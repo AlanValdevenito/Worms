@@ -38,7 +38,7 @@ class Worm
 
 private:
     Animation animacion;
-    std::unique_ptr<Sonido> sonido;
+    std::shared_ptr<Sonido> sonido;
 
     std::unique_ptr<Arma> arma;
 
@@ -56,6 +56,9 @@ private:
     int numeroColor;
 
     SDL2pp::Color &color;
+
+    std::map<int, std::shared_ptr<SDL2pp::Chunk>> sonidos;
+    std::map<int, std::shared_ptr<SDL2pp::Texture>> texturas;
 
 public:
     bool camara;
@@ -93,7 +96,6 @@ public:
 
     void set_turno(bool nuevoTurno);
     void set_camara(bool nuevaCamara);
-    void set_sonido(std::unique_ptr<SDL2pp::Chunk> nuevoSonido);
 };
 
 #endif // __WORM_H_

@@ -1,9 +1,9 @@
 #include "vista_fragmento.h"
 
-AnimacionFragmento::AnimacionFragmento(SDL2pp::Renderer &renderer): Arma(ARMA_MOVIENDOSE), 
+AnimacionFragmento::AnimacionFragmento(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Chunk> sonido): Arma(ARMA_MOVIENDOSE), 
                                                                     movimiento(std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/clustlet.png").SetColorKey(true, 0))), 
                                                                     explosion(renderer, std::make_unique<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exfoom.png").SetColorKey(true, 0))),
-                                                                    sonido("/sonidos/armas/EXPLOSION1.WAV") {}
+                                                                    sonido(sonido) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
