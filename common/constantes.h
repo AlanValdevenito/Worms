@@ -34,6 +34,7 @@ const uint8_t PROYECTILES_CODE = 25;
 
 const int CHEAT_CODE = 26;
 const int VIDA_INFINITA_CODE = 27;
+const int TURNO_INFINITO_CODE = 28;
 
 const int MOVIENDOSE = 0;
 const int SALTANDO_ADELANTE = 1;
