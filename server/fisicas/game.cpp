@@ -534,6 +534,12 @@ void Game::updateWorms()
         {
             worm->updateAngle();
         }
+        int timeSinceTurnStarted = std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
+        if (timeSinceTurnStarted > 2) {
+            if (worm->getId() != actualWormId) {
+                worm->equipWeapon(SIN_ARMA);
+            }
+        }
     }
 }
 
