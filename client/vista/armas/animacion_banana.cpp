@@ -1,35 +1,24 @@
-#include "vista_granada_roja.h"
+#include "animacion_banana.h"
 
-AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
+AnimacionBanana::AnimacionBanana(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
     AnimacionArma(ARMA_APUNTANDO), 
-    movimiento(texturas[28]), 
-    explosion(texturas, texturas[20]), 
-    apuntado(renderer, texturas[36]),
-    sonido(sonidos[4]), 
-    tiempo(5) 
-{
-    for (int i = 1; i <= 6; i++){
-        this->fragmentos[i] = std::make_unique<AnimacionFragmento>(renderer, texturas, sonidos);
-    }
-}
+    movimiento(texturas[24]), 
+    explosion(texturas, texturas[21]), 
+    apuntado(renderer, texturas[34]), 
+    sonido(sonidos[4]),
+    tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
-void AnimacionGranadaRoja::update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo, int nuevaDireccion, int nuevoTiempo, int id) {
-
-    if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
-        this->fragmentos[id]->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo);
-    } else {
-        this->x = nuevoX;
-        this->y = nuevoY;
-        this->estado = nuevoEstado;
-        this->angulo = nuevoAngulo;
-        this->tiempo = nuevoTiempo;
-    }
-
+void AnimacionBanana::update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo, int nuevaDireccion, int nuevoTiempo, int id) {
+    this->x = nuevoX;
+    this->y = nuevoY;
+    this->estado = nuevoEstado;
+    this->angulo = nuevoAngulo;
+    this->tiempo = nuevoTiempo;
 }
 
-void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
+void AnimacionBanana::render(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior, int direccion) {
 
     if (this->estado == ARMA_APUNTANDO) {
         this->apuntado.render(renderer, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
@@ -49,21 +38,11 @@ void AnimacionGranadaRoja::render(SDL2pp::Renderer &renderer, SDL2pp::Color colo
         } else {
             this->explosion.update();
         }
-
-    }
-    
-    if ((this->estado == ARMA_EXPLOTO) || (this->estado == ARMA_EXPLOTAR)) {
-
-        for (auto &elemento : this->fragmentos)
-        {
-            (elemento.second)->render(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior, direccion);
-        }
-
     }
 
 }
 
-void AnimacionGranadaRoja::renderizar_tiempo(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+void AnimacionBanana::renderizar_tiempo(SDL2pp::Renderer &renderer, SDL2pp::Color color, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     SDL2pp::Font font(DATA_PATH "/Vera.ttf", 18);
     SDL2pp::Color blanco(255, 255, 255, 255); 
     SDL2pp::Color negro(0, 0, 0, 0);
@@ -91,34 +70,34 @@ void AnimacionGranadaRoja::renderizar_tiempo(SDL2pp::Renderer &renderer, SDL2pp:
 
 /******************** TIEMPO ********************/
 
-void AnimacionGranadaRoja::set_tiempo(int tiempoElegido) {
+void AnimacionBanana::set_tiempo(int tiempoElegido) {
     this->tiempo = tiempoElegido;
 }
 
-int AnimacionGranadaRoja::get_tiempo() {
+int AnimacionBanana::get_tiempo() {
     return this->tiempo;
 }
 
 /******************** ANGULO ********************/
 
-void AnimacionGranadaRoja::aumentar_angulo() {
+void AnimacionBanana::aumentar_angulo() {
     this->apuntado.aumentar_angulo();
 }
 
-void AnimacionGranadaRoja::decrementar_angulo() {
+void AnimacionBanana::decrementar_angulo() {
     this->apuntado.decrementar_angulo();
 }
 
-int AnimacionGranadaRoja::get_angulo() {
+int AnimacionBanana::get_angulo() {
     return this->apuntado.get_angulo();
 }
 
 /******************** POTENCIA ********************/
 
-void AnimacionGranadaRoja::aumentar_potencia() {
+void AnimacionBanana::aumentar_potencia() {
     this->apuntado.aumentar_potencia();
 }
 
-int AnimacionGranadaRoja::get_potencia() {
+int AnimacionBanana::get_potencia() {
     return this->apuntado.get_potencia();
 }

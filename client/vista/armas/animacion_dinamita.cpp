@@ -1,4 +1,4 @@
-#include "vista_dinamita.h"
+#include "animacion_dinamita.h"
 
 AnimacionDinamita::AnimacionDinamita(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
     AnimacionArma(ARMA_MOVIENDOSE), 

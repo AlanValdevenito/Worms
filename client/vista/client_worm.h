@@ -5,19 +5,18 @@
 #include <map>
 
 #include "client_animacion.h"
-#include "client_apuntado.h"
 #include "constantes.h"
 #include "sonido.h"
 
-#include "vista_bate.h"
-#include "vista_granada_verde.h"
-#include "vista_bazooka.h"
-#include "vista_banana.h"
-#include "vista_granada_santa.h"
-#include "vista_dinamita.h"
-#include "vista_ataque_aereo.h"
-#include "vista_granada_roja.h"
-#include "vista_mortero.h"
+#include "animacion_bate.h"
+#include "animacion_granada_verde.h"
+#include "animacion_bazooka.h"
+#include "animacion_banana.h"
+#include "animacion_granada_santa.h"
+#include "animacion_dinamita.h"
+#include "animacion_ataque_aereo.h"
+#include "animacion_granada_roja.h"
+#include "animacion_mortero.h"
 
 class Worm
 {

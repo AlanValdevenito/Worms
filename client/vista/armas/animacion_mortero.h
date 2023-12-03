@@ -4,9 +4,9 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
 
-#include "vista_arma.h"
+#include "animacion_arma.h"
 #include "client_apuntado.h"
-#include "vista_fragmento.h"
+#include "animacion_fragmento.h"
 #include "animacion_humo.h"
 
 class AnimacionMortero: public AnimacionArma

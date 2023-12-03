@@ -4,8 +4,8 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "client_apuntado.h"
-#include "vista_arma.h"
-#include "vista_misil.h"
+#include "animacion_arma.h"
+#include "animacion_misil.h"
 
 #include <map>
 

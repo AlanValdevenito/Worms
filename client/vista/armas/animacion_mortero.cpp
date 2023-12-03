@@ -1,4 +1,4 @@
-#include "vista_mortero.h"
+#include "animacion_mortero.h"
 
 AnimacionMortero::AnimacionMortero(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
     AnimacionArma(ARMA_APUNTANDO), 

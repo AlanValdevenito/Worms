@@ -1,4 +1,4 @@
-#include "vista_ataque_aereo.h"
+#include "animacion_ataque_aereo.h"
 
 AnimacionAtaqueAereo::AnimacionAtaqueAereo(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
     AnimacionArma(ARMA_MOVIENDOSE) 

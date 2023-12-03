@@ -1,14 +1,12 @@
-#ifndef ANIMACION_GRANADA_ROJA_H
-#define ANIMACION_GRANADA_ROJA_H
+#ifndef ANIMACION_BANANA_H
+#define ANIMACION_BANANA_H
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "vista_arma.h"
+#include "animacion_arma.h"
 #include "client_apuntado.h"
-#include "vista_fragmento.h"
-#include <map>
 
-class AnimacionGranadaRoja: public AnimacionArma
+class AnimacionBanana: public AnimacionArma
 {
 
 private:
@@ -18,13 +16,11 @@ private:
 
     Sonido sonido;
 
-    std::map<int, std::unique_ptr<AnimacionFragmento>> fragmentos;
-
     int angulo;
     int tiempo;
 
 public:
-    AnimacionGranadaRoja(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos);
+    AnimacionBanana(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos);
 
     void update(float nuevoX, float nuevoY, int nuevoEstado, int nuevoAngulo = 0, int nuevaDireccion = 0, int nuevoTiempo = 0, int id = 0) override;
     
@@ -42,4 +38,4 @@ public:
     int get_potencia() override;
 };
 
-#endif // ANIMACION_GRANADA_ROJA_H
+#endif // ANIMACION_BANANA_H

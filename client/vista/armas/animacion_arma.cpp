@@ -1,4 +1,4 @@
-#include "vista_arma.h"
+#include "animacion_arma.h"
 
 AnimacionArma::AnimacionArma(int estadoInicial): x(0), y(0), estado(estadoInicial){}
 

@@ -1,4 +1,4 @@
-#include "vista_granada_verde.h"
+#include "animacion_granada_verde.h"
 
 AnimacionGranadaVerde::AnimacionGranadaVerde(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
     AnimacionArma(ARMA_APUNTANDO), 

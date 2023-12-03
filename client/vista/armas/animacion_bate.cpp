@@ -1,4 +1,4 @@
-#include "vista_bate.h"
+#include "animacion_bate.h"
 
 AnimacionBateDeBaseball::AnimacionBateDeBaseball(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
     AnimacionArma(ARMA_APUNTANDO), 
