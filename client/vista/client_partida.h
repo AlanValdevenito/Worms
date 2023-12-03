@@ -10,8 +10,8 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "client_camara.h"
-#include "client_worm.h"
+#include "camara.h"
+#include "animacion_worm.h"
 #include "client_menu_armas.h"
 #include "client.h"
 #include "viga.h"
@@ -43,7 +43,7 @@ private:
     int id_gusano_actual;
 
     std::vector<std::shared_ptr<Viga>> vigas;
-    std::map<int, Worm *> worms;
+    std::map<int, AnimacionWorm *> worms;
 
     std::map<int, std::shared_ptr<SDL2pp::Texture>> texturas;
     std::map<int, std::shared_ptr<SDL2pp::Chunk>> sonidos;

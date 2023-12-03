@@ -1,4 +1,4 @@
-#include "client_explosion.h"
+#include "animacion_explosion.h"
 
 AnimacionExplosion::AnimacionExplosion(std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::shared_ptr<SDL2pp::Texture> ex):  
     ex(ex, false),

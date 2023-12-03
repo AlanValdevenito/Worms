@@ -1,4 +1,4 @@
-#include "client_worm.h"
+#include "animacion_worm.h"
 
 #define ANCHO_SPRITE 60
 #define ALTO_SPRITE 60
@@ -6,7 +6,7 @@
 #define OFFSET 30 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
                   // tienen el (0,0) de los cuerpos en el centro
 
-Worm::Worm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): 
+AnimacionWorm::AnimacionWorm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): 
     texturas(texturas),
     sonidos(sonidos),
     animacion(this->texturas[4]), 
@@ -28,7 +28,7 @@ Worm::Worm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Tex
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
-void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDireccion, int nuevoAngulo, bool nuevoTurno)
+void AnimacionWorm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDireccion, int nuevoAngulo, bool nuevoTurno)
 {
 
     if (this->estado == EQUIPANDO_ARMA) {
@@ -58,7 +58,7 @@ void Worm::update(int it, float nuevoX, float nuevoY, int nuevaVida, int nuevaDi
     this->camara = nuevoTurno;
 }
 
-void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
+void AnimacionWorm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
     this->estado = nuevoEstado;
     this->tipoDeArma = tipoDeArma;
 
@@ -104,7 +104,7 @@ void Worm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDe
     }
 }
 
-void Worm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
+void AnimacionWorm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
     this->tipoDeArma = tipoDeArma;
 
     if (tipoDeArma == BATE) {
@@ -176,7 +176,7 @@ void Worm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
     }
 }
 
-void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
+void AnimacionWorm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
 {
     SDL_RendererFlip flip = this->direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
@@ -208,7 +208,7 @@ void Worm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraL
     this->render_vida(renderer, camaraCentroX, camaraLimiteIzquierdo, camaraLimiteSuperior);
 }
 
-void Worm::render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+void AnimacionWorm::render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
 
     if ((this->arma) && (this->estado != EQUIPANDO_ARMA) && (this->estado != APUNTANDO)) {
         std::cout << "Renderizando arma del gusano cuyo ID tengo arriba\n" << std::endl;
@@ -217,7 +217,7 @@ void Worm::render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, 
 
 }
 
-void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+void AnimacionWorm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     SDL2pp::Font font(DATA_PATH "/Vera.ttf", 18);
     SDL2pp::Color blanco(255, 255, 255, 255); 
 
@@ -269,53 +269,53 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
 
 /******************** ARMA ********************/
 
-int Worm::get_tipo_de_arma() {
+int AnimacionWorm::get_tipo_de_arma() {
     return this->tipoDeArma;
 }
 
 /******************** PROYECTIL ********************/
 
-void Worm::update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado, int nuevoTiempo) {
+void AnimacionWorm::update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado, int nuevoTiempo) {
     if (this->arma) {
         this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, nuevoTiempo, id);
     }
 }
 
-void Worm::set_tiempo(int tiempo) {
+void AnimacionWorm::set_tiempo(int tiempo) {
     this->arma->set_tiempo(tiempo);
 }
 
-int Worm::get_tiempo() {
+int AnimacionWorm::get_tiempo() {
     return this->arma->get_tiempo();
 }
 
 /******************** ANGULO ********************/
 
-void Worm::aumentar_angulo() {
+void AnimacionWorm::aumentar_angulo() {
     if (this->estado == APUNTANDO) {
         this->arma->aumentar_angulo();
     }
 }
 
-void Worm::decrementar_angulo() {
+void AnimacionWorm::decrementar_angulo() {
     if (this->estado == APUNTANDO) {
         this->arma->decrementar_angulo();
     }
 }
 
-int Worm::get_angulo() {
+int AnimacionWorm::get_angulo() {
     return this->arma->get_angulo();
 }
 
 /******************** POTENCIA ********************/
 
-void Worm::aumentar_potencia() {
+void AnimacionWorm::aumentar_potencia() {
     if (this->estado == APUNTANDO) {
         this->arma->aumentar_potencia();
     }
 }
 
-int Worm::get_potencia() {
+int AnimacionWorm::get_potencia() {
     if (this->estado == APUNTANDO) {
         return this->arma->get_potencia();
     } 
@@ -325,36 +325,36 @@ int Worm::get_potencia() {
 
 /******************** GETTERS GENERALES ********************/
 
-int Worm::get_vida() {
+int AnimacionWorm::get_vida() {
     return this->vida;
 }
 
-float Worm::get_x() {
+float AnimacionWorm::get_x() {
     return this->x;
 }
 
-float Worm::get_y() {
+float AnimacionWorm::get_y() {
     return this->y;
 }
 
-int Worm::get_estado() {
+int AnimacionWorm::get_estado() {
     return this->estado;
 }
 
-int Worm::get_color() {
+int AnimacionWorm::get_color() {
     return this->numeroColor;
 }
 
-bool Worm::get_turno() {
+bool AnimacionWorm::get_turno() {
     return this->turno;
 }
 
 /******************** SETTERS GENERALES ********************/
 
-void Worm::set_turno(bool nuevoTurno) {
+void AnimacionWorm::set_turno(bool nuevoTurno) {
     this->turno = nuevoTurno;
 }
 
-void Worm::set_camara(bool nuevaCamara) {
+void AnimacionWorm::set_camara(bool nuevaCamara) {
     this->camara = nuevaCamara;
 } 

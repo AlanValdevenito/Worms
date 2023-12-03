@@ -2,7 +2,7 @@
 #define ANIMACION_HUMO_H
 
 #include <SDL2pp/SDL2pp.hh>
-#include "client_animacion.h"
+#include "animacion.h"
 
 class AnimacionHumo
 {

@@ -1,7 +1,7 @@
 #ifndef EXPLOSION_H
 #define EXPLOSION_H
 
-#include "client_animacion.h"
+#include "animacion.h"
 
 #include <SDL2pp/SDL2pp.hh>
 #include <map>

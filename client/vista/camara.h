@@ -1,7 +1,7 @@
 #ifndef _CAMARA_H
 #define _CAMARA_H
 
-#include "client_worm.h"
+#include "animacion_worm.h"
 #include <map>
 
 class Camara
@@ -18,7 +18,7 @@ public:
     bool moverCamara;
     Camara(float ventanaAncho, float ventanaAlto);
 
-    void seguirWorm(std::map<int, Worm *> &worms);
+    void seguirWorm(std::map<int, AnimacionWorm*> &worms);
     void seguir(float nuevoX, float nuevoY); // Actualiza la posicion de la camara para seguir al Worm
     void mover(float moverX, float moverY);
 

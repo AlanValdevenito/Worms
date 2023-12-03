@@ -4,7 +4,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
 
-#include "client_animacion.h"
+#include "animacion.h"
 #include "constantes.h"
 #include "sonido.h"
 
@@ -18,7 +18,7 @@
 #include "animacion_granada_roja.h"
 #include "animacion_mortero.h"
 
-class Worm
+class AnimacionWorm
 {
 
 private:
@@ -47,7 +47,7 @@ private:
 public:
     bool camara;
 
-    Worm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion);
+    AnimacionWorm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion);
 
     void update(int it, float nuevoX, float nuevoY, int vida, int direccion, int angulo,  bool turno); // Actualiza el Worm en funcion del tiempo transcurrido.
     void update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int arma = 0);

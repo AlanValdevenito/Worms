@@ -1,4 +1,4 @@
-#include "client_camara.h"
+#include "camara.h"
 
 #include <iostream>
 
@@ -7,7 +7,7 @@
 
 Camara::Camara(float ventanaAncho, float ventanaAlto): x(0), y(0), ancho(ventanaAncho), alto(ventanaAlto), moverCamara(false) {}
 
-void Camara::seguirWorm(std::map<int, Worm *> &worms) {
+void Camara::seguirWorm(std::map<int, AnimacionWorm*> &worms) {
 
     for (const auto &elemento : worms)
     {

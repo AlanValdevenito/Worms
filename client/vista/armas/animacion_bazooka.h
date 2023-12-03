@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "animacion_arma.h"
-#include "client_apuntado.h"
+#include "animacion_apuntado.h"
 #include "animacion_humo.h"
 
 class AnimacionBazooka: public AnimacionArma

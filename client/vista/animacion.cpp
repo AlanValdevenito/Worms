@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-#include "client_animacion.h"
+#include "animacion.h"
 
 Animacion::Animacion(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion): textura(textura),
                                                                                        currentFrame(0),

@@ -235,7 +235,7 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
 
-        this->worms[gusano->get_id()] = new Worm(renderer, this->texturas, this->sonidos, colores[(int) gusano->get_color()], (int) gusano->get_color(), metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
+        this->worms[gusano->get_id()] = new AnimacionWorm(renderer, this->texturas, this->sonidos, colores[(int) gusano->get_color()], (int) gusano->get_color(), metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
     }
 }
 
@@ -983,7 +983,7 @@ void Partida::liberar_memoria()
 {
     for (int i = 0; i < (int)this->worms.size(); i++)
     {
-        Worm *worm = this->worms[i];
+        AnimacionWorm *worm = this->worms[i];
         delete worm;
     }
 }

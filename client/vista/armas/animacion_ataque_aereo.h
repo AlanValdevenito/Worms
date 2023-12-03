@@ -3,7 +3,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "client_apuntado.h"
+#include "animacion_apuntado.h"
 #include "animacion_arma.h"
 #include "animacion_misil.h"
 

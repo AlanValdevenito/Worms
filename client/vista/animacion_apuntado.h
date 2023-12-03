@@ -3,8 +3,8 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-#include "client_mira.h"
-#include "client_potencia.h"
+#include "animacion_mira.h"
+#include "animacion_potencia.h"
 
 class AnimacionApuntado
 {

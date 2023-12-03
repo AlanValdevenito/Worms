@@ -4,7 +4,7 @@
 #include <SDL2pp/SDL2pp.hh>
 
 #include "animacion_arma.h"
-#include "client_apuntado.h"
+#include "animacion_apuntado.h"
 
 class AnimacionBateDeBaseball: public AnimacionArma 
 {

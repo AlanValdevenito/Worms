@@ -1,4 +1,4 @@
-#include "client_potencia.h"
+#include "animacion_potencia.h"
 
 #include <cmath>
 #include <iostream>
