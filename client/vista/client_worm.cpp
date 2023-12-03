@@ -223,15 +223,12 @@ void Worm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX, float ca
 
     /********** BORDE **********/
 
-    SDL2pp::Texture borde(renderer, SDL2pp::Surface(DATA_PATH "/borde.png").SetColorKey(true, 0));
+    SDL2pp::Rect borde(this->camara ? (camaraCentroX + 10 - OFFSET) : (this->x - 19 - camaraLimiteIzquierdo),
+                            this->camara ? (this->y - 45 - camaraLimiteSuperior) : (this->y - 45 - camaraLimiteSuperior), 
+                            40, 29);
 
-    renderer.Copy(
-        borde,
-        SDL2pp::NullOpt,
-        SDL2pp::Rect(this->camara ? (camaraCentroX + 10 - OFFSET) : (this->x - 19 - camaraLimiteIzquierdo),
-                     this->camara ? (this->y - 45 - camaraLimiteSuperior) : (this->y - 45 - camaraLimiteSuperior), 
-                     41, 29)
-    );
+	renderer.SetDrawColor(blanco); 
+	renderer.FillRect(borde);
 
     /********** CONTENEDOR **********/
 

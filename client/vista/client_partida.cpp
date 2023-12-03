@@ -920,17 +920,13 @@ void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {
 
         /********** BORDE **********/
 
-        SDL2pp::Texture borde(renderer, SDL2pp::Surface(DATA_PATH "/borde.png").SetColorKey(true, 0));
-
-        renderer.Copy(
-            borde,
-            SDL2pp::NullOpt,
-            SDL2pp::Rect((renderer.GetOutputWidth() / 2) - (vida_total_maxima/2) - 5, offset + (renderer.GetOutputHeight() - 30) - 5, (ancho) + 10, 18 + 10)
-        );
+        SDL2pp::Rect borde((renderer.GetOutputWidth() / 2) - (200/2) - 5, offset + (renderer.GetOutputHeight() - 30) - 5, (ancho) + 10, 18 + 10);
+        renderer.SetDrawColor(this->colores[6]); 
+        renderer.FillRect(borde);
 
         /********** VIDA **********/
 
-        SDL2pp::Rect contenedor((renderer.GetOutputWidth() / 2) - (vida_total_maxima/2), offset + (renderer.GetOutputHeight() - 30), ancho, 18);
+        SDL2pp::Rect contenedor((renderer.GetOutputWidth() / 2) - (200/2), offset + (renderer.GetOutputHeight() - 30), ancho, 18);
         renderer.SetDrawColor(this->colores[elemento.first]); 
         renderer.FillRect(contenedor);
 
