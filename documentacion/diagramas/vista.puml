@@ -1,0 +1,64 @@
+@startuml diagrama
+
+class Client {
+    - send_queue: Queue 
+    - recv_queue: Queue 
+    - id: uint8_t 
+    - was_closed: bool 
+    - protocolo: ClientProtocol 
+    - recv_th: Receiver 
+    - send_th: Sender 
+    +start()
+    +kill()
+} 
+
+class Vista {
+    -cliente: Client
+    -menu: Menu
+    -partida: Partida
+    +iniciar()
+}
+
+class Partida {
+    -cliente: Client
+    -worms: Map<int, Worm>
+    -camara: Camara
+    +iniciar()
+    +handleEvents()
+    +actualizar()
+    +renderizar()
+}
+
+class Worm {
+    -animacion: Animation
+    -arma: Arma
+    +update()
+    +render()
+}
+
+class Animation {
+    -textura: Texture
+    -currentFrame: int
+    -repetirAnimacion: bool
+    +render()
+    +update()
+    +cambiar()
+}
+
+class Arma {
+    -x: float
+    -y: float
+    -estado: int
+    +update()
+    +render()
+}
+
+Vista -down-> Client
+Vista -down-> Partida
+Partida -up-> Worm
+Worm -right-> Arma
+
+Arma -down-> Animation
+Worm -down-> Animation
+
+@enduml

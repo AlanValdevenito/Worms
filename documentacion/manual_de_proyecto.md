@@ -97,7 +97,7 @@ particular se encargo de:
 El alumno responsable en llevar a cabo la logica de la vista fue Alan Valdevenito. En
 particular se encargo de:
 
-- Implementar la vista del juego mediante SDL2pp. Esta implementacion incluye el manejo de eventos, la actualizacion del estado proporcionado por el servidor y el renderizado.
+- Implementar la vista del juego mediante SDL2pp. Esta implementacion incluye el manejo de eventos, el renderizado y el sonido.
 - Implementar el menu principal mediante QT. Esta implementacion incluye un menu de partidas donde el cliente puede unirse a partidas que ya fueron creadas y un menu para crear nuevas partidas.
 
 # Herramientas utilizadas
@@ -122,17 +122,17 @@ particular se encargo de:
 
 # Informacion Adicional
 
-### Cuales fueron los puntos más problemáticos?
+### ¿Cuales fueron los puntos más problemáticos?
 
 - Cambio de enviado de un proyectil a multiples proyectiles.
 - Cierres ordenados de partidas.
 - Ensamble de google test con el proyecto
 
-### Pudieron llegar con todo?
+### ¿Pudieron llegar con todo?
 
 - to be contiue...
 
-### Hay errores conocidos?
+### ¿Hay errores conocidos?
 
 - Utilizacion de sleep para enviado y recepcion correcta de mensajes de cierre.
 

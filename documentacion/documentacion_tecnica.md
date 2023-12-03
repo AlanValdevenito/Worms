@@ -25,30 +25,71 @@ Teniendo un diccionario donde la clave es el id del cliente y el elemento almace
 
 ## Interfaz de usuario
 
-`PONER DIAGRAMA DE CLASES`
+![Interfaz de usuario](diagramas/img/vista.png)
 
 ### Cliente
 Es la clase encargada de encapsular los atributos necesarios para que el cliente entable una conversacion con el **servidor**. Tiene un socket y dos colas, una de entrada y otra de salida. 
 Ambas colas seran manipuladas por la partida, de la cola de entrada la partida extraera datos y de la cola de salida la partida insertara acciones para comunicarse con el servidor.
 
-### Recibidor `(client_receiver)`
+#### Recibidor `(client_receiver)`
 > Es un hilo
 
 Es la clase encargada de realizar un loop donde se comunica con el **ProtocoloCliente** donde le devuelve una salida `DTO` y el recibidor lo encola en la cola de entrada.
 
 
-### Enviador `(client_sender)`
+#### Enviador `(client_sender)`
 > Es un hilo
 
 Es la clase encargada de realizar un loop donde se comunica con el **ProtocoloCliente**. Se encarga de desencolar los datos `(Dto)` que estan en la cola de salida, para enviarselos al protocolo y que este se encargue de interpretarlos y luego enviarlos al servidor.
 
 ### Menu
 
+El menu del juego se divide en tres clases implementadas con QT:
+- MenuPrincipal.
+- MenuPartidas.
+- MenuCrearPartida.
+
 #### Menu principal
+
+Esta clase es una interfaz grafica que representa la ventana del menu principal en el juego. 
+
+Basicamente le muestra al jugador dos opciones:
+- Unirse a una partida creada.
+- Crear una nueva partida.
+
+Internamente guarda una referencia al cliente.
+
+Se utiliza la funcion conect() de QT para establecer una conexion entre una señal y un metodo:
+- Cuando el boton 'partidasButton' es presionado se emite la señal 'clicked' y se llama al metodo 'menuPartidas' que crea una instancia de la clase MenuPartidas.
+- Cuando el boton 'crearPartidaButton' es presionado se emite la señal 'clicked' y se llama al metodo 'menuCrearPartida' que crea una instancia de la clase MenuCrearPartida.
+
+Luego de instanciar la clase correspondiente, llama al metodo show() para mostrar la ventana y oculta la ventana del menu principal.
 
 #### Menu de partidas
 
+Esta clase es una interfaz grafica que representa la ventana del menu de seleccion de partidas en el juego. 
+
+Basicamente le muestra al jugador las partidas a las cuales puede unirse. 
+
+Para poder hacer esto, internamente guarda una lista de las partidas las cuales obtiene mediante el cliente.
+
+Se utiliza la funcion conect() de QT para establecer una conexion entre una señal y un metodo. Cuando el boton 'elegirPartidaButton' es presionado se emite la señal 'clicked' y se llama al metodo 'elegirPartida'.
+
+Internamente cuando se llama al metodo 'elegirPartida' se pushea en la *send_queue* una instancia de la clase 'ListaDePartidas' con el ID de la partida seleccionada.
+
+Luego, se cierra la ventana.
+
 #### Menu de creacion de partidas
+
+Esta clase es una interfaz grafica que representa la ventana del menu de creacion de partidas en el juego. 
+
+Basicamente le permite crear partidas al jugador.
+
+Se utiliza la funcion conect() de QT para establecer una conexion entre una señal y un metodo. Cuando el boton 'nuevaPartidaButton' es presionado se emite la señal 'clicked' y se llama al metodo 'crearPartida'.
+
+Internamente cuando se llama al metodo 'crearPartida' se pushea en la *send_queue* una instancia de la clase 'NuevaPartida' con la cantidad de jugadores y el ID del mapa.
+
+Luego, se cierra la ventana.
 
 #### Partida
 
@@ -62,16 +103,18 @@ En esta clase podemos encontrar un game loop cuya implementacion se basa en un l
 
 Se comunica con el servidor usando al cliente como intermediario. Basicamente lo que hace es pushear en una de las queue del cliente _(send_queue)_ pedidos que este le envia al servidor y popea de la otra queue del cliente _(recv_queue)_ lo que el servidor le mande.
 
+Luego de seleccionar la partida o crear una nueva desde el menu, se llama al metodo iniciar() de esta clase y da inicio a la interfaz grafica que representa la ventana de la partida. 
+
 #### Worm
 
-Es la encargada de guardar el estado de un Worm y utilizar dicho estado para renderizar. Actualiza su estado con aquello que el servidor le envie a la clase Partida. Por ejemplo:
+Es la encargada de guardar el estado de un Worm y utilizarlo en el renderizado. Actualiza su estado con aquello que el servidor le envie a la clase Partida. Por ejemplo:
 
 - Posicion.
 - Vida.
 - Direccion.
 - Estado.
 
-Mediante la actualizacion del estado se le cambia la animacion a renderizar. Los estados posibles son:
+Mediante la actualizacion del estado se cambia la animacion a renderizar. Los estados posibles son:
 
 - Quieto.
 - Moviendose.
@@ -84,7 +127,36 @@ Mediante la actualizacion del estado se le cambia la animacion a renderizar. Los
 
 #### Arma
 
+Es la encargada de guardar el estado de un arma y utilizarlo en el renderizado. Actualiza su estado con aquello que el servidor le envie a la clase Partida. Por ejemplo:
+
+- Posicion.
+- Direccion.
+- Estado.
+
+Mediante la actualizacion del estado se cambia la animacion a renderizar. Los estados posibles son:
+
+- Equipando.
+- Apuntando.
+- Moviendose.
+- Explotar.
+- Exploto.
+
+A continuacion se muestra un diagrama de clases enfocado en ver como se relacionan las armas con la clase Apuntado:
+
+![Armas apuntado](diagramas/img/animacion-armas-apuntado.png)
+
+A continuacion se muestra un diagrama de clases enfocado en ver como se relacionan las armas con la clase Explosion:
+
+![Armas explosion](diagramas/img/animacion-armas-explosion.png)
+
+
 #### Camara
+
+La clase Partida delega la responsabilidad de decidir que se renderiza y que no a esta clase.
+
+El centro de la camara esta definido por sus atributos x,y. 
+
+Cuando se quiere seguir a un determinado Worm lo que se hace es setearle la posicion del mismo como el centro de la camara.
 
 -------------
 -------------
