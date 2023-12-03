@@ -27,8 +27,7 @@
 #include "game.h"
 #include "dto.h"
 
-
-const int ESPERA_MAXIMA_EN_LOBBY = 40; //10 (segundos)
+const int ESPERA_MAXIMA_EN_LOBBY = 40; // 10 (segundos)
 
 class Lobby
 {
@@ -47,8 +46,8 @@ private:
     int partida_id;
     bool lobby_abierto;
 
-    void sendMatchList(ServerClient *c);
-    void addToPartida(ServerClient *c);
+    void enviarPartidasDisponibles(ServerClient *c);
+    void agregarAUnaPartida(ServerClient *c);
     void cerrarCliente(ServerClient *c);
     void agregarClienteAPartida(ServerClient *c, std::shared_ptr<Dto> lista);
     void crearNuevaPartida(ServerClient *c, std::shared_ptr<Dto> np);

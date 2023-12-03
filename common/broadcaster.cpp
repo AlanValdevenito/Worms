@@ -9,12 +9,11 @@ void Broadcaster::addMessageToQueues()
     std::shared_ptr<Dto> d = std::make_shared<Dto>(INICIAR_PARIDA);
     for (Queue<std::shared_ptr<Dto>> *q : queues.listado())
         q->push(d);
-
 }
 
 /*
-*   Agrega a todas las queues del broadcaster el Dto
-*/
+ *   Agrega a todas las queues del broadcaster el Dto
+ */
 void Broadcaster::AddDtoToQueues(std::shared_ptr<Dto> dto)
 {
     std::unique_lock<std::mutex> lock(mutex);
@@ -22,7 +21,6 @@ void Broadcaster::AddDtoToQueues(std::shared_ptr<Dto> dto)
     for (Queue<std::shared_ptr<Dto>> *q : queues.listado())
         q->push(dto);
 }
-
 
 /*
  *  Agrega una cola a la lista de colas.
@@ -33,14 +31,13 @@ void Broadcaster::addQueueToList(Queue<std::shared_ptr<Dto>> &q, uint8_t id)
     queues.agregar(&q, id);
 }
 
-
+/* Le envio a todas la queues un Dto que indica que deben cerrar*/
 void Broadcaster::notificarCierre(std::shared_ptr<Dto> dto)
 {
     std::unique_lock<std::mutex> lock(mutex);
     for (Queue<std::shared_ptr<Dto>> *q : queues.listado())
         q->push(dto);
 }
-
 
 /*
  *  Le agrega un mensaje que indica el fin a la cola del cliente.
@@ -49,7 +46,7 @@ void Broadcaster::notificarCierre(std::shared_ptr<Dto> dto)
 void Broadcaster::removeQueueFromList(Queue<std::shared_ptr<Dto>> *q)
 {
     std::shared_ptr<DeadDto> dto = std::make_shared<DeadDto>();
-    q->push(dto);
+    q->push(dto); // cierro el hilo sender del cliente
     // queues.remover(q);
 }
 
@@ -66,14 +63,10 @@ void Broadcaster::removeQueueWithId(uint8_t id)
  */
 void Broadcaster::deleteAllQueues()
 {
-    // std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
-    // notificarCierre(fin);
-    
 
     std::shared_ptr<DeadDto> dto = std::make_shared<DeadDto>();
-    for (Queue<std::shared_ptr<Dto>> *queue : queues.listado())// le envio al sender que murio 
+    for (Queue<std::shared_ptr<Dto>> *queue : queues.listado()) // le envio al sender que murio
         queue->push(dto);
-    
 
-    queues.removeAllQueues();  
+    queues.removeAllQueues();
 }
