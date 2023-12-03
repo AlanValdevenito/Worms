@@ -3,14 +3,13 @@
 // Hay una partida creada por default para facilitar las pruebas
 Lobby::Lobby() : mapId(0), id_cliente(0), partida_id(1), lobby_abierto(true)
 {
-    Partida *p1 = new Partida(partida_id, 2,1);
+    Partida *p1 = new Partida(partida_id, 2, 1);
     partidas.push_back(p1);
     partida_id++;
 }
 
 Lobby::~Lobby() {}
 
-// void Lobby::agregarClienteAPartida(ServerClient *c, std::shared_ptr<ListaDePartidas> partida)
 void Lobby::agregarClienteAPartida(ServerClient *c, std::shared_ptr<Dto> lista)
 {
     std::shared_ptr<ListaDePartidas> partida = std::dynamic_pointer_cast<ListaDePartidas>(lista);
@@ -31,16 +30,16 @@ void Lobby::crearNuevaPartida(ServerClient *c, std::shared_ptr<Dto> np)
     std::shared_ptr<NuevaPartida> nueva_partida = std::dynamic_pointer_cast<NuevaPartida>(np);
 
     Partida *p = new Partida(partida_id, nueva_partida->get_cantidad_de_jugadores(), nueva_partida->get_mapa());
-    
+
     partidas.push_back(p);
-    
+
     // agrego al cliente a la partida
     p->addToMatch(c); // cambiar a addToPartida
-    p->tryToStart(); // si esta completa comienza ( no va a estarlo porque es nueva)
+    p->tryToStart();  // si esta completa comienza ( no va a estarlo porque es nueva)
     partida_id++;
 }
 
-void Lobby::sendMatchList(ServerClient *c)
+void Lobby::enviarPartidasDisponibles(ServerClient *c)
 {
     std::shared_ptr<ListaDePartidas> partidas_disponibles = std::make_shared<ListaDePartidas>();
     for (Partida *p : partidas)
@@ -52,21 +51,23 @@ void Lobby::sendMatchList(ServerClient *c)
     c->sender_queue.push(partidas_disponibles); // le envio la lista al cliente
 }
 
-void Lobby::addToPartida(ServerClient *c){
-    
-    sendMatchList(c);
+void Lobby::agregarAUnaPartida(ServerClient *c)
+{
+
+    enviarPartidasDisponibles(c);
 
     // int contador = 0;
     std::shared_ptr<Dto> respuesta = NULL;
 
     // si el servidor cierra antes de obtener la respuesta sale
     // el sleep esta para que no pregunte tantas veces
-    while(not lobby_queue.try_pop(respuesta) && lobby_abierto){
+    while (not lobby_queue.try_pop(respuesta) && lobby_abierto)
+    {
         std::this_thread::sleep_for(std::chrono::milliseconds((int)500));
     }
 
-    if(respuesta == NULL)
-        return  cerrarCliente(c);
+    if (respuesta == NULL)
+        return cerrarCliente(c);
 
     if (respuesta->return_code() == LISTA_DE_PARTIDAS_CODE)
         agregarClienteAPartida(c, respuesta);
@@ -81,7 +82,7 @@ void Lobby::newClient(Socket *s)
     ServerClient *c = new ServerClient(s, &lobby_queue, id_cliente);
     c->start();
 
-    addToPartida(c);
+    agregarAUnaPartida(c);
     c = NULL; // vacio la referencia al cliente.
 }
 
@@ -100,7 +101,8 @@ void Lobby::removerPartidasMuertas()
 
 void Lobby::reap_dead() { removerPartidasMuertas(); }
 
-void Lobby::cerrarCliente(ServerClient *c){
+void Lobby::cerrarCliente(ServerClient *c)
+{
     std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
     c->sender_queue.push(fin);
     c->kill();

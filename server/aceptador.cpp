@@ -25,7 +25,6 @@ public:
         while (_keep_running)
         {
             Socket *peer = (Socket *)skt.accept();
-            // lobby.newClient(std::move(peer));
             lobby.newClient(peer);
 
             // mandar mapa a la sender_queue del nuevo cliente

@@ -7,7 +7,7 @@ void ReceiverTH::run()
     while (not was_closed)
     {
 
-        std::shared_ptr<Dto> dto = protocol.receive(was_closed);
+        std::shared_ptr<Dto> dto = protocol.recibir(was_closed);
 
         if (dto->is_alive())
         {

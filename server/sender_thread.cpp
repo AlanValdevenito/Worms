@@ -4,15 +4,13 @@ Sender::Sender(ServerProtocol &p, Queue<std::shared_ptr<Dto>> &q) : protocol(p),
 
 void Sender::run()
 {
-    bool se_envio;
     while (not was_closed)
     {
         std::shared_ptr<Dto> dto = queue.pop();
 
         if (dto->is_alive())
         {
-            se_envio = send(dto);
-            if (not se_envio)
+            if (not send(dto))
                 break;
         }
         else

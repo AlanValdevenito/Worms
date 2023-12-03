@@ -500,7 +500,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __ID_de_cliente)
     uint8_t id = 9;
     skt.sendall(&id, sizeof(id), &was_closed);
 
-    std::shared_ptr<Dto> rta = cp.receive(was_closed);
+    std::shared_ptr<Dto> rta = cp.recibir(was_closed);
 
     // printf("%u \n", rta->get_cliente_id());
 
@@ -529,7 +529,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Lista_de_Partidas)
     for (uint8_t op : lista_de_partidas)
         skt.sendall(&op, sizeof(op), &was_closed);
 
-    std::shared_ptr<ListaDePartidas> rta = std::dynamic_pointer_cast<ListaDePartidas>(cp.receive(was_closed));
+    std::shared_ptr<ListaDePartidas> rta = std::dynamic_pointer_cast<ListaDePartidas>(cp.recibir(was_closed));
 
     std::list<uint8_t> lista = rta->return_list();
     int sz = lista.size();
@@ -582,7 +582,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Viga)
 
     enviar_viga_con_parametros(std::ref(skt), x, y, ancho, alto, angulo);
 
-    std::shared_ptr<Vigas> rta = std::dynamic_pointer_cast<Vigas>(cp.receive(was_closed));
+    std::shared_ptr<Vigas> rta = std::dynamic_pointer_cast<Vigas>(cp.recibir(was_closed));
     std::shared_ptr<Viga> viga = rta->popViga(0); // tomo la unica viga que inserte
 
     // printf("%u %u\n", viga->x_pos(), viga->y_pos());
@@ -619,7 +619,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Multiples_vigas)
     uint16_t angulo_3 = 46;
     enviar_viga_con_parametros(std::ref(skt), x_3, y_3, ancho_3, alto_3, angulo_3);
 
-    std::shared_ptr<Vigas> rta = std::dynamic_pointer_cast<Vigas>(cp.receive(was_closed));
+    std::shared_ptr<Vigas> rta = std::dynamic_pointer_cast<Vigas>(cp.recibir(was_closed));
     std::shared_ptr<Viga> viga1 = rta->popViga(0);
     std::shared_ptr<Viga> viga2 = rta->popViga(1);
     std::shared_ptr<Viga> viga3 = rta->popViga(2);
@@ -675,7 +675,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Gusano)
     skt.sendall(&GUSANO_CODE, sizeof(GUSANO_CODE), &was_closed);
     enviar_gusano_con_parametros(std::ref(skt), id, x, y, vida, color, estado);
 
-    std::shared_ptr<Gusano> rta = std::dynamic_pointer_cast<Gusano>(cp.receive(was_closed));
+    std::shared_ptr<Gusano> rta = std::dynamic_pointer_cast<Gusano>(cp.recibir(was_closed));
 
     // ASSERT_TRUE(rta->x_pos() == x && rta->y_pos() == y && rta->get_id() == id && rta->get_vida() == vida);
     ASSERT_TRUE(rta->x_pos() == x);
@@ -725,7 +725,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, varios_gusanos)
     uint8_t estado_3 = 1;
     enviar_gusano_con_parametros(std::ref(skt), id_3, x_3, y_3, vida_3, color_3, estado_3);
 
-    std::shared_ptr<Gusanos> rta = std::dynamic_pointer_cast<Gusanos>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Gusanos> rta = std::dynamic_pointer_cast<Gusanos>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Gusano> g1 = rta->popGusano(0);
     std::shared_ptr<Gusano> g2 = rta->popGusano(1);
     std::shared_ptr<Gusano> g3 = rta->popGusano(2);
@@ -769,7 +769,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaVerde)
     uint8_t tiempo = 5;
     skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == GRANADA_VERDE_CODE);
@@ -810,7 +810,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaBanana)
     uint8_t tiempo = 1;
     skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == GRANADA_BANANA_CODE);
@@ -851,7 +851,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaSanta)
     uint8_t tiempo = 1;
     skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == GRANADA_SANTA_CODE);
@@ -892,7 +892,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __GranadaRoja)
     uint8_t tiempo = 1;
     skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == GRANADA_ROJA_CODE);
@@ -930,7 +930,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Dinamita)
     uint8_t tiempo = 5;
     skt.sendall(&tiempo, sizeof(tiempo), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == DINAMITA_CODE);
@@ -970,7 +970,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Bazooka)
     uint8_t exploto = 0;
     skt.sendall(&exploto, sizeof(exploto), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == BAZUKA_CODE);
@@ -1010,7 +1010,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Mortero)
     uint8_t exploto = 0;
     skt.sendall(&exploto, sizeof(exploto), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == MORTERO_CODE);
@@ -1047,7 +1047,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __AtaqueAereo)
     uint8_t exploto = 0;
     skt.sendall(&exploto, sizeof(exploto), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == ATAQUE_AEREO_CODE);
@@ -1086,7 +1086,7 @@ TEST(PROTOCOLOCLIENTE__RECIBIR, __Fragmento)
     uint8_t exploto = 0;
     skt.sendall(&exploto, sizeof(exploto), &was_closed);
 
-    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.receive(was_closed)); // recibo
+    std::shared_ptr<Proyectiles> ps = std::dynamic_pointer_cast<Proyectiles>(cp.recibir(was_closed)); // recibo
     std::shared_ptr<Proyectil> rta = ps->popProyectil(0);
 
     ASSERT_TRUE(rta->return_code() == FRAGMENTO_CODE);

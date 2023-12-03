@@ -47,7 +47,7 @@ public:
     explicit ClientProtocol(SocketInterface &skt);
     ~ClientProtocol();
 
-    std::shared_ptr<Dto> receive(bool &was_closed);
+    std::shared_ptr<Dto> recibir(bool &was_closed);
     bool moverADerecha(std::shared_ptr<MoverADerecha> m, bool &was_closed);
     bool moverAIzquierda(std::shared_ptr<MoverAIzquierda> m, bool &was_closed);
     bool enviarSeleccion(std::shared_ptr<ListaDePartidas> l, bool &was_closed);
@@ -66,7 +66,7 @@ public:
     bool enviarEquipadoDeArma(std::shared_ptr<EquiparArma> t, bool &was_closed);
     bool enviarAtaqueaereo(std::shared_ptr<Misil> t, bool &was_closed);
     bool enviarCheat(std::shared_ptr<Cheat> c, bool &was_closed);
-   
+
     bool enviarAtaque(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarMovimiento(std::shared_ptr<Dto> dto, bool &was_closed);
 
