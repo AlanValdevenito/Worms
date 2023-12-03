@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Apuntado::Apuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura): 
+AnimacionApuntado::AnimacionApuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura): 
     texture(textura), 
     mira(renderer),
     potencia(renderer),
@@ -12,11 +12,11 @@ Apuntado::Apuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> 
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
-void Apuntado::aumentar_potencia() {
+void AnimacionApuntado::aumentar_potencia() {
     this->potencia.update();
 }
 
-void Apuntado::aumentar_angulo() {
+void AnimacionApuntado::aumentar_angulo() {
     this->mira.aumentar_angulo();
     
     if ((this->currentFrame < this->numFrames - 2) && (get_angulo() % 6 == 0)) {
@@ -24,7 +24,7 @@ void Apuntado::aumentar_angulo() {
     }
 }
 
-void Apuntado::decrementar_angulo() {
+void AnimacionApuntado::decrementar_angulo() {
     this->mira.decrementar_angulo();
     
     if ((this->currentFrame > 0) && (get_angulo() % 6 == 0))  {
@@ -32,7 +32,7 @@ void Apuntado::decrementar_angulo() {
     }
 }
 
-void Apuntado::render(SDL2pp::Renderer &renderer, float x, float y, int direccion) {
+void AnimacionApuntado::render(SDL2pp::Renderer &renderer, float x, float y, int direccion) {
 
     SDL_RendererFlip flipType = direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
@@ -51,10 +51,10 @@ void Apuntado::render(SDL2pp::Renderer &renderer, float x, float y, int direccio
 
 /******************** GETTERS ********************/
 
-int Apuntado::get_angulo() {
+int AnimacionApuntado::get_angulo() {
     return this->mira.get_angulo();
 }
 
-int Apuntado::get_potencia() {
+int AnimacionApuntado::get_potencia() {
     return this->potencia.get_current_frame();
 }

@@ -1,7 +1,7 @@
 #include "vista_bate.h"
 
 AnimacionBateDeBaseball::AnimacionBateDeBaseball(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
-    Arma(ARMA_APUNTANDO), 
+    AnimacionArma(ARMA_APUNTANDO), 
     apuntado(renderer, texturas[31]) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/

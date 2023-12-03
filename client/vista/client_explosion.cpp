@@ -1,20 +1,20 @@
 #include "client_explosion.h"
 
-Explosion::Explosion(std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::shared_ptr<SDL2pp::Texture> ex):  
+AnimacionExplosion::AnimacionExplosion(std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::shared_ptr<SDL2pp::Texture> ex):  
     ex(ex, false),
     circulo(texturas[37], false),
     elipse(texturas[38], false),
     fuego(texturas[39], false),
     movimientoFuego(0) {}
 
-void Explosion::update() {
+void AnimacionExplosion::update() {
     this->fuego.update();
     this->circulo.update();
     this->elipse.update();
     this->ex.update();
 }
 
-void Explosion::render(SDL2pp::Renderer &renderer, float x, float y, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
+void AnimacionExplosion::render(SDL2pp::Renderer &renderer, float x, float y, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
     if (not this->fuego.completa()) {
@@ -40,6 +40,6 @@ void Explosion::render(SDL2pp::Renderer &renderer, float x, float y, float camar
     movimientoFuego += 1;
 }
 
-bool Explosion::animacion_completa() {
+bool AnimacionExplosion::animacion_completa() {
     return (this->fuego.completa() && this->circulo.completa() && this->elipse.completa() && this->ex.completa());
 }

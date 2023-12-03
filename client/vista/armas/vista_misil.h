@@ -7,15 +7,15 @@
 #include "vista_arma.h"
 #include "animacion_humo.h"
 
-class AnimacionMisil: public Arma
+class AnimacionMisil: public AnimacionArma
 {
 
 private:
     std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas;
 
-    Animation movimiento;
+    Animacion movimiento;
     std::vector<AnimacionHumo> humo;
-    Explosion explosion;
+    AnimacionExplosion explosion;
 
     Sonido sonido;
 

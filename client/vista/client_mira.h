@@ -3,7 +3,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-class Mira
+class AnimacionMira
 {
 
 private:
@@ -12,7 +12,7 @@ private:
     int angulo;
 
 public:
-    Mira(SDL2pp::Renderer &renderer);
+    AnimacionMira(SDL2pp::Renderer &renderer);
 
     void render(SDL2pp::Renderer &renderer, float x, float y, int direccion);
 

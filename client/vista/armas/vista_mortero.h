@@ -9,16 +9,16 @@
 #include "vista_fragmento.h"
 #include "animacion_humo.h"
 
-class AnimacionMortero: public Arma
+class AnimacionMortero: public AnimacionArma
 {
 
 private:
     std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas;
 
-    Animation movimiento;
+    Animacion movimiento;
     std::vector<AnimacionHumo> humo;
-    Explosion explosion;
-    Apuntado apuntado;
+    AnimacionExplosion explosion;
+    AnimacionApuntado apuntado;
 
     Sonido sonido;
 

@@ -1,7 +1,7 @@
 #include "vista_granada_roja.h"
 
 AnimacionGranadaRoja::AnimacionGranadaRoja(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
-    Arma(ARMA_APUNTANDO), 
+    AnimacionArma(ARMA_APUNTANDO), 
     movimiento(texturas[28]), 
     explosion(texturas, texturas[20]), 
     apuntado(renderer, texturas[36]),

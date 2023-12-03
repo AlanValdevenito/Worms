@@ -26,8 +26,8 @@ private:
     std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas;
     std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos;
 
-    Animation animacion;
-    std::unique_ptr<Arma> arma;
+    Animacion animacion;
+    std::unique_ptr<AnimacionArma> arma;
     std::shared_ptr<Sonido> sonido;
 
     int estado;

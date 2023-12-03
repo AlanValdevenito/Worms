@@ -9,7 +9,7 @@
 
 #include <map>
 
-class AnimacionAtaqueAereo: public Arma
+class AnimacionAtaqueAereo: public AnimacionArma
 {
 
 private:

@@ -6,13 +6,13 @@
 #include "vista_arma.h"
 #include "client_apuntado.h"
 
-class AnimacionBanana: public Arma
+class AnimacionBanana: public AnimacionArma
 {
 
 private:
-    Animation movimiento;
-    Explosion explosion;
-    Apuntado apuntado;
+    Animacion movimiento;
+    AnimacionExplosion explosion;
+    AnimacionApuntado apuntado;
 
     Sonido sonido;
 

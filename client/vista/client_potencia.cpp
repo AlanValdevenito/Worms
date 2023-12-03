@@ -5,18 +5,18 @@
 
 #define POTENCIA_MAXIMA 16
 
-Potencia::Potencia(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0))), 
+AnimacionPotencia::AnimacionPotencia(SDL2pp::Renderer &renderer): texture(SDL2pp::Texture(renderer, SDL2pp::Surface(DATA_PATH "/potencia.png").SetColorKey(true, 0))), 
                                                 currentFrame(0), 
                                                 numFrames(this->texture.GetHeight() / this->texture.GetWidth()), 
                                                 size(this->texture.GetWidth()) {}
 
-void Potencia::update() {
+void AnimacionPotencia::update() {
     if ((this->currentFrame < POTENCIA_MAXIMA)) {
         this->currentFrame++; 
     }
 }
 
-void Potencia::render(SDL2pp::Renderer &renderer, float x, float y, int direccion, int angulo) {
+void AnimacionPotencia::render(SDL2pp::Renderer &renderer, float x, float y, int direccion, int angulo) {
     
     int radio = 15;
 
@@ -33,10 +33,10 @@ void Potencia::render(SDL2pp::Renderer &renderer, float x, float y, int direccio
     }
 }
 
-int Potencia::get_current_frame() {
+int AnimacionPotencia::get_current_frame() {
     return this->currentFrame;
 }
 
-void Potencia::reiniciar() {
+void AnimacionPotencia::reiniciar() {
     this->currentFrame = 0;
 }

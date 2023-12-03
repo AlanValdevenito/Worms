@@ -6,12 +6,12 @@
 #include "vista_arma.h"
 #include "client_apuntado.h"
 
-class AnimacionDinamita: public Arma
+class AnimacionDinamita: public AnimacionArma
 {
 
 private:
-    Animation movimiento;
-    Explosion explosion;
+    Animacion movimiento;
+    AnimacionExplosion explosion;
 
     Sonido sonido;
 

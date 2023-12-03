@@ -1,7 +1,7 @@
 #include "vista_banana.h"
 
 AnimacionBanana::AnimacionBanana(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos): 
-    Arma(ARMA_APUNTANDO), 
+    AnimacionArma(ARMA_APUNTANDO), 
     movimiento(texturas[24]), 
     explosion(texturas, texturas[21]), 
     apuntado(renderer, texturas[34]), 

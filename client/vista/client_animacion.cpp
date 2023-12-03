@@ -7,7 +7,7 @@
 
 #include "client_animacion.h"
 
-Animation::Animation(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion): textura(textura),
+Animacion::Animacion(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion): textura(textura),
                                                                                        currentFrame(0),
                                                                                        numFrames(this->textura->GetHeight() / this->textura->GetWidth()),
                                                                                        size(this->textura->GetWidth()), repetirAnimacion(repetirAnimacion) {
@@ -15,7 +15,7 @@ Animation::Animation(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnima
     assert(this->size > 0);
 }
 
-void Animation::update(int it) {
+void Animacion::update(int it) {
 
     if (this->repetirAnimacion) {
             this->currentFrame = it;
@@ -26,7 +26,7 @@ void Animation::update(int it) {
     }
 }
 
-void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType, int angulo) {
+void Animacion::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType, int angulo) {
     renderer.Copy(
             *textura,
             SDL2pp::Rect(0, (this->size) * this->currentFrame, this->size, this->size),
@@ -37,7 +37,7 @@ void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_R
         );
 }
 
-void Animation::cambiar(std::shared_ptr<SDL2pp::Texture> nuevaTextura) {
+void Animacion::cambiar(std::shared_ptr<SDL2pp::Texture> nuevaTextura) {
     this->textura = nuevaTextura;
     this->currentFrame = 0;
     this->numFrames = this->textura->GetHeight() / this->textura->GetWidth();
@@ -45,14 +45,14 @@ void Animation::cambiar(std::shared_ptr<SDL2pp::Texture> nuevaTextura) {
     this->repetirAnimacion = true;
 }
 
-void Animation::no_repetir_animacion() {
+void Animacion::no_repetir_animacion() {
     this->repetirAnimacion = false;
 }
 
-bool Animation::completa() {
+bool Animacion::completa() {
     return (this->currentFrame == this->numFrames - 1);
 }
 
-void Animation::set_current_frame(int nuevoCurrentFrame) {
+void Animacion::set_current_frame(int nuevoCurrentFrame) {
     this->currentFrame = nuevoCurrentFrame;
 }

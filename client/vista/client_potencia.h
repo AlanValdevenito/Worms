@@ -3,7 +3,7 @@
 
 #include <SDL2pp/SDL2pp.hh>
 
-class Potencia
+class AnimacionPotencia
 {
 
 private:
@@ -14,7 +14,7 @@ private:
     int size; // Entero que almacena el tamaño de cada frame (altura y ancho)
 
 public:
-    Potencia(SDL2pp::Renderer &renderer);
+    AnimacionPotencia(SDL2pp::Renderer &renderer);
 
     void update(); // Actualiza la animacion. 
     void render(SDL2pp::Renderer &renderer, float x, float y, int direccion, int angulo); // Renderiza la potencia.

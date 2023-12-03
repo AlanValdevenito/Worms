@@ -6,11 +6,11 @@
 #include "vista_arma.h"
 #include "client_apuntado.h"
 
-class AnimacionBateDeBaseball: public Arma 
+class AnimacionBateDeBaseball: public AnimacionArma 
 {
 
 private:
-    Apuntado apuntado;
+    AnimacionApuntado apuntado;
 
     int angulo;
 

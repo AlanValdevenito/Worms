@@ -1,7 +1,7 @@
 #include "vista_misil.h"
 
 AnimacionMisil::AnimacionMisil(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos):   
-    Arma(ARMA_MOVIENDOSE), 
+    AnimacionArma(ARMA_MOVIENDOSE), 
     texturas(texturas), 
     movimiento(texturas[27]), 
     explosion(texturas, texturas[20]),

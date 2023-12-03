@@ -8,7 +8,7 @@ class AnimacionHumo
 {
 
 private:
-    Animation animacion;
+    Animacion animacion;
 
     int x;
     int y;

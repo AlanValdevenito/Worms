@@ -9,7 +9,7 @@ class Area;
 
 // Esta clase se utiliza para gestionar una animacion a partir de una textura cargada.
 
-class Animation {
+class Animacion {
 
 private:
     std::shared_ptr<SDL2pp::Texture> textura;
@@ -21,7 +21,7 @@ private:
     bool repetirAnimacion;
 
 public:
-    Animation(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion = true);
+    Animacion(std::shared_ptr<SDL2pp::Texture> textura, bool repetirAnimacion = true);
 
     void update(int it = 0); // Actualiza la animacion. 
     void render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dest, SDL_RendererFlip &flipType, int angulo = 0); // Renderiza la animacion en el area especificada. El ultimo parametro se utiliza para controlar el volteo de la imagen.

@@ -7,13 +7,13 @@
 #include "client_apuntado.h"
 #include "sonido.h"
 
-class AnimacionGranadaVerde: public Arma
+class AnimacionGranadaVerde: public AnimacionArma
 {
 
 private:
-    Animation movimiento;
-    Explosion explosion;
-    Apuntado apuntado;
+    Animacion movimiento;
+    AnimacionExplosion explosion;
+    AnimacionApuntado apuntado;
 
     Sonido sonido;
 

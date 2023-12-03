@@ -1,45 +1,45 @@
 #include "vista_arma.h"
 
-Arma::Arma(int estadoInicial): x(0), y(0), estado(estadoInicial){}
+AnimacionArma::AnimacionArma(int estadoInicial): x(0), y(0), estado(estadoInicial){}
 
-Arma::~Arma() {}
+AnimacionArma::~AnimacionArma() {}
 
 /******************** ESTADO ********************/
 
-int Arma::get_estado() {
+int AnimacionArma::get_estado() {
     return this->estado;
 }
 
 /******************** TIEMPO ********************/
 
-void Arma::set_tiempo(int tiempoElegido) {
+void AnimacionArma::set_tiempo(int tiempoElegido) {
     // La implementacion le corresponde a la clase derivada (solo en caso de necesitarla)
 }
 
-int Arma::get_tiempo() {
+int AnimacionArma::get_tiempo() {
     return 0; // La implementacion le corresponde a la clase derivada (solo en caso de necesitarla)
 }
 
 /******************** ANGULO ********************/
 
-void Arma::aumentar_angulo() {
+void AnimacionArma::aumentar_angulo() {
     // La implementacion le corresponde a la clase derivada (solo en caso de necesitarla)
 }
 
-void Arma::decrementar_angulo() {
+void AnimacionArma::decrementar_angulo() {
     // La implementacion le corresponde a la clase derivada (solo en caso de necesitarla)
 }
 
-int Arma::get_angulo() {
+int AnimacionArma::get_angulo() {
     return 0; // La implementacion le corresponde a la clase derivada (solo en caso de necesitarla)
 }
 
 /******************** POTENCIA ********************/
 
-void Arma::aumentar_potencia() {
+void AnimacionArma::aumentar_potencia() {
     // La implementacion le corresponde a la clase derivada (solo en caso de necesitarla)
 }
 
-int Arma::get_potencia() {
+int AnimacionArma::get_potencia() {
     return 0; // La implementacion le corresponde a la clase derivada (solo en caso de necesitarla)
 }

@@ -8,15 +8,15 @@
 #include "client_apuntado.h"
 #include "animacion_humo.h"
 
-class AnimacionFragmento: public Arma
+class AnimacionFragmento: public AnimacionArma
 {
 
 private:
     std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas;
 
-    Animation movimiento;
+    Animacion movimiento;
     std::vector<AnimacionHumo> humo;
-    Explosion explosion;
+    AnimacionExplosion explosion;
 
     Sonido sonido;
 

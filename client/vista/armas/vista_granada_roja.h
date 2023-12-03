@@ -8,13 +8,13 @@
 #include "vista_fragmento.h"
 #include <map>
 
-class AnimacionGranadaRoja: public Arma
+class AnimacionGranadaRoja: public AnimacionArma
 {
 
 private:
-    Animation movimiento;
-    Explosion explosion;
-    Apuntado apuntado;
+    Animacion movimiento;
+    AnimacionExplosion explosion;
+    AnimacionApuntado apuntado;
 
     Sonido sonido;
 

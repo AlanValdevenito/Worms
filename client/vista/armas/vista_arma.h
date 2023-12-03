@@ -16,7 +16,7 @@ const int ARMA_EXPLOTAR = 1;
 const int ARMA_EXPLOTO = 2;
 const int ARMA_DESEQUIPAR = 5;
 
-class Arma
+class AnimacionArma
 {
 
 private:
@@ -26,7 +26,7 @@ public:
     float y;
     int estado;
 
-    Arma(int estadoInicial);
+    AnimacionArma(int estadoInicial);
 
     // Metodos virtuales puros (palabra clave 'virtual' y sufijo '= 0')
     // Se declaran en la clase base pero no se definen, dejando su implementacion a las clases derivadas
@@ -50,7 +50,7 @@ public:
 
     virtual int get_estado();
 
-    virtual ~Arma();
+    virtual ~AnimacionArma();
 };
 
 #endif // ARMA_H

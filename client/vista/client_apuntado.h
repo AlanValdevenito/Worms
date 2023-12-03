@@ -6,14 +6,14 @@
 #include "client_mira.h"
 #include "client_potencia.h"
 
-class Apuntado
+class AnimacionApuntado
 {
 
 private:
     std::shared_ptr<SDL2pp::Texture> texture; // Atributo que almacena la textura de la animacion
 
-    Mira mira;
-    Potencia potencia;
+    AnimacionMira mira;
+    AnimacionPotencia potencia;
 
     int tipoDeArma;
 
@@ -22,8 +22,8 @@ private:
     int size; // Entero que almacena el tamaño de cada frame (altura y ancho).
 
 public:
-    Apuntado(SDL2pp::Renderer &renderer);
-    Apuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura);
+    AnimacionApuntado(SDL2pp::Renderer &renderer);
+    AnimacionApuntado(SDL2pp::Renderer &renderer, std::shared_ptr<SDL2pp::Texture> textura);
 
     void aumentar_potencia();
     void aumentar_angulo();
