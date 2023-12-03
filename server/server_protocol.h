@@ -80,11 +80,12 @@ private:
     std::shared_ptr<Dto> recibirEquipadoDeArma(uint8_t id, bool &was_closed);
     std::shared_ptr<Dto> recibirCheat(uint8_t id, bool &was_closed);
     bool recibirGranada(uint8_t &potencia, uint8_t &angulo, uint8_t &tiempo, bool &was_closed);
-    bool esGranada(uint8_t code);
     bool enviarViga(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarDatosDelGusano(std::shared_ptr<Gusano> g, bool &was_closed);
     bool enviarCodigoDeElemento(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarPosicionDelElemento(std::shared_ptr<Dto> dto, bool &was_closed);
     bool enviarGranada(std::shared_ptr<Proyectil> dto, bool &was_closed);
+    bool esGranada(uint8_t code);
+    std::shared_ptr<Dto> recibirAtaque(uint8_t code, uint8_t id, bool &was_closed);
 };
 #endif

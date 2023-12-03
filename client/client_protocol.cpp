@@ -4,7 +4,7 @@ ClientProtocol::ClientProtocol(SocketInterface &skt) : skt(skt) {}
 
 ClientProtocol::~ClientProtocol() {}
 
-// ACA SE HACE LA SEPARACION MEDIANTE EL CODIGO QUE RECIBO PRIMERO
+/* Se recibe un codigo el cual identifica que informacion recibo*/
 std::shared_ptr<Dto> ClientProtocol::recibir(bool &was_closed)
 {
     uint8_t code;

@@ -442,6 +442,24 @@ bool ServerProtocol::esGranada(uint8_t code)
     return (code == GRANADA_BANANA_CODE || code == GRANADA_SANTA_CODE || code == GRANADA_VERDE_CODE || code == GRANADA_ROJA_CODE);
 }
 
+std::shared_ptr<Dto> ServerProtocol::recibirAtaque(uint8_t code, uint8_t id, bool &was_closed)
+{
+    if (code == BATEAR_CODE)
+        return recibirAtaqueConBate(id, was_closed);
+    else if (code == BAZUKA_CODE)
+        return recibirAtaqueConBazuka(id, was_closed);
+    else if (code == MORTERO_CODE)
+        return recibirAtaqueConMortero(id, was_closed);
+    else if (code == DINAMITA_CODE)
+        return recibirAtaqueConDinamita(id, was_closed);
+    else if (code == ATAQUE_AEREO_CODE)
+        return recibirAtaqueAereo(id, was_closed);
+    else if (esGranada(code))
+        return recibirAtaqueConGranada(code, id, was_closed);
+
+    return std::make_shared<DeadDto>();
+}
+
 std::shared_ptr<Dto> ServerProtocol::recibirPartidaSeleccionada(uint8_t id, bool &was_closed)
 {
     uint8_t op;
@@ -651,7 +669,6 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
     skt->recvall(&id, sizeof(id), &was_closed);
     if (was_closed)
         return std::make_shared<DeadDto>();
-
     // printf("cliente id: %u\n", id);
 
     skt->recvall(&code, sizeof(code), &was_closed);
@@ -665,30 +682,20 @@ std::shared_ptr<Dto> ServerProtocol::recibirActividad(bool &was_closed)
         return std::make_shared<MoverADerecha>(id);
     else if (code == MOVER_A_IZQUIERDA_CODE)
         return std::make_shared<MoverAIzquierda>(id);
-    else if (code == BATEAR_CODE)
-        return recibirAtaqueConBate(id, was_closed);
     else if (code == FINALIZAR_CODE)
         return std::make_shared<Dto>(FINALIZAR_CODE, id);
     else if (code == SALTAR_CODE)
         return recibirSalto(id, was_closed);
     else if (code == NUEVA_PARTIDA_CODE)
         return recibirParametrosDeLaPartida(was_closed);
-    else if (code == BAZUKA_CODE)
-        return recibirAtaqueConBazuka(id, was_closed);
-    else if (code == MORTERO_CODE)
-        return recibirAtaqueConMortero(id, was_closed);
-    else if (code == DINAMITA_CODE)
-        return recibirAtaqueConDinamita(id, was_closed);
     else if (code == TELETRANSPORTAR_CODE)
         return recibirTeletransportacion(id, was_closed);
-    else if (code == ATAQUE_AEREO_CODE)
-        return recibirAtaqueAereo(id, was_closed);
     else if (code == EQUIPAR_ARMA_CODE)
         return recibirEquipadoDeArma(id, was_closed);
     else if (code == CHEAT_CODE)
-        return recibirCheat(id,was_closed);
-    else if (esGranada(code))
-        return recibirAtaqueConGranada(code, id, was_closed);
+        return recibirCheat(id, was_closed);
+    else
+        return recibirAtaque(code, id, was_closed);
 
     return std::make_shared<DeadDto>();
 }
