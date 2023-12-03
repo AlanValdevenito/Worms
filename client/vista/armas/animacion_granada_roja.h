@@ -12,13 +12,13 @@ class AnimacionGranadaRoja: public AnimacionArma
 {
 
 private:
+    std::map<int, std::unique_ptr<AnimacionFragmento>> fragmentos;
+
     Animacion movimiento;
     AnimacionExplosion explosion;
     AnimacionApuntado apuntado;
 
     Sonido sonido;
-
-    std::map<int, std::unique_ptr<AnimacionFragmento>> fragmentos;
 
     int angulo;
     int tiempo;

@@ -20,6 +20,7 @@ class AnimacionGranadaVerde {
 }
 
 class AnimacionGranadaRoja {
+   -fragmentos: Map<int, AnimacionFragmento>
    -movimiento: Animacion
    -explosion: AnimacionExplosion
    -sonido: Sonido
@@ -63,8 +64,11 @@ class AnimacionBazooka {
    +render()
 }
 
-class AnimacionExplosion{
-   -textura: Texture
+class AnimacionExplosion {
+   -ex: Animacion
+   -circulo: Animacion
+   -elipse: Animacion
+   -fuego: Animacion
    +update()
    +render()
 }

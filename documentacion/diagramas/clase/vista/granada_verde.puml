@@ -1,5 +1,5 @@
 @startuml
-class Arma {
+class AnimacionArma {
    -x: float
    -y: float
    -estado: int
@@ -27,7 +27,10 @@ class Animacion {
 }
 
 class AnimacionExplosion {
-   -textura: Texture
+   -ex: Animacion
+   -circulo: Animacion
+   -elipse: Animacion
+   -fuego: Animacion
    +update()
    +render()
 }
@@ -67,7 +70,7 @@ class Sonido {
    +reproducir()
 }
 
-AnimacionGranadaVerde --up-|> Arma
+AnimacionGranadaVerde --up-|> AnimacionArma
 AnimacionGranadaVerde --left-> Animacion
 AnimacionGranadaVerde --down-> AnimacionExplosion
 AnimacionGranadaVerde --right-> AnimacionApuntado

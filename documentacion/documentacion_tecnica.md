@@ -25,7 +25,7 @@ Teniendo un diccionario donde la clave es el id del cliente y el elemento almace
 
 ## Interfaz de usuario
 
-![Vista](diagramas/img/vista.png)
+![Vista](diagramas/clase/img/vista.png)
 
 ### Cliente
 Es la clase encargada de encapsular los atributos necesarios para que el cliente entable una conversacion con el **servidor**. Tiene un socket y dos colas, una de entrada y otra de salida. 
@@ -99,15 +99,17 @@ Es la encargada de manejar la interfaz grafica de una partida. Se encarga de:
 - Actualizar.
 - Renderizar.
 
+A continuacion podemos ver un diagrama de secuencia simple que muestra lo dicho anteriormente:
+
+![Partida](diagramas/secuencia/img/partida.png)
+
 En esta clase podemos encontrar un game loop cuya implementacion se basa en un loop a rate constante con drop de frames.
 
-Se comunica con el servidor usando al cliente como intermediario. Basicamente lo que hace es pushear en una de las queue del cliente _(send_queue)_ pedidos que este le envia al servidor y popea de la otra queue del cliente _(recv_queue)_ lo que el servidor le mande.
+Como se explica en el diagrama de secuencia, la partida se comunica con el servidor usando al cliente como intermediario. Basicamente lo que hace es pushear en una de las queue del cliente _(send_queue)_ pedidos que este le envia al servidor y popea de la otra queue del cliente _(recv_queue)_ lo que el servidor le mande.
 
-Luego de seleccionar la partida o crear una nueva desde el menu, se llama al metodo iniciar() de esta clase y da inicio a la interfaz grafica que representa la ventana de la partida. 
+El metodo iniciar() que se muestra en el diagrama de secuencia se llama luego de seleccionar o crear una partida desde el menu. Es el metodo que da inicio a la interfaz grafica que representa la ventana de la partida.
 
-![Partida](diagramas/img/partida.png)
-
-#### Worm
+#### AnimacionWorm
 
 Es la encargada de guardar el estado de un Worm y utilizarlo en el renderizado. Actualiza su estado con aquello que el servidor le envie a la clase Partida. Por ejemplo:
 
@@ -127,7 +129,7 @@ Mediante la actualizacion del estado se cambia la animacion a renderizar. Los es
 - Golpeado.
 - Muerto.
 
-#### Arma
+#### AnimacionArma
 
 Es la encargada de guardar el estado de un arma y utilizarlo en el renderizado. Actualiza su estado con aquello que el servidor le envie a la clase Partida. Por ejemplo:
 
@@ -145,12 +147,24 @@ Mediante la actualizacion del estado se cambia la animacion a renderizar. Los es
 
 A continuacion se muestra un diagrama de clases enfocado en ver como se relaciona un arma (Granada Verde) con las clases Animacion, AnimacionApuntado, AnimacionExplosion y Sonido:
 
-![Granada Verde](diagramas/img/granada_verde.png)
+![Granada Verde](diagramas/clase/img/granada_verde.png)
+
+Podemos ver que la clase AnimacionArma tiene dos metodos abstractos. Estos metodos deberan ser implementados por cada arma ya que cada tipo puede renderizar distintas animaciones. Un ejemplo puede ser comparar el renderizado de la Granada Verde y de la Bazooka:
+- Granada Verde: Su implementacion del metodo render() renderiza la cuenta regresiva de su explosion.
+- Bazooka: Su implementacion del metodo render() renderiza humo.
+
+Podemos ver que la clase AnimacionGranadaVerde tiene distintas animaciones y delega en ciertas clases su renderizado:
+- Movimiento: Delega en la instancia de la clase Animacion la responsabilidad de renderizar su movimiento.
+- Apuntado: Delega en la instancia de la clase AnimacionApuntado la responsabilidad de renderizar al Worm apuntando. La clase AnimacionApuntado ademas de renderizar al Worm apuntando, delega en AnimacionMira renderizar la mira y en AnimacionPotencia renderizar la potencia.
+- Explosion: Delega en la instancia de la clase AnimacionExplosion renderizar la explosion junto con sus efectos.
 
 A continuacion se muestra un diagrama de clases enfocado en ver como se relacionan algunas armas con la clase AnimacionExplosion:
 
-![Armas](diagramas/img/armas.png)
+![Armas](diagramas/clase/img/armas.png)
 
+Podemos ver que la clase AnimacionGranadaRoja tiene un diccionario de fragmentos. El diccionario es de la forma (ID, Fragmento) Basicamente esta clase itera este diccionario y delega en cada fragmento la responsabilidad del renderizado.
+
+Lo mismo ocurre con la clase AnimacionAtaqueAereo.
 
 #### Camara
 
