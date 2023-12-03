@@ -45,6 +45,7 @@ include_directories(common/Dtos)
 include_directories(common)
 include_directories(client)
 include_directories(client/vista)
+include_directories(client/vista/menu)
 include_directories(client/vista/armas)
 include_directories(client/vista/data)
 include_directories(server)
@@ -67,10 +68,10 @@ find_package(yaml-cpp REQUIRED)
 # Los nombres de los headers generados se guardan en la variable pasada
 # como primer parámetro.
 # No, no los genera con la carpeta como prefijo.
-qt5_wrap_ui(UIS_HEADERS client/vista/menu_principal.ui) # Generamos encabezados de UI a partir del archivo de diseño de la interfaz grafica (.ui).
-qt5_wrap_ui(UIS_HEADERS client/vista/menu_partidas.ui)
-qt5_wrap_ui(UIS_HEADERS client/vista/menu_crear_partida.ui)
-qt5_wrap_ui(UIS_HEADERS client/vista/menu_finalizar.ui)
+qt5_wrap_ui(UIS_HEADERS client/vista/menu/menu_principal.ui) # Generamos encabezados de UI a partir del archivo de diseño de la interfaz grafica (.ui).
+qt5_wrap_ui(UIS_HEADERS client/vista/menu/menu_partidas.ui)
+qt5_wrap_ui(UIS_HEADERS client/vista/menu/menu_crear_partida.ui)
+qt5_wrap_ui(UIS_HEADERS client/vista/menu/menu_finalizar.ui)
 
 # Habilito el automoc para poder hacer autoconnect de señales
 set(CMAKE_AUTOMOC on)
@@ -102,6 +103,8 @@ file(GLOB CLIENT_SOURCES_VISTA client/vista/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS_VISTA client/vista/*.h)
 file(GLOB CLIENT_SOURCES_ARMAS client/vista/armas/*.cpp *.$(extension))
 file(GLOB CLIENT_HEADERS_ARMAS client/vista/armas/*.h)
+file(GLOB CLIENT_SOURCES_MENU client/vista/menu/*.cpp *.$(extension))
+file(GLOB CLIENT_HEADERS_MENU client/vista/menu/*.h)
 
 file(GLOB SERVER_SOURCES server/*.cpp *.$(extension))
 file(GLOB SERVER_HEADERS server/*.h)
@@ -111,7 +114,7 @@ file(GLOB FISICAS_HEADERS server/fisicas/*.h)
 
 # Define los ejecutables que se compilarán. 
 # Se utilizan las variables que contienen las listas de archivos .cpp y .h en los directorios common, client y server para definir los objetivos.
-add_executable(client ${CLIENT_SOURCES_ARMAS} ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_ARMAS} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} ${UIS_HEADERS_DOS})
+add_executable(client ${CLIENT_SOURCES_MENU} ${CLIENT_SOURCES_ARMAS} ${CLIENT_SOURCES_VISTA} ${CLIENT_HEADERS_ARMAS} ${CLIENT_HEADERS_MENU} ${CLIENT_HEADERS_VISTA} ${DTO_HEADERS} ${COMMON_HEADERS} ${CLIENT_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${CLIENT_SOURCES} ${UIS_HEADERS} ${UIS_HEADERS_DOS})
 add_executable(server ${DTO_HEADERS} ${COMMON_HEADERS} ${SERVER_HEADERS} ${FISICAS_HEADERS} ${DTO_SOURCES} ${COMMON_SOURCES} ${SERVER_SOURCES} ${FISICAS_SOURCES})
 
 # Enlaza las bibliotecas a los ejecutables. En este caso, se enlazan las bibliotecas definidas en LINK_LIBS.
