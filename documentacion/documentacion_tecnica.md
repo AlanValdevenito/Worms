@@ -25,7 +25,7 @@ Teniendo un diccionario donde la clave es el id del cliente y el elemento almace
 
 ## Interfaz de usuario
 
-![Interfaz de usuario](diagramas/img/vista.png)
+![Vista](diagramas/img/vista.png)
 
 ### Cliente
 Es la clase encargada de encapsular los atributos necesarios para que el cliente entable una conversacion con el **servidor**. Tiene un socket y dos colas, una de entrada y otra de salida. 
@@ -105,6 +105,8 @@ Se comunica con el servidor usando al cliente como intermediario. Basicamente lo
 
 Luego de seleccionar la partida o crear una nueva desde el menu, se llama al metodo iniciar() de esta clase y da inicio a la interfaz grafica que representa la ventana de la partida. 
 
+![Partida](diagramas/img/partida.png)
+
 #### Worm
 
 Es la encargada de guardar el estado de un Worm y utilizarlo en el renderizado. Actualiza su estado con aquello que el servidor le envie a la clase Partida. Por ejemplo:
@@ -141,13 +143,13 @@ Mediante la actualizacion del estado se cambia la animacion a renderizar. Los es
 - Explotar.
 - Exploto.
 
-A continuacion se muestra un diagrama de clases enfocado en ver como se relacionan las armas con la clase Apuntado:
+A continuacion se muestra un diagrama de clases enfocado en ver como se relaciona un arma (Granada Verde) con las clases Animacion, AnimacionApuntado, AnimacionExplosion y Sonido:
 
-![Armas apuntado](diagramas/img/animacion-armas-apuntado.png)
+![Granada Verde](diagramas/img/granada_verde.png)
 
-A continuacion se muestra un diagrama de clases enfocado en ver como se relacionan las armas con la clase Explosion:
+A continuacion se muestra un diagrama de clases enfocado en ver como se relacionan algunas armas con la clase AnimacionExplosion:
 
-![Armas explosion](diagramas/img/animacion-armas-explosion.png)
+![Armas](diagramas/img/armas.png)
 
 
 #### Camara

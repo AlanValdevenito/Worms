@@ -1,0 +1,88 @@
+@startuml
+class Client {
+    - send_queue: Queue 
+    - recv_queue: Queue 
+    - id: uint8_t 
+    - was_closed: bool 
+    - protocolo: ClientProtocol 
+    - recv_th: Receiver 
+    - send_th: Sender 
+    +start()
+    +kill()
+} 
+
+class Vista {
+    -cliente: Client
+    -menu: Menu
+    -partida: Partida
+    -finalizar: Finalizar
+    +Vista(unCliente)
+    +iniciar()
+}
+
+class Partida {
+    -cliente: Client
+    -worms: Map<int, AnimacionWorm>
+    -camara: Camara
+    +iniciar()
+    +inicializar()
+    +handleEvents()
+    +actualizar()
+    +renderizar()
+}
+
+class Camara {
+   -x: float
+   -y: float
+   -float: ancho
+   -float: alto
+   +Camara(ventanaAncho, ventanaAlto)
+   +seguirWorm(diccionarioDeWorms)
+   +seguir(nuevoX, nuevoY)
+   +mover(moverX, moverY)
+   +comprobarRenderizado(objetoX, objetoY, objetoAncho, objetoAlto)
+   +setDimensiones(nuevoAncho, nuevoAlto)
+}
+
+class AnimacionWorm {
+    -animacion: Animacion 
+    -arma: AnimacionArma
+    -sonido: Sonido
+    -estado: int
+    +update()
+    +render()
+}
+
+class Animacion {
+    -textura: Texture
+    -repetirAnimacion: bool
+    +render()
+    +update()
+    +cambiar()
+}
+
+class AnimacionArma {
+    -x: float
+    -y: float
+    -estado: int
+    +{abstract}update()
+    +{abstract}render()
+}
+
+class Sonido {
+   -mixer: Mixer
+   -sonido: Chunk
+   -reproducido: bool
+   +Sonido(unChunk)
+   +reproducir()
+}
+
+Vista -left-> Client
+Vista -right-> Partida
+Partida "1 " -up-> "                    2..*" AnimacionWorm 
+Partida -down-> Camara
+
+AnimacionWorm-up-> Animacion 
+AnimacionWorm -right-> AnimacionArma 
+AnimacionWorm -left-> Sonido
+@enduml

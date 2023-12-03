@@ -1,0 +1,78 @@
+@startuml
+class Arma {
+   -x: float
+   -y: float
+   -estado: int
+   +{abstract}update()
+   +{abstract}render()
+}
+
+class AnimacionGranadaVerde {
+   -movimiento: Animacion
+   -explosion: AnimacionExplosion
+   -apuntado: AnimacionApuntado
+   -sonido: Sonido
+   -angulo: int
+   -tiempo: int
+   +update()
+   +render()
+}
+
+class Animacion {
+    -textura: Texture
+    -repetirAnimacion: bool
+    +render()
+    +update()
+    +cambiar()
+}
+
+class AnimacionExplosion {
+   -textura: Texture
+   +update()
+   +render()
+}
+
+class AnimacionApuntado {
+   -textura: Texture
+   -mira: AnimacionMira
+   -potencia: AnimacionPotencia
+   -tipoDeArma: int
+   +aumentar_potencia()
+   +aumentar_angulo()
+   +decrementar_angulo()
+   +render()
+}
+
+class AnimacionMira {
+   -textura: Texture
+   -angulo: int
+   +render()
+   +aumentar_angulo()
+   +decrementar_angulo()
+   +reiniciar()
+}
+
+class AnimacionPotencia {
+   -textura: Texture
+   +update()
+   +render()
+   +reiniciar()
+}
+
+class Sonido {
+   -mixer: Mixer
+   -sonido: Chunk
+   -reproducido: bool
+   +Sonido(unChunk)
+   +reproducir()
+}
+
+AnimacionGranadaVerde --up-|> Arma
+AnimacionGranadaVerde --left-> Animacion
+AnimacionGranadaVerde --down-> AnimacionExplosion
+AnimacionGranadaVerde --right-> AnimacionApuntado
+AnimacionGranadaVerde --down-> Sonido 
+
+AnimacionApuntado--down> AnimacionMira
+AnimacionApuntado--down> AnimacionPotencia
+@enduml

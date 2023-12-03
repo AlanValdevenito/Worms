@@ -1,0 +1,25 @@
+@startuml
+"Vista: v" -> "Partida: p": iniciar()
+
+loop
+
+"Partida: p" -> "Partida: p": handleEvents(renderer)
+
+note left: Primero se procesan los eventos.\n\nSe revisa si hay algun evento pendiente\nen la queue de eventos de SDL.\n\nDevolvera true solo en el caso de que el\ncliente quiera salir del juego.
+
+return false
+
+"Partida: p" -> "Partida: p": actualizar(renderer, iteracion)
+
+note left: Se reciben actualizaciones del juego desde\nel servidor mediante la recv queue del cliente.
+
+return true
+
+"Partida: p" -> "Partida: p": renderizar(renderer)
+
+note left: Luego de actualizar se procede a renderizar el\nmapa, el agua, los worms y de esta forma que\nlas actualizaciones se vean reflejadas en la\ninterfaz del cliente.
+
+return
+
+end
+@enduml

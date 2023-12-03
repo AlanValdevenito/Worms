@@ -1,0 +1,86 @@
+@startuml
+class AnimacionArma {
+   -x: float
+   -y: float
+   -estado: int
+   +{abstract}update()
+   +{abstract}render()
+
+}
+
+class AnimacionGranadaVerde {
+   -movimiento: Animacion
+   -explosion: AnimacionExplosion
+   -apuntado: AnimacionApuntado
+   -sonido: Sonido
+   -angulo: int
+   -tiempo: int
+   +update()
+   +render()
+}
+
+class AnimacionGranadaRoja {
+   -movimiento: Animacion
+   -explosion: AnimacionExplosion
+   -sonido: Sonido
+   -tiempo: tiempo
+   +update()
+   +render()
+}
+
+class AnimacionFragmento {
+   -movimiento: Animacion
+   -explosion: AnimacionExplosion
+   -sonido: Sonido
+   +update()
+   +render()
+   +renderizar_humo()
+}
+
+class AnimacionAtaqueAereo {
+   -misiles: Map<int, AnimacionMisil>
+   +update()
+   +render()
+}
+
+
+class AnimacionMisil {
+    -movimiento: Animacion
+    -explosion: AnimacionExplosion
+    -sonido: Sonido
+    +update()
+    +render()
+}
+
+class AnimacionBazooka {
+   -movimiento: Animacion
+   -explosion: AnimacionExplosion
+   -apuntado: AnimacionApuntado
+   -sonido: Sonido
+   -angulo: int
+   -direccion: int
+   +update()
+   +render()
+}
+
+class AnimacionExplosion{
+   -textura: Texture
+   +update()
+   +render()
+}
+
+AnimacionBazooka --up-|> AnimacionArma 
+AnimacionGranadaVerde --up-|> AnimacionArma 
+AnimacionGranadaRoja --up-|> AnimacionArma 
+AnimacionAtaqueAereo --left-|> AnimacionArma 
+
+AnimacionAtaqueAereo "  1  " --down-> "  6  " AnimacionMisil
+
+AnimacionGranadaRoja"  1  " --down-> "    6    " AnimacionFragmento
+
+AnimacionGranadaVerde --down-> AnimacionExplosion
+AnimacionGranadaRoja --down-> AnimacionExplosion
+AnimacionFragmento--right-> AnimacionExplosion
+AnimacionMisil --down-> AnimacionExplosion
+AnimacionBazooka --down-> AnimacionExplosion
+@enduml
