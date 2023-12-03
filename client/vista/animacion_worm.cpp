@@ -243,7 +243,7 @@ void AnimacionWorm::render_vida(SDL2pp::Renderer &renderer, float camaraCentroX,
 	SDL2pp::Surface surface = font.RenderText_Solid(std::to_string(this->vida), blanco);
 	SDL2pp::Texture texture(renderer, surface);
 
-    if (this->vida == 100) {
+    if (this->vida >= 100) {
         SDL2pp::Rect mensaje(this->camara ? (camaraCentroX + 12 - OFFSET) : (this->x - 16 - camaraLimiteIzquierdo),
                             this->camara ? (this->y - 42 - camaraLimiteSuperior) : (this->y - 42 - camaraLimiteSuperior), 
                             surface.GetWidth(), surface.GetHeight());
