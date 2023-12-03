@@ -86,34 +86,29 @@ Al iniciar el juego se abrira la ventana del menu principal donde tendremos dos 
 
 Se debe presionar el boton señalado a continuacion:
 
-< Imagen >
+![Paso 1](img/menu-pasos/paso1.png)
 
-Se abrira la ventana del menu de eleccion de partidas:
+Se abrira la ventana del menu de eleccion de partidas. Se debera clickear la partida deseada:
 
-< Imagen >
-
-Se debera clickear la partida deseada:
-
-< Imagen >
+![Paso 2](img/menu-pasos/paso2.png)
 
 Para unirse a la partida se debe presionar el boton ’Elegir partida’ esperar a que TODOS los jugadores se conecten:
 
-< Imagen >
+![Paso 3](img/menu-pasos/paso3.png)
 
 ### 4.3 Crear una nueva partida
 
 Se debe presionar el boton señalado a continuacion:
 
-< Imagen >
+![Paso 4](img/menu-pasos/paso4.png)
 
 Se abrira la ventana del menu de creacion de partidas y se deberan completar los campos:
 
-< Imagen >
-
+![Paso 5](img/menu-pasos/paso-5.png)
 
 Para crear la partida se debe presionar el boton 'Crear partida’ y esperar a que TODOS los jugadores se conecten:
 
-< Imagen >
+![Paso 6](img/menu-pasos/paso-6.png)
 
 ## 4.2 Jugabilidad
 
