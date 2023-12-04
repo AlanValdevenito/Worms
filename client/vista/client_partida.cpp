@@ -14,6 +14,8 @@ Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.tt
 
 int Partida::iniciar()
 {
+    try {
+
     /******************** INICIAR SDL ********************/
 
     SDL sdl(SDL_INIT_VIDEO); 
@@ -123,6 +125,11 @@ int Partida::iniciar()
     }
 
     return 0;
+
+    } catch (const std::exception &err) {
+        std::cerr << "Something went wrong and an exception was caught: " << err.what() << "\n";
+        return -1;
+    }
 }
 
 /******************** ALMACENAMIENTO DEL ESTADO INICIAL DEL JUEGO ********************/
@@ -725,7 +732,6 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         this->worms[id]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo(), turno);
 
         if ((this->worms[id]->get_tipo_de_arma() != tipoDeArma)) {
-            std::cout << "\nID de gusano: " << id << std::endl;
             this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
         }
 
@@ -888,8 +894,6 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 
     for (const auto &elemento : this->worms)
     {
-
-        std::cout << "\nID de gusano: " << elemento.first << std::endl;
 
         if (this->camara.comprobarRenderizado(pixeles_a_metros(elemento.second->get_x()), pixeles_a_metros(elemento.second->get_y()), 1.0f, 1.0f)) {
             elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);

@@ -19,3 +19,7 @@ void Sonido::reproducir() {
         this->reproducido = true;
     }
 }
+
+void Sonido::detener() {
+    this->mixer->HaltChannel(this->canal);
+}

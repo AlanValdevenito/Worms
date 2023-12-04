@@ -59,6 +59,11 @@ void AnimacionWorm::update(int it, float nuevoX, float nuevoY, int nuevaVida, in
 }
 
 void AnimacionWorm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
+
+    if (this->estado == MUERTO) {
+        return;
+    }
+
     this->estado = nuevoEstado;
     this->tipoDeArma = tipoDeArma;
 
@@ -177,7 +182,7 @@ void AnimacionWorm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
 
 void AnimacionWorm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
 {
-    std::cout << "Estado: " << this->estado << std::endl;
+    // std::cout << "Estado: " << this->estado << std::endl;
     SDL_RendererFlip flip = this->direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
     if (this->sonido) {
