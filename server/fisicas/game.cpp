@@ -358,6 +358,23 @@ void Game::finalizar_juego(std::shared_ptr<Dto> dto)
     stop();
 }
 
+void Game::killPlayerWorms(uint8_t id)
+{
+    for (int i = 0; i < (int)players.size(); i++){ // Iteramos los players
+
+        if(players[i].getId() == id) { // Encontramos el player que salio
+            
+            for (Worm *worm : world.getWorms()) { // Iteramos los Worms
+                if (worm->playerId == id) { // Encontramos los Worms que tienen al player como dueño
+                    worm->state = MUERTO;
+                    worm->takeDamage(worm->getHp());
+                }
+            }
+        }
+    }
+    
+}
+
 void Game::run()
 {
     begin = std::chrono::steady_clock::now();
@@ -370,6 +387,8 @@ void Game::run()
 
             if (dto->is_alive() && dto->return_code() == FINALIZAR_CODE)
             {
+                //eliminar los worms del que se fue
+                killPlayerWorms(dto->get_cliente_id());
                 broadcaster.removeQueueWithId(dto->get_cliente_id()); // elimino la queue del cliente que murio
                 jugadores_en_partida -= 1;
                 if (jugadores_en_partida == 1) // si solo queda un jugador
@@ -532,7 +551,7 @@ void Game::updateWorms()
 
                 for (int i = 0; i < (int)players.size(); i++) {
                     if (players[i].getId() ==  worm->playerId) {
-                        std::cout << "muere worm id = " << (int)worm->getId() << "perteneciente al player id = " << (int)worm->playerId << "\n";
+                        // std::cout << "muere worm id = " << (int)worm->getId() << "perteneciente al player id = " << (int)worm->playerId << "\n";
                         players[i].markWormAsDead(worm->getId());
                     }
                 }

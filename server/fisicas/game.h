@@ -89,6 +89,7 @@ public:
     void limitFrameRate();
     void run() override;
     void stop() override;
+    void killPlayerWorms(uint8_t id);
     void sendMap();
     void sendWorms();
     void sendBombs();

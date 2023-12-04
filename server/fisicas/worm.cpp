@@ -193,6 +193,8 @@ void Worm::jumpBackward() {
 
 
 void Worm::bat(std::list<Worm*>& worms, int angle) {
+	if (state == MUERTO) return;
+	
 	float x = getXCoordinate();
 	float distance;
 	float xComponent; float yComponent;
@@ -209,8 +211,7 @@ void Worm::bat(std::list<Worm*>& worms, int angle) {
 			yComponent = 40.0f*sin(angleInRadians);
 			worm->getBody()->ApplyLinearImpulseToCenter(b2Vec2(xComponent, yComponent), true);
 			worm->takeDamage(10);
-			worm->state = GOLPEADO
-			;
+			worm->state = GOLPEADO;
 		}
 	}
 }
