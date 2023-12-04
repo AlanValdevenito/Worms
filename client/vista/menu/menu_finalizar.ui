@@ -146,9 +146,9 @@ QPushButton:pressed {
       <widget class="QLabel" name="resultadoLabel">
        <property name="geometry">
         <rect>
-         <x>220</x>
-         <y>30</y>
-         <width>201</width>
+         <x>180</x>
+         <y>40</y>
+         <width>291</width>
          <height>20</height>
         </rect>
        </property>
@@ -157,7 +157,7 @@ QPushButton:pressed {
 font: 18px;</string>
        </property>
        <property name="text">
-        <string>¡Felicidades has ganado!</string>
+        <string>¡Felicidades jugador N has ganado!</string>
        </property>
       </widget>
      </widget>

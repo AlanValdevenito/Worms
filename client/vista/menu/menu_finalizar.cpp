@@ -14,10 +14,10 @@ MenuFinalizar::MenuFinalizar(Client &cliente, int resultado, QWidget *parent) :
 
     connectEvents();
 
-    // std::string victoria = "¡Felicidades jugador " + this->cliente.id  
-    // std::string derrota = 
+    std::string victoria = "¡Felicidades jugador " + std::to_string((int) this->cliente.id) + " has ganado!";
+    std::string derrota = "            Has perdido jugador " + std::to_string((int) this->cliente.id);
 
-    std::string texto = this->resultado ? ("¡Felicidades has ganado!") : ("            Has perdido");
+    std::string texto = this->resultado ? victoria : derrota;
     ui->resultadoLabel->setText(QString::fromStdString(texto));
 }
 
