@@ -25,6 +25,7 @@ Teniendo un diccionario donde la clave es el id del cliente y el elemento almace
 
 ## Interfaz de usuario
 
+![Cliente](diagramas/clase/img/cliente.png)
 ![Vista](diagramas/clase/img/vista.png)
 
 ### Cliente
@@ -176,6 +177,7 @@ Cuando se quiere seguir a un determinado Worm lo que se hace es setearle la posi
 
 -------------
 -------------
+![Servidor](diagramas/clase/img/servidor.png)
 
 ## **Servidor**
 El servidor se encarga de iniciar un hilo aceptador que aceptara a los clientes. Esperando una 'q' como instruccion de cierre forzoso de todos los clientes, partidas, aceptador y del mismo.
