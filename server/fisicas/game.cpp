@@ -497,9 +497,13 @@ void Game::updateWorms()
         {
             worm->is_alive = false;
             begin = std::chrono::steady_clock::now();
-
-            players[worm->playerId - 1].numberOfAliveWorms--;
-            players[worm->playerId - 1].markWormAsDead(worm->getId());
+            for (int i = 0; i < (int)players.size(); i++) {
+                if (players[i].getId() ==  worm->playerId) {
+                    players[i].numberOfAliveWorms--;
+                    players[i].markWormAsDead(worm->getId());
+                }
+            }
+            
         }
         // si el worm sufre algun daño en su turno pierde el turno
         if (worm->getId() == actualWormId && not wormAttacked && worm->damageTaken > 0)
@@ -523,8 +527,14 @@ void Game::updateWorms()
                 worm->makeDamage();
             }
             if (worm->getState() == MUERTO && actualWormId == worm->getId() && worm->is_alive)
-            {
-                players[worm->playerId - 1].markWormAsDead(worm->getId());
+            {   
+
+                for (int i = 0; i < (int)players.size(); i++) {
+                    if (players[i].getId() ==  worm->playerId) {
+                        std::cout << "muere worm id = " << (int)worm->getId() << "perteneciente al player id = " << (int)worm->playerId << "\n";
+                        players[i].markWormAsDead(worm->getId());
+                    }
+                }
 
                 if (endlessTurn)
                 {
@@ -547,7 +557,7 @@ void Game::updateWorms()
         {
             worm->updateAngle();
         }
-        int timeSinceTurnStarted = std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
+        /*int timeSinceTurnStarted = std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
         if (timeSinceTurnStarted > 2)
         {
             if (worm->getId() != actualWormId)
@@ -555,6 +565,7 @@ void Game::updateWorms()
                 worm->equipWeapon(SIN_ARMA);
             }
         }
+        */
     }
 }
 

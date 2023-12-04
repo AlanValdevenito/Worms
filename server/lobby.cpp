@@ -82,6 +82,8 @@ void Lobby::newClient(Socket *s)
     ServerClient *c = new ServerClient(s, &lobby_queue, id_cliente);
     c->start();
 
+    reap_dead();
+
     agregarAUnaPartida(c);
     c = NULL; // vacio la referencia al cliente.
 }
@@ -91,8 +93,8 @@ void Lobby::removerPartidasMuertas()
     partidas.remove_if([&](Partida *p)
                        {
             if (p->is_dead()){
-                p->finish(); 
-                p->join();
+                p->forceFinish(); 
+                // p->join();
                 delete p;
                 return true;
             }

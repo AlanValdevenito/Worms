@@ -889,12 +889,13 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
     for (const auto &elemento : this->worms)
     {
 
+        std::cout << "\nID de gusano: " << elemento.first << std::endl;
+
         if (this->camara.comprobarRenderizado(pixeles_a_metros(elemento.second->get_x()), pixeles_a_metros(elemento.second->get_y()), 1.0f, 1.0f)) {
             elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
             // contador++;
         }
 
-        std::cout << "\nID de gusano: " << elemento.first << std::endl;
         elemento.second->render_arma(renderer, (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
 
     }
