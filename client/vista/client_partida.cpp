@@ -720,8 +720,14 @@ bool Partida::actualizar(SDL2pp::Renderer &renderer, int it)
         int nuevoEstado = (int) gusano->get_estado();
         int tipoDeArma = (int) gusano->get_arma();
 
-        if (nuevoEstado == MUERTO) {
+         if (nuevoEstado == MUERTO) {
             this->worms[id]->update_estado(renderer, nuevoEstado, tipoDeArma);
+
+            float nuevoX = metros_a_pixeles(centimetros_a_metros((int)gusano->x_pos()));
+            float nuevoY = metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
+            bool turno = (id == this->id_gusano_actual);
+
+            this->worms[id]->update(it, nuevoX, nuevoY, (int)gusano->get_vida(), (int) gusano->get_direccion(), (int) gusano->get_angulo(), turno);
             continue;
         }
 
@@ -895,8 +901,12 @@ void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
     for (const auto &elemento : this->worms)
     {
 
-        if (this->camara.comprobarRenderizado(pixeles_a_metros(elemento.second->get_x()), pixeles_a_metros(elemento.second->get_y()), 1.0f, 1.0f)) {
-            elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
+        float y = (elemento.second->get_estado() == MUERTO) ? (renderer.GetOutputHeight() - elemento.second->get_y()) : (elemento.second->get_y());
+
+        if (this->camara.comprobarRenderizado(pixeles_a_metros(elemento.second->get_x()), pixeles_a_metros(y), 1.0f, 1.0f)) {
+            float limiteSuperior = (elemento.second->get_estado() == MUERTO) ? (renderer.GetOutputHeight() - (this->camara.getLimiteSuperior() * 24)) : (this->camara.getLimiteSuperior() * 24);
+            
+            elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), limiteSuperior);
             // contador++;
         }
 

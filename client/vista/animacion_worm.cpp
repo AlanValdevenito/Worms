@@ -190,7 +190,7 @@ void AnimacionWorm::render(SDL2pp::Renderer &renderer, float camaraCentroX, floa
     }
 
     if (this->estado == MUERTO) {
-        this->animacion.render(renderer, this->camara ? SDL2pp::Rect(camaraCentroX - OFFSET, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
+        this->animacion.render(renderer, SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, camaraLimiteSuperior - y - 20, ANCHO_SPRITE, ALTO_SPRITE), flip);
         return;
     }
     

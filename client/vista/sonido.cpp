@@ -11,6 +11,8 @@ void Sonido::cambiar(std::shared_ptr<SDL2pp::Chunk> nuevoSonido, int loops) {
     this->loops = loops;
 }
 
+// El canal donde se reproduce el sonido se libera automaticamente una vez que el
+// sonido termino de reproducirse. No es necesario liberar explicitamente el canal.
 void Sonido::reproducir() {
     if (not reproducido) {
         this->sonido->SetVolume(SDL_MIX_MAXVOLUME / 10);
