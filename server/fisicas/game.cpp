@@ -483,13 +483,13 @@ void Game::updateWorms()
     // actualizo los gusanos
     for (Worm *worm : world.getWorms())
     {
-        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPANDO_ARMA)
+        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPANDO_ARMA  && worm->getState() != MUERTO)
         {
             worm->state = QUIETO;
         }
         if (worm->is_alive && worm->numberOfContacts == 0 &&
             worm->getState() != SALTANDO_ATRAS && worm->getState() != SALTANDO_ADELANTE &&
-            worm->getState() != GOLPEADO && worm->getVelocity().y < 0.0f)
+            worm->getState() != GOLPEADO && worm->getVelocity().y < 0.0f && worm->getState() != MUERTO)
         {
             worm->state = CAYENDO;
         }
@@ -515,12 +515,13 @@ void Game::updateWorms()
         }
 
         if (worm->getYCoordinate() <= WATER_POSITION && worm->is_alive)
-        {
+        {   
+            
             worm->takeDamage(worm->getHp());
             worm->getBody()->SetLinearVelocity(b2Vec2(0, 0));
             worm->getBody()->SetTransform(b2Vec2(worm->getXCoordinate(), worm->getYCoordinate()), true);
         }
-        if (not world.anyMovement())
+        if (not world.anyMovement() && not anyWormMoving())
         {
             if (not infiniteHp)
             {

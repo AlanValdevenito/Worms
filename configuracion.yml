@@ -2,14 +2,14 @@
 
 map: 1
 
-cantidad_de_worms: 3
+cantidad_de_worms: 8
 
 worm:
   hp: 10
   speed: 2
   extra_hp: 25
 
-turn_duration: 60
+turn_duration: 20
 time_left_after_attack: 3
 
 dynamite:

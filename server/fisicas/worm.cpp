@@ -240,7 +240,7 @@ b2Body* Worm::getBody() {
 
 bool Worm::isMoving() {
 	b2Vec2 wormVelocity = body->GetLinearVelocity();
-	return wormVelocity.x != 0.0f || wormVelocity.y != 0.0f;
+	return wormVelocity.x != 0.0f || wormVelocity.y != 0.0f || numberOfContacts == 0;
 }
 
 void Worm::takeDamage(uint8_t damage) {
@@ -274,6 +274,7 @@ float Worm::getAngle() {
 
 void Worm::startContact() {
 	numberOfContacts++;
+	if (state == MUERTO) return;
 	angle = 0;
 	state = MOVIENDOSE;
 	float fallDistance = highestYCoordinateReached - body->GetPosition().y;

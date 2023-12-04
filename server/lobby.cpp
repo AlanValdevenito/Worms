@@ -3,7 +3,7 @@
 // Hay una partida creada por default para facilitar las pruebas
 Lobby::Lobby() : mapId(0), id_cliente(0), partida_id(1), lobby_abierto(true)
 {
-    Partida *p1 = new Partida(partida_id, 2, 1);
+    Partida *p1 = new Partida(partida_id, 4, 1);
     partidas.push_back(p1);
     partida_id++;
 }
