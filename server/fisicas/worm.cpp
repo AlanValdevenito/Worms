@@ -195,13 +195,12 @@ void Worm::jumpBackward() {
 void Worm::bat(std::list<Worm*>& worms, int angle) {
 	if (state == MUERTO) return;
 	
-	float x = getXCoordinate();
 	float distance;
 	float xComponent; float yComponent;
 	for (Worm *worm : worms) {
-		distance = x - worm->getXCoordinate();
+		distance = getDistance(getXCoordinate(), getYCoordinate(), worm->getXCoordinate(), worm->getYCoordinate());
 		if (distance == 0) continue;
-		if (distance < 2.0f && distance > -2.0f) {
+		if (distance < 2.0f) {
 			float angleInRadians = angle * 3.14f / 180.0f;
 			if (facingRight) {
 				xComponent = 20.0f * cos(angleInRadians);

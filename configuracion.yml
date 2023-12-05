@@ -3,7 +3,7 @@
 cantidad_de_worms: 6
 
 worm:
-  hp: 20
+  hp: 100
   speed: 2
   extra_hp: 25
 
@@ -56,4 +56,3 @@ air_strike:
 
 teleport:
   ammunition: 99999
-  

@@ -9,6 +9,7 @@
 #include <string>
 #include "yaml-cpp/yaml.h"
 #include "constantes.h"
+#include "utils.h"
 
 
 class Worm : public Entity {
