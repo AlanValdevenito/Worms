@@ -65,17 +65,20 @@ propuestos por la catedra tal cual están descriptos en el enunciado.
 - Boceto Manual de Proyecto.
 - Diagramas de estructura del proyecto.
 - Implementacion de visualizacion de vida total por equipo.
+- Camara sigue a un misil y worm golpeado
 
 ### Semana 7
 
-- Arreglo de bugs.
-- En partidas multiples, el abandono de un cliente tiene como consecuencia la muerte de sus Worms y la partida continua para los demas.
 - Reducción del consumo de la CPU de los clientes.
-- Mejora del menú.
+- Arreglo de bugs generales.
+- En partidas multiples, el abandono de un cliente tiene como consecuencia la muerte de sus Worms y la partida continua para los demas.
+- Documentacion terminada
+- Diagramas de clases
+- Musica ambiente y sonido
+- Feedback de armas
 - Implementacion completa de la camara en la vista. Seguimiento de Worms golpeados, seguimiento de proyectiles . movimiento de la camara con el mouse
-- Musica ambiente.
-- Sonido.
-- Documentación.
+- Pruebas manuales del juego
+- Mejora del menú.
 
 # Reparticion de tareas
 
@@ -100,7 +103,7 @@ particular se encargo de:
 - Implementar la logica de armado de multiples partidas.
 - Implementar la estructura de el cliente y el servidor (colas, threads...).
 - Implementar los cierres ordenados al terminar la partida o cuando hay un error.
-- Hacer diagrama de estructura del proyecto.
+- Hacer diagramas de estructura del proyecto.
 - Implementacion de test automaticos de la comunicacion haciendo mocks de socket.
 
 El alumno responsable en llevar a cabo la logica de la vista fue Alan Valdevenito. En
@@ -133,18 +136,19 @@ particular se encargo de:
 
 ### ¿Cuales fueron los puntos más problemáticos?
 
-- Cambio de enviado de un proyectil a múltiples proyectiles.
+- Cambio de enviado de un proyectil a multiples proyectiles.
 - Cierres ordenados de partidas.
 - Ensamble de google test con el proyecto.
-- Disponibilidad de la cantidad de canales de sonido. Al querer reproducir muchos sonidos simultaneamente y no tener canales libres teniamos un
-  error generado por SDL Mix.
-- Consumo de la CPU de los clientes.
+- Disponibilidad de canales de sonido (al querer reproducir muchos sonidos simultaneamente, no habian canales disponibles para ello y generaba un error de SDLMix)
+> explicacion en commit `a5f8aafe4b14bf786503f3751405024f960e170c`
+- Renderizado de objetos que solo son visibles en la camara, para mejorar la performance del CPU de los clientes.
+- Cerrar partida de un cliente y que todos sus gusanos mueran.
 
 ### ¿Pudieron llegar con todo?
 
 - Quedo pendiente implementar el feature de las provisiones. Decidimos no implementarlo para invertir tiempo en otras funcionalidades.
 
-### ¿Hay errores conocidos?
+### ¿Hay errores conocidos  ?
 
 - En ocasiones el misil de la bazooka y el mortero rebota contra las vigas, cuando en realidad debería explotar en el momento en el que colisiona.
 - Si se cierra una ventana del menu principal, el lobby se bloquea esperando la seleccion del cliente y no puede unirse ningun otro.
