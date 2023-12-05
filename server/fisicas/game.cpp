@@ -360,19 +360,22 @@ void Game::finalizar_juego(std::shared_ptr<Dto> dto)
 
 void Game::killPlayerWorms(uint8_t id)
 {
-    for (int i = 0; i < (int)players.size(); i++){ // Iteramos los players
+    for (int i = 0; i < (int)players.size(); i++)
+    { // Iteramos los players
 
-        if(players[i].getId() == id) { // Encontramos el player que salio
-            
-            for (Worm *worm : world.getWorms()) { // Iteramos los Worms
-                if (worm->playerId == id) { // Encontramos los Worms que tienen al player como dueño
+        if (players[i].getId() == id)
+        { // Encontramos el player que salio
+
+            for (Worm *worm : world.getWorms())
+            { // Iteramos los Worms
+                if (worm->playerId == id)
+                { // Encontramos los Worms que tienen al player como dueño
                     worm->state = MUERTO;
                     worm->takeDamage(worm->getHp());
                 }
             }
         }
     }
-    
 }
 
 void Game::run()
@@ -387,7 +390,7 @@ void Game::run()
 
             if (dto->is_alive() && dto->return_code() == FINALIZAR_CODE)
             {
-                //eliminar los worms del que se fue
+                // eliminar los worms del que se fue
                 killPlayerWorms(dto->get_cliente_id());
                 broadcaster.removeQueueWithId(dto->get_cliente_id()); // elimino la queue del cliente que murio
                 jugadores_en_partida -= 1;
@@ -502,7 +505,7 @@ void Game::updateWorms()
     // actualizo los gusanos
     for (Worm *worm : world.getWorms())
     {
-        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPANDO_ARMA  && worm->getState() != MUERTO)
+        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPANDO_ARMA && worm->getState() != MUERTO)
         {
             worm->state = QUIETO;
         }
@@ -516,13 +519,14 @@ void Game::updateWorms()
         {
             worm->is_alive = false;
             begin = std::chrono::steady_clock::now();
-            for (int i = 0; i < (int)players.size(); i++) {
-                if (players[i].getId() ==  worm->playerId) {
+            for (int i = 0; i < (int)players.size(); i++)
+            {
+                if (players[i].getId() == worm->playerId)
+                {
                     players[i].numberOfAliveWorms--;
                     players[i].markWormAsDead(worm->getId());
                 }
             }
-            
         }
         // si el worm sufre algun daño en su turno pierde el turno
         if (worm->getId() == actualWormId && not wormAttacked && worm->damageTaken > 0)
@@ -534,8 +538,8 @@ void Game::updateWorms()
         }
 
         if (worm->getYCoordinate() <= WATER_POSITION && worm->is_alive)
-        {   
-            
+        {
+
             worm->takeDamage(worm->getHp());
             worm->getBody()->SetLinearVelocity(b2Vec2(0, 0));
             worm->getBody()->SetTransform(b2Vec2(worm->getXCoordinate(), worm->getYCoordinate()), true);
@@ -547,10 +551,12 @@ void Game::updateWorms()
                 worm->makeDamage();
             }
             if (worm->getState() == MUERTO && actualWormId == worm->getId() && worm->is_alive)
-            {   
+            {
 
-                for (int i = 0; i < (int)players.size(); i++) {
-                    if (players[i].getId() ==  worm->playerId) {
+                for (int i = 0; i < (int)players.size(); i++)
+                {
+                    if (players[i].getId() == worm->playerId)
+                    {
                         // std::cout << "muere worm id = " << (int)worm->getId() << "perteneciente al player id = " << (int)worm->playerId << "\n";
                         players[i].markWormAsDead(worm->getId());
                     }
@@ -577,15 +583,6 @@ void Game::updateWorms()
         {
             worm->updateAngle();
         }
-        /*int timeSinceTurnStarted = std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
-        if (timeSinceTurnStarted > 2)
-        {
-            if (worm->getId() != actualWormId)
-            {
-                worm->equipWeapon(SIN_ARMA);
-            }
-        }
-        */
     }
 }
 

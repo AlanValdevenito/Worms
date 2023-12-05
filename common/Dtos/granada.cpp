@@ -1,18 +1,18 @@
 #include "granada.h"
 
-GranadaVerde::GranadaVerde(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo) : Proyectil(GRANADA_VERDE_CODE, id,false), potencia(potencia), angulo(angulo), tiempo(tiempo) {
+GranadaVerde::GranadaVerde(uint8_t id, uint8_t potencia, uint8_t angulo, uint8_t tiempo) : Proyectil(GRANADA_VERDE_CODE, id, false), potencia(potencia), angulo(angulo), tiempo(tiempo)
+{
 }
 
-GranadaVerde::GranadaVerde(uint16_t x, uint16_t y, uint8_t angulo, bool exploto, uint8_t tiempo) : Proyectil(GRANADA_VERDE_CODE,exploto), x(x), y(y),angulo(angulo), tiempo(tiempo) {
+GranadaVerde::GranadaVerde(uint16_t x, uint16_t y, uint8_t angulo, bool exploto, uint8_t tiempo) : Proyectil(GRANADA_VERDE_CODE, exploto), x(x), y(y), angulo(angulo), tiempo(tiempo)
+{
 }
 
-GranadaVerde::GranadaVerde(uint16_t x, uint16_t y, bool exploto) : Proyectil(GRANADA_VERDE_CODE,exploto), x(x), y(y),angulo(0) {
+GranadaVerde::GranadaVerde(uint16_t x, uint16_t y, bool exploto) : Proyectil(GRANADA_VERDE_CODE, exploto), x(x), y(y), angulo(0)
+{
 }
-
 
 GranadaVerde::~GranadaVerde() {}
-
-// bool GranadaVerde::is_alive() { return true; }
 
 uint8_t GranadaVerde::get_potencia() { return potencia; }
 

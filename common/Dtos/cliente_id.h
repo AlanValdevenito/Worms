@@ -17,6 +17,5 @@ public:
     ClienteId(uint8_t id);
     ~ClienteId();
     bool is_alive() override;
-    // uint8_t get_cliente_id();
 };
 #endif
