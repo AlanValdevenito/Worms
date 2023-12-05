@@ -10,7 +10,6 @@ std::map<std::string, int> loadConfig(const std::string configFileName)
 {
     YAML::Node yaml = YAML::LoadFile(configFileName);
     std::map<std::string, int> config;
-    config["map"] = yaml["map"].as<int>();
     config["wormHp"] = yaml["worm"]["hp"].as<int>();
     config["wormExtraHp"] = yaml["worm"]["extra_hp"].as<int>();
     config["wormSpeed"] = yaml["worm"]["speed"].as<int>();
