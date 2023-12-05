@@ -4,6 +4,16 @@
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
+#define VOLUMEN_MUSICA_AMBIENTE SDL_MIX_MAXVOLUME / 15
+#define CANAL_MUSICA_AMBIENTE 0
+
+#define FPS 1000 / 30
+
+#define OFFSET_VIDAS_TOTALES 30
+
+#define RELACION_METRO_PIXEL 24
+#define RELACION_CENTIMETRO_METRO 100
+
 Partida::Partida(Client &cliente) : cliente(cliente), fuente(DATA_PATH "/Vera.ttf", 18), camara(ANCHO_VENTANA, ALTO_VENTANA) 
 {
     YAML::Node nodo = YAML::LoadFile("../configuracion.yml");
@@ -35,9 +45,9 @@ int Partida::iniciar()
 
     Chunk sound(DATA_PATH "/sonidos/musica-ambiente.ogg");
 
-    sound.SetVolume(SDL_MIX_MAXVOLUME / 15); // Ajustamos el nivel de volumen
+    sound.SetVolume(VOLUMEN_MUSICA_AMBIENTE);
 
-    mixer.PlayChannel(0, sound, -1, 0); // Ajustamos la cantidad de loops con el tercer parametro (infinitos)
+    mixer.PlayChannel(CANAL_MUSICA_AMBIENTE, sound, -1);
 
     /******************** TEXTURAS Y COLORES ********************/
 
@@ -57,9 +67,8 @@ int Partida::iniciar()
     this->temporizador.tiempoInicial = SDL_GetTicks(); // Tiempo transcurrido en milisegundos desde que se inicializo SDL o desde que se llamo a la funcion SDL_Init(). .Devuelve el tiempo transcurrido como un valor entero sin signo (Uint32).
 
     auto t1 = SDL_GetTicks();
-    int it = 0;            // Registro del numero de iteraciones
-    auto rate = 1000 / 30; // El tiempo entre cada iteracion sera de '1000 / 30' milisegundos. Como 'rate' es igual a '1000 / 30' quiere
-                           // decir que la velocidad entre iteraciones sera de 30 veces por segundo
+    int it = 0; // Registro del numero de iteraciones
+    auto rate = FPS;
 
     while (true)
     {
@@ -134,90 +143,10 @@ int Partida::iniciar()
 
 /******************** ALMACENAMIENTO DEL ESTADO INICIAL DEL JUEGO ********************/
 
-void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
-    this->texturas[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/background.png").SetColorKey(true, 0));
-    this->texturas[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/blue00.png").SetColorKey(true, 0));
-    this->texturas[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0));
-    this->texturas[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grds4.png").SetColorKey(true, 0));
-
-    /* WORM */
-    this->texturas[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
-    this->texturas[5] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfall.png").SetColorKey(true, 0));
-    this->texturas[6] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wflylnk.png").SetColorKey(true, 0));
-    this->texturas[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
-    this->texturas[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfly1.png").SetColorKey(true, 0));
-    this->texturas[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grave1.png").SetColorKey(true, 0));
-
-    /* EQUIPADO */
-    this->texturas[10] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
-    this->texturas[11] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wgrnlnk.png").SetColorKey(true, 0));
-    this->texturas[12] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
-    this->texturas[13] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbanlnk.png").SetColorKey(true, 0));
-    this->texturas[14] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/whgrlnk.png").SetColorKey(true, 0));
-    this->texturas[15] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wdynlnk.png").SetColorKey(true, 0));
-    this->texturas[16] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wtellnk.png").SetColorKey(true, 0));
-    this->texturas[17] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wairlnk.png").SetColorKey(true, 0));
-    this->texturas[18] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wclslnk.png").SetColorKey(true, 0));
-    this->texturas[19] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
-
-    /* EXPLOSION */
-    this->texturas[20] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
-    this->texturas[21] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/expow.png").SetColorKey(true, 0));
-    this->texturas[22] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exfoom.png").SetColorKey(true, 0));
-
-    /* MOVIMIENTO */
-    this->texturas[22] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grenade.png").SetColorKey(true, 0));
-    this->texturas[23] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/missile.png").SetColorKey(true, 0));
-    this->texturas[24] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/banana.png").SetColorKey(true, 0));
-    this->texturas[25] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/hgrenade.png").SetColorKey(true, 0));
-    this->texturas[26] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/dynamite.png").SetColorKey(true, 0));
-    this->texturas[27] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/airmisl.png").SetColorKey(true, 0));
-    this->texturas[28] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/cluster.png").SetColorKey(true, 0));
-    this->texturas[29] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/mortar.png").SetColorKey(true, 0));
-    this->texturas[30] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/clustlet.png").SetColorKey(true, 0));
-
-    /* APUNTADO */
-    this->texturas[31] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsbaim.png").SetColorKey(true, 0));
-    this->texturas[32] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrgrn.png").SetColorKey(true, 0));
-    this->texturas[33] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbaz.png").SetColorKey(true, 0));
-    this->texturas[34] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrban.png").SetColorKey(true, 0));
-    this->texturas[35] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrhgr.png").SetColorKey(true, 0));
-    this->texturas[36] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0));
-
-    /* EFECTOS DE EXPLOSION */
-    this->texturas[37] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/circle50.png").SetColorKey(true, 0));
-    this->texturas[38] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/elipse50.png").SetColorKey(true, 0));
-    this->texturas[39] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/flame1.png").SetColorKey(true, 0));
-    this->texturas[40] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/hexhaust.png").SetColorKey(true, 0));
-}
-
-void Partida::inicializar_sonidos(SDL2pp::Renderer &renderer) {
-    this->sonidos[0] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/YESSIR.WAV");
-    this->sonidos[1] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/JUMP1.WAV");
-    this->sonidos[2] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/BACKFLIP.WAV");
-    this->sonidos[3] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/DEAD1.WAV");
-
-    this->sonidos[4] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/EXPLOSION1.WAV");
-    this->sonidos[5] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/HOLYGRENADE.WAV");
-}
-
-void Partida::inicializar_colores() {
-    this->colores[0] = SDL2pp::Color(255,80,80); // Rojo
-    this->colores[1] = SDL2pp::Color(80,80,255); // Azul
-    this->colores[2] = SDL2pp::Color(80,255,80); // Verde
-    this->colores[3] = SDL2pp::Color(0,255,255); // Celeste
-    this->colores[4] = SDL2pp::Color(255,128,192); // Rosa
-    this->colores[5] = SDL2pp::Color(255,255,80); // Amarillo
-    this->colores[6] = SDL2pp::Color(255,255,255); // Blanco
-    this->colores[7] = SDL2pp::Color(0,0,0); // Negro
-}
-
 void Partida::guardar_vigas()
 {
     std::shared_ptr<Dto> dto = cliente.recv_queue.pop();
 
-    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todas
-    // las vigas ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
     int cantidad = dto->cantidad();
     for (int i = 0; i < cantidad; i++)
     {
@@ -233,15 +162,12 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
     float altura = renderer.GetOutputHeight();
 
-    // Creamos la variable cantidad porque si incluimos en el for directamente 'dto->cantidad()' no iteraremos todos
-    // los worms ya que estamos haciendo pop y en cada iteracion disminuye la cantidad de elemtentos en la lista
     int cantidad = dto->cantidad();
     for (int i = 0; i < cantidad; i++)
     {
         std::shared_ptr<Gusano> gusano = dto->popGusano(i);
 
         float nuevoY = altura - metros_a_pixeles(centimetros_a_metros((int)gusano->y_pos()));
-
         this->worms[gusano->get_id()] = new AnimacionWorm(renderer, this->texturas, this->sonidos, colores[(int) gusano->get_color()], (int) gusano->get_color(), metros_a_pixeles(centimetros_a_metros(gusano->x_pos())), nuevoY, (int) gusano->get_vida(), (int) gusano->get_direccion());
     }
 }
@@ -250,15 +176,12 @@ void Partida::guardar_worms(SDL2pp::Renderer &renderer, std::map<int, SDL2pp::Co
 
 bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 {
-    // Procesamiento de evento
-    SDL_Event event;
 
-    // Revisamos si hay algun evento pendiente en la cola de eventos de SDL y, si lo hay, lo almacenamos en la estructura event.
+    SDL_Event event;
     while (SDL_PollEvent(&event))
     {
         switch (event.type) {
 
-            // Si la ventana se cierra terminamos la ejecucion
             case SDL_QUIT:
                 return true;
             
@@ -276,26 +199,22 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 }
         }
 
-        // Si se hace click ...
         if (event.type == SDL_MOUSEBUTTONDOWN)
         {
 
             switch (event.button.button)
             {
 
-            // Si se hace click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
                 this->armas->abrirMenu();
                 break;
 
-            // Si se hace click izquierdo...
             case SDL_BUTTON_LEFT:
                 this->x = event.button.x;
                 this->y = (renderer.GetOutputHeight()) - event.button.y;
                 break;
             }
 
-            // Si se presiona alguna tecla...
         }
         else if (event.type == SDL_KEYDOWN)
         {
@@ -303,7 +222,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
             switch (event.key.keysym.sym)
             {
 
-            // Si se presiona la tecla "Q" o "ESC" terminamos la ejecucion
             case SDLK_ESCAPE:
             case SDLK_q:
                 return true;
@@ -312,27 +230,22 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 this->camara.setMoverCamara(true);
                 break;
 
-            // Si se presiona la flecha hacia la derecha el gusano se mueve hacia la derecha
             case SDLK_RIGHT:
                 cliente.send_queue.push(std::make_shared<MoverADerecha>(this->cliente.id));
                 break;
 
-            // Si se presiona la flecha hacia la izquierda el gusano se mueve hacia la izquierda
             case SDLK_LEFT:
                 cliente.send_queue.push(std::make_shared<MoverAIzquierda>(this->cliente.id));
                 break;
 
-            // Si se presiona la flecha hacia ariba el gusano direcciona su arma
             case SDLK_UP:
                 this->worms[this->id_gusano_actual]->aumentar_angulo();
                 break;
 
-            // Si se presiona la flecha hacia abajo el gusano direcciona su arma
             case SDLK_DOWN:
                 this->worms[this->id_gusano_actual]->decrementar_angulo();
                 break;
 
-            // Si se presiona la tecla de enter el gusano salta hacia adelante
             case SDLK_RETURN:
                 
                 if (this->worms[this->id_gusano_actual]->get_estado() != APUNTANDO) {
@@ -341,12 +254,10 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 
                 break;
 
-            // Si se presiona la tecla de espacio disparamos o aumentamos la potencia del disparo
             case SDLK_SPACE:
                 this->worms[this->id_gusano_actual]->aumentar_potencia();
                 break;
 
-            // Si se presiona la tecla de retroceso el gusano salta hacia atras
             case SDLK_BACKSPACE:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() != APUNTANDO) {
@@ -355,7 +266,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_1:
                 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
@@ -364,7 +274,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_2:
                 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
@@ -373,7 +282,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_3:
                 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
@@ -382,7 +290,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_4:
 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
@@ -391,7 +298,6 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla del numero 0 se setea como tiempo de espera para un proyectil
             case SDLK_5:
 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
@@ -400,11 +306,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F7 el worm se equipa un arma
             case SDLK_F1:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BATE));
                 
                 } else {
@@ -413,11 +317,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F2 el worm se equipa un arma
             case SDLK_F2:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_VERDE));
                 
                 } else {
@@ -426,11 +328,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
             case SDLK_F3:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BAZOOKA));
 
                 } else {
@@ -439,11 +339,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
             case SDLK_F4:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, BANANA));
                 
                 } else {
@@ -452,11 +350,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
             case SDLK_F5:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_SANTA));
                 
                 } else {
@@ -465,11 +361,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
             case SDLK_F6:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, DINAMITA));
                 
                 } else {
@@ -478,11 +372,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
             case SDLK_F7:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, TELETRANSPORTACION));
                 
                 } else {
@@ -491,11 +383,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
             case SDLK_F8:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, ATAQUE_AEREO));
                 
                 } else {
@@ -504,11 +394,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
             case SDLK_F9:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, GRANADA_ROJA));
                 
                 } else {
@@ -517,11 +405,9 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
 
-            // Si se presiona la tecla de F1 el worm se equipa un arma
             case SDLK_F10:
 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
-                    // Si le mandamos de nuevo un dto 'EquiparArma' con el mismo numero de arma el servidor le des-equipa el arma al Worm
                     cliente.send_queue.push(std::make_shared<EquiparArma>(this->cliente.id, MORTERO));
                 
                 } else {
@@ -534,19 +420,16 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
         }
 
-        // Si se suelta un click
         else if (event.type == SDL_MOUSEBUTTONUP)
         {
 
             switch (event.button.button)
             {
 
-            // Si se suelta el click derecho se muestra el menu de armas
             case SDL_BUTTON_RIGHT:
                 this->camara.setMoverCamara(false);
                 break;
 
-            // Si se suelta el click izquierdo...
             case SDL_BUTTON_LEFT:
                 
                 if (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA) {
@@ -555,11 +438,8 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
 
                 break;
             }
-
-            // Si se presiona alguna tecla...
         }
 
-        // Si se suelta alguna tecla...
         else if (event.type == SDL_KEYUP)
         {
 
@@ -582,46 +462,12 @@ bool Partida::handleEvents(SDL2pp::Renderer &renderer)
                 cliente.send_queue.push(std::make_shared<Cheat>(this->cliente.id, MUNICION_INFINITA_CODE));
                 break;
 
-            // Si se suelta la flecha hacia la derecha cambiamos el estado del gusano
-            case SDLK_RIGHT:
-                break;
-
-            // Si se suelta la flecha hacia la izquierda cambiamos el estado del gusano
-            case SDLK_LEFT:
-                break;
-
-            // Si se suelta la flecha hacia ariba...
-            case SDLK_UP:
-                // ...
-                break;
-
-            // Si se suelta la flecha hacia abajo...
-            case SDLK_DOWN:
-                // ...
-                break;
-
-            // Si se suelta la tecla de enter...
-            case SDLK_RETURN:
-                // ...
-                break;
-
-            // Si se suelta la tecla de espacio...
             case SDLK_SPACE:
 
                 if ((this->worms[this->id_gusano_actual]->get_estado() == APUNTANDO) || (this->worms[this->id_gusano_actual]->get_estado() == EQUIPANDO_ARMA)) {
                     enviarAtaque();
                 }
                 
-                break;
-
-            // Si se suelta la tecla de retroceso...
-            case SDLK_BACKSPACE:
-                // ...
-                break;
-
-            // Si se suelta la tecla del numero 0...
-            case SDLK_0:
-                // ...
                 break;
             }
         }
@@ -803,18 +649,8 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
 
     renderer.Copy(*this->texturas[0], NullOpt, NullOpt);
 
-    // int contador = 0;
-
     for (int i = 0; i < (int)this->vigas.size(); i++)
     {
-        // Debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
-        // tienen el (0,0) de los cuerpos en el centro de masa y ademas el (0,0) del mapa se ubica 
-        // en la esquina inferior izquierda y no en la esquina superior izquierda como ocurre en SDL
-
-        // Por ejemplo, si nos llega una viga larga en la posicion (5,5) siendo esta la posicon del centro de masa:
-            // Al no hacer este corrimiento se graficara desde el (5,5) hasta el (11,5)
-            // Al hacer este corrimiento se graficara desde el (2,5) hasta el (8,5) 
-        
         float x = this->vigas[i]->x_pos() - (this->vigas[i]->return_ancho() / 2);
         float y = metros_a_centimetros(pixeles_a_metros(altura)) - this->vigas[i]->y_pos() - (this->vigas[i]->return_alto() / 2);
         float ancho = this->vigas[i]->return_ancho();
@@ -822,8 +658,6 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
         float angulo = -(this->vigas[i]->return_angulo());
 
         if (this->camara.comprobarRenderizado(centimetros_a_metros(x), centimetros_a_metros(y), centimetros_a_metros(ancho), centimetros_a_metros(ancho))) {
-
-            // contador++;
 
             if (ancho == 600) {
                 renderer.Copy(
@@ -841,8 +675,6 @@ void Partida::renderizar_mapa(SDL2pp::Renderer &renderer)
             }    
         }
     }
-
-    // std::cout << "Vigas renderizadas: <" << contador << "> de un total de: <" << (int)this->vigas.size()<< ">\n" << std::endl;
 }
 
 void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
@@ -864,57 +696,39 @@ void Partida::renderizar_agua(SDL2pp::Renderer &renderer) {
 
     /***** Olas *****/
 
-    // int contador = 0;
-
     i = - (ancho + metros_a_pixeles(this->camara.getLimiteIzquierdo()));
     while (i < (ancho + metros_a_pixeles(this->camara.getLimiteDerecho()))) {
-
         int j = altura - metros_a_pixeles(this->camara.getLimiteSuperior());
 
         for(int x = 0; x < 5; x++) {
-            
-            //if (this->camara.comprobarRenderizado(pixeles_a_metros(i), pixeles_a_metros(j), pixeles_a_metros(this->texturas[1]->GetWidth()), pixeles_a_metros(this->texturas[1]->GetHeight()))) {
-                
-                // contador++;
-                
                 renderer.Copy(
                     *this->texturas[1], 
                     NullOpt, 
                     Rect(i,j, this->texturas[1]->GetWidth(), this->texturas[1]->GetHeight())
                 );
-            // }
 
             j += this->texturas[1]->GetHeight();
         }
 
         i += this->texturas[1]->GetWidth();
     }
-
-    // std::cout << "Olas renderizadas: " << contador << std::endl;
 }
 
 void Partida::renderizar_worms(SDL2pp::Renderer &renderer)
 {
 
-    // int contador = 0;
-
-    for (const auto &elemento : this->worms)
-    {
-
+    for (const auto &elemento : this->worms) {
         float y = (elemento.second->get_estado() == MUERTO) ? (renderer.GetOutputHeight() - elemento.second->get_y()) : (elemento.second->get_y());
 
         if (this->camara.comprobarRenderizado(pixeles_a_metros(elemento.second->get_x()), pixeles_a_metros(y), 1.0f, 1.0f)) {
             float limiteSuperior = (elemento.second->get_estado() == MUERTO) ? (renderer.GetOutputHeight() - (this->camara.getLimiteSuperior() * 24)) : (this->camara.getLimiteSuperior() * 24);
             
             elemento.second->render(renderer, this->camara.getCentroX(), (this->camara.getLimiteIzquierdo() * 24), limiteSuperior);
-            // contador++;
         }
 
         elemento.second->render_arma(renderer, (this->camara.getLimiteIzquierdo() * 24), this->camara.getLimiteSuperior() * 24);
 
     }
-
-    // std::cout << "Worms renderizados: <" << contador << "> de un total de: <" << (int) this->worms.size()<< ">\n" << std::endl;
 }
 
 void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {
@@ -945,7 +759,7 @@ void Partida::renderizar_vidas_totales(SDL2pp::Renderer &renderer) {
         renderer.SetDrawColor(this->colores[elemento.first]); 
         renderer.FillRect(contenedor);
 
-        offset -= 30;
+        offset -= OFFSET_VIDAS_TOTALES;
     }
 }
 
@@ -974,22 +788,22 @@ void Partida::renderizar_temporizador(SDL2pp::Renderer &renderer)
 
 float Partida::metros_a_pixeles(float metros)
 {
-    return metros * 24;
+    return metros * RELACION_METRO_PIXEL;
 }
 
 float Partida::centimetros_a_metros(float centimetros)
 {
-    return centimetros / 100;
+    return centimetros / RELACION_CENTIMETRO_METRO;
 }
 
 float Partida::pixeles_a_metros(float pixeles)
 {
-    return pixeles / 24;
+    return pixeles / RELACION_METRO_PIXEL;
 }
 
 float Partida::metros_a_centimetros(float metros)
 {
-    return metros * 100;
+    return metros * RELACION_CENTIMETRO_METRO;
 }
 
 /******************** MEMORIA ********************/
@@ -1001,4 +815,84 @@ void Partida::liberar_memoria()
         AnimacionWorm *worm = this->worms[i];
         delete worm;
     }
+}
+
+/******************** INICIALIZADO DE TEXTURAS Y SONIDO ********************/
+
+void Partida::inicializar_texturas(SDL2pp::Renderer &renderer) {
+    this->texturas[0] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/background.png").SetColorKey(true, 0));
+    this->texturas[1] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/blue00.png").SetColorKey(true, 0));
+    this->texturas[2] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grdl4.png").SetColorKey(true, 0));
+    this->texturas[3] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grds4.png").SetColorKey(true, 0));
+
+    /* WORM */
+    this->texturas[4] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/worm_walk.png").SetColorKey(true, 0));
+    this->texturas[5] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfall.png").SetColorKey(true, 0));
+    this->texturas[6] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wflylnk.png").SetColorKey(true, 0));
+    this->texturas[7] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbackflp.png").SetColorKey(true, 0));
+    this->texturas[8] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wfly1.png").SetColorKey(true, 0));
+    this->texturas[9] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grave1.png").SetColorKey(true, 0));
+
+    /* EQUIPADO */
+    this->texturas[10] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsblnk.png").SetColorKey(true, 0));
+    this->texturas[11] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wgrnlnk.png").SetColorKey(true, 0));
+    this->texturas[12] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
+    this->texturas[13] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbanlnk.png").SetColorKey(true, 0));
+    this->texturas[14] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/whgrlnk.png").SetColorKey(true, 0));
+    this->texturas[15] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wdynlnk.png").SetColorKey(true, 0));
+    this->texturas[16] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wtellnk.png").SetColorKey(true, 0));
+    this->texturas[17] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wairlnk.png").SetColorKey(true, 0));
+    this->texturas[18] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wclslnk.png").SetColorKey(true, 0));
+    this->texturas[19] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbazlnk.png").SetColorKey(true, 0));
+
+    /* EXPLOSION */
+    this->texturas[20] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exbiff.png").SetColorKey(true, 0));
+    this->texturas[21] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/expow.png").SetColorKey(true, 0));
+    this->texturas[22] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/exfoom.png").SetColorKey(true, 0));
+
+    /* MOVIMIENTO */
+    this->texturas[22] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/grenade.png").SetColorKey(true, 0));
+    this->texturas[23] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/missile.png").SetColorKey(true, 0));
+    this->texturas[24] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/banana.png").SetColorKey(true, 0));
+    this->texturas[25] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/hgrenade.png").SetColorKey(true, 0));
+    this->texturas[26] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/dynamite.png").SetColorKey(true, 0));
+    this->texturas[27] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/airmisl.png").SetColorKey(true, 0));
+    this->texturas[28] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/cluster.png").SetColorKey(true, 0));
+    this->texturas[29] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/mortar.png").SetColorKey(true, 0));
+    this->texturas[30] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/clustlet.png").SetColorKey(true, 0));
+
+    /* APUNTADO */
+    this->texturas[31] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbsbaim.png").SetColorKey(true, 0));
+    this->texturas[32] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrgrn.png").SetColorKey(true, 0));
+    this->texturas[33] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wbaz.png").SetColorKey(true, 0));
+    this->texturas[34] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrban.png").SetColorKey(true, 0));
+    this->texturas[35] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrhgr.png").SetColorKey(true, 0));
+    this->texturas[36] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/wthrcls.png").SetColorKey(true, 0));
+
+    /* EFECTOS DE EXPLOSION */
+    this->texturas[37] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/circle50.png").SetColorKey(true, 0));
+    this->texturas[38] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/elipse50.png").SetColorKey(true, 0));
+    this->texturas[39] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/flame1.png").SetColorKey(true, 0));
+    this->texturas[40] = std::make_shared<SDL2pp::Texture>(renderer, SDL2pp::Surface(DATA_PATH "/hexhaust.png").SetColorKey(true, 0));
+}
+
+void Partida::inicializar_sonidos(SDL2pp::Renderer &renderer) {
+    this->sonidos[0] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/YESSIR.WAV");
+    this->sonidos[1] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/JUMP1.WAV");
+    this->sonidos[2] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/BACKFLIP.WAV");
+    this->sonidos[3] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/worms/DEAD1.WAV");
+
+    this->sonidos[4] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/EXPLOSION1.WAV");
+    this->sonidos[5] = std::make_shared<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/HOLYGRENADE.WAV");
+}
+
+void Partida::inicializar_colores() {
+    this->colores[0] = SDL2pp::Color(255,80,80); // Rojo
+    this->colores[1] = SDL2pp::Color(80,80,255); // Azul
+    this->colores[2] = SDL2pp::Color(80,255,80); // Verde
+    this->colores[3] = SDL2pp::Color(0,255,255); // Celeste
+    this->colores[4] = SDL2pp::Color(255,128,192); // Rosa
+    this->colores[5] = SDL2pp::Color(255,255,80); // Amarillo
+    this->colores[6] = SDL2pp::Color(255,255,255); // Blanco
+    this->colores[7] = SDL2pp::Color(0,0,0); // Negro
 }

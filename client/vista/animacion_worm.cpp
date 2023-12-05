@@ -3,8 +3,7 @@
 #define ANCHO_SPRITE 60
 #define ALTO_SPRITE 60
 
-#define OFFSET 30 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
-                  // tienen el (0,0) de los cuerpos en el centro
+#define OFFSET 30
 
 AnimacionWorm::AnimacionWorm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): 
     texturas(texturas),
@@ -21,8 +20,6 @@ AnimacionWorm::AnimacionWorm(SDL2pp::Renderer &renderer, std::map<int, std::shar
     numeroColor(numeroColor),
     color(color),
     camara(false) {}
-
-// Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos.
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
@@ -180,7 +177,6 @@ void AnimacionWorm::equipar_arma(SDL2pp::Renderer &renderer, int tipoDeArma) {
 
 void AnimacionWorm::render(SDL2pp::Renderer &renderer, float camaraCentroX, float camaraLimiteIzquierdo, float camaraLimiteSuperior)
 {
-    // std::cout << "Estado: " << this->estado << std::endl;
     SDL_RendererFlip flip = this->direccion ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 
     if (this->sonido) {

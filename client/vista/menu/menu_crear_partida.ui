@@ -234,7 +234,7 @@ QComboBox QAbstractItemView {
        </item>
        <item>
         <property name="text">
-         <string>Vigas inclinadas</string>
+         <string>Plataformas</string>
         </property>
        </item>
       </widget>

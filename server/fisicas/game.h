@@ -70,7 +70,7 @@ private:
     void mapa();
     void mapa_jaula();
     void mapa_puente();
-    void mapa_real();
+    void mapa_plataformas();
     void mapa_vigas_inclinadas();
     void finalizar_juego(std::shared_ptr<Dto> dto);
     bool timeIsUp();

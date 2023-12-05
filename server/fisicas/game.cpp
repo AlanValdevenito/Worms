@@ -65,7 +65,6 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int can
     if (map == 1)
     {
         mapa();
-        //mapa_real();
     }
     else if (map == 2)
     {
@@ -77,7 +76,7 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int can
     }
     else
     {
-        mapa_vigas_inclinadas();
+        mapa_plataformas();
     }
 }
 
@@ -1341,7 +1340,7 @@ void Game::mapa_vigas_inclinadas()
     }
 }
 
-void Game::mapa_real()
+void Game::mapa_plataformas()
 {
     int corrimiento_camara = 30;
 
