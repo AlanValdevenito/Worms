@@ -6,6 +6,8 @@ Trabajo final que consiste en la remake del icónico Worms
 
 [Enunciado](documentacion/Enunciado.pdf)
 
+[Trailer](https://www.youtube.com/watch?v=aT-csTPIaiE)
+
 ## Grupo 2
 
 * **Integrante 1** - [Alan Valdevenito](https://github.com/AlanValdevenito)
