@@ -64,8 +64,8 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int can
 {
     if (map == 1)
     {
-        // mapa();
-        mapa_real();
+        mapa();
+        //mapa_real();
     }
     else if (map == 2)
     {
@@ -1343,121 +1343,53 @@ void Game::mapa_vigas_inclinadas()
 
 void Game::mapa_real()
 {
-
-    /******************** VIGAS ********************/
-
-     // Piso 0
-    // int x = 5;
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     world.addBeam(x, 5, 0, LONG);
-    //     x += 8;
-    // }
-
-    // // Piso 1
-    // x = 5;
-    // for (int i = 0; i < 5; i++)
-    // {
-
-    //     if (x == 53)
-    //     {
-    //         x += 6;
-    //         continue;
-    //     }
-
-    //     world.addBeam(x, 10, 0, LONG);
-    //     x += 8;
-    // }
-
-    // // Piso 2
-    // x = 5;
-    // for (int i = 0; i < 5; i++)
-    // {
-
-    //     if (x == 11)
-    //     {
-    //         x += 6;
-    //         continue;
-    //     }
-
-    //     world.addBeam(x, 15, 0, LONG);
-    //     x += 8;
-    // }
-
-    // // Piso 3
-    // x = 5;
-    // for (int i = 0; i < 5; i++)
-    // {
-
-    //     if (x == 53)
-    //     {
-    //         x += 6;
-    //         continue;
-    //     }
-
-    //     world.addBeam(x, 20, 0, LONG);
-    //     x += 8;
-    // }
-
-    // // Piso 4
-    // x = 5;
-    // for (int i = 0; i < 5; i++)
-    // {
-
-    //     if (x == 11)
-    //     {
-    //         x += 6;
-    //         continue;
-    //     }
-
-    //     world.addBeam(x, 25, 0, LONG);
-    //     x += 10;
-    // }
-    // // Paredes
-    // float y = 8.4;
-    // for (int i = 0; i < 4; i++)
-    // {
-    //     world.addBeam(2.4f, y, 90, LONG);
-    //     y += 6;
-    // }
-
-    // y = 8.4;
-    // for (int i = 0; i < 4; i++)
-    // {
-    //     world.addBeam(61.6, y, 90, LONG);
-    //     y += 6;
-    // }
-
-    /******************** WORMS ********************/
-
     int corrimiento_camara = 30;
 
-    world.addBeam(5+corrimiento_camara, 20, 0, LONG);
-    world.addBeam(21+corrimiento_camara, 20, 0, LONG);
-    world.addBeam(37+corrimiento_camara, 20, 0, LONG);
-    world.addBeam(53+corrimiento_camara, 20, 0, LONG);
-    
+    world.addBeam(5 + corrimiento_camara, 20, 0, LONG);
+    world.addBeam(13 + corrimiento_camara, 20, 0, LONG);
+    world.addBeam(21 + corrimiento_camara, 20, 0, LONG);
+    world.addBeam(29 + corrimiento_camara, 20, 0, LONG);
+    world.addBeam(37 + corrimiento_camara, 20, 0, LONG);
 
-    world.addBeam(13+corrimiento_camara, 18, 0, LONG);
-    world.addBeam(29+corrimiento_camara, 18, 0, LONG);
-    world.addBeam(45+corrimiento_camara, 18, 0, LONG);
+    world.addBeam(8 + corrimiento_camara, 18, 0, LONG);
+    world.addBeam(16 + corrimiento_camara, 18, 0, LONG);
+    world.addBeam(24 + corrimiento_camara, 18, 0, LONG);
+    world.addBeam(32 + corrimiento_camara, 18, 0, LONG);
 
-    world.addBeam(5+corrimiento_camara, 14, 0, LONG);
-    world.addBeam(21+corrimiento_camara, 14, 0, LONG);
-    world.addBeam(37+corrimiento_camara, 14, 0, LONG);
-    world.addBeam(53+corrimiento_camara, 14, 0, LONG);
-    
+    world.addBeam(5 + corrimiento_camara, 15, 0, LONG);
+    world.addBeam(13 + corrimiento_camara, 15, 0, LONG);
+    world.addBeam(21 + corrimiento_camara, 15, 0, LONG);
+    world.addBeam(29 + corrimiento_camara, 15, 0, LONG);
+    world.addBeam(37 + corrimiento_camara, 15, 0, LONG);
 
-    world.addBeam(13+corrimiento_camara, 12, 0, LONG);
-    world.addBeam(29+corrimiento_camara, 12, 0, LONG);
-    world.addBeam(45+corrimiento_camara, 12, 0, LONG);
+    world.addBeam(8 + corrimiento_camara, 13, 0, LONG);
+    world.addBeam(16 + corrimiento_camara, 13, 0, LONG);
+    world.addBeam(24 + corrimiento_camara, 13, 0, LONG);
+    world.addBeam(32 + corrimiento_camara, 13, 0, LONG);
 
-    
-    world.addWorm(5, 30);
-    if(config["cantidad_de_worms"] >= 2)
-        world.addWorm(5, 30);
-    if(config["cantidad_de_worms"] >= 3)
-        world.addWorm(5, 30);
+    world.addWorm(5 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 2)
+        world.addWorm(8 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 3)
+        world.addWorm(37 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 4)
+        world.addWorm(13 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 5)
+        world.addWorm(16 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 6)
+        world.addWorm(21 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 7)
+        world.addWorm(24 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 8)
+        world.addWorm(29 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 9)
+        world.addWorm(32 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 10)
+        world.addWorm(37 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 11)
+        world.addWorm(19 + corrimiento_camara, 30);
+    if (config["cantidad_de_worms"] >= 12)
+        world.addWorm(3 + corrimiento_camara, 30);
 
     
 }
