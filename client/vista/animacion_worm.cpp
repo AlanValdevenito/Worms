@@ -3,13 +3,13 @@
 #define ANCHO_SPRITE 60
 #define ALTO_SPRITE 60
 
-#define OFFSET 30 // Definimos un offset ya que debemos hacer un corrimiento en 'x' e 'y' ya que las fisicas modeladas con Box2D
-                  // tienen el (0,0) de los cuerpos en el centro
+#define OFFSET 30
 
 AnimacionWorm::AnimacionWorm(SDL2pp::Renderer &renderer, std::map<int, std::shared_ptr<SDL2pp::Texture>> &texturas, std::map<int, std::shared_ptr<SDL2pp::Chunk>> &sonidos, SDL2pp::Color &color, int numeroColor, float x, float y, int vida, int direccion): 
     texturas(texturas),
     sonidos(sonidos),
     animacion(this->texturas[4]), 
+    sonido(std::make_shared<Sonido>()),
     estado(QUIETO),
     x(x), 
     y(y), 
@@ -19,12 +19,7 @@ AnimacionWorm::AnimacionWorm(SDL2pp::Renderer &renderer, std::map<int, std::shar
     turno(false), 
     numeroColor(numeroColor),
     color(color),
-    camara(false)
-{
-    this->sonido = std::make_shared<Sonido>(this->sonidos[0]);
-}
-
-// Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos.
+    camara(false) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
 
@@ -59,6 +54,11 @@ void AnimacionWorm::update(int it, float nuevoX, float nuevoY, int nuevaVida, in
 }
 
 void AnimacionWorm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, int tipoDeArma) {
+
+    if (this->estado == MUERTO) {
+        return;
+    }
+
     this->estado = nuevoEstado;
     this->tipoDeArma = tipoDeArma;
 
@@ -66,7 +66,6 @@ void AnimacionWorm::update_estado(SDL2pp::Renderer &renderer, int nuevoEstado, i
         this->animacion.cambiar(this->texturas[4]);
 
         if (this->tipoDeArma == SIN_ARMA) {
-            std::cout << "Eliminando arma del gusano cuyo ID tengo arriba\n" << std::endl;
             this->arma.reset();
         }
     }
@@ -185,7 +184,7 @@ void AnimacionWorm::render(SDL2pp::Renderer &renderer, float camaraCentroX, floa
     }
 
     if (this->estado == MUERTO) {
-        this->animacion.render(renderer, this->camara ? SDL2pp::Rect(camaraCentroX - OFFSET, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE) : SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, y - 20 - camaraLimiteSuperior, ANCHO_SPRITE, ALTO_SPRITE), flip);
+        this->animacion.render(renderer, SDL2pp::Rect(x - OFFSET - camaraLimiteIzquierdo, camaraLimiteSuperior - y - 20, ANCHO_SPRITE, ALTO_SPRITE), flip);
         return;
     }
     
@@ -211,7 +210,6 @@ void AnimacionWorm::render(SDL2pp::Renderer &renderer, float camaraCentroX, floa
 void AnimacionWorm::render_arma(SDL2pp::Renderer &renderer, float camaraLimiteIzquierdo, float camaraLimiteSuperior) {
 
     if ((this->arma) && (this->estado != EQUIPANDO_ARMA) && (this->estado != APUNTANDO)) {
-        std::cout << "Renderizando arma del gusano cuyo ID tengo arriba\n" << std::endl;
         this->arma->render(renderer, this->color, camaraLimiteIzquierdo, camaraLimiteSuperior);
     }
 
@@ -276,6 +274,7 @@ int AnimacionWorm::get_tipo_de_arma() {
 /******************** PROYECTIL ********************/
 
 void AnimacionWorm::update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado, int nuevoTiempo) {
+    
     if (this->arma) {
         this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, nuevoTiempo, id);
     }

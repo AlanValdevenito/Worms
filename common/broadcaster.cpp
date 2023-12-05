@@ -32,8 +32,9 @@ void Broadcaster::addQueueToList(Queue<std::shared_ptr<Dto>> &q, uint8_t id)
 }
 
 /* Le envio a todas la queues un Dto que indica que deben cerrar*/
-void Broadcaster::notificarCierre(std::shared_ptr<Dto> dto)
+void Broadcaster::notificarCierre()
 {
+    std::shared_ptr<Dto> dto = std::make_shared<Dto>(FINALIZAR_CODE);
     std::unique_lock<std::mutex> lock(mutex);
     for (Queue<std::shared_ptr<Dto>> *q : queues.listado())
         q->push(dto);

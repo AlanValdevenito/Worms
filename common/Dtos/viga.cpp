@@ -1,6 +1,5 @@
 #include "viga.h"
 
-// Viga::Viga(uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto) : Dto(VIGA_CODE), x(x), y(y), ancho(ancho), alto(alto) {}
 Viga::Viga(uint16_t x, uint16_t y, uint16_t ancho, uint16_t alto, uint16_t angulo) : x(x), y(y), ancho(ancho), alto(alto), angulo(angulo) {}
 
 Viga::~Viga() {}
@@ -15,18 +14,11 @@ uint16_t Viga::return_angulo() { return angulo; }
 
 Vigas::Vigas() : Dto(VIGA_CODE) {}
 Vigas::Vigas(std::vector<std::shared_ptr<Viga>> vs) : Dto(VIGA_CODE), vigas(vs) {}
-Vigas::~Vigas() {} /// VACIAR LA LISTAAA
+Vigas::~Vigas() {}
 
 bool Vigas::is_alive() { return true; }
 
-std::shared_ptr<Viga> Vigas::popViga(int i)
-{
-    // std::shared_ptr<Viga> v = vigas.front();
-    // vigas.pop_front();
-    // return v;
-
-    return this->vigas[i];
-}
+std::shared_ptr<Viga> Vigas::popViga(int i) { return this->vigas[i]; }
 
 std::vector<std::shared_ptr<Viga>> Vigas::return_vigas_list() { return vigas; }
 

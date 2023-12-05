@@ -27,7 +27,6 @@ public:
     virtual uint16_t return_alto();
     virtual uint16_t return_ancho();
     virtual uint16_t return_angulo();
-    // virtual void *popViga();
     virtual uint8_t cantidad();
     uint8_t get_cliente_id();
     uint8_t return_code();

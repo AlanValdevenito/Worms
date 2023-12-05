@@ -1,12 +1,7 @@
 #include "lobby.h"
 
 // Hay una partida creada por default para facilitar las pruebas
-Lobby::Lobby() : mapId(0), id_cliente(0), partida_id(1), lobby_abierto(true)
-{
-    Partida *p1 = new Partida(partida_id, 2, 1);
-    partidas.push_back(p1);
-    partida_id++;
-}
+Lobby::Lobby() : mapId(0), id_cliente(0), partida_id(1), lobby_abierto(true) {}
 
 Lobby::~Lobby() {}
 
@@ -77,10 +72,15 @@ void Lobby::agregarAUnaPartida(ServerClient *c)
 
 void Lobby::newClient(Socket *s)
 {
+    if (not lobby_abierto) // si un cliente se quiso unir luego de cerrar
+        return;   
+
     id_cliente++;
 
     ServerClient *c = new ServerClient(s, &lobby_queue, id_cliente);
     c->start();
+
+    reap_dead();
 
     agregarAUnaPartida(c);
     c = NULL; // vacio la referencia al cliente.
@@ -91,8 +91,8 @@ void Lobby::removerPartidasMuertas()
     partidas.remove_if([&](Partida *p)
                        {
             if (p->is_dead()){
-                p->finish(); 
-                p->join();
+                p->forceFinish(); 
+                // p->join();
                 delete p;
                 return true;
             }

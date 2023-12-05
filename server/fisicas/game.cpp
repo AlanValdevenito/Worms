@@ -4,13 +4,12 @@
 
 #define TURN_DURATION 60
 #define TIME_LEFT_AFTER_ATTACK 2
-#define WATER_POSITION 0
+#define WATER_POSITION 0.6f
 
 std::map<std::string, int> loadConfig(const std::string configFileName)
 {
     YAML::Node yaml = YAML::LoadFile(configFileName);
     std::map<std::string, int> config;
-    config["map"] = yaml["map"].as<int>();
     config["wormHp"] = yaml["worm"]["hp"].as<int>();
     config["wormExtraHp"] = yaml["worm"]["extra_hp"].as<int>();
     config["wormSpeed"] = yaml["worm"]["speed"].as<int>();
@@ -76,217 +75,10 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int can
     }
     else
     {
-        mapa_vigas_inclinadas();
+        mapa_plataformas();
     }
 }
 
-void Game::mapa()
-{
-
-    /******************** VIGAS ********************/
-
-    // Piso 0
-    int x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-        world.addBeam(x, 5, 0, LONG);
-        x += 6;
-    }
-
-    // Piso 1
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-
-        if (x == 53)
-        {
-            x += 6;
-            continue;
-        }
-
-        world.addBeam(x, 10, 0, LONG);
-        x += 6;
-    }
-
-    // Piso 2
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-
-        if (x == 11)
-        {
-            x += 6;
-            continue;
-        }
-
-        world.addBeam(x, 15, 0, LONG);
-        x += 6;
-    }
-
-    // Piso 3
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-
-        if (x == 53)
-        {
-            x += 6;
-            continue;
-        }
-
-        world.addBeam(x, 20, 0, LONG);
-        x += 6;
-    }
-
-    // Piso 4
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-
-        if (x == 11)
-        {
-            x += 6;
-            continue;
-        }
-
-        world.addBeam(x, 25, 0, LONG);
-        x += 6;
-    }
-
-    // Techo
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-        world.addBeam(x, 29.7, 0, LONG);
-        x += 6;
-    }
-
-    // Paredes
-    float y = 8.4;
-    for (int i = 0; i < 4; i++)
-    {
-        world.addBeam(2.4f, y, 90, LONG);
-        y += 6;
-    }
-
-    y = 8.4;
-    for (int i = 0; i < 4; i++)
-    {
-        world.addBeam(61.6, y, 90, LONG);
-        y += 6;
-    }
-
-    // Rampa del piso 4 al piso 3
-    world.addBeam(8.8, 24.2, 135, SHORT);
-    world.addBeam(10.8, 22.2, 135, SHORT);
-    world.addBeam(11.8, 21.2, 135, SHORT);
-
-    // Rampa del piso 3 al piso 2
-    world.addBeam(55.2, 19.2, 45, SHORT);
-    world.addBeam(53.2, 17.2, 45, SHORT);
-    world.addBeam(52.2, 16.2, 45, SHORT);
-
-    // Rampa del piso 2 al piso 1
-    world.addBeam(8.8, 14.2, 135, SHORT);
-    world.addBeam(10.8, 12.2, 135, SHORT);
-    world.addBeam(11.8, 11.2, 135, SHORT);
-
-    // Rampa del piso 1 al piso 0
-    world.addBeam(55.2, 9.2, 45, SHORT);
-    world.addBeam(53.2, 7.2, 45, SHORT);
-    world.addBeam(52.2, 6.2, 45, SHORT);
-
-    /******************** WORMS ********************/
-
-    x = 20;
-    for (int i = 0; i < config["cantidad_de_worms"]; i++)
-    {
-        world.addWorm(x, 22);
-        x += 2;
-    }
-}
-
-void Game::mapa_jaula()
-{
-
-    /******************** VIGAS ********************/
-
-    // Piso
-    world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
-    world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
-    world.addBeam(17, 5, 0, LONG); // 14 15 16 17 18 19 20
-    world.addBeam(23, 5, 0, LONG); // 20 21 22 23 24 25 26
-
-    // Techo
-    world.addBeam(5, 17.8f, 0, LONG);
-    world.addBeam(11, 17.8f, 0, LONG);
-    world.addBeam(17, 17.8f, 0, LONG);
-    world.addBeam(23, 17.8f, 0, LONG);
-
-    // Paredes
-    world.addBeam(2.4f, 8.4f, 90, LONG);
-    world.addBeam(2.4f, 14.4f, 90, LONG);
-    world.addBeam(25.6f, 8.4f, 90, LONG);
-    world.addBeam(25.6f, 14.4f, 90, LONG);
-
-    /******************** WORMS ********************/
-
-    int x = 5;
-    for (int i = 0; i < config["cantidad_de_worms"]; i++)
-    {
-        world.addWorm(x, 10);
-        x += 2;
-    }
-}
-
-void Game::mapa_puente()
-{
-
-    /******************** VIGAS ********************/
-
-    world.addBeam(2.4f, 8.4f, 90, LONG);
-
-    world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
-    world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
-    world.addBeam(17, 5, 0, LONG); // 14 15 16 17 18 19 20
-    world.addBeam(23, 5, 0, LONG); // 20 21 22 23 24 25 26
-    world.addBeam(29, 5, 0, LONG);
-    world.addBeam(34, 5, 0, LONG);
-
-    world.addBeam(36.6f, 8.4f, 90, LONG);
-
-    /******************** WORMS ********************/
-
-    int x = 3;
-    for (int i = 0; i < config["cantidad_de_worms"]; i++)
-    {
-        world.addWorm(x, 7);
-        x += 2;
-    }
-}
-
-void Game::mapa_vigas_inclinadas()
-{
-
-    /******************** VIGAS ********************/
-
-    world.addBeam(3, 9, 0, LONG);
-    world.addBeam(11.2f, 10, 0, LONG);
-    world.addBeam(18.7f, 11.9f, 0, LONG);
-
-    world.addBeam(7.2f, 9.5f, 22.5f, SHORT);
-    world.addBeam(15, 11, 45, SHORT);
-    world.addBeam(22, 13.2f, 67.5f, SHORT);
-
-    /******************** WORMS ********************/
-
-    int x = 3;
-    for (int i = 0; i < config["cantidad_de_worms"]; i++)
-    {
-        world.addWorm(x, 14);
-        x += 2;
-    }
-}
 
 void Game::createPlayers()
 {
@@ -353,9 +145,29 @@ void Game::increaseHpOfTeamsWithLessPlayers()
 
 void Game::finalizar_juego(std::shared_ptr<Dto> dto)
 {
-    broadcaster.notificarCierre(dto);
+    broadcaster.notificarCierre();
     broadcaster.deleteAllQueues(); // aviso a los demas que cierren
     stop();
+}
+
+void Game::killPlayerWorms(uint8_t id)
+{
+    for (int i = 0; i < (int)players.size(); i++)
+    { // Iteramos los players
+
+        if (players[i].getId() == id)
+        { // Encontramos el player que salio
+
+            for (Worm *worm : world.getWorms())
+            { // Iteramos los Worms
+                if (worm->playerId == id)
+                { // Encontramos los Worms que tienen al player como dueño
+                    worm->state = MUERTO;
+                    worm->takeDamage(worm->getHp());
+                }
+            }
+        }
+    }
 }
 
 void Game::run()
@@ -370,6 +182,8 @@ void Game::run()
 
             if (dto->is_alive() && dto->return_code() == FINALIZAR_CODE)
             {
+                // eliminar los worms del que se fue
+                killPlayerWorms(dto->get_cliente_id());
                 broadcaster.removeQueueWithId(dto->get_cliente_id()); // elimino la queue del cliente que murio
                 jugadores_en_partida -= 1;
                 if (jugadores_en_partida == 1) // si solo queda un jugador
@@ -453,7 +267,7 @@ void Game::passTurn()
         if (idTurn == -1)
         {
             // si no hay jugadores para elegir ==> cierro.
-            broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE, 1));
+            broadcaster.notificarCierre();
             broadcaster.deleteAllQueues(); // aviso a los demas que cierren
             stop();
             return;
@@ -483,13 +297,13 @@ void Game::updateWorms()
     // actualizo los gusanos
     for (Worm *worm : world.getWorms())
     {
-        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPANDO_ARMA)
+        if (worm->is_alive && worm->numberOfContacts > 0 && not worm->isMoving() && worm->getState() != EQUIPANDO_ARMA && worm->getState() != MUERTO)
         {
             worm->state = QUIETO;
         }
         if (worm->is_alive && worm->numberOfContacts == 0 &&
             worm->getState() != SALTANDO_ATRAS && worm->getState() != SALTANDO_ADELANTE &&
-            worm->getState() != GOLPEADO && worm->getVelocity().y < 0.0f)
+            worm->getState() != GOLPEADO && worm->getVelocity().y < 0.0f && worm->getState() != MUERTO)
         {
             worm->state = CAYENDO;
         }
@@ -497,9 +311,14 @@ void Game::updateWorms()
         {
             worm->is_alive = false;
             begin = std::chrono::steady_clock::now();
-
-            players[worm->playerId - 1].numberOfAliveWorms--;
-            players[worm->playerId - 1].markWormAsDead(worm->getId());
+            for (int i = 0; i < (int)players.size(); i++)
+            {
+                if (players[i].getId() == worm->playerId)
+                {
+                    players[i].numberOfAliveWorms--;
+                    players[i].markWormAsDead(worm->getId());
+                }
+            }
         }
         // si el worm sufre algun daño en su turno pierde el turno
         if (worm->getId() == actualWormId && not wormAttacked && worm->damageTaken > 0)
@@ -512,11 +331,12 @@ void Game::updateWorms()
 
         if (worm->getYCoordinate() <= WATER_POSITION && worm->is_alive)
         {
+
             worm->takeDamage(worm->getHp());
             worm->getBody()->SetLinearVelocity(b2Vec2(0, 0));
             worm->getBody()->SetTransform(b2Vec2(worm->getXCoordinate(), worm->getYCoordinate()), true);
         }
-        if (not world.anyMovement())
+        if (not world.anyMovement() && not anyWormMoving())
         {
             if (not infiniteHp)
             {
@@ -524,7 +344,15 @@ void Game::updateWorms()
             }
             if (worm->getState() == MUERTO && actualWormId == worm->getId() && worm->is_alive)
             {
-                players[worm->playerId - 1].markWormAsDead(worm->getId());
+
+                for (int i = 0; i < (int)players.size(); i++)
+                {
+                    if (players[i].getId() == worm->playerId)
+                    {
+                        // std::cout << "muere worm id = " << (int)worm->getId() << "perteneciente al player id = " << (int)worm->playerId << "\n";
+                        players[i].markWormAsDead(worm->getId());
+                    }
+                }
 
                 if (endlessTurn)
                 {
@@ -546,14 +374,6 @@ void Game::updateWorms()
         if (worm->state == GOLPEADO)
         {
             worm->updateAngle();
-        }
-        int timeSinceTurnStarted = std::chrono::duration_cast<std::chrono::seconds>(end - begin).count();
-        if (timeSinceTurnStarted > 2)
-        {
-            if (worm->getId() != actualWormId)
-            {
-                worm->equipWeapon(SIN_ARMA);
-            }
         }
     }
 }
@@ -585,7 +405,7 @@ void Game::updatePlayers()
                     break;
                 }
             }
-            broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE, 1));
+            broadcaster.notificarCierre();
             broadcaster.deleteAllQueues(); // aviso a los demas que cierren
             stop();
             return;
@@ -1306,6 +1126,268 @@ bool Game::anyWormMoving()
 
 Game::~Game() {}
 
-void Game::broadcast()
+
+//-------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------CREACION DE MAPAS-------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------
+
+void Game::mapa()
 {
+
+    /******************** VIGAS ********************/
+
+    // Piso 0
+    int x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+        world.addBeam(x, 5, 0, LONG);
+        x += 6;
+    }
+
+    // Piso 1
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+
+        if (x == 53)
+        {
+            x += 6;
+            continue;
+        }
+
+        world.addBeam(x, 10, 0, LONG);
+        x += 6;
+    }
+
+    // Piso 2
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+
+        if (x == 11)
+        {
+            x += 6;
+            continue;
+        }
+
+        world.addBeam(x, 15, 0, LONG);
+        x += 6;
+    }
+
+    // Piso 3
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+
+        if (x == 53)
+        {
+            x += 6;
+            continue;
+        }
+
+        world.addBeam(x, 20, 0, LONG);
+        x += 6;
+    }
+
+    // Piso 4
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+
+        if (x == 11)
+        {
+            x += 6;
+            continue;
+        }
+
+        world.addBeam(x, 25, 0, LONG);
+        x += 6;
+    }
+
+    // Techo
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+        world.addBeam(x, 29.7, 0, LONG);
+        x += 6;
+    }
+
+    // Paredes
+    float y = 8.4;
+    for (int i = 0; i < 4; i++)
+    {
+        world.addBeam(2.4f, y, 90, LONG);
+        y += 6;
+    }
+
+    y = 8.4;
+    for (int i = 0; i < 4; i++)
+    {
+        world.addBeam(61.6, y, 90, LONG);
+        y += 6;
+    }
+
+    // Rampa del piso 4 al piso 3
+    world.addBeam(8.8, 24.2, 135, SHORT);
+    world.addBeam(10.8, 22.2, 135, SHORT);
+    world.addBeam(11.8, 21.2, 135, SHORT);
+
+    // Rampa del piso 3 al piso 2
+    world.addBeam(55.2, 19.2, 45, SHORT);
+    world.addBeam(53.2, 17.2, 45, SHORT);
+    world.addBeam(52.2, 16.2, 45, SHORT);
+
+    // Rampa del piso 2 al piso 1
+    world.addBeam(8.8, 14.2, 135, SHORT);
+    world.addBeam(10.8, 12.2, 135, SHORT);
+    world.addBeam(11.8, 11.2, 135, SHORT);
+
+    // Rampa del piso 1 al piso 0
+    world.addBeam(55.2, 9.2, 45, SHORT);
+    world.addBeam(53.2, 7.2, 45, SHORT);
+    world.addBeam(52.2, 6.2, 45, SHORT);
+
+    /******************** WORMS ********************/
+
+    x = 20;
+    for (int i = 0; i < config["cantidad_de_worms"]; i++)
+    {
+        world.addWorm(x, 22);
+        x += 2;
+    }
+}
+
+void Game::mapa_jaula()
+{
+
+    /******************** VIGAS ********************/
+
+    // Piso
+    world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
+    world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
+    world.addBeam(17, 5, 0, LONG); // 14 15 16 17 18 19 20
+    world.addBeam(23, 5, 0, LONG); // 20 21 22 23 24 25 26
+
+    // Techo
+    world.addBeam(5, 17.8f, 0, LONG);
+    world.addBeam(11, 17.8f, 0, LONG);
+    world.addBeam(17, 17.8f, 0, LONG);
+    world.addBeam(23, 17.8f, 0, LONG);
+
+    // Paredes
+    world.addBeam(2.4f, 8.4f, 90, LONG);
+    world.addBeam(2.4f, 14.4f, 90, LONG);
+    world.addBeam(25.6f, 8.4f, 90, LONG);
+    world.addBeam(25.6f, 14.4f, 90, LONG);
+
+    /******************** WORMS ********************/
+
+    int x = 5;
+    for (int i = 0; i < config["cantidad_de_worms"]; i++)
+    {
+        world.addWorm(x, 10);
+        x += 2;
+    }
+}
+
+void Game::mapa_puente()
+{
+
+    /******************** VIGAS ********************/
+    int offset = 30;
+    world.addBeam(2.4f + offset, 8.4f, 90, LONG);
+
+    world.addBeam(5 + offset, 5, 0, LONG);  // 2 3 4 5 6 7 8
+    world.addBeam(11 + offset, 5, 0, LONG); // 8 9 10 11 12 13 14
+    world.addBeam(17 + offset, 5, 0, LONG); // 14 15 16 17 18 19 20
+    world.addBeam(23 + offset, 5, 0, LONG); // 20 21 22 23 24 25 26
+    world.addBeam(29 + offset, 5, 0, LONG);
+    world.addBeam(34 + offset, 5, 0, LONG);
+
+    world.addBeam(36.6f + offset, 8.4f, 90, LONG);
+
+    /******************** WORMS ********************/
+
+    int x = 3 + offset;
+    for (int i = 0; i < config["cantidad_de_worms"]; i++)
+    {
+        world.addWorm(x, 7);
+        x += 2;
+    }
+}
+
+void Game::mapa_vigas_inclinadas()
+{
+
+    /******************** VIGAS ********************/
+
+    world.addBeam(3, 9, 0, LONG);
+    world.addBeam(11.2f, 10, 0, LONG);
+    world.addBeam(18.7f, 11.9f, 0, LONG);
+
+    world.addBeam(7.2f, 9.5f, 22.5f, SHORT);
+    world.addBeam(15, 11, 45, SHORT);
+    world.addBeam(22, 13.2f, 67.5f, SHORT);
+
+    /******************** WORMS ********************/
+
+    int x = 3;
+    for (int i = 0; i < config["cantidad_de_worms"]; i++)
+    {
+        world.addWorm(x, 14);
+        x += 2;
+    }
+}
+
+void Game::mapa_plataformas()
+{
+    int offset = 30;
+
+    world.addBeam(5 + offset, 20, 0, LONG);
+    world.addBeam(13 + offset, 20, 0, LONG);
+    world.addBeam(21 + offset, 20, 0, LONG);
+    world.addBeam(29 + offset, 20, 0, LONG);
+    world.addBeam(37 + offset, 20, 0, LONG);
+
+    world.addBeam(8 + offset, 18, 0, LONG);
+    world.addBeam(16 + offset, 18, 0, LONG);
+    world.addBeam(24 + offset, 18, 0, LONG);
+    world.addBeam(32 + offset, 18, 0, LONG);
+
+    world.addBeam(5 + offset, 15, 0, LONG);
+    world.addBeam(13 + offset, 15, 0, LONG);
+    world.addBeam(21 + offset, 15, 0, LONG);
+    world.addBeam(29 + offset, 15, 0, LONG);
+    world.addBeam(37 + offset, 15, 0, LONG);
+
+    world.addBeam(8 + offset, 13, 0, LONG);
+    world.addBeam(16 + offset, 13, 0, LONG);
+    world.addBeam(24 + offset, 13, 0, LONG);
+    world.addBeam(32 + offset, 13, 0, LONG);
+
+    world.addWorm(5 + offset, 30);
+    if (config["cantidad_de_worms"] >= 2)
+        world.addWorm(8 + offset, 30);
+    if (config["cantidad_de_worms"] >= 3)
+        world.addWorm(37 + offset, 30);
+    if (config["cantidad_de_worms"] >= 4)
+        world.addWorm(13 + offset, 30);
+    if (config["cantidad_de_worms"] >= 5)
+        world.addWorm(16 + offset, 30);
+    if (config["cantidad_de_worms"] >= 6)
+        world.addWorm(21 + offset, 30);
+    if (config["cantidad_de_worms"] >= 7)
+        world.addWorm(24 + offset, 30);
+    if (config["cantidad_de_worms"] >= 8)
+        world.addWorm(29 + offset, 30);
+    if (config["cantidad_de_worms"] >= 9)
+        world.addWorm(32 + offset, 30);
+    if (config["cantidad_de_worms"] >= 10)
+        world.addWorm(37 + offset, 30);
+    if (config["cantidad_de_worms"] >= 11)
+        world.addWorm(19 + offset, 30);
+    if (config["cantidad_de_worms"] >= 12)
+        world.addWorm(3 + offset, 30);
+
+    
 }

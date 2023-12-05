@@ -1,0 +1,111 @@
+@startuml
+hide empty attributes
+    hide circle
+    
+    class Partida {
+        - common_queue: Queue
+        - List clients
+        - Broadcaster broadcaster
+        - Game game
+        
+    }
+
+
+    class Broadcaster {
+     - mutex
+     - queues : OutgoingQueuesMonitor
+     +AddDtoToQueues()
+     +addQueueToList(*queue)
+     +removeQueueWithId(id)
+     +notificarCierre()
+     +deleteAllQueues()
+    }
+
+    class OutgoingQueuesMonitor {
+     - mutex
+     - queues : std::list<shared_ptr<Dto>>*>
+     - id_queues : std::map<uint8_t, Queue<std::shared_ptr<Dto>> *>
+     +agregar()
+     +remover(*queue)
+     +remover(id)
+     +listado()
+     +removeAllQueues()
+    }
+
+    class Player{
+         - wormIds: List<int>
+         - actualWormId: int
+         + changeActualWorm()
+    } 
+
+   class Game <<Thread>> {
+        - common_queue: Queue
+        - broadcaster: Broadcaster
+        - players: List<Player> 
+        - world: World
+        + run()
+        + update()
+        + sendGameState()
+    }
+
+    class World {
+        - worms: List<Worm>
+        - beams: List<Beam>
+        - world: b2World
+        + step()
+    }
+
+json send_queue {
+   "Dto":["-", "-","-", "-","-", "-"]
+}
+
+json common_queue {
+   "Dto":["-", "-","-", "-","-", "-"]
+}
+
+
+json queues_clientes {
+   "Queue*":["-", "-","-", "-","-", "-"]
+}
+
+json id_queues {
+   "ID":["Queue*"]
+}
+
+Partida -up-> Game
+Partida::common_queue -> common_queue
+Game -> World
+Game -> Player
+Game -up-> Broadcaster
+Game <-left- common_queue : pop
+
+Broadcaster -> queues_clientes
+Broadcaster -up-> OutgoingQueuesMonitor
+OutgoingQueuesMonitor -left-> id_queues
+queues_clientes -> send_queue
+
+note left of Game::broadcaster
+es el mismo broadcaster
+que el de la Partida
+end note 
+
+note top of queues_clientes
+se tiene la queue
+de cada cliente en la partida
+y se le envian los mensajes a todas.
+end note
+
+
+note top of OutgoingQueuesMonitor
+se encarga de Monitoriar el acceso
+a la lista de colas que posee
+el broadcaster.
+end note
+
+
+note top of id_queues
+Se relaciona la queue del
+cliente junto con su id.
+end note
+
+@enduml

@@ -9,7 +9,6 @@
 #include "proyectil.h"
 #include "constantes.h"
 
-// class GranadaVerde : public Dto
 class GranadaVerde : public Proyectil
 {
 private:

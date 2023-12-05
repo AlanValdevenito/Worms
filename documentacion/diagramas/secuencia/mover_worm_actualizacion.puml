@@ -1,0 +1,51 @@
+@startuml
+loop
+
+== Handle Events ==
+
+"Partida: p" -> "Partida: p": handleEvents(renderer)
+return false
+
+== Actualizacion ==
+
+"Partida: p" -> "Partida: p": actualizar(renderer, iteracion)
+
+"Partida: p" -> "Queue: recv_queue": pop()
+return dtoWorms
+
+note left: De la recv queue del cliente\npopeamos un DTO que almacena\nuna lista de DTOs donde cada\nuno almacena las actualizaciones.
+
+loop Para cada Worm del DTO
+
+"Partida: p" -> "AnimacionWorm: w": update(it, x, y, vida, direccion, angulo, turno)
+
+"AnimacionWorm: w" -> "Animacion: a": update(it)
+
+"Animacion: a" --> "AnimacionWorm: w"
+
+"AnimacionWorm: w" --> "Partida: p"
+
+"Partida: p" -> "AnimacionWorm: w": update_estado(renderer, estado)
+
+"AnimacionWorm: w" -> "Animacion: a": cambiar(textura)
+
+"Animacion: a" --> "AnimacionWorm: w"
+"AnimacionWorm: w" --> "Partida: p"
+
+end
+
+"Partida: p" -> "Camara: c": seguirWorm(worms)
+
+note left: La camara seguira a aquel\nWorm que tenga como\nestado MOVIENDOSE.
+
+return
+
+"Partida: p" --> "Partida: p": return true
+
+== Renderizado ==
+
+"Partida: p" -> "Partida: p": renderizar(renderer)
+return
+
+end
+@enduml

@@ -21,7 +21,6 @@ private:
 
     void connectEvents();
     void salir();
-    void update();
 
 public:
     MenuFinalizar(Client &cliente, int resultado = 0, QWidget *parent = nullptr);
