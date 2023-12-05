@@ -221,6 +221,15 @@ Una vez que la cantidad de clientes en partida es la indicada al momento de la c
 Cuando la partida termina, se liberan los clientes y la referencia a sus colas.
 Cuando el servidor cierra se fuerza el mismo cierre con la diferencia que ahora se debe detener el game loop.
 
+### Broadcaster
+
+Se encarga de almacenar las colas de salida de todos los clientes de una partida, y distribuir a todos los clientes la respuesta obtenida por el `Game`
+
+### OutgoinQueuesMonitor
+
+Se encarga de monitorear la lista de colas de lo clientes que posee el `broadcaster`.
+Tiene una lista con las colas de los clientes y un diccionario donde se relaciona la cola del cliente con su **ID**.
+
 ### Game
 
 Es la clase encargada de manejar la lógica del juego, gestionar los turnos de los jugadores, determinar si la partida finalizó, etc. `Game` recibe eventos de los jugadores a través de una Queue, los cuales ejecuta y posteriormente actualiza el estado del juego para enviárselo a los clientes para que puedan renderizarlo. Utiliza las siguientes clases
