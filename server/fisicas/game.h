@@ -57,15 +57,6 @@ private:
     int indexOfActualPlayer = 0;
     int numberOfAlivePlayers = 0;
     int jugadores_en_partida;
-    void mapa();
-    void mapa_jaula();
-    void mapa_puente();
-    void mapa_vigas_inclinadas();
-    void finalizar_juego(std::shared_ptr<Dto> dto);
-    bool timeIsUp();
-    void beginNextTurn();
-    void increaseHpOfTeamsWithLessPlayers();
-public:
     GreenGrenade *greenGrenade = NULL;
     BazookaRocket *bazookaRocket = NULL;
     MorteroRocket *morteroRocket = NULL;
@@ -76,22 +67,25 @@ public:
     std::vector<RedGrenadeFragment *> redGrenadeFragments;
     std::vector<AirStrikeRocket *> airStrike;
     std::vector<int> explodedFragmentIds;
+    void mapa();
+    void mapa_jaula();
+    void mapa_puente();
+    void mapa_real();
+    void mapa_vigas_inclinadas();
+    void finalizar_juego(std::shared_ptr<Dto> dto);
+    bool timeIsUp();
+    void beginNextTurn();
+    void increaseHpOfTeamsWithLessPlayers();
     bool infiniteHp = false;
     bool endlessTurn = false;
     bool infiniteAmmunition = false;
     int idTurn = 1;
-    bool game_finished = false;
-    Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad, int map);
     void update();
     void updateWorms();
     void updatePlayers();
     void updateBombs();
     void limitFrameRate();
-    void run() override;
-    void stop() override;
-    void killPlayerWorms(uint8_t id);
-    void sendMap();
-    void sendWorms();
+    
     void sendBombs();
     bool hayBombas();
     void moveWormLeft();
@@ -100,8 +94,6 @@ public:
     void jumpWorm(uint8_t direction);
     void batWorm(int angle);
     void executeCommand(std::shared_ptr<Dto> dto);
-    void broadcast();
-    void createPlayers();
     void throwGreenGrenade(float angle, int power, int timeToExplotion);
     void throwRedGrenade(float angle, int power, int timeToExplotion);
     void shootHolyGrenade(float angle, int power, int timeToExplotion);
@@ -109,12 +101,22 @@ public:
     void shootDynamite(int timeToExplotion);
     void shootAirStrike(float x, float y);
     void passTurn();
-    void addPlayerId(uint8_t id);
     bool anyAirStrikeRocket();
     bool anyWormMoving();
     void shootBazooka(float angle, int power);
     void shootMortero(float angle, int power);
     void throwFragments(float x, float y);
+public:
+    void sendWorms();
+    bool game_finished = false;
+    Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int cantidad, int map);
+    void run() override;
+    void stop() override;
+    void killPlayerWorms(uint8_t id);
+    void sendMap();
+    void createPlayers();
+    void addPlayerId(uint8_t id);
+    
     ~Game();
 };
 #endif
