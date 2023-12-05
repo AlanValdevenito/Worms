@@ -6,7 +6,7 @@ Trabajo final que consiste en la remake del icónico Worms
 
 [Enunciado](documentacion/Enunciado.pdf)
 
-[Trailer](https://www.youtube.com/watch?v=aT-csTPIaiE)
+[Trailer](https://www.youtube.com/watch?v=cXs05yU9hYE)
 
 ## Grupo 2
 
