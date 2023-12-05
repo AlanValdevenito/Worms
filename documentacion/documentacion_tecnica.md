@@ -110,6 +110,20 @@ Como se explica en el diagrama de secuencia, la partida se comunica con el servi
 
 El metodo iniciar() que se muestra en el diagrama de secuencia se llama luego de seleccionar o crear una partida desde el menu. Es el metodo que da inicio a la interfaz grafica que representa la ventana de la partida.
 
+A contiuacion se mostraran tres diagramas de secuencia con la intencion de mostrar como seria la secuencia de mensajes del movimiento de un Worm. Seran tres diagramas ya que se dividira en tres secciones:
+
+1. Comenzamos en la seccion del Handle Events. Inicialmente el cliente debe presionar una de las teclas para mover al Worm. Este evento sera pusheado en la queue de eventos de SDL.
+
+![Handle Events](diagramas/secuencia/img/mover_worm_handle_events.png)
+
+2. Una vez que el cliente le hace el pedido correspondiente al servidor, luego pasamos a la seccion de Actualizacion. Basicamente el servidor le envia a cada cliente un DTO con las actualizaciones.
+
+![Actualizacion](diagramas/secuencia/img/mover_worm_actualizacion.png)
+
+3. Por ultimo tenemos la seccion de Renderizado. Basicamente lo que se hace es iterar el diccionario de Worms que tiene la clase Partida y a cada uno le delega la responsabilidad de su renderizado.
+
+![Renderizado](diagramas/secuencia/img/mover_worm_renderizado.png)
+
 #### AnimacionWorm
 
 Es la encargada de guardar el estado de un Worm y utilizarlo en el renderizado. Actualiza su estado con aquello que el servidor le envie a la clase Partida. Por ejemplo:

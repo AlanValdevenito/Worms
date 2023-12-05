@@ -1,0 +1,44 @@
+@startuml
+loop
+
+== Handle Events ==
+
+"Partida: p" -> "Partida: p": handleEvents(renderer)
+return false
+
+== Actualizacion ==
+
+"Partida: p" -> "Partida: p": actualizar(renderer, iteracion)
+return true
+
+== Renderizado ==
+
+"Partida: p" -> "Partida: p": renderizar(renderer)
+
+"Partida: p" -> "Partida: p": renderizar_worms(renderer)
+
+loop Para cada Worm
+
+"Partida: p" -> "Camara: c": comprobarRenderizado()
+
+"Camara: c" --> "Partida: p": true
+
+"Partida: p" -> "AnimacionWorm: w": render(renderer)
+
+"AnimacionWorm: w" -> "Animacion: a": render(renderer)
+
+"Animacion: a" --> "AnimacionWorm: w"
+
+"AnimacionWorm: w" -> "AnimacionWorm: w": render_vida(renderer)
+
+"AnimacionWorm: w" --> "AnimacionWorm: w"
+
+"AnimacionWorm: w" --> "Partida: p"
+
+end
+
+
+"Partida: p" --> "Partida: p"
+
+end
+@enduml

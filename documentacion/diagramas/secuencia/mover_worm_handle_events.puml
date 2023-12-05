@@ -1,0 +1,29 @@
+@startuml
+loop
+
+== Handle Events ==
+
+"Partida: p" -> "Partida: p": handleEvents(renderer)
+
+"Partida: p" -> "dto: MoverADerecha": MoverADerecha(clienteID)
+
+return
+
+"Partida: p" -> "Queue: send_queue": push(dto)
+
+return
+
+"Partida: p" --> "Partida: p": return false
+
+== Actualizacion ==
+
+"Partida: p" -> "Partida: p": actualizar(renderer, iteracion)
+return true
+
+== Renderizado ==
+
+"Partida: p" -> "Partida: p": renderizar(renderer)
+return
+
+end
+@enduml
