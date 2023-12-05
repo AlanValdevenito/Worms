@@ -10,7 +10,6 @@ std::map<std::string, int> loadConfig(const std::string configFileName)
 {
     YAML::Node yaml = YAML::LoadFile(configFileName);
     std::map<std::string, int> config;
-    config["map"] = yaml["map"].as<int>();
     config["wormHp"] = yaml["worm"]["hp"].as<int>();
     config["wormExtraHp"] = yaml["worm"]["extra_hp"].as<int>();
     config["wormSpeed"] = yaml["worm"]["speed"].as<int>();
@@ -1295,21 +1294,21 @@ void Game::mapa_puente()
 {
 
     /******************** VIGAS ********************/
+    int offset = 30;
+    world.addBeam(2.4f + offset, 8.4f, 90, LONG);
 
-    world.addBeam(2.4f, 8.4f, 90, LONG);
+    world.addBeam(5 + offset, 5, 0, LONG);  // 2 3 4 5 6 7 8
+    world.addBeam(11 + offset, 5, 0, LONG); // 8 9 10 11 12 13 14
+    world.addBeam(17 + offset, 5, 0, LONG); // 14 15 16 17 18 19 20
+    world.addBeam(23 + offset, 5, 0, LONG); // 20 21 22 23 24 25 26
+    world.addBeam(29 + offset, 5, 0, LONG);
+    world.addBeam(34 + offset, 5, 0, LONG);
 
-    world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
-    world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
-    world.addBeam(17, 5, 0, LONG); // 14 15 16 17 18 19 20
-    world.addBeam(23, 5, 0, LONG); // 20 21 22 23 24 25 26
-    world.addBeam(29, 5, 0, LONG);
-    world.addBeam(34, 5, 0, LONG);
-
-    world.addBeam(36.6f, 8.4f, 90, LONG);
+    world.addBeam(36.6f + offset, 8.4f, 90, LONG);
 
     /******************** WORMS ********************/
 
-    int x = 3;
+    int x = 3 + offset;
     for (int i = 0; i < config["cantidad_de_worms"]; i++)
     {
         world.addWorm(x, 7);
@@ -1342,53 +1341,53 @@ void Game::mapa_vigas_inclinadas()
 
 void Game::mapa_plataformas()
 {
-    int corrimiento_camara = 30;
+    int offset = 30;
 
-    world.addBeam(5 + corrimiento_camara, 20, 0, LONG);
-    world.addBeam(13 + corrimiento_camara, 20, 0, LONG);
-    world.addBeam(21 + corrimiento_camara, 20, 0, LONG);
-    world.addBeam(29 + corrimiento_camara, 20, 0, LONG);
-    world.addBeam(37 + corrimiento_camara, 20, 0, LONG);
+    world.addBeam(5 + offset, 20, 0, LONG);
+    world.addBeam(13 + offset, 20, 0, LONG);
+    world.addBeam(21 + offset, 20, 0, LONG);
+    world.addBeam(29 + offset, 20, 0, LONG);
+    world.addBeam(37 + offset, 20, 0, LONG);
 
-    world.addBeam(8 + corrimiento_camara, 18, 0, LONG);
-    world.addBeam(16 + corrimiento_camara, 18, 0, LONG);
-    world.addBeam(24 + corrimiento_camara, 18, 0, LONG);
-    world.addBeam(32 + corrimiento_camara, 18, 0, LONG);
+    world.addBeam(8 + offset, 18, 0, LONG);
+    world.addBeam(16 + offset, 18, 0, LONG);
+    world.addBeam(24 + offset, 18, 0, LONG);
+    world.addBeam(32 + offset, 18, 0, LONG);
 
-    world.addBeam(5 + corrimiento_camara, 15, 0, LONG);
-    world.addBeam(13 + corrimiento_camara, 15, 0, LONG);
-    world.addBeam(21 + corrimiento_camara, 15, 0, LONG);
-    world.addBeam(29 + corrimiento_camara, 15, 0, LONG);
-    world.addBeam(37 + corrimiento_camara, 15, 0, LONG);
+    world.addBeam(5 + offset, 15, 0, LONG);
+    world.addBeam(13 + offset, 15, 0, LONG);
+    world.addBeam(21 + offset, 15, 0, LONG);
+    world.addBeam(29 + offset, 15, 0, LONG);
+    world.addBeam(37 + offset, 15, 0, LONG);
 
-    world.addBeam(8 + corrimiento_camara, 13, 0, LONG);
-    world.addBeam(16 + corrimiento_camara, 13, 0, LONG);
-    world.addBeam(24 + corrimiento_camara, 13, 0, LONG);
-    world.addBeam(32 + corrimiento_camara, 13, 0, LONG);
+    world.addBeam(8 + offset, 13, 0, LONG);
+    world.addBeam(16 + offset, 13, 0, LONG);
+    world.addBeam(24 + offset, 13, 0, LONG);
+    world.addBeam(32 + offset, 13, 0, LONG);
 
-    world.addWorm(5 + corrimiento_camara, 30);
+    world.addWorm(5 + offset, 30);
     if (config["cantidad_de_worms"] >= 2)
-        world.addWorm(8 + corrimiento_camara, 30);
+        world.addWorm(8 + offset, 30);
     if (config["cantidad_de_worms"] >= 3)
-        world.addWorm(37 + corrimiento_camara, 30);
+        world.addWorm(37 + offset, 30);
     if (config["cantidad_de_worms"] >= 4)
-        world.addWorm(13 + corrimiento_camara, 30);
+        world.addWorm(13 + offset, 30);
     if (config["cantidad_de_worms"] >= 5)
-        world.addWorm(16 + corrimiento_camara, 30);
+        world.addWorm(16 + offset, 30);
     if (config["cantidad_de_worms"] >= 6)
-        world.addWorm(21 + corrimiento_camara, 30);
+        world.addWorm(21 + offset, 30);
     if (config["cantidad_de_worms"] >= 7)
-        world.addWorm(24 + corrimiento_camara, 30);
+        world.addWorm(24 + offset, 30);
     if (config["cantidad_de_worms"] >= 8)
-        world.addWorm(29 + corrimiento_camara, 30);
+        world.addWorm(29 + offset, 30);
     if (config["cantidad_de_worms"] >= 9)
-        world.addWorm(32 + corrimiento_camara, 30);
+        world.addWorm(32 + offset, 30);
     if (config["cantidad_de_worms"] >= 10)
-        world.addWorm(37 + corrimiento_camara, 30);
+        world.addWorm(37 + offset, 30);
     if (config["cantidad_de_worms"] >= 11)
-        world.addWorm(19 + corrimiento_camara, 30);
+        world.addWorm(19 + offset, 30);
     if (config["cantidad_de_worms"] >= 12)
-        world.addWorm(3 + corrimiento_camara, 30);
+        world.addWorm(3 + offset, 30);
 
     
 }
