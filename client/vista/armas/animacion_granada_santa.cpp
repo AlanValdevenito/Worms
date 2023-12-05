@@ -5,7 +5,7 @@ AnimacionGranadaSanta::AnimacionGranadaSanta(SDL2pp::Renderer &renderer, std::ma
     movimiento(texturas[25]), 
     explosion(texturas, texturas[20]), 
     apuntado(renderer, texturas[35]),
-    sonido(sonidos[4]), 
+    sonido(sonidos[5]), 
     tiempo(5) {}
 
 /******************** ACTUALIZACION Y RENDERIZADO ********************/
@@ -29,11 +29,11 @@ void AnimacionGranadaSanta::render(SDL2pp::Renderer &renderer, SDL2pp::Color col
         this->movimiento.render(renderer, SDL2pp::Rect(this->x - (30) - camaraLimiteIzquierdo, this->y - (30) - camaraLimiteSuperior, 60, 60), flip, this->angulo);
         renderizar_tiempo(renderer, color, camaraLimiteIzquierdo, camaraLimiteSuperior);
 
-        /*if (this->tiempo == 2) {
+        if (this->tiempo == 2) {
             this->sonido.reproducir();
         } else if (this->tiempo == 0) {
             this->sonido.cambiar(std::make_unique<SDL2pp::Chunk>(DATA_PATH "/sonidos/armas/EXPLOSION1.WAV"));
-        }*/
+        }
 
     } else if (this->estado == ARMA_EXPLOTAR) {
         this->explosion.render(renderer, this->x, this->y, camaraLimiteIzquierdo, camaraLimiteSuperior);
