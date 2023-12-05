@@ -18,9 +18,6 @@ QT_END_NAMESPACE
 class MenuPrincipal: public QMainWindow {
     Q_OBJECT
 
-protected:
-    void keyPressEvent(QKeyEvent *event) override;
-
 private:
     Ui::MenuPrincipal *ui;
     Client &cliente;
