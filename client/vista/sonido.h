@@ -21,7 +21,6 @@ public:
 
     void cambiar(std::shared_ptr<SDL2pp::Chunk> nuevoSonido, int loops = 0);
     void reproducir();
-    void detener();
 };
 
 #endif // SONIDO_h
