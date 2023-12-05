@@ -1,0 +1,75 @@
+    @startuml
+    hide empty attributes
+    hide circle
+
+
+   
+
+    class ServerClient <<thread>>{
+        - Queue sender
+        - Queue receiver
+        - Sender sender_th
+        - Receiver receiver_th
+        - ServerProtocol protocolo
+        + changeReceiverQueue()
+        + start()
+    } 
+    
+    class Partida {
+        - common_queue: Queue
+        - List clients
+        - Broadcaster broadcaster
+        - Game game
+        
+    }
+
+
+    class broadcaster {
+     - lista queues
+     - ServerOutgoingQueue
+     }
+
+    class player{}
+
+   class Game {
+        - common_queue: Queue
+        - broadcaster: Broadcaster
+        - players: List<Player> 
+        + run()
+        + update()
+        + sendGameState()
+    }
+
+    class World {
+        - worms: List<Worm>
+        - beams: List<Beam>
+        + step()
+    }
+
+json send_queue {
+   "Dto":["-", "-","-", "-","-", "-"]
+}
+
+json recv_queue {
+   "Dto":["-", "-","-", "-","-", "-"]
+}
+
+json clientes {
+   "ServerClient*":["-", "-","-", "-","-", "-"]
+}
+
+
+json queues_clientes {
+   "Queue*":["-", "-","-", "-","-", "-"]
+}
+
+Partida -> Game
+Game -> World
+Game -> player
+Game -> broadcaster
+Game <- recv_queue
+
+broadcaster -> queues_clientes
+
+
+ @enduml
