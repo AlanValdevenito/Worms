@@ -14,7 +14,6 @@ class ListaDePartidas : public Dto
 {
 private:
     std::list<uint8_t> partidas;
-    // std::string mensaje;
 
 public:
     uint8_t seleccionada;
@@ -25,7 +24,6 @@ public:
     bool is_alive() override;
     std::list<uint8_t> return_list();
     void addOption(uint8_t o);
-    // uint8_t get_id();
 };
 
 #endif

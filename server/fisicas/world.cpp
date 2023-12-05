@@ -1,14 +1,14 @@
 #include "world.h"
 
-World::World(std::map<std::string, int>& config) : config(config), world(b2Vec2(0, -10)) {
+World::World(std::map<std::string, int> &config) : config(config), world(b2Vec2(0, -10))
+{
     world.SetContactListener(&contactListener);
     createStaticBody(-500, 400, 10, 1000); // pared izquierda
-    createStaticBody(500, 400, 10, 1000); // pared derecha
-    createStaticBody(0, 900, 1000, 10);   // techo
-    createStaticBody(0, -100, 1000, 10); // piso 
+    createStaticBody(500, 400, 10, 1000);  // pared derecha
+    createStaticBody(0, 900, 1000, 10);    // techo
+    createStaticBody(0, -100, 1000, 10);   // piso
 
     createStaticBody(0, -1, 6500, 0.5f);
-
 }
 
 b2Body *World::createStaticBody(float x, float y, float width, float height)
@@ -19,12 +19,12 @@ b2Body *World::createStaticBody(float x, float y, float width, float height)
     b2Body *body = world.CreateBody(&bodyDef);
     b2PolygonShape bodyShape;
     bodyShape.SetAsBox(width / 2, height / 2);
-    
+
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &bodyShape;
     fixtureDef.friction = 0.7f;
     body->CreateFixture(&fixtureDef);
-    
+
     return body;
 }
 
@@ -57,18 +57,17 @@ std::list<Beam> &World::getBeams()
     return beams;
 }
 
-std::list<Worm*> &World::getWorms()
+std::list<Worm *> &World::getWorms()
 {
     return worms;
 }
 
 void World::addWorm(float x, float y)
-{   
+{
     idWorms = idWorms + 1;
     Worm *worm = new Worm(&world, x, y, idWorms, config);
     worms.push_back(worm);
     wormsById[idWorms] = worm;
-
 }
 
 void World::step(float timeStep)
@@ -76,24 +75,28 @@ void World::step(float timeStep)
     world.Step(timeStep, 10, 10);
 }
 
-std::map<uint8_t, Worm*>& World::getWormsById() {
+std::map<uint8_t, Worm *> &World::getWormsById()
+{
     return wormsById;
 }
 
-bool World::anyMovement() {
-    for ( b2Body* b = world.GetBodyList(); b; b = b->GetNext())
-    {   
+bool World::anyMovement()
+{
+    for (b2Body *b = world.GetBodyList(); b; b = b->GetNext())
+    {
         b2Vec2 velocity = b->GetLinearVelocity();
-        if (velocity.x != 0.0f || velocity.y != 0.0f) {
+        if (velocity.x != 0.0f || velocity.y != 0.0f)
+        {
             return true;
         }
     }
     return false;
 }
 
-World::~World() {
-    for (Worm *worm : worms) {
+World::~World()
+{
+    for (Worm *worm : worms)
+    {
         delete worm;
     }
-    //delete world;
 }

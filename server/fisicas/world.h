@@ -15,17 +15,16 @@ class World
 {
 private:
     ContactListener contactListener;
-    std::map<std::string, int>& config;
+    std::map<std::string, int> &config;
     std::list<Beam> beams;
-    std::list<Worm*> worms;
-    std::map<uint8_t, Worm*> wormsById;
+    std::list<Worm *> worms;
+    std::map<uint8_t, Worm *> wormsById;
     int idWorms = 0;
 
-    
 public:
     b2World world;
     // crea un mundo
-    World(std::map<std::string, int>& config);
+    World(std::map<std::string, int> &config);
 
     // agrega una viga centrada en el punto (x, y) de ancho <width> y alto <height>
     void addBeam(float x, float y, float angle, BeamType type);
@@ -35,9 +34,9 @@ public:
 
     std::list<Beam> &getBeams();
 
-    std::list<Worm*> &getWorms();
+    std::list<Worm *> &getWorms();
 
-    std::map<uint8_t, Worm*> &getWormsById();
+    std::map<uint8_t, Worm *> &getWormsById();
 
     b2Body *createStaticBody(float x, float y, float width, float height);
 
@@ -46,7 +45,6 @@ public:
     bool anyMovement();
     // avanza el mundo una fraccion de segundo
     void step(float timeStep);
-    // bool isInsideABeam(float x, float y);
     ~World();
 };
 #endif

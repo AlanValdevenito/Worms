@@ -1,19 +1,6 @@
-    @startuml
-    hide empty attributes
+@startuml
+hide empty attributes
     hide circle
-
-
-   
-
-    class ServerClient <<thread>>{
-        - Queue sender
-        - Queue receiver
-        - Sender sender_th
-        - Receiver receiver_th
-        - ServerProtocol protocolo
-        + changeReceiverQueue()
-        + start()
-    } 
     
     class Partida {
         - common_queue: Queue
@@ -24,17 +11,38 @@
     }
 
 
-    class broadcaster {
-     - lista queues
-     - ServerOutgoingQueue
-     }
+    class Broadcaster {
+     - mutex
+     - queues : OutgoingQueuesMonitor
+     +AddDtoToQueues()
+     +addQueueToList(*queue)
+     +removeQueueWithId(id)
+     +notificarCierre()
+     +deleteAllQueues()
+    }
 
-    class player{}
+    class OutgoingQueuesMonitor {
+     - mutex
+     - queues : std::list<shared_ptr<Dto>>*>
+     - id_queues : std::map<uint8_t, Queue<std::shared_ptr<Dto>> *>
+     +agregar()
+     +remover(*queue)
+     +remover(id)
+     +listado()
+     +removeAllQueues()
+    }
 
-   class Game {
+    class Player{
+         - wormIds: List<int>
+         - actualWormId: int
+         + changeActualWorm()
+    } 
+
+   class Game <<Thread>> {
         - common_queue: Queue
         - broadcaster: Broadcaster
         - players: List<Player> 
+        - world: World
         + run()
         + update()
         + sendGameState()
@@ -43,6 +51,7 @@
     class World {
         - worms: List<Worm>
         - beams: List<Beam>
+        - world: b2World
         + step()
     }
 
@@ -50,12 +59,8 @@ json send_queue {
    "Dto":["-", "-","-", "-","-", "-"]
 }
 
-json recv_queue {
+json common_queue {
    "Dto":["-", "-","-", "-","-", "-"]
-}
-
-json clientes {
-   "ServerClient*":["-", "-","-", "-","-", "-"]
 }
 
 
@@ -63,13 +68,44 @@ json queues_clientes {
    "Queue*":["-", "-","-", "-","-", "-"]
 }
 
-Partida -> Game
+json id_queues {
+   "ID":["Queue*"]
+}
+
+Partida -up-> Game
+Partida::common_queue -> common_queue
 Game -> World
-Game -> player
-Game -> broadcaster
-Game <- recv_queue
+Game -> Player
+Game -up-> Broadcaster
+Game <-left- common_queue : pop
 
-broadcaster -> queues_clientes
+Broadcaster -> queues_clientes
+Broadcaster -up-> OutgoingQueuesMonitor
+OutgoingQueuesMonitor -left-> id_queues
+queues_clientes -> send_queue
+
+note left of Game::broadcaster
+es el mismo broadcaster
+que el de la Partida
+end note 
+
+note top of queues_clientes
+se tiene la queue
+de cada cliente en la partida
+y se le envian los mensajes a todas.
+end note
 
 
- @enduml
+note top of OutgoingQueuesMonitor
+se encarga de Monitoriar el acceso
+a la lista de colas que posee
+el broadcaster.
+end note
+
+
+note top of id_queues
+Se relaciona la queue del
+cliente junto con su id.
+end note
+
+@enduml
