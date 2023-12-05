@@ -45,8 +45,7 @@ void Partida::forceFinish()
         game.stop();
         game.join();
     }
-    std::shared_ptr<Dto> fin = std::make_shared<Dto>(FINALIZAR_CODE);
-    broadcaster.notificarCierre(fin);
+    broadcaster.notificarCierre();
     sleep(1);
     broadcaster.deleteAllQueues();
 

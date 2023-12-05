@@ -353,7 +353,7 @@ void Game::increaseHpOfTeamsWithLessPlayers()
 
 void Game::finalizar_juego(std::shared_ptr<Dto> dto)
 {
-    broadcaster.notificarCierre(dto);
+    broadcaster.notificarCierre();
     broadcaster.deleteAllQueues(); // aviso a los demas que cierren
     stop();
 }
@@ -475,7 +475,7 @@ void Game::passTurn()
         if (idTurn == -1)
         {
             // si no hay jugadores para elegir ==> cierro.
-            broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE, 1));
+            broadcaster.notificarCierre();
             broadcaster.deleteAllQueues(); // aviso a los demas que cierren
             stop();
             return;
@@ -613,7 +613,7 @@ void Game::updatePlayers()
                     break;
                 }
             }
-            broadcaster.notificarCierre(std::make_shared<Dto>(FINALIZAR_CODE, 1));
+            broadcaster.notificarCierre();
             broadcaster.deleteAllQueues(); // aviso a los demas que cierren
             stop();
             return;

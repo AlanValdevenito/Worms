@@ -17,7 +17,7 @@ hide empty attributes
      +AddDtoToQueues()
      +addQueueToList(*queue)
      +removeQueueWithId(id)
-     +notificarCierre(dto)
+     +notificarCierre()
      +deleteAllQueues()
     }
 
