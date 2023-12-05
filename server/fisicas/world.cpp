@@ -6,7 +6,7 @@ World::World(std::map<std::string, int> &config) : config(config), world(b2Vec2(
     createStaticBody(-500, 400, 10, 1000); // pared izquierda
     createStaticBody(500, 400, 10, 1000);  // pared derecha
     createStaticBody(0, 900, 1000, 10);    // techo
-    createStaticBody(0, -100, 1000, 10);   // piso
+    createStaticBody(0, -5, 1000, 9.5f);   // piso
 
     createStaticBody(0, -1, 6500, 0.5f);
 }

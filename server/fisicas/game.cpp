@@ -4,7 +4,7 @@
 
 #define TURN_DURATION 60
 #define TIME_LEFT_AFTER_ATTACK 2
-#define WATER_POSITION 0
+#define WATER_POSITION 0.6f
 
 std::map<std::string, int> loadConfig(const std::string configFileName)
 {
@@ -64,7 +64,8 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int can
 {
     if (map == 1)
     {
-        mapa();
+        // mapa();
+        mapa_real();
     }
     else if (map == 2)
     {
@@ -80,213 +81,6 @@ Game::Game(Queue<std::shared_ptr<Dto>> &queue, Broadcaster &broadcaster, int can
     }
 }
 
-void Game::mapa()
-{
-
-    /******************** VIGAS ********************/
-
-    // Piso 0
-    int x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-        world.addBeam(x, 5, 0, LONG);
-        x += 6;
-    }
-
-    // Piso 1
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-
-        if (x == 53)
-        {
-            x += 6;
-            continue;
-        }
-
-        world.addBeam(x, 10, 0, LONG);
-        x += 6;
-    }
-
-    // Piso 2
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-
-        if (x == 11)
-        {
-            x += 6;
-            continue;
-        }
-
-        world.addBeam(x, 15, 0, LONG);
-        x += 6;
-    }
-
-    // Piso 3
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-
-        if (x == 53)
-        {
-            x += 6;
-            continue;
-        }
-
-        world.addBeam(x, 20, 0, LONG);
-        x += 6;
-    }
-
-    // Piso 4
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-
-        if (x == 11)
-        {
-            x += 6;
-            continue;
-        }
-
-        world.addBeam(x, 25, 0, LONG);
-        x += 6;
-    }
-
-    // Techo
-    x = 5;
-    for (int i = 0; i < 10; i++)
-    {
-        world.addBeam(x, 29.7, 0, LONG);
-        x += 6;
-    }
-
-    // Paredes
-    float y = 8.4;
-    for (int i = 0; i < 4; i++)
-    {
-        world.addBeam(2.4f, y, 90, LONG);
-        y += 6;
-    }
-
-    y = 8.4;
-    for (int i = 0; i < 4; i++)
-    {
-        world.addBeam(61.6, y, 90, LONG);
-        y += 6;
-    }
-
-    // Rampa del piso 4 al piso 3
-    world.addBeam(8.8, 24.2, 135, SHORT);
-    world.addBeam(10.8, 22.2, 135, SHORT);
-    world.addBeam(11.8, 21.2, 135, SHORT);
-
-    // Rampa del piso 3 al piso 2
-    world.addBeam(55.2, 19.2, 45, SHORT);
-    world.addBeam(53.2, 17.2, 45, SHORT);
-    world.addBeam(52.2, 16.2, 45, SHORT);
-
-    // Rampa del piso 2 al piso 1
-    world.addBeam(8.8, 14.2, 135, SHORT);
-    world.addBeam(10.8, 12.2, 135, SHORT);
-    world.addBeam(11.8, 11.2, 135, SHORT);
-
-    // Rampa del piso 1 al piso 0
-    world.addBeam(55.2, 9.2, 45, SHORT);
-    world.addBeam(53.2, 7.2, 45, SHORT);
-    world.addBeam(52.2, 6.2, 45, SHORT);
-
-    /******************** WORMS ********************/
-
-    x = 20;
-    for (int i = 0; i < config["cantidad_de_worms"]; i++)
-    {
-        world.addWorm(x, 22);
-        x += 2;
-    }
-}
-
-void Game::mapa_jaula()
-{
-
-    /******************** VIGAS ********************/
-
-    // Piso
-    world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
-    world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
-    world.addBeam(17, 5, 0, LONG); // 14 15 16 17 18 19 20
-    world.addBeam(23, 5, 0, LONG); // 20 21 22 23 24 25 26
-
-    // Techo
-    world.addBeam(5, 17.8f, 0, LONG);
-    world.addBeam(11, 17.8f, 0, LONG);
-    world.addBeam(17, 17.8f, 0, LONG);
-    world.addBeam(23, 17.8f, 0, LONG);
-
-    // Paredes
-    world.addBeam(2.4f, 8.4f, 90, LONG);
-    world.addBeam(2.4f, 14.4f, 90, LONG);
-    world.addBeam(25.6f, 8.4f, 90, LONG);
-    world.addBeam(25.6f, 14.4f, 90, LONG);
-
-    /******************** WORMS ********************/
-
-    int x = 5;
-    for (int i = 0; i < config["cantidad_de_worms"]; i++)
-    {
-        world.addWorm(x, 10);
-        x += 2;
-    }
-}
-
-void Game::mapa_puente()
-{
-
-    /******************** VIGAS ********************/
-
-    world.addBeam(2.4f, 8.4f, 90, LONG);
-
-    world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
-    world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
-    world.addBeam(17, 5, 0, LONG); // 14 15 16 17 18 19 20
-    world.addBeam(23, 5, 0, LONG); // 20 21 22 23 24 25 26
-    world.addBeam(29, 5, 0, LONG);
-    world.addBeam(34, 5, 0, LONG);
-
-    world.addBeam(36.6f, 8.4f, 90, LONG);
-
-    /******************** WORMS ********************/
-
-    int x = 3;
-    for (int i = 0; i < config["cantidad_de_worms"]; i++)
-    {
-        world.addWorm(x, 7);
-        x += 2;
-    }
-}
-
-void Game::mapa_vigas_inclinadas()
-{
-
-    /******************** VIGAS ********************/
-
-    world.addBeam(3, 9, 0, LONG);
-    world.addBeam(11.2f, 10, 0, LONG);
-    world.addBeam(18.7f, 11.9f, 0, LONG);
-
-    world.addBeam(7.2f, 9.5f, 22.5f, SHORT);
-    world.addBeam(15, 11, 45, SHORT);
-    world.addBeam(22, 13.2f, 67.5f, SHORT);
-
-    /******************** WORMS ********************/
-
-    int x = 3;
-    for (int i = 0; i < config["cantidad_de_worms"]; i++)
-    {
-        world.addWorm(x, 14);
-        x += 2;
-    }
-}
 
 void Game::createPlayers()
 {
@@ -1334,6 +1128,336 @@ bool Game::anyWormMoving()
 
 Game::~Game() {}
 
-void Game::broadcast()
+
+//-------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------CREACION DE MAPAS-------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------
+
+void Game::mapa()
 {
+
+    /******************** VIGAS ********************/
+
+    // Piso 0
+    int x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+        world.addBeam(x, 5, 0, LONG);
+        x += 6;
+    }
+
+    // Piso 1
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+
+        if (x == 53)
+        {
+            x += 6;
+            continue;
+        }
+
+        world.addBeam(x, 10, 0, LONG);
+        x += 6;
+    }
+
+    // Piso 2
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+
+        if (x == 11)
+        {
+            x += 6;
+            continue;
+        }
+
+        world.addBeam(x, 15, 0, LONG);
+        x += 6;
+    }
+
+    // Piso 3
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+
+        if (x == 53)
+        {
+            x += 6;
+            continue;
+        }
+
+        world.addBeam(x, 20, 0, LONG);
+        x += 6;
+    }
+
+    // Piso 4
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+
+        if (x == 11)
+        {
+            x += 6;
+            continue;
+        }
+
+        world.addBeam(x, 25, 0, LONG);
+        x += 6;
+    }
+
+    // Techo
+    x = 5;
+    for (int i = 0; i < 10; i++)
+    {
+        world.addBeam(x, 29.7, 0, LONG);
+        x += 6;
+    }
+
+    // Paredes
+    float y = 8.4;
+    for (int i = 0; i < 4; i++)
+    {
+        world.addBeam(2.4f, y, 90, LONG);
+        y += 6;
+    }
+
+    y = 8.4;
+    for (int i = 0; i < 4; i++)
+    {
+        world.addBeam(61.6, y, 90, LONG);
+        y += 6;
+    }
+
+    // Rampa del piso 4 al piso 3
+    world.addBeam(8.8, 24.2, 135, SHORT);
+    world.addBeam(10.8, 22.2, 135, SHORT);
+    world.addBeam(11.8, 21.2, 135, SHORT);
+
+    // Rampa del piso 3 al piso 2
+    world.addBeam(55.2, 19.2, 45, SHORT);
+    world.addBeam(53.2, 17.2, 45, SHORT);
+    world.addBeam(52.2, 16.2, 45, SHORT);
+
+    // Rampa del piso 2 al piso 1
+    world.addBeam(8.8, 14.2, 135, SHORT);
+    world.addBeam(10.8, 12.2, 135, SHORT);
+    world.addBeam(11.8, 11.2, 135, SHORT);
+
+    // Rampa del piso 1 al piso 0
+    world.addBeam(55.2, 9.2, 45, SHORT);
+    world.addBeam(53.2, 7.2, 45, SHORT);
+    world.addBeam(52.2, 6.2, 45, SHORT);
+
+    /******************** WORMS ********************/
+
+    x = 20;
+    for (int i = 0; i < config["cantidad_de_worms"]; i++)
+    {
+        world.addWorm(x, 22);
+        x += 2;
+    }
+}
+
+void Game::mapa_jaula()
+{
+
+    /******************** VIGAS ********************/
+
+    // Piso
+    world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
+    world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
+    world.addBeam(17, 5, 0, LONG); // 14 15 16 17 18 19 20
+    world.addBeam(23, 5, 0, LONG); // 20 21 22 23 24 25 26
+
+    // Techo
+    world.addBeam(5, 17.8f, 0, LONG);
+    world.addBeam(11, 17.8f, 0, LONG);
+    world.addBeam(17, 17.8f, 0, LONG);
+    world.addBeam(23, 17.8f, 0, LONG);
+
+    // Paredes
+    world.addBeam(2.4f, 8.4f, 90, LONG);
+    world.addBeam(2.4f, 14.4f, 90, LONG);
+    world.addBeam(25.6f, 8.4f, 90, LONG);
+    world.addBeam(25.6f, 14.4f, 90, LONG);
+
+    /******************** WORMS ********************/
+
+    int x = 5;
+    for (int i = 0; i < config["cantidad_de_worms"]; i++)
+    {
+        world.addWorm(x, 10);
+        x += 2;
+    }
+}
+
+void Game::mapa_puente()
+{
+
+    /******************** VIGAS ********************/
+
+    world.addBeam(2.4f, 8.4f, 90, LONG);
+
+    world.addBeam(5, 5, 0, LONG);  // 2 3 4 5 6 7 8
+    world.addBeam(11, 5, 0, LONG); // 8 9 10 11 12 13 14
+    world.addBeam(17, 5, 0, LONG); // 14 15 16 17 18 19 20
+    world.addBeam(23, 5, 0, LONG); // 20 21 22 23 24 25 26
+    world.addBeam(29, 5, 0, LONG);
+    world.addBeam(34, 5, 0, LONG);
+
+    world.addBeam(36.6f, 8.4f, 90, LONG);
+
+    /******************** WORMS ********************/
+
+    int x = 3;
+    for (int i = 0; i < config["cantidad_de_worms"]; i++)
+    {
+        world.addWorm(x, 7);
+        x += 2;
+    }
+}
+
+void Game::mapa_vigas_inclinadas()
+{
+
+    /******************** VIGAS ********************/
+
+    world.addBeam(3, 9, 0, LONG);
+    world.addBeam(11.2f, 10, 0, LONG);
+    world.addBeam(18.7f, 11.9f, 0, LONG);
+
+    world.addBeam(7.2f, 9.5f, 22.5f, SHORT);
+    world.addBeam(15, 11, 45, SHORT);
+    world.addBeam(22, 13.2f, 67.5f, SHORT);
+
+    /******************** WORMS ********************/
+
+    int x = 3;
+    for (int i = 0; i < config["cantidad_de_worms"]; i++)
+    {
+        world.addWorm(x, 14);
+        x += 2;
+    }
+}
+
+void Game::mapa_real()
+{
+
+    /******************** VIGAS ********************/
+
+     // Piso 0
+    // int x = 5;
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     world.addBeam(x, 5, 0, LONG);
+    //     x += 8;
+    // }
+
+    // // Piso 1
+    // x = 5;
+    // for (int i = 0; i < 5; i++)
+    // {
+
+    //     if (x == 53)
+    //     {
+    //         x += 6;
+    //         continue;
+    //     }
+
+    //     world.addBeam(x, 10, 0, LONG);
+    //     x += 8;
+    // }
+
+    // // Piso 2
+    // x = 5;
+    // for (int i = 0; i < 5; i++)
+    // {
+
+    //     if (x == 11)
+    //     {
+    //         x += 6;
+    //         continue;
+    //     }
+
+    //     world.addBeam(x, 15, 0, LONG);
+    //     x += 8;
+    // }
+
+    // // Piso 3
+    // x = 5;
+    // for (int i = 0; i < 5; i++)
+    // {
+
+    //     if (x == 53)
+    //     {
+    //         x += 6;
+    //         continue;
+    //     }
+
+    //     world.addBeam(x, 20, 0, LONG);
+    //     x += 8;
+    // }
+
+    // // Piso 4
+    // x = 5;
+    // for (int i = 0; i < 5; i++)
+    // {
+
+    //     if (x == 11)
+    //     {
+    //         x += 6;
+    //         continue;
+    //     }
+
+    //     world.addBeam(x, 25, 0, LONG);
+    //     x += 10;
+    // }
+    // // Paredes
+    // float y = 8.4;
+    // for (int i = 0; i < 4; i++)
+    // {
+    //     world.addBeam(2.4f, y, 90, LONG);
+    //     y += 6;
+    // }
+
+    // y = 8.4;
+    // for (int i = 0; i < 4; i++)
+    // {
+    //     world.addBeam(61.6, y, 90, LONG);
+    //     y += 6;
+    // }
+
+    /******************** WORMS ********************/
+
+    int corrimiento_camara = 30;
+
+    world.addBeam(5+corrimiento_camara, 20, 0, LONG);
+    world.addBeam(21+corrimiento_camara, 20, 0, LONG);
+    world.addBeam(37+corrimiento_camara, 20, 0, LONG);
+    world.addBeam(53+corrimiento_camara, 20, 0, LONG);
+    
+
+    world.addBeam(13+corrimiento_camara, 18, 0, LONG);
+    world.addBeam(29+corrimiento_camara, 18, 0, LONG);
+    world.addBeam(45+corrimiento_camara, 18, 0, LONG);
+
+    world.addBeam(5+corrimiento_camara, 14, 0, LONG);
+    world.addBeam(21+corrimiento_camara, 14, 0, LONG);
+    world.addBeam(37+corrimiento_camara, 14, 0, LONG);
+    world.addBeam(53+corrimiento_camara, 14, 0, LONG);
+    
+
+    world.addBeam(13+corrimiento_camara, 12, 0, LONG);
+    world.addBeam(29+corrimiento_camara, 12, 0, LONG);
+    world.addBeam(45+corrimiento_camara, 12, 0, LONG);
+
+    
+    world.addWorm(5, 30);
+    if(config["cantidad_de_worms"] >= 2)
+        world.addWorm(5, 30);
+    if(config["cantidad_de_worms"] >= 3)
+        world.addWorm(5, 30);
+
+    
 }
