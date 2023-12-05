@@ -17,6 +17,7 @@ private:
 
 public:
     Sonido(std::shared_ptr<SDL2pp::Chunk> sonido); 
+    Sonido(); 
 
     void cambiar(std::shared_ptr<SDL2pp::Chunk> nuevoSonido, int loops = 0);
     void reproducir();

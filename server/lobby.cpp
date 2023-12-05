@@ -77,6 +77,9 @@ void Lobby::agregarAUnaPartida(ServerClient *c)
 
 void Lobby::newClient(Socket *s)
 {
+    if (not lobby_abierto) // si un cliente se quiso unir luego de cerrar
+        return;   
+
     id_cliente++;
 
     ServerClient *c = new ServerClient(s, &lobby_queue, id_cliente);

@@ -2,10 +2,10 @@
 
 map: 1
 
-cantidad_de_worms: 6
+cantidad_de_worms: 9
 
 worm:
-  hp: 10
+  hp: 100
   speed: 2
   extra_hp: 25
 

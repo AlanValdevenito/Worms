@@ -10,6 +10,7 @@ AnimacionWorm::AnimacionWorm(SDL2pp::Renderer &renderer, std::map<int, std::shar
     texturas(texturas),
     sonidos(sonidos),
     animacion(this->texturas[4]), 
+    sonido(std::make_shared<Sonido>()),
     estado(QUIETO),
     x(x), 
     y(y), 
@@ -19,10 +20,7 @@ AnimacionWorm::AnimacionWorm(SDL2pp::Renderer &renderer, std::map<int, std::shar
     turno(false), 
     numeroColor(numeroColor),
     color(color),
-    camara(false)
-{
-    this->sonido = std::make_shared<Sonido>(this->sonidos[0]);
-}
+    camara(false) {}
 
 // Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos.
 
@@ -280,6 +278,7 @@ int AnimacionWorm::get_tipo_de_arma() {
 /******************** PROYECTIL ********************/
 
 void AnimacionWorm::update_proyectil(SDL2pp::Renderer &renderer, int id, float nuevoX, float nuevoY, int nuevoAngulo, int nuevaDireccion, int nuevoEstado, int nuevoTiempo) {
+    
     if (this->arma) {
         this->arma->update(nuevoX, nuevoY, nuevoEstado, nuevoAngulo, nuevaDireccion, nuevoTiempo, id);
     }
