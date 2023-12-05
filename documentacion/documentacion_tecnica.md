@@ -115,7 +115,7 @@ En esta clase podemos encontrar un game loop cuya implementacion se basa en un l
 
 Como se explica en el diagrama de secuencia, la partida se comunica con el servidor usando al cliente como intermediario. Basicamente lo que hace es pushear en una de las queue del cliente _(send_queue)_ pedidos que este le envia al servidor y popea de la otra queue del cliente _(recv_queue)_ lo que el servidor le mande.
 
-El metodo iniciar() que se muestra en el diagrama de secuencia se llama luego de seleccionar o crear una partida desde el menu. Es el metodo que da inicio a la interfaz grafica que representa la ventana de la partida.
+El metodo Partida::iniciar que se muestra en el diagrama de secuencia se llama luego de seleccionar o crear una partida desde el menu. Es el metodo que da inicio a la interfaz grafica que representa la ventana de la partida.
 
 A contiuacion se mostraran tres diagramas de secuencia con la intencion de mostrar como seria la secuencia de mensajes del movimiento de un Worm. Seran tres diagramas ya que se dividira en tres secciones:
 
@@ -192,11 +192,11 @@ Lo mismo ocurre con la clase AnimacionAtaqueAereo.
 
 #### Camara
 
-La clase Partida delega la responsabilidad de decidir que se renderiza y que no a esta clase.
+La clase Partida delega la responsabilidad de decidir que se renderiza y que no a esta clase mediante el llamado al metodo Camara::comprobarRenderizado. 
 
-El centro de la camara esta definido por sus atributos x,y.
+Este metodo recibe como parametros la posicion y dimension de un objeto. Luego compara estos valores con los limites de la camara. Por ejemplo, la posicion X del objeto debe ser menor al limite derecho y mayor al limite izquierdo de la camara.
 
-Cuando se quiere seguir a un determinado Worm lo que se hace es setearle la posicion del mismo como el centro de la camara.
+El centro de la camara esta definido por sus atributos x,y. Entonces cuando se quiere seguir a un determinado Worm lo que se hace es setearle la posicion del mismo como el centro de la camara.
 
 ---
 
