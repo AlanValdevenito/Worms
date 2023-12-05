@@ -33,23 +33,23 @@ Una vez en ejecucion, el instalador mostrara una serie de mensajes cuyo orden se
 
 ### 2.1 Cambiar la configuracion del juego
 
-Dentro del archivo configuracion.yml se podran cambiar los siguientes atributos del juego:
+Dentro del archivo de configuraciones se podran cambiar los siguientes atributos del juego:
 
-• Mapa: Existen tres mapas cuyos valores son 1, 2, 3 y 4.
+• Cantidad de gusanos.
 
-• Cantidad de gusanos: Se recomienda solo usar numeros pares.
-
-• Vida del gusano.
-
-• Velocidad del gusano.
+• Worms:
+- Vida.
+- Velocidad.
+- Vida extra.
 
 • Duracion del turno.
 
 • Segundos adicionales luego de hacer uso de un arma o herramienta.
 
-• Daño de las armas.
-
-• Radio de explosion de las armas.
+• Armas: 
+- Daño.
+- Radio de explosion.
+- Municion.
 
 Para cambiar el valor de estos atributos simplemente se debe entrar al archivo de configuraciones, buscar
 el atributo que se desee cambiar y cambiarlo.
@@ -58,7 +58,7 @@ el atributo que se desee cambiar y cambiarlo.
 
 ### 3.1 Ejecucion
 
-En una terminal ingresar el siguiente comando: 
+En una terminal, dentro del directorio build, ingresar el siguiente comando: 
 
 ```
 $ ./server 8080
@@ -72,7 +72,7 @@ En la misma terminal donde se ejecuto el servidor se debera ingresar la letra �
 
 ### 4.1 Ejecucion
 
-En una terminal, luego de la ejecucion del servidor, ingresar el siguiente comando: 
+En una terminal, dentro del directorio build y luego de la ejecucion del servidor, ingresar el siguiente comando: 
 
 ```
 $ ./client 127.0.0.1 8080
@@ -170,3 +170,34 @@ A continuacion se listan las teclas utilizadas en el juego para activar y desact
 • M: Municion infinita.
 
 Nota: Presionando nuevamente estas teclas se desactivan los cheats.
+
+# 5 Tests
+Para correr los test unitarios del protocolo de comunicacion se deben realizar los siguientes pasos:
+
+En una terminal ingresar el siguiente comando: 
+
+1. Dirigirse a la carpeta build 
+
+```
+$ cd build
+
+```
+2. Dirigirse a la carpet gtest
+```
+$ cd gtest
+
+```
+
+3. Ejecutar el archivo de test
+```
+$ ./my_test 
+
+```
+
+> Se espera que una vez realizado el ultimo comando en la terminal, se encuentre un resultado como:
+
+![SALIDA TESTs](img/salida_esperada_test.png)
+
+A la izquierda se pueden observar que el test se ejecuto `RUN` y si su salida fue exitosa `OK`.
+Luego de "Global test enviroment tear-down" se observa la cantudad de test realiados y debajo cuantos de ellos tuvieron resultado exitoso.
+A su vez si el resultado de alguno no es exitoso el color no seria verde sino que rojo.

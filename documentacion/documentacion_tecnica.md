@@ -6,11 +6,9 @@ El proyecto está compuesto por 3 partes: la interfaz de usuario, el protocolo y
 
 <img src='img/diagrama_general.jpg?raw=true'>
 
-`PONER DIAGRAMA DE CLASES`
-
 ## DTOs
 
-Los DTOs son un conjunto de clases de las cuales todas heredan de DTO. Este tipo de objeto es utilizado para contener los distintos mensajes/acciones que envia el cliente hacia el servidor o el servidor hacia el cliente. Fue creado con el objetivo de tener un tipo comun para almacenar en las colas de entrada y salida. A su vez, es para abstraer a las clases de conocer su formacion, solo la conocen las clases que los utilizan.
+Los DTOs son un conjunto de clases de las cuales todas heredan de DTO. Este tipo de objeto es utilizado para contener los distintos mensajes/acciones que envía el cliente hacia el servidor o el servidor hacia el cliente. Fue creado con el objetivo de tener un tipo común para almacenar en las colas de entrada y salida. A su vez, es para abstraer a las clases de conocer su formacion, solo la conocen las clases que los utilizan.
 El **DeadDto** es un DTO particular, ya que su funcion no es comunicar entre clientes y servidor sino que su funcion es que los hilos de entrada y salida salgan del loop de enviado de mensajes, es lo equivalente a informar que no se enviaran mas mensajes de un lado u del otro ni tampoco se recibiran. Esto evita lanzar una excepcion y tener que catchearla.
 
 ## Broadcaster
@@ -66,7 +64,7 @@ Basicamente le muestra al jugador dos opciones:
 
 Internamente guarda una referencia al cliente.
 
-Se utiliza la funcion conect() de QT para establecer una conexion entre una señal y un metodo:
+Se utiliza la funcion connect() de QT para establecer una conexion entre una señal y un metodo:
 
 - Cuando el boton 'partidasButton' es presionado se emite la señal 'clicked' y se llama al metodo 'menuPartidas' que crea una instancia de la clase MenuPartidas.
 - Cuando el boton 'crearPartidaButton' es presionado se emite la señal 'clicked' y se llama al metodo 'menuCrearPartida' que crea una instancia de la clase MenuCrearPartida.
@@ -81,7 +79,7 @@ Basicamente le muestra al jugador las partidas a las cuales puede unirse.
 
 Para poder hacer esto, internamente guarda una lista de las partidas las cuales obtiene mediante el cliente.
 
-Se utiliza la funcion conect() de QT para establecer una conexion entre una señal y un metodo. Cuando el boton 'elegirPartidaButton' es presionado se emite la señal 'clicked' y se llama al metodo 'elegirPartida'.
+Se utiliza la funcion connect() de QT para establecer una conexion entre una señal y un metodo. Cuando el boton 'elegirPartidaButton' es presionado se emite la señal 'clicked' y se llama al metodo 'elegirPartida'.
 
 Internamente cuando se llama al metodo 'elegirPartida' se pushea en la _send_queue_ una instancia de la clase 'ListaDePartidas' con el ID de la partida seleccionada.
 
@@ -93,7 +91,7 @@ Esta clase es una interfaz grafica que representa la ventana del menu de creacio
 
 Basicamente le permite crear partidas al jugador.
 
-Se utiliza la funcion conect() de QT para establecer una conexion entre una señal y un metodo. Cuando el boton 'nuevaPartidaButton' es presionado se emite la señal 'clicked' y se llama al metodo 'crearPartida'.
+Se utiliza la funcion connect() de QT para establecer una conexion entre una señal y un metodo. Cuando el boton 'nuevaPartidaButton' es presionado se emite la señal 'clicked' y se llama al metodo 'crearPartida'.
 
 Internamente cuando se llama al metodo 'crearPartida' se pushea en la _send_queue_ una instancia de la clase 'NuevaPartida' con la cantidad de jugadores y el ID del mapa.
 
