@@ -48,8 +48,14 @@
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="0" column="1" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
      <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>640</width>
+        <height>480</height>
+       </size>
+      </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -64,6 +70,12 @@
          <width>301</width>
          <height>391</height>
         </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>301</width>
+         <height>391</height>
+        </size>
        </property>
        <property name="styleSheet">
         <string notr="true"/>
@@ -85,6 +97,12 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>299</width>
+          <height>389</height>
+         </size>
         </property>
         <property name="styleSheet">
          <string notr="true">QWidget {
@@ -135,20 +153,10 @@ QPushButton:pressed {
         <string>Elegir partida</string>
        </property>
       </widget>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QFrame" name="frame_2">
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
       <widget class="QPushButton" name="volverAtrasButton">
        <property name="geometry">
         <rect>
-         <x>86</x>
+         <x>390</x>
          <y>410</y>
          <width>150</width>
          <height>40</height>

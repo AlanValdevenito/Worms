@@ -1,6 +1,9 @@
 #include "menu_finalizar.h"
 #include "ui_menu_finalizar.h"
 
+#include <QGuiApplication>
+#include <QScreen>
+
 MenuFinalizar::MenuFinalizar(Client &cliente, int resultado, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MenuFinalizar),
@@ -8,6 +11,10 @@ MenuFinalizar::MenuFinalizar(Client &cliente, int resultado, QWidget *parent) :
     resultado(resultado)
 {
     ui->setupUi(this);
+
+    QScreen *primaryScreen = QGuiApplication::primaryScreen();
+    QRect mainScreenSize = primaryScreen->availableGeometry();
+    setGeometry(mainScreenSize);
 
     QIcon icono(DATA_PATH "/icono.png");
     this->setWindowIcon(icono);

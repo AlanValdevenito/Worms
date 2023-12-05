@@ -1,6 +1,8 @@
 #include "menu_partidas.h"
 #include "ui_menu_partidas.h"
 
+#include <QGuiApplication>
+#include <QScreen>
 #include <QPushButton>
 
 MenuPartidas::MenuPartidas(Client &cliente, std::list<uint8_t> &partidas, QWidget *parent) :
@@ -11,6 +13,10 @@ MenuPartidas::MenuPartidas(Client &cliente, std::list<uint8_t> &partidas, QWidge
     partidaSeleccionada("")
 {
     ui->setupUi(this);
+
+    QScreen *primaryScreen = QGuiApplication::primaryScreen();
+    QRect mainScreenSize = primaryScreen->availableGeometry();
+    setGeometry(mainScreenSize);
 
     QIcon icono(DATA_PATH "/icono.png");
     this->setWindowIcon(icono);

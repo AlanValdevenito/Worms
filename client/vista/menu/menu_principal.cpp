@@ -3,6 +3,8 @@
 
 #include <QApplication>
 #include <QMainWindow>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QPixmap>
@@ -18,6 +20,10 @@ MenuPrincipal::MenuPrincipal(Client &cliente, QWidget *parent):
 
     // Inicializamos la interfaz definida en el archivo .ui
     ui->setupUi(this); 
+
+    QScreen *primaryScreen = QGuiApplication::primaryScreen();
+    QRect mainScreenSize = primaryScreen->availableGeometry();
+    setGeometry(mainScreenSize);
 
     QIcon icono(DATA_PATH "/icono.png");
     this->setWindowIcon(icono);

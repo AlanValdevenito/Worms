@@ -1,12 +1,19 @@
 #include "menu_crear_partida.h"
 #include "ui_menu_crear_partida.h"
 
+#include <QGuiApplication>
+#include <QScreen>
+
 MenuCrearPartida::MenuCrearPartida(Client &cliente, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MenuCrearPartida),
     cliente(cliente)
 {
     ui->setupUi(this);
+
+    QScreen *primaryScreen = QGuiApplication::primaryScreen();
+    QRect mainScreenSize = primaryScreen->availableGeometry();
+    setGeometry(mainScreenSize);
 
     QIcon icono(DATA_PATH "/icono.png");
     this->setWindowIcon(icono);
