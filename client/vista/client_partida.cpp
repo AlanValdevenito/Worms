@@ -1,8 +1,6 @@
 #include "client_partida.h"
 #include <unistd.h>
 
-#define TITULO "Worms 2D"
-
 #define ANCHO_VENTANA 640
 #define ALTO_VENTANA 480
 
@@ -20,7 +18,9 @@ int Partida::iniciar()
 
     SDL sdl(SDL_INIT_VIDEO); 
 
-    Window window(TITULO,
+    std::string titulo = "Worms 2D - Jugador " + std::to_string(this->cliente.id);
+
+    Window window(titulo,
                   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                   ANCHO_VENTANA, ALTO_VENTANA,
                   SDL_WINDOW_RESIZABLE);

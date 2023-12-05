@@ -2,7 +2,7 @@
 
 map: 1
 
-cantidad_de_worms: 9
+cantidad_de_worms: 6
 
 worm:
   hp: 20
