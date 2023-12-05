@@ -1,5 +1,5 @@
-    @startuml
-    hide empty attributes
+@startuml
+hide empty attributes
     hide circle
 
 
@@ -24,17 +24,22 @@
     }
 
 
-    class broadcaster {
+    class Broadcaster {
      - lista queues
      - ServerOutgoingQueue
      }
 
-    class player{}
+    class Player{
+         - wormIds: List<int>
+         - actualWormId: int
+         + changeActualWorm()
+    } 
 
    class Game {
         - common_queue: Queue
         - broadcaster: Broadcaster
         - players: List<Player> 
+        - world: World
         + run()
         + update()
         + sendGameState()
@@ -43,6 +48,7 @@
     class World {
         - worms: List<Worm>
         - beams: List<Beam>
+        - world: b2World
         + step()
     }
 
@@ -65,11 +71,9 @@ json queues_clientes {
 
 Partida -> Game
 Game -> World
-Game -> player
-Game -> broadcaster
+Game -> Player
+Game -> Broadcaster
 Game <- recv_queue
 
 broadcaster -> queues_clientes
-
-
- @enduml
+@enduml
